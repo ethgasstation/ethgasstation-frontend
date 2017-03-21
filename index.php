@@ -123,7 +123,6 @@
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
               <span class="navbar-text"><strong><?php echo "Estimates over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock </span>" ?></strong></span>
-               <span class="navbar-text" style="float:right"><a href='#'><img src="images/ETH.png" width="35" height="35" alt=""></a>
             </nav>
           </div>
          </div>
