@@ -129,6 +129,7 @@ if ($cat1Tx == null)
 	$cat1tx = 0 ;
 }
 
+
 $cat1TxPct = round($cat1Tx/$totTx, 4) *100;
 $cat2TxPct = round($cat2Tx/$totTx, 4) *100;
 $cat3TxPct = round($cat3Tx/$totTx, 4) *100;
