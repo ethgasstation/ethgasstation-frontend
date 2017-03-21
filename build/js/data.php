@@ -129,11 +129,19 @@ if ($cat1Tx == null)
 	$cat1tx = 0 ;
 }
 
+<<<<<<< HEAD
 $cat1TxPct = round($cat1Tx/$totTx, 4) *100;
 $cat2TxPct = round($cat2Tx/$totTx, 4) *100;
 $cat3TxPct = round($cat3Tx/$totTx, 4) *100;
 $cat4TxPct = round($cat4Tx/$totTx, 4) *100;
 $cat5TxPct = round($cat5Tx/$totTx, 4) *100;
+=======
+$cat1TxPct = round($cat1Tx/$totTx, 3) *100;
+$cat2TxPct = round($cat2Tx/$totTx, 3) *100;
+$cat3TxPct = round($cat3Tx/$totTx, 3) *100;
+$cat4TxPct = round($cat4Tx/$totTx, 3) *100;
+$cat5TxPct = round($cat5Tx/$totTx, 3) *100;
+>>>>>>> 7fcaba9846bffa8345f678b344e2387df2948c8b
 
 $cat1TimeMedMin = round($cat1TimeMed/60, 1);
 $cat2TimeMedMin = round($cat2TimeMed/60, 1);
