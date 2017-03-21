@@ -242,7 +242,7 @@
                       </thead>
                       <tbody>
                         <tr>
-                          <td>Don't care</td>
+                          <td>Cheapest</td>
                           <td style = "color:#03586A" ><?php echo "$lowPrice" ?></td>
                         </tr>
                         <tr>
@@ -250,11 +250,11 @@
                           <td style = "color:#03586A" ><?php echo "15" ?></td>
                         </tr>
                         <tr>
-                          <td>Prompt</td>
+                          <td>Average</td>
                           <td style = "color:#03586A"><?php echo "$recPrice" ?></td>
                         </tr>
                         <tr>
-                          <td>As fast as possible</td>
+                          <td>Fastest</td>
                           <td style = "color:red"><?php echo "$highPrice" ?></td>
                         </tr>
                       </tbody>
