@@ -955,7 +955,7 @@ footer {
     margin-bottom: 0
 }
 .tile {
-    overflow: hidden
+    overflow: auto 
 }
 .top_tiles {
     margin-bottom: 0
