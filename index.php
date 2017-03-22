@@ -123,7 +123,7 @@
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
               <ul class="nav navbar-nav">
-                <li class "dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">USD<span class="caret"></span></a>
+                <li class "dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Change Currency<span class="caret"></span></a>
                   <ul class="dropdown-menu">
                     <li><a href="#">EUR</a></li>
                     <li><a href="#">GBP</a></li>
