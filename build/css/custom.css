@@ -686,11 +686,7 @@ a:focus {
 .navbar-right {
     margin-right: 0
 }
-.top_nav .navbar-right {
-    margin: 0;
-    width: 70%;
-    float: right
-}
+
 .top_nav .navbar-right li {
     display: inline-block;
     float: right;
