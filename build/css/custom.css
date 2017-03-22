@@ -688,8 +688,8 @@ a:focus {
 }
 .top_nav .navbar-right {
     margin: 0;
-    width: 65%;
-    float: right
+    width: 70%;
+    float: center
 }
 .top_nav .navbar-right li {
     display: inline-block;
