@@ -130,7 +130,7 @@
                   </ul>
                 </li>
           
-              <p class="navbar-text"><strong><?php echo "Estimates over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span></p>
+              <p class="navbar-text navbar-right"><strong><?php echo "Estimates over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span></p>
               </ul>
             </nav>
           </div>
