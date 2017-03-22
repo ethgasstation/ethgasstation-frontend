@@ -129,9 +129,8 @@
                     <li><a href="#">GBP</a></li>
                   </ul>
                 </li>
-          
+                </ul>
               <p class="navbar-text navbar-right"><strong><?php echo "Estimates over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span></p>
-              </ul>
             </nav>
           </div>
          </div>
