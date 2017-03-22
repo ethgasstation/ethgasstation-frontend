@@ -124,13 +124,13 @@
               </div>
               <ul class="nav navbar-nav">
               <p class="navbar-text"><strong><?php echo "Estimates over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span></p>
-               <li class "dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Select Currency<span class="caret"></span></a>
+              <div class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Select Currency<span class="caret"></span></button>
                   <ul class="dropdown-menu">
                     <li><a href="#">EUR</a></li>
                     <li><a href="#">GBP</a></li>
                   </ul>
-                </li>
-              </ul>
+                </div
             </nav>
           </div>
          </div>
