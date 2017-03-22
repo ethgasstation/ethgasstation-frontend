@@ -683,19 +683,14 @@ a:focus {
 .navbar-header {
     background: #34495E
 }
-.navbar-right {
-    margin-right: 0
+.navbar-right {
+    margin-right: 0
 }
-
-
-
-.top_nav .navbar-right {
-    margin: 0;
-    width: 70%;
-    float: right
+.top_nav .navbar-right {
+    margin: 0;
+    width: 70%;
+    float: right
 }
-
-
 .top_nav .navbar-right li {
     display: inline-block;
     float: right;
