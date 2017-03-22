@@ -683,7 +683,7 @@ a:focus {
 .navbar-header {
     background: #34495E
 }
-.navbar-nav.navbar-right:last-child {
+.top_nav .navbar-right:last-child {
     margin-right: 0;
 }
 
