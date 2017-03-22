@@ -129,6 +129,7 @@
                     <li><a href="#">EUR</a></li>
                     <li><a href="#">GBP</a></li>
                   </ul>
+              </ul>
             </nav>
           </div>
          </div>
