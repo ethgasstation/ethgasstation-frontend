@@ -123,14 +123,14 @@
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
               <ul class="nav navbar-nav">
+              <p class="navbar-text"><strong><?php echo "Estimates over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span></p>
                <li class "dropdown"><a class="dropdown-toggle" data-toggle="dropdown" href="#">Select Currency<span class="caret"></span></a>
                   <ul class="dropdown-menu">
                     <li><a href="#">EUR</a></li>
                     <li><a href="#">GBP</a></li>
                   </ul>
                 </li>
-                </ul>
-              <p class="navbar-text"><strong><?php echo "Estimates over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span></p>
+              </ul>
             </nav>
           </div>
          </div>
