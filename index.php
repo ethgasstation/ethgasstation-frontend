@@ -122,7 +122,6 @@
               <div class="nav toggle">
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
-              <p class="navbar-text"><strong><?php echo "Estimates over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>
 
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
@@ -135,6 +134,7 @@
                     <li><a href="javascript:;"> CNY</a></li>
                   </ul>
                 </li>
+              <p class="navbar-text"><strong><?php echo "Estimates over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
               </p>
                 
             </nav>
