@@ -124,7 +124,11 @@
               </div>
               <span class="navbar-text"><strong><?php echo "Estimates over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock </span>" ?></strong></span>
               <ul class="nav navbar-nav">
+<<<<<<< HEAD
                 <li class "dropdown" style="float-right"><a class="dropdown-toggle" data-toggle="dropdown" href="#">USD<span class="caret"></span></a>
+=======
+                <li class "dropdown" class="float-right"><a class="dropdown-toggle" data-toggle="dropdown" href="#">USD<span class="caret"></span></a>
+>>>>>>> acc40f513d0fefb4887c2432b38a3e01a1f090ec
                   <ul class="dropdown-menu">
                     <li><a href="#">EUR</a></li>
                     <li><a href="#">GBP</a></li>
