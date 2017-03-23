@@ -543,7 +543,7 @@
 					pointBorderWidth: 1,
 					pointHoverRadius:5,
 					pointHitRadius:10,
-					data: <?php echo '[' . $ya1. ',' . $ya2 . ',' . $ya3 . ',' . $ya4 . ',' . $ya5 . ',' . $ya6 . ',' . $ya7 .',' . $ya8 . ',' . $ya9 . ',' . $ya10. ',' .$ya11. ']'; ?>
+					data: <?php echo '[' . $ya1. ',' . $ya2 . ',' . $ya3 . ',' . $ya4 . ',' . $ya5 . ',' . $ya6 . ',' . $ya7 .',' . $ya8 . ',' . $ya9 . ',' . $ya10. ',' .$ya11. ',' .$ya12. ',' . $ya13 . ',' . $ya14 . ',' . $ya15 .',' . $ya16 . ',' . $ya17 . ',' . $ya18. ',' .$ya19. ',' .$ya20. ']'; ?>
 				  }, {
 					label: "Median Confirm Time (s)",
 					yAxisID: 'B',
@@ -554,7 +554,7 @@
 					pointHoverBackgroundColor: "#fff",
 					pointHoverBorderColor: "rgba(151,187,205,1)",
 					pointBorderWidth: 1,
-					data: <?php echo '[' . $yb1. ',' . $yb2 . ',' . $yb3 . ',' . $yb4 . ',' . $yb5 . ',' . $yb6 . ',' . $yb7 .',' . $yb8 . ',' . $yb9 . ',' . $yb10. ','. $yb11. ']'; ?>
+					data: <?php echo '[' . $yb1. ',' . $yb2 . ',' . $yb3 . ',' . $yb4 . ',' . $yb5 . ',' . $yb6 . ',' . $yb7 .',' . $yb8 . ',' . $yb9 . ',' . $yb10. ','. $yb11. ',' .$yb12. ',' . $yb13 . ',' . $yb14 . ',' . $yb15 .',' . $yb16 . ',' . $yb17 . ',' . $yb18. ',' .$yb19. ',' .$yb20. ']'; ?>
 				  }]
 				},
 				options: {
