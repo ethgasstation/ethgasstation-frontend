@@ -340,7 +340,7 @@ if (typeof NProgress != 'undefined') {
 		
 		init_sidebar();
 
-        (".dropdown").change(function(){
+        ("#currselect").on('show.bs.dropdown', function(){
            console.log("changed");
         });
 		
