@@ -340,7 +340,7 @@ if (typeof NProgress != 'undefined') {
 		
 		init_sidebar();
 
-        (".dropdown-toggle").change(function(){
+        (".dropdown").change(function(){
            console.log("changed");
         });
 		
