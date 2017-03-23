@@ -134,7 +134,7 @@
                     <li><a href="javascript:;"> CNY</a></li>
                   </ul>
                 </li>
-              <p class="navbar-text"><strong><?php echo "Estimates over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
+              <p class="navbar-text" style="padding-left: 5px"><strong><?php echo "Estimates over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
               </p>
                 
             </nav>
