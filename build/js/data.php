@@ -72,7 +72,7 @@ $yb10 = round($graphData[1]['meanDelayLast100'],2);
 $yb11 = round($graphData[0]['meanDelayLast100'],2);
 
 $latestblock = $row['latestblockNum'];
-$ethprice = $row['ETHprice'];
+$ethprice = $row['ETHpriceUSD'];
 $mediantxfee = $row['mediantxfee'];
 $medianfeeusd = $ethprice * $mediantxfee / 1000000000;
 settype($medianfeeusd, "float");
