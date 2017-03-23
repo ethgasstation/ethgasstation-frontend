@@ -104,7 +104,7 @@ $yb20 = round($graphData[0]['medianDelayLast100'],2);
 
 $latestblock = $row['latestblockNum'];
 $ethprice = $row['ETHpriceUSD'];
-$ethpriceEUR = $row['ETHpriceEUR']
+$ethpriceEUR = $row['ETHpriceEUR'];
 $mediantxfee = $row['mediantxfee'];
 $medianfeeUSD = $ethprice * $mediantxfee / 1e9;
 $medianfeeEUR = $ethpriceEUR * mediantxfee / 1e9;
