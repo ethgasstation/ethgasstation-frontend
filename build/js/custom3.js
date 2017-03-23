@@ -340,7 +340,7 @@ if (typeof NProgress != 'undefined') {
 		
 		init_sidebar();
 
-        $('.dropdown').dropdown();
+        $('.dropdown-toggle').dropdown();
 		
 				
 	});	
