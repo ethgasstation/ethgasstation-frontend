@@ -56,28 +56,28 @@ $x18 = $graphData[2]['latestblockNum'];
 $x19 = $graphData[1]['latestblockNum'];
 $x20 = $graphData[0]['latestblockNum'];
 
-//convert to ETH from gwei and divide by 100 to get average per block over last 100 blocks
+//convert to ETH from gwei (1e9) and divide by 100 to get average ETH per block over last 100 blocks
 
-$ya1 = round($graphData[19]['ethConsumedLast100']/100000000000,2);
-$ya2 = round($graphData[18]['ethConsumedLast100']/100000000000,2);
-$ya3 = round($graphData[17]['ethConsumedLast100']/100000000000,2);
-$ya4 = round($graphData[16]['ethConsumedLast100']/100000000000,2);
-$ya5 = round($graphData[15]['ethConsumedLast100']/100000000000,2);
-$ya6 = round($graphData[14]['ethConsumedLast100']/100000000000,2);
-$ya7 = round($graphData[13]['ethConsumedLast100']/100000000000,2);
-$ya8 = round($graphData[12]['ethConsumedLast100']/100000000000,2);
-$ya9 = round($graphData[11]['ethConsumedLast100']/100000000000,2);
-$ya10 = round($graphData[10]['ethConsumedLast100']/100000000000,2);
-$ya11 = round($graphData[9]['ethConsumedLast100']/100000000000,2);
-$ya12 = round($graphData[8]['ethConsumedLast100']/100000000000,2);
-$ya13 = round($graphData[7]['ethConsumedLast100']/100000000000,2);
-$ya14 = round($graphData[6]['ethConsumedLast100']/100000000000,2);
-$ya15 = round($graphData[5]['ethConsumedLast100']/100000000000,2);
-$ya16 = round($graphData[4]['ethConsumedLast100']/100000000000,2);
-$ya17 = round($graphData[3]['ethConsumedLast100']/100000000000,2);
-$ya18 = round($graphData[2]['ethConsumedLast100']/100000000000,2);
-$ya19 = round($graphData[1]['ethConsumedLast100']/100000000000,2);
-$ya20 = round($graphData[0]['ethConsumedLast100']/100000000000,2);
+$ya1 = round($graphData[19]['ethConsumedLast100']/1e11,4);
+$ya2 = round($graphData[18]['ethConsumedLast100']/1e11,4);
+$ya3 = round($graphData[17]['ethConsumedLast100']/1e11,4);
+$ya4 = round($graphData[16]['ethConsumedLast100']/1e11,4);
+$ya5 = round($graphData[15]['ethConsumedLast100']/1e11,4);
+$ya6 = round($graphData[14]['ethConsumedLast100']/1e11,4);
+$ya7 = round($graphData[13]['ethConsumedLast100']/1e11,4);
+$ya8 = round($graphData[12]['ethConsumedLast100']/1e11,4);
+$ya9 = round($graphData[11]['ethConsumedLast100']/1e11,4);
+$ya10 = round($graphData[10]['ethConsumedLast100']/1e11,4);
+$ya11 = round($graphData[9]['ethConsumedLast100']/1e11,4);
+$ya12 = round($graphData[8]['ethConsumedLast100']/1e11,4);
+$ya13 = round($graphData[7]['ethConsumedLast100']/1e11,4);
+$ya14 = round($graphData[6]['ethConsumedLast100']/1e11,4);
+$ya15 = round($graphData[5]['ethConsumedLast100']/1e11,4);
+$ya16 = round($graphData[4]['ethConsumedLast100']/1e11,4);
+$ya17 = round($graphData[3]['ethConsumedLast100']/1e11,4);
+$ya18 = round($graphData[2]['ethConsumedLast100']/1e11,4);
+$ya19 = round($graphData[1]['ethConsumedLast100']/1e11,4);
+$ya20 = round($graphData[0]['ethConsumedLast100']/1e11,4);
 
 
 $yb1 = round($graphData[19]['meanDelayLast100'],2);
