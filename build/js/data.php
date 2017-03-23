@@ -80,32 +80,35 @@ $ya19 = round($graphData[1]['ethConsumedLast100']/1e11,4);
 $ya20 = round($graphData[0]['ethConsumedLast100']/1e11,4);
 
 
-$yb1 = round($graphData[19]['meanDelayLast100'],2);
-$yb2 = round($graphData[18]['meanDelayLast100'],2);
-$yb3 = round($graphData[17]['meanDelayLast100'],2);
-$yb4 = round($graphData[16]['meanDelayLast100'],2);
-$yb5 = round($graphData[15]['meanDelayLast100'],2);
-$yb6 = round($graphData[14]['meanDelayLast100'],2);
-$yb7 = round($graphData[13]['meanDelayLast100'],2);
-$yb8 = round($graphData[12]['meanDelayLast100'],2);
-$yb9 = round($graphData[11]['meanDelayLast100'],2);
-$yb10 = round($graphData[10]['meanDelayLast100'],2);
-$yb11 = round($graphData[9]['meanDelayLast100'],2);
-$yb12 = round($graphData[8]['meanDelayLast100'],2);
-$yb13 = round($graphData[7]['meanDelayLast100'],2);
-$yb14 = round($graphData[6]['meanDelayLast100'],2);
-$yb15 = round($graphData[5]['meanDelayLast100'],2);
-$yb16 = round($graphData[4]['meanDelayLast100'],2);
-$yb17 = round($graphData[3]['meanDelayLast100'],2);
-$yb18 = round($graphData[2]['meanDelayLast100'],2);
-$yb19 = round($graphData[1]['meanDelayLast100'],2);
-$yb20 = round($graphData[0]['meanDelayLast100'],2);
+$yb1 = round($graphData[19]['medianDelayLast100'],2);
+$yb2 = round($graphData[18]['medianDelayLast100'],2);
+$yb3 = round($graphData[17]['medianDelayLast100'],2);
+$yb4 = round($graphData[16]['medianDelayLast100'],2);
+$yb5 = round($graphData[15]['medianDelayLast100'],2);
+$yb6 = round($graphData[14]['medianDelayLast100'],2);
+$yb7 = round($graphData[13]['medianDelayLast100'],2);
+$yb8 = round($graphData[12]['medianDelayLast100'],2);
+$yb9 = round($graphData[11]['medianDelayLast100'],2);
+$yb10 = round($graphData[10]['medianDelayLast100'],2);
+$yb11 = round($graphData[9]['medianDelayLast100'],2);
+$yb12 = round($graphData[8]['medianDelayLast100'],2);
+$yb13 = round($graphData[7]['medianDelayLast100'],2);
+$yb14 = round($graphData[6]['medianDelayLast100'],2);
+$yb15 = round($graphData[5]['medianDelayLast100'],2);
+$yb16 = round($graphData[4]['medianDelayLast100'],2);
+$yb17 = round($graphData[3]['medianDelayLast100'],2);
+$yb18 = round($graphData[2]['medianDelayLast100'],2);
+$yb19 = round($graphData[1]['medianDelayLast100'],2);
+$yb20 = round($graphData[0]['medianDelayLast100'],2);
 
 
 $latestblock = $row['latestblockNum'];
 $ethprice = $row['ETHpriceUSD'];
+$ethpriceEUR = $row['ETHpriceEUR']
 $mediantxfee = $row['mediantxfee'];
-$medianfeeusd = $ethprice * $mediantxfee / 1000000000;
+$medianfeeUSD = $ethprice * $mediantxfee / 1e9;
+$medianfeeEUR = $ethpriceEUR * mediantxfee / 1e9;
+
 settype($medianfeeusd, "float");
 $medianwaitsec = $row['medianTime'];
 $medianwaitblock = $row['medianMinedDelay'];
@@ -122,12 +125,12 @@ $dearestConId = $row['dearConTxID'];
 $longestWait = $row['longestWait'];
 $longestWaitId = $row['longestWaitID'];
 
-$cheapestTxUsd = $cheapestTx * $ethprice / 1000000000;
+$cheapestTxUsd = $cheapestTx * $ethprice / 1e9;
 setlocale(LC_MONETARY, "en_US.UTF-8");
 $cheapUSD = money_format('%.4n', $cheapestTxUsd);
-$dearestTxUsd = $dearestTx * $ethprice / 1000000000;
+$dearestTxUsd = $dearestTx * $ethprice / 1e9;
 $dearUSD = money_format('%.2n', $dearestTxUsd);
-$dearestConUsd = $dearestCon * $ethprice / 1000000000;
+$dearestConUsd = $dearestCon * $ethprice / 1e9;
 $dearconUSD = money_format('%.2n', $dearestConUsd);
 
 $longestWait = round($longestWait/3600,1);
@@ -286,6 +289,8 @@ $result->close();
 
 //close connection
 $mysqli->close();
+
+
 
 
 ?>
