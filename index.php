@@ -125,13 +125,13 @@
 
               <ul class="nav navbar-nav navbar-right">
                 <li class="">
-                  <a href="javascript:;" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-globe"></i><span style="color:#768399"> Change Currency</span>
+                  <a href="#" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-globe"></i><span style="color:#768399"> Change Currency</span>
                     <span class=" fa fa-angle-down"></span>
                   </a>
-                  <ul class="dropdown-menu dropdown-usermenu pull-right">
-                    <li><a href="javascript:;"> EUR</a></li>
-                    <li><a href="javascript:;"> GBP</a></li>
-                    <li><a href="javascript:;"> CNY</a></li>
+                  <ul class="dropdown-menu dropdown-usermenu pull-right" id="currselect">
+                    <li><a href="#"> EUR</a></li>
+                    <li><a href="#"> GBP</a></li>
+                    <li><a href="#"> CNY</a></li>
                   </ul>
                 </li>
               <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Estimates over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
