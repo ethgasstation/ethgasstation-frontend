@@ -124,11 +124,11 @@
               </div>
 
               <ul class="nav navbar-nav navbar-right">
-                <li id="currselect">
+                <li class="">
                   <a href="#" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-globe"></i><span style="color:#768399"> Change Currency</span>
                     <span class=" fa fa-angle-down"></span>
                   </a>
-                  <ul class="dropdown-menu dropdown-usermenu pull-right">
+                  <ul class="dropdown-menu dropdown-usermenu pull-right" id="currselect">
                     <li><a href="#"> EUR</a></li>
                     <li><a href="#"> GBP</a></li>
                     <li><a href="#"> CNY</a></li>
