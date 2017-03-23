@@ -181,7 +181,7 @@
              <div class="col-md-8 col-sm-12 col-xs-12">
                  <div class="x_panel tile fixed_height_320">
                      <div class="x_title">
-                        <h4>Recent Network Activity: <small>Gas Demand / Average Wait Time</small></h4>
+                        <h4>Recent Network Activity: <small>Gas Demand / Average Wait Time (100 block intervals)</small></h4>
                         <div class="clearfix"></div>
                      </div>
                      <div class="x_content">
@@ -570,7 +570,7 @@
 							beginAtZero: false },
 						 scaleLabel: {
 							display:true,
-							labelString: 'Transaction Fees (ETH)'	
+							labelString: 'Avg Tx Fees Per Block (ETH)'	
 						 }
       }, {
         		id: 'B',
