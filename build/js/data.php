@@ -107,7 +107,7 @@ $ethprice = $row['ETHpriceUSD'];
 $ethpriceEUR = $row['ETHpriceEUR'];
 $mediantxfee = $row['mediantxfee'];
 $medianfeeUSD = $ethprice * $mediantxfee / 1e9;
-$medianfeeEUR = $ethpriceEUR * mediantxfee / 1e9;
+$medianfeeEUR = $ethpriceEUR * $mediantxfee / 1e9;
 
 settype($medianfeeusd, "float");
 $medianwaitsec = $row['medianTime'];
