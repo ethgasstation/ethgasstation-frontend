@@ -136,7 +136,7 @@
                 </li>
               <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Estimates over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
               </p>
-                
+            </ul>
             </nav>
           </div>
          </div>
