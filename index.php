@@ -532,7 +532,7 @@
 				data: {
 				  labels: <?php echo '[' . $x1. ',' . ' ' . ','. ' '. ','. ' ' . ',' . ' '. ',' . ' ' . ','. ' '. ','. ' ' . ',' . ' '. ','. $x10 . ',' . ' ' . ','. ' '. ','. ' ' . ',' . ' '. ','. ' ' . ','. ' '. ','. ' ' . ',' . ' '. ','. ' '. ','. $x20.']'; ?>,
 				  datasets: [{
-					label: "Total Transaction Fees (ETH)",
+					label: "Avg Tx Fees Per Block (ETH)",
 					yAxisID: 'A',
 					backgroundColor: "rgba(38, 185, 154, 0.31)",
 					borderColor: "rgba(38, 185, 154, 0.7)",
