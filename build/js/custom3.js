@@ -339,6 +339,10 @@ if (typeof NProgress != 'undefined') {
 				
 		
 		init_sidebar();
+
+        ("#currselect").change(function(){
+            alert ("changed");
+        });
 		
 				
 	});	
