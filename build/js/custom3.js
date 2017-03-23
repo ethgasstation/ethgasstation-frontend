@@ -340,9 +340,7 @@ if (typeof NProgress != 'undefined') {
 		
 		init_sidebar();
 
-        $(".dropdown").on('show.bs.dropdown', function(){
-           console.log("changed");
-        });
+        $('.dropdown').dropdown();
 		
 				
 	});	
