@@ -653,7 +653,9 @@
                               dataType: "json",
 		                      success: function(data) {
 			                    var eur = data[0]['ETHpriceEUR'];
-                                $('#medTx').text(eur);
+                          var txfee = data[0]['mediantxfee'];
+                          var eurfee = txfee * eur /1e9
+                                $('#medTx').text(eurfee);
                                 
                           }               
                 

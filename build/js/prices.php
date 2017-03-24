@@ -13,7 +13,7 @@ if(!$mysqli){
 	die("Connection failed: " . $mysqli->error);
 }
 
-$query = "SELECT ETHpriceUSD, ETHpriceEUR, ETHpriceCNY, ETHpriceGBP from txDataLast10k ORDER BY id DESC LIMIT 1";
+$query = "SELECT ETHpriceUSD, ETHpriceEUR, ETHpriceCNY, ETHpriceGBP, mediantxfee from txDataLast10k ORDER BY id DESC LIMIT 1";
 $result = $mysqli->query($query);
 $prices = $result->fetch_assoc();
 
