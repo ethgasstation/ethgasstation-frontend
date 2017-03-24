@@ -646,7 +646,8 @@
               console.log("yes!");
             });
             $("#eur").click(function(){
-              $("#medTx").text("hi");
+                $("#medTx").html(<?php setlocale(LC_MONETARY, "en_US.UTF-8");echo money_format('%.4n', $medianfeeEUR) ?>);
+              
             })
 
           });
