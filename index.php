@@ -642,9 +642,6 @@
 
           $(document).ready(function(){
 
-            $(".dropdown").on("show.bs.dropdown", function(event){
-              console.log("yes!");
-            });
             $("#eur").click(function(){
                  
                 $.ajax({
@@ -655,8 +652,8 @@
 			                    var eur = data[0]['ETHpriceEUR'];
                           var txfee = data[0]['mediantxfee'];
                           var eurfee = txfee * eur /1e9;
-                          var eurfeeround = eurfee.toFixed(4);
-                                $('#medTx').text("€" + eurfeeround);
+                          eurfee = eurfee.toFixed(4);
+                                $('#medTx').text("€" + eurfee);
                                 
                           }               
                 
@@ -673,7 +670,6 @@
 
 
     <script src="build/js/custom3.js"></script>
-    <script src="build/js/accounting.min.js"</script>
     
 	
   </body>
