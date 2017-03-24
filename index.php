@@ -640,7 +640,10 @@
           }
 
           $(document).ready(function(){
-            console.log("hi");
+            
+            $(".dropdown").on("show.bs.dropdown", function(event){
+              console.log("yes!");
+            });
 
           });
 
