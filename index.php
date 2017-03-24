@@ -71,18 +71,20 @@
   <body class="nav-md">
     <div class="container body">
       <div class="main_container">
+
+<!-- Sidebar -->
+
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
+
             <div class="navbar nav_title" style="border: 0;">
               <a href="index.php" class="site_title"><img src="images/ETHgas.png" style="height:32px;width:32px"> <span>ETH Gas Station</span></a>
             </div>
             
             <div class="clearfix"></div>
-
-
             <br />
 
-<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+          <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
@@ -108,12 +110,10 @@
                 </ul>
               </div>
             </div>
-
             <!-- /sidebar menu -->
         </div>
-        </div>
-
-
+      </div>
+  <!-- /sidebar -->
 
         <!-- top navigation -->
         <div class="top_nav">
@@ -142,12 +142,11 @@
           </div>
          </div>
 
-        
-
         <!-- /top navigation -->
 
         <!-- page content -->
         <div class="right_col" role="main">
+
           <!-- top tiles -->
           <div class="row tile_count">
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
@@ -179,6 +178,7 @@
 
           <div class="row">
 
+          <!-- Network Activity Graph -->
              <div class="col-md-8 col-sm-12 col-xs-12">
                  <div class="x_panel tile fixed_height_320">
                      <div class="x_title">
@@ -191,7 +191,9 @@
                     </div> 
                 </div>
             </div>
+          <!-- /network activity graph -->
 
+          <!-- Speedometer -->
             <div class="col-md-4 col-sm-4 col-xs-12">
               <div class="x_panel tile fixed_height_320">
                 <div class="x_title">
@@ -199,17 +201,16 @@
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <div id="speedometer" class="speedometer">
-                    </div>
+                    <div id="speedometer" class="speedometer"></div>
                     <p id="blockNum">Last Block: </p> 
                 </div>
-                </div>
               </div>
-
             </div>
+          <!--/Speedometer -->
 
+       </div>
 
-
+       <!-- Transactions by Gas Price -->
 
         <div class="row">
 
@@ -237,10 +238,10 @@
                 </div>
               </div>
 
+          <!-- /Transaction by Gas Price -->
 
+          <!-- Recommended User Gas Prices-->
            
-
-    
              <div class="col-md-4 col-sm-4 col-xs-12">
               <div class="x_panel tile fixed_height_320">
                 <div class="x_title">
@@ -280,7 +281,13 @@
           <div class="clearfix"></div>
         </div>
 
+        <!-- /Recommended prices -->
+
+
   <div class="row">
+
+        <!-- Miner Rankings -->
+
             <div class="col-md-8 col-sm-12 col-xs-12">
               <div class="x_panel tile fixed_height_420">
                 <div class="x_title">
@@ -363,6 +370,11 @@
                 </div>
             </div>
         </div>
+
+        <!-- /miner rankings -->
+
+        <!-- Misc Transaction Table -->
+
             <div class="col-md-4 col-sm-4 col-xs-12">
               <div class="x_panel tile fixed_height_320">
                 <div class="x_title">
@@ -424,18 +436,12 @@
         </div>
     </div>
 
+    <!-- /misc transactions -->
 
-
-
-
-
-    </div>
-
-
-
-    </div>
+  </div>
+</div>
              
-        <!-- /page content -->
+<!-- /page content -->
 
         <!-- footer content -->
         <footer>
@@ -445,19 +451,22 @@
           <div class="clearfix"></div>
         </footer>
         <!-- /footer content -->
+
       </div>
     </div>
 
-    <!-- jQuery -->
+ <!-- jQuery -->
     <script src="vendors/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap -->
+ <!-- Bootstrap -->
     <script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- Chart.js -->
+ <!-- Chart.js -->
     <script src="vendors/Chart.js/dist/Chart.min.js"></script>
     
 
-    <!-- Custom Theme Scripts -->
+<!-- Custom Theme Scripts -->
     <script>
+
+    //Data for Transaction Count by Gas Price Graph
 
         if ($('#mybarChart2').length ){ 
 			  
@@ -498,6 +507,8 @@
 				}
 			  });
         }
+
+        //Data for Confirmation Time by Gas Price Graph
 
         if ($('#mybarChart').length ){ 
 			  
@@ -544,6 +555,7 @@
 			  
 			} 
 
+      //Data for Network Activity Graph
       			 
 			if ($('#lineChart').length ){	
 			
@@ -612,6 +624,8 @@
 
 			
 };
+
+    //Speedometer
 			  
           if ($('#speedometer').length ){
               var speedometer;
@@ -660,7 +674,8 @@
 
           }
 
-
+      //Curency Support
+      
             $("#eur").click(function(){
                  
                 
