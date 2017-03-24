@@ -654,8 +654,8 @@
 		                      success: function(data) {
 			                    var eur = data[0]['ETHpriceEUR'];
                           var txfee = data[0]['mediantxfee'];
-                          var eurfee = txfee * eur /1e9
-                                $('#medTx').text(eurfee);
+                          var eurfee = round (txfee * eur /1e9,4)
+                                $('#medTx').html(&euro + eurfee);
                                 
                           }               
                 
