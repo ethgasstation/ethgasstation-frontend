@@ -124,7 +124,7 @@
               </div>
 
               <ul class="nav navbar-nav navbar-right">
-                <div class="dropdown">
+                <li class="dropdown">
                   <a href="#" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-globe"></i><span style="color:#768399"> Change Currency</span>
                     <span class=" fa fa-angle-down"></span>
                   </a>
@@ -133,7 +133,7 @@
                     <li><a href="#"> GBP</a></li>
                     <li><a href="#"> CNY</a></li>
                   </ul>
-                </div>
+                </li>
               <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Estimates over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
               </p>
             </ul>
@@ -640,7 +640,7 @@
           }
 
           $(document).ready(function(){
-            
+
             $(".dropdown").on("show.bs.dropdown", function(event){
               console.log("yes!");
             });
