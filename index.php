@@ -655,6 +655,7 @@
                           eurfee = eurfee.toFixed(4);
                                 $('#medTx').text("€" + eurfee);
                                 $('#usd').html('<a href="#"> USD</a></li>')
+                                $('#eur').html('<a href="#"> EUR<span class="pull-right"><i class="fa fa-check"></i></span></a></li>')
                                 
                           }               
                 
