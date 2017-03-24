@@ -334,18 +334,15 @@ if (typeof NProgress != 'undefined') {
 	function gd(year, month, day) {
 		return new Date(year, month - 1, day).getTime();
 	}
-
-    /*$(document).ready(function() {
+*/
+    $(document).ready(function() {
 				
 		
 		init_sidebar();
 
-       console.log("hi");
-
-       $('.dropdown').dropdown();
 		
 				
 	});
-    */	
+
 	  
 	
