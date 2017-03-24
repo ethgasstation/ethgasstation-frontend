@@ -340,7 +340,9 @@ if (typeof NProgress != 'undefined') {
 		
 		init_sidebar();
 
-        $('.dropdown-toggle').dropdown();
+        console.log("hi");
+
+        $('.dropdown').dropdown();
 		
 				
 	});	
