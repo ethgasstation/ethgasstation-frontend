@@ -335,16 +335,17 @@ if (typeof NProgress != 'undefined') {
 		return new Date(year, month - 1, day).getTime();
 	}
 
-    $(document).ready(function() {
+    /*$(document).ready(function() {
 				
 		
-		//init_sidebar();
+		init_sidebar();
 
-        console.log("hi");
+       console.log("hi");
 
-        $('.dropdown').dropdown();
+       $('.dropdown').dropdown();
 		
 				
-	});	
+	});
+    */	
 	  
 	
