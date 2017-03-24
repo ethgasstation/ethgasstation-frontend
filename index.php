@@ -640,22 +640,22 @@
 
           }
 
-/*
+
             $("#eur").click(function(){
                  
                 
-			          var eurfee = <?php echo "$medianfeeEUR";?>
+			          var eurfee = <?php echo "$medianfeeEUR";?>;
                 eurfee = eurfee.toFixed(4);
                 $('#medTx').text("€" + eurfee);
-                $('#usd').html('<a href="#"> USD</a>')
-                $('#eur').html('<a href="#"> EUR<span class="pull-right"><i class="fa fa-check"></i></span></a>')
-                $('#gbp').html('<a href="#"> GBP</a>')
-                $('#cny').html('<a href="#"> CNY</a>')
+                $('#usd').html('<a href="#"> USD</a>');
+                $('#eur').html('<a href="#"> EUR<span class="pull-right"><i class="fa fa-check"></i></span></a>');
+                $('#gbp').html('<a href="#"> GBP</a>');
+                $('#cny').html('<a href="#"> CNY</a>');
                                                                      
             });
               
           
-          */
+      
 
          
 
