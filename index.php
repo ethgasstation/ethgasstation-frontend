@@ -129,7 +129,8 @@
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu">
-                    <li><a href="#"> EUR</a></li>
+                    <li><a href="#"> USD</a></li>
+                    <li id="eur"><a href="#"> EUR</a></li>
                     <li><a href="#"> GBP</a></li>
                     <li><a href="#"> CNY</a></li>
                   </ul>
@@ -644,6 +645,9 @@
             $(".dropdown").on("show.bs.dropdown", function(event){
               console.log("yes!");
             });
+            $("#eur").click(function(){
+              console.log("yah!");
+            })
 
           });
 
