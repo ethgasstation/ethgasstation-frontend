@@ -147,7 +147,7 @@ $MENU_TOGGLE.on('click', function() {
 	  return (Math.floor(Math.random() * (1 + 40 - 20))) + 20;
 	};
 
-
+/*
 // Panel toolbox
 $(document).ready(function() {
     $('.collapse-link').on('click', function() {
