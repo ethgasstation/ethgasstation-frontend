@@ -647,7 +647,17 @@
             });
             $("#eur").click(function(){
                  
-                $("#medTx").text(<?php setlocale(LC_MONETARY, "en_US.UTF-8");echo money_format('%.4n', $medianfeeEUR) ?>);
+                $.ajax({
+		                      url: "build/js/prices.php",
+		                      method: "GET",
+                              dataType: "json",
+		                      success: function(data) {
+			                    var eur = data[0]['ETHpriceEUR'];
+                                $('#medTx').text(eur);
+                                
+                          }               
+                
+                    });
               
             });
 
