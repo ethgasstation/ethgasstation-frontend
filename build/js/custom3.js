@@ -147,7 +147,6 @@ $MENU_TOGGLE.on('click', function() {
 	  return (Math.floor(Math.random() * (1 + 40 - 20))) + 20;
 	};
 
-/*
 // Panel toolbox
 $(document).ready(function() {
     $('.collapse-link').on('click', function() {
@@ -334,7 +333,7 @@ if (typeof NProgress != 'undefined') {
 	function gd(year, month, day) {
 		return new Date(year, month - 1, day).getTime();
 	}
-*/
+
     $(document).ready(function() {
 				
 		
