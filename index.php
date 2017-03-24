@@ -129,10 +129,10 @@
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu">
-                    <li id="usd"><a href="#"> USD<span class="pull-right"><i class="fa fa-check"></i></span></a></li>
-                    <li id="eur"><a href="#"> EUR</a></li>
-                    <li id="gbo"><a href="#"> GBP</a></li>
-                    <li id="cny"><a href="#"> CNY</a></li>
+                    <li id="usd"><a href=""> USD<span class="pull-right"><i class="fa fa-check"></i></span></a></li>
+                    <li id="eur"><a href=""> EUR</a></li>
+                    <li id="gbo"><a href=""> GBP</a></li>
+                    <li id="cny"><a href=""> CNY</a></li>
                   </ul>
                 </li>
               <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Estimates over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
@@ -656,6 +656,8 @@
                                 $('#medTx').text("€" + eurfee);
                                 $('#usd').html('<a href="#"> USD</a>')
                                 $('#eur').html('<a href="#"> EUR<span class="pull-right"><i class="fa fa-check"></i></span></a>')
+                                $('#gbp').html('<a href="#"> GBP</a>')
+                                $('#cny').html('<a href="#"> CNY</a>')
                                 
                           }               
                 
