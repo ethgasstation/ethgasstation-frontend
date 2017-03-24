@@ -673,7 +673,7 @@
 
 
     <script src="build/js/custom3.js"></script>
-    <script src="accounting.min.js"</script>
+    <script src="build/js/accounting.min.js"</script>
     
 	
   </body>
