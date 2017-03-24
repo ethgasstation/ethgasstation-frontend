@@ -656,7 +656,7 @@
                           var txfee = data[0]['mediantxfee'];
                           var eurfee = txfee * eur /1e9;
                           var eurfeeround = eurfee.toFixed(4);
-                                $('#medTx').text('&euro' + eurfeeround);
+                                $('#medTx').text("€" + eurfeeround);
                                 
                           }               
                 
