@@ -653,7 +653,19 @@
                 $('#cny').html('<a href="#"> CNY</a>');
                                                                      
             });
-              
+            
+            $("#usd").click(function(){
+                 
+                
+			          var usdfee = <?php echo "$medianfeeUSD";?>;
+                usdfee = usdfee.toFixed(4);
+                $('#medTx').text("$" + usdfee);
+                $('#usd').html('<a href="#"> USD<span class="pull-right"><i class="fa fa-check"></i></span></a>');
+                $('#eur').html('<a href="#"> EUR</a>');
+                $('#gbp').html('<a href="#"> GBP</a>');
+                $('#cny').html('<a href="#"> CNY</a>');
+                                                                     
+            });
           
       
 
