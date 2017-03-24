@@ -106,6 +106,9 @@ $latestblock = $row['latestblockNum'];
 $ethprice = $row['ETHpriceUSD'];
 $mediantxfee = $row['mediantxfee'];
 $medianfeeUSD = $ethprice * $mediantxfee / 1e9;
+$ethpriceEUR = $row['ETHpriceEUR'];
+$medianfeeEUR = $ethpriceEUR * $mediantxfee /1e9;
+
 
 settype($medianfeeusd, "float");
 $medianwaitsec = $row['medianTime'];

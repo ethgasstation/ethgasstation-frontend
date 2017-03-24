@@ -643,26 +643,18 @@
 
             $("#eur").click(function(){
                  
-                $.ajax({
-		                      url: "build/js/prices.php",
-		                      method: "GET",
-                              dataType: "json",
-		                      success: function(data) {
-			                    var eur = data[0]['ETHpriceEUR'];
-                          var txfee = data[0]['mediantxfee'];
-                          var eurfee = txfee * eur /1e9;
-                          eurfee = eurfee.toFixed(4);
-                                $('#medTx').text("€" + eurfee);
-                                $('#usd').html('<a href="#"> USD</a>')
-                                $('#eur').html('<a href="#"> EUR<span class="pull-right"><i class="fa fa-check"></i></span></a>')
-                                $('#gbp').html('<a href="#"> GBP</a>')
-                                $('#cny').html('<a href="#"> CNY</a>')
-                                
-                          }               
                 
-                    });
-              
+			          var eurfee = <?php echo "$medianfeeEUR";?>
+                eurfee = eurfee.toFixed(4);
+                $('#medTx').text("€" + eurfee);
+                $('#usd').html('<a href="#"> USD</a>')
+                $('#eur').html('<a href="#"> EUR<span class="pull-right"><i class="fa fa-check"></i></span></a>')
+                $('#gbp').html('<a href="#"> GBP</a>')
+                $('#cny').html('<a href="#"> CNY</a>')
+                                                                     
             });
+              
+          
 
          
 
