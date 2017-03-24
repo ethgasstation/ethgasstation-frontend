@@ -640,7 +640,6 @@
 
           }
 
-          $(document).ready(function(){
 
             $("#eur").click(function(){
                  
@@ -665,7 +664,7 @@
               
             });
 
-          });
+         
 
 
 
