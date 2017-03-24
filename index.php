@@ -646,7 +646,7 @@
               console.log("yes!");
             });
             $("#eur").click(function(){
-                var eurprice = <?php setlocale(LC_MONETARY, "en_US.UTF-8");echo money_format('%.4n', $medianfeeEUR) ?> 
+                
                 $("#medTx").text("eurprice");
               
             });
