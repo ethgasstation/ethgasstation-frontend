@@ -338,7 +338,7 @@ if (typeof NProgress != 'undefined') {
     $(document).ready(function() {
 				
 		
-		init_sidebar();
+		//init_sidebar();
 
         console.log("hi");
 
