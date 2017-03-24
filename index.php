@@ -667,7 +667,31 @@
                                                                      
             });
           
-      
+            $("#cny").click(function(){
+                 
+                
+			          var cnyfee = <?php echo "$medianfeeCNY";?>;
+                cnyfee = cnyfee.toFixed(4);
+                $('#medTx').text("¥" + cnyfee);
+                $('#usd').html('<a href="#"> USD</a>');
+                $('#eur').html('<a href="#"> EUR</a>');
+                $('#gbp').html('<a href="#"> GBP</a>');
+                $('#cny').html('<a href="#"> CNY<span class="pull-right"><i class="fa fa-check"></i></span></a>');
+                                                                     
+            });
+
+            $("#gbp").click(function(){
+                 
+                
+			          var gbpfee = <?php echo "$medianfeeGBP";?>;
+                gbpfee = gbpfee.toFixed(4);
+                $('#medTx').text("£" + gbpfee);
+                $('#usd').html('<a href="#"> USD</a>');
+                $('#eur').html('<a href="#"> EUR</a>');
+                $('#gbp').html('<a href="#"> GBP<span class="pull-right"><i class="fa fa-check"></i></span></a>');
+                $('#cny').html('<a href="#"> CNY</a>');
+                                                                     
+            });
 
          
 
