@@ -101,6 +101,7 @@ $yb18 = round($graphData[2]['medianDelayLast100'],2);
 $yb19 = round($graphData[1]['medianDelayLast100'],2);
 $yb20 = round($graphData[0]['medianDelayLast100'],2);
 
+// Get values for Misc transactions table
 
 $latestblock = $row['latestblockNum'];
 $ethprice = $row['ETHpriceUSD'];
@@ -114,6 +115,18 @@ $medianfeeEUR = $ethpriceEUR * $mediantxfee /1e9;
 $medianfeeGBP = $ethpriceGBP * $mediantxfee /1e9;
 $medianfeeCNY = $ethpriceCNY * $mediantxfee /1e9;
 
+$medianContractFee = $row['medianContractFee'];
+$medianConFeeUSD = $ethprice * medianContractFee / 1e9;
+$medianConFeeEUR = $ethpriceEUR * $medianContractFee /1e9;
+$medianConFeeGBP = $ethpriceGBP * $medianContractFee /1e9;
+$medianConFeeCNY = $ethpriceCNY * $medianContractFeefee /1e9;
+
+$medianContractGas = $row['medianContractGas'];
+
+$totTx = $row['totalTx'];
+$totalTransfers = $row['totalTransfers'];
+$totalConCalls = $row['totalConCalls'];
+$totalTimed= $row['totalTimed'];
 
 settype($medianfeeusd, "float");
 $medianwaitsec = $row['medianTime'];
@@ -132,17 +145,35 @@ $longestWait = $row['longestWait'];
 $longestWaitId = $row['longestWaitID'];
 
 $cheapestTxUsd = $cheapestTx * $ethprice / 1e9;
+$cheapestTxEUR = $cheapestTx * $ethpriceEUR / 1e9;
+$cheapestTxCNY = $cheapestTx * $ethpriceCNY / 1e9;
+$cheapestTxGBP = $cheapestTx * $ethpriceGBP / 1e9;
+
+
 setlocale(LC_MONETARY, "en_US.UTF-8");
 $cheapUSD = money_format('%.4n', $cheapestTxUsd);
+
+
 $dearestTxUsd = $dearestTx * $ethprice / 1e9;
+$dearestTxEUR = $dearestTx * $ethpriceEUR / 1e9;
+$dearestTxCNY = $dearestTx * $ethpriceCNY / 1e9;
+$dearestTxGBP = $dearestTx * $ethpriceGBP / 1e9;
+
 $dearUSD = money_format('%.2n', $dearestTxUsd);
+
+
 $dearestConUsd = $dearestCon * $ethprice / 1e9;
+$dearestConEUR = $dearestCon * $ethpriceEUR / 1e9;
+$dearestConCNY = $dearestCon * $ethpriceCNY / 1e9;
+$dearestConGBP = $dearestCon * $ethpriceGBP / 1e9;
+
+
 $dearconUSD = money_format('%.2n', $dearestConUsd);
 
 $longestWait = round($longestWait/3600,1);
 
-$totTx = $row['totalTx'];
 
+//Get data for Transaction confirmation by gas price graph
 
 $cat1Tx = $row['cat1gasTotTx'];
 $cat1TimeMed = $row['cat1gasMedianTime'];
@@ -188,6 +219,7 @@ $cat3Time95Min = round($cat3Time95/60, 1);
 $cat4Time95Min = round($cat4Time95/60, 1);
 $cat5Time95Min = round($cat5Time95/60, 1);
 
+//Data for miner ranking table
 
 $miners = array (
 	array (
@@ -262,6 +294,7 @@ $miners = array (
 	)
 );
 
+//sort miners based on low price and % empty blocks
 
 $price = array();
 foreach ($miners as $key => $row)
@@ -271,6 +304,9 @@ foreach ($miners as $key => $row)
 }
 
 array_multisort($price, SORT_ASC, $empty, SORT_ASC, $miners);
+
+
+//find gas price accepted by 50% of top 10 miners
 
 function recPrice ($miners)
 {
@@ -285,6 +321,8 @@ function recPrice ($miners)
 	$x++;
 	}
 }
+
+//Assign recommended prices (cheapest = lowest price accepted); (fastest = highest min price accepted by all to 10 miners);
 
 $recPrice = recPrice($miners);
 $lowPrice = $miners[0]['minP'];

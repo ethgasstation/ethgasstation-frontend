@@ -380,22 +380,42 @@
                       <tbody> 
                         <tr>
                           <td>Cheapest Transfer Fee</td>
-                          <td><?php echo '<a href="https://etherscan.io/tx/' .$cheapestTxId.'"'; echo "target=\"_blank\">$cheapUSD</a>";?></td>
+                          <td id="cheapestTransfer"><?php echo '<a href="https://etherscan.io/tx/' .$cheapestTxId.'"'; echo "target=\"_blank\">$cheapUSD</a>";?></td>
                     
                         </tr>
                         <tr>
                           <td>Priciest Transfer Fee</td>
-                          <td><?php echo '<a href="https://etherscan.io/tx/' .$dearestTxId.'"'."target=\"_blank\">$dearUSD</a>"?></td>
+                          <td id="priciestTransfer"><?php echo '<a href="https://etherscan.io/tx/' .$dearestTxId.'"'."target=\"_blank\">$dearUSD</a>"?></td>
                           
                         </tr>
                         <tr>
                           <td>Priciest Transaction Fee</td>
-                          <td><?php echo '<a href="https://etherscan.io/tx/' .$dearestConId.'"'."target=\"_blank\" >$dearconUSD</a>"?></td>
+                          <td id="priciestTransaction"><?php echo '<a href="https://etherscan.io/tx/' .$dearestConId.'"'."target=\"_blank\" >$dearconUSD</a>"?></td>
                           
                         </tr>
                         <tr>
-                          <td>Longest Wait For Confirm (Hours)</td>
-                          <td><?php echo '<a href="https://etherscan.io/tx/' .$longestWaitId.'"'."target=\"_blank\" >$longestWait</a>"?></td>
+                          <td>Contracts: Median Gas Used</td>
+                          <td><?php echo "$medianContractGas";?></td>
+                        </tr>
+                        <tr>
+                          <td>Contracts: Median Fee</td>
+                          <td id="medianContractFee"><?php setlocale(LC_MONETARY, "en_US.UTF-8");echo money_format('%.2n', $medianConfeeUSD);?></td>
+                        </tr>
+                        <tr>
+                          <td>Total Transactions</td>
+                          <td><?php echo "$totTx";?></td>
+                        </tr>
+                        <tr>
+                          <td>Total Transfers</td>
+                          <td><?php echo "$totalTransfers"; $perTr =round($totalTrasnfers/$totTx*100); echo " ("."$perTr"."%)"?></td>
+                        </tr>
+                        <tr>
+                          <td>Total Contract Calls</td>
+                          <td><?php echo "$totalConCalls"; $perCon =round($totalConCalls/$totTx*100); echo " ("."$perCon"."%)"?></td>
+                        </tr>
+                        <tr>
+                          <td>Total Timed Transactions</td>
+                          <td><?php echo "$totalTimed"; $perTimed =round($totalTimed/$totTx*100); echo " ("."$perTimed"."%)"?></td>
                         </tr>
                       </tbody>
                     </table>
@@ -645,8 +665,24 @@
                  
                 
 			          var eurfee = <?php echo "$medianfeeEUR";?>;
+                var cheapestTxEUR = <?php echo "$cheapestTxEUR";?>;
+                var dearestTxEUR = <?php echo "$dearestTxEUR";?>;
+                var dearestConEUR = <?php echo "$dearestConEUR";?>;
+                var conFeeEUR = <?php echo "$medianConFeeEUR";?>;
+
                 eurfee = eurfee.toFixed(4);
+                cheapestTxEUR = cheapestTxEUR.toFixed(4);
+                dearestTxEUR = dearestTxEUR.toFixed(2);
+                dearestConEUR = dearestConEUR.toFixed(2);
+                conFeeEUR = conFeeEUR.toFixed(2);
+
                 $('#medTx').text("€" + eurfee);
+
+                $('#cheapestTransfer').text("€" + cheapestTxEUR);
+                $('#priciestTransfer').text("€" + dearestTxEUR);
+                $('#priciestTransaction').text("€" + dearestConEUR);
+                $('#medianContractFee').text("€" + conFeeEUR);
+
                 $('#usd').html('<a href="#"> USD</a>');
                 $('#eur').html('<a href="#"> EUR<span class="pull-right"><i class="fa fa-check"></i></span></a>');
                 $('#gbp').html('<a href="#"> GBP</a>');
@@ -658,8 +694,24 @@
                  
                 
 			          var usdfee = <?php echo "$medianfeeUSD";?>;
+                var cheapestTxUSD = <?php echo "$cheapestTxUsd";?>;
+                var dearestTxUSD = <?php echo "$dearestTxUsd";?>;
+                var dearestConUSD = <?php echo "$dearestConUsd";?>;
+                var conFeeUSD = <?php echo "$medianConFeeUSD";?>;
+
                 usdfee = usdfee.toFixed(4);
+                cheapestTxUSD = cheapestTxUSD.toFixed(4);
+                dearestTxUSD = dearestTxUSD.toFixed(2);
+                dearestConUSD = dearestConUSD.toFixed(2);
+                conFeeUSD = conFeeUSD.toFixed(2);
+
                 $('#medTx').text("$" + usdfee);
+
+                $('#cheapestTransfer').text("$" + cheapestTxUSD);
+                $('#priciestTransfer').text("$" + dearestTxUSD);
+                $('#priciestTransaction').text("$" + dearestConUSD);
+                $('#medianContractFee').text("$" + conFeeUSD);
+
                 $('#usd').html('<a href="#"> USD<span class="pull-right"><i class="fa fa-check"></i></span></a>');
                 $('#eur').html('<a href="#"> EUR</a>');
                 $('#gbp').html('<a href="#"> GBP</a>');
@@ -668,11 +720,25 @@
             });
           
             $("#cny").click(function(){
-                 
-                
+                               
 			          var cnyfee = <?php echo "$medianfeeCNY";?>;
+                var cheapestTxCNY = <?php echo "$cheapestTxCNY";?>;
+                var dearestTxCNY = <?php echo "$dearestTxCNY";?>;
+                var dearestConCNY = <?php echo "$dearestConCNY";?>;
+                var conFeeCNY = <?php echo "$medianConFeeCNY";?>;
+
                 cnyfee = cnyfee.toFixed(4);
+                cheapestTxCNY = cheapestTxCNY.toFixed(4);
+                dearestTxCNY = dearestTxCNY.toFixed(2);
+                dearestConCNY = dearestConCNY.toFixed(2);
+                conFeeCNY = conFeeCNY.toFixed(2);
+
                 $('#medTx').text("¥" + cnyfee);
+                $('#cheapestTransfer').text("¥" + cheapestTxCNY);
+                $('#priciestTransfer').text("¥" + dearestTxCNY);
+                $('#priciestTransaction').text("¥" + dearestConCNY);
+                $('#medianContractFee').text("¥" + conFeeCNY);
+
                 $('#usd').html('<a href="#"> USD</a>');
                 $('#eur').html('<a href="#"> EUR</a>');
                 $('#gbp').html('<a href="#"> GBP</a>');
@@ -684,8 +750,24 @@
                  
                 
 			          var gbpfee = <?php echo "$medianfeeGBP";?>;
+                var cheapestTxGBP = <?php echo "$cheapestTxGBP";?>;
+                var dearestTxGBP = <?php echo "$dearestTxGBP";?>;
+                var dearestConGBP = <?php echo "$dearestConGBP";?>;
+                var conFeeGBP = <?php echo "$medianConFeeGBP";?>;
+
                 gbpfee = gbpfee.toFixed(4);
+                cheapestTxGBP = cheapestTxGBP.toFixed(4);
+                dearestTxGBP = dearestTxGBP.toFixed(2);
+                dearestConGBP = dearestConGBP.toFixed(2);
+                conFeeGBP = conFeeGBP.toFixed(2);
+
                 $('#medTx').text("£" + gbpfee);
+                $('#cheapestTransfer').text("£" + cheapestTxGBP);
+                $('#priciestTransfer').text("£" + dearestTxGBP);
+                $('#priciestTransaction').text("£" + dearestConGBP);
+                $('#medianContractFee').text("£" + conFeeGBP);
+                
+
                 $('#usd').html('<a href="#"> USD</a>');
                 $('#eur').html('<a href="#"> EUR</a>');
                 $('#gbp').html('<a href="#"> GBP<span class="pull-right"><i class="fa fa-check"></i></span></a>');
