@@ -131,7 +131,7 @@
                   <ul class="dropdown-menu">
                     <li id="usd"><a href="#"> USD<span class="pull-right"><i class="fa fa-check"></i></span></a></li>
                     <li id="eur"><a href="#"> EUR</a></li>
-                    <li id="gbo"><a href="#"> GBP</a></li>
+                    <li id="gbp"><a href="#"> GBP</a></li>
                     <li id="cny"><a href="#"> CNY</a></li>
                   </ul>
                 </li>
