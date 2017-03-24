@@ -129,7 +129,7 @@
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu">
-                    <li id="usd"><a href="#"> USD</a></li>
+                    <li id="usd"><a href="#"> USD<i class="fa fa-check"></i></a></li>
                     <li id="eur"><a href="#"> EUR</a></li>
                     <li id="gbo"><a href="#"> GBP</a></li>
                     <li id="cny"><a href="#"> CNY</a></li>
