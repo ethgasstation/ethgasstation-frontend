@@ -152,7 +152,7 @@ $dearestConId = $row['dearConTxID'];
 $longestWait = $row['longestWait'];
 $longestWaitId = $row['longestWaitID'];
 
-$cheapestTxUsd = $cheapestTx * $ethprice / 1e9;
+$cheapestTxUSD = $cheapestTx * $ethprice / 1e9;
 $cheapestTxEUR = $cheapestTx * $ethpriceEUR / 1e9;
 $cheapestTxCNY = $cheapestTx * $ethpriceCNY / 1e9;
 $cheapestTxGBP = $cheapestTx * $ethpriceGBP / 1e9;
@@ -162,7 +162,7 @@ setlocale(LC_MONETARY, "en_US.UTF-8");
 $cheapUSD = money_format('%.4n', $cheapestTxUsd);
 
 
-$dearestTxUsd = $dearestTx * $ethprice / 1e9;
+$dearestTxUSD = $dearestTx * $ethprice / 1e9;
 $dearestTxEUR = $dearestTx * $ethpriceEUR / 1e9;
 $dearestTxCNY = $dearestTx * $ethpriceCNY / 1e9;
 $dearestTxGBP = $dearestTx * $ethpriceGBP / 1e9;
@@ -170,7 +170,7 @@ $dearestTxGBP = $dearestTx * $ethpriceGBP / 1e9;
 $dearUSD = money_format('%.2n', $dearestTxUsd);
 
 
-$dearestConUsd = $dearestCon * $ethprice / 1e9;
+$dearestConUSD = $dearestCon * $ethprice / 1e9;
 $dearestConEUR = $dearestCon * $ethpriceEUR / 1e9;
 $dearestConCNY = $dearestCon * $ethpriceCNY / 1e9;
 $dearestConGBP = $dearestCon * $ethpriceGBP / 1e9;
