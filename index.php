@@ -688,7 +688,7 @@
           currencyGBP();}
         else if (currency === "cny"){
           currencyCNY();}
-        else currencyUSD(); 
+        else {currencyUSD();} 
 
       });
 
