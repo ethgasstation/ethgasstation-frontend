@@ -128,10 +128,10 @@
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu">
-                    <li id="usd"><a href="index.php?curr=usd"> USD<span class="pull-right"><i class="fa fa-check"></i></span></a></li>
-                    <li id="eur"><a href="index.php?curr=eur"> EUR</a></li>
-                    <li id="gbp"><a href="index.php?curr=gbp"> GBP</a></li>
-                    <li id="cny"><a href="index.php?curr=cny"> CNY</a></li>
+                    <li id="usd"><a href="http://24.218.144.115/index.php?curr=usd"> USD<span class="pull-right"><i class="fa fa-check"></i></span></a></li>
+                    <li id="eur"><a href="http://24.218.144.115/index.php?curr=eur"> EUR</a></li>
+                    <li id="gbp"><a href="http://24.218.144.115/index.php?curr=gbp"> GBP</a></li>
+                    <li id="cny"><a href="http://24.218.144.115/index.php?curr=cny"> CNY</a></li>
                   </ul>
                 </li>
               <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Estimates over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
