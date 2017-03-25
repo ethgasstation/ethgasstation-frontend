@@ -35,7 +35,8 @@ while ($row2 = $result2->fetch_assoc()){
 	array_push($graphData,$row2);
 }
 
-$x1 = $graphData[19]['latestblockNum'];
+//$x1 = $graphData[19]['latestblockNum'];
+$x1 = "Last";
 $x2 = $graphData[18]['latestblockNum'];
 $x3 = $graphData[17]['latestblockNum'];
 $x4 = $graphData[16]['latestblockNum'];
@@ -44,7 +45,8 @@ $x6 = $graphData[14]['latestblockNum'];
 $x7 = $graphData[13]['latestblockNum'];
 $x8 = $graphData[12]['latestblockNum'];
 $x9 = $graphData[11]['latestblockNum'];
-$x10 = $graphData[10]['latestblockNum'];
+//$x10 = $graphData[10]['latestblockNum'];
+$x10 = "-1000";
 $x11 = $graphData[9]['latestblockNum'];
 $x12 = $graphData[8]['latestblockNum'];
 $x13 = $graphData[7]['latestblockNum'];
@@ -54,7 +56,8 @@ $x16 = $graphData[4]['latestblockNum'];
 $x17 = $graphData[3]['latestblockNum'];
 $x18 = $graphData[2]['latestblockNum'];
 $x19 = $graphData[1]['latestblockNum'];
-$x20 = $graphData[0]['latestblockNum'];
+//$x20 = $graphData[0]['latestblockNum'];
+$x20 = "-2000";
 
 //convert to ETH from gwei (1e9) and divide by 100 to get average ETH per block over last 100 blocks
 
