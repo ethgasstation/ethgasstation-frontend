@@ -126,14 +126,16 @@ if(isset($_GET['curr']) && !empty($_GET['curr'])){
 } 
 else {$currency = 'usd';}
 
-function getMedianTx($currency){
-    
-	if ($currency == "eur"){
-		$medianfee = round($medianfeeEUR,4);
-		$string = '€'. $medianfee;
-		return ($string);
-    }
+if ($currency == 'eur'){
+	$medianfeeDisplay = '€' . round(medianfeeEUR,4);
 }
+elseif ($currency == 'cny'){
+	$medianfeeDisplay = '¥' . round(medianfeeCNY,4);
+}
+elseif ($currency == 'gbp'){
+	$medianfeeDisplay = '£' . round(medianfeeGBP,4)
+}
+else {$medianfeeDisplay = '$' . round(medianfeeUSD,4);}
 
 
 $medianContractGas = $row['medianContractGas'];
