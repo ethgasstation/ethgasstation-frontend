@@ -413,7 +413,7 @@
                         </tr>
                         <tr>
                           <td>Contracts: Median Fee</td>
-                          <td id="medianContractFee"><?php setlocale(LC_MONETARY, "en_US.UTF-8");echo money_format('%.2n', $medianConfeeUSD);?></td>
+                          <td id="medianContractFee"><?php setlocale(LC_MONETARY, "en_US.UTF-8");echo money_format('%.2n', $medianConFeeUSD);?></td>
                         </tr>
                         <tr>
                           <td>Total Transactions</td>
@@ -421,7 +421,7 @@
                         </tr>
                         <tr>
                           <td>Total Transfers</td>
-                          <td><?php echo "$totalTransfers"; $perTr =round($totalTrasnfers/$totTx*100); echo " ("."$perTr"."%)"?></td>
+                          <td><?php echo "$totalTransfers"; $perTr =round($totalTransfers/$totTx*100); echo " ("."$perTr"."%)"?></td>
                         </tr>
                         <tr>
                           <td>Total Contract Calls</td>
