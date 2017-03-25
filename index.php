@@ -231,7 +231,7 @@
             <div class="col-md-4 col-sm-4 col-xs-12">
               <div class="x_panel tile fixed_height_320 overflow_hidden">
                 <div class="x_title">
-                  <h4>Confirmation Time by Gas Price: <small>(median/95pctl)</small></h4>
+                  <h4>Confirmation Time by Gas Price</h4>
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
