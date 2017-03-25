@@ -133,7 +133,7 @@ elseif ($currency == 'cny'){
 	$medianfeeDisplay = '¥' . round(medianfeeCNY,4);
 }
 elseif ($currency == 'gbp'){
-	$medianfeeDisplay = '£' . round(medianfeeGBP,4)
+	$medianfeeDisplay = '£' . round(medianfeeGBP,4);
 }
 else {$medianfeeDisplay = '$' . round(medianfeeUSD,4);}
 
