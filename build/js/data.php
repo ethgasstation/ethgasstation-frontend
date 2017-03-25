@@ -126,6 +126,15 @@ if(isset($_GET['curr']) && !empty($_GET['curr'])){
 } 
 else {$currency = 'usd';}
 
+function getMedianTx($currency){
+    
+	if ($currency == "eur"){
+		$medianfeeEUR = round($medianfeeEUR,4);
+		return ('€'.$medianfeeEUR);
+          }
+}
+
+
 $medianContractGas = $row['medianContractGas'];
 
 $totTx = $row['totalTx'];

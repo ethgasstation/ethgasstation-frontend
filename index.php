@@ -150,7 +150,7 @@
           <div class="row tile_count">
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-space-shuttle"></i>Median Cost for Transfer</span>
-              <div class="count" id="medTx"><> </div>
+              <div class="count" id="medTx"><?php $median = getMedianTx($currency); echo "$median";?></div>
             </div>
              <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-clock-o"></i> Median Wait (s)</span>
@@ -680,16 +680,7 @@
 
       $(document).ready(function(){
 
-        var currency = <?php echo '"'."$currency".'"';?>;
-        console.log("currency" + currency);
-
-        if (currency === "eur"){
-          currencyEUR();}
-        else if (currency === "gbp"){
-          currencyGBP();}
-        else if (currency === "cny"){
-          currencyCNY();}
-        else {currencyUSD();} 
+        
 
       });
 
