@@ -128,10 +128,10 @@
                     <span class=" fa fa-angle-down"></span>
                   </a>
                   <ul class="dropdown-menu">
-                    <li id="usd"><a href="#USD"> USD<span class="pull-right"><i class="fa fa-check"></i></span></a></li>
-                    <li id="eur"><a href="http://24.218.144.115/index.php?curr=eur"> EUR</a></li>
-                    <li id="gbp"><a href="#GBP"> GBP</a></li>
-                    <li id="cny"><a href="#CNY"> CNY</a></li>
+                    <li id="usd"><a href="index.php?curr=usd"> USD<span class="pull-right"><i class="fa fa-check"></i></span></a></li>
+                    <li id="eur"><a href="index.php?curr=eur"> EUR</a></li>
+                    <li id="gbp"><a href="index.php?curr=gbp"> GBP</a></li>
+                    <li id="cny"><a href="index.php?curr=cny"> CNY</a></li>
                   </ul>
                 </li>
               <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Estimates over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
@@ -682,10 +682,15 @@
 
         var currency = <?php echo "$currency";?>;
 
-        if (currency = "eur"){
-          currencyEUR();
+        if (currency === "eur"){
+          currencyEUR();}
+        elseif (currency === "gbp"){
+          currencyGBP();}
+        elseif (currency === "cny"){
+          currencyCNY();}
+        else currencyUSD(); 
 
-        }
+      }
 
 
       });
@@ -716,6 +721,85 @@
                 $('#cny').html('<a href="#"> CNY</a>');
                                                                      
 
+      }
+
+      function currencyUSD(){
+                var usdfee = <?php echo "$medianfeeUSD";?>;
+                var cheapestTxUSD = <?php echo "$cheapestTxUsd";?>;
+                var dearestTxUSD = <?php echo "$dearestTxUsd";?>;
+                var dearestConUSD = <?php echo "$dearestConUsd";?>;
+                var conFeeUSD = <?php echo "$medianConFeeUSD";?>;
+
+                usdfee = usdfee.toFixed(4);
+                cheapestTxUSD = cheapestTxUSD.toFixed(4);
+                dearestTxUSD = dearestTxUSD.toFixed(2);
+                dearestConUSD = dearestConUSD.toFixed(2);
+                conFeeUSD = conFeeUSD.toFixed(2);
+
+                $('#medTx').text("$" + usdfee);
+
+                $('#cheapestTransfer').text("$" + cheapestTxUSD);
+                $('#priciestTransfer').text("$" + dearestTxUSD);
+                $('#priciestTransaction').text("$" + dearestConUSD);
+                $('#medianContractFee').text("$" + conFeeUSD);
+
+                $('#usd').html('<a href="#"> USD<span class="pull-right"><i class="fa fa-check"></i></span></a>');
+                $('#eur').html('<a href="#"> EUR</a>');
+                $('#gbp').html('<a href="#"> GBP</a>');
+                $('#cny').html('<a href="#"> CNY</a>');
+
+
+      }
+
+      function currencyCNY{
+                var cnyfee = <?php echo "$medianfeeCNY";?>;
+                var cheapestTxCNY = <?php echo "$cheapestTxCNY";?>;
+                var dearestTxCNY = <?php echo "$dearestTxCNY";?>;
+                var dearestConCNY = <?php echo "$dearestConCNY";?>;
+                var conFeeCNY = <?php echo "$medianConFeeCNY";?>;
+
+                cnyfee = cnyfee.toFixed(4);
+                cheapestTxCNY = cheapestTxCNY.toFixed(4);
+                dearestTxCNY = dearestTxCNY.toFixed(2);
+                dearestConCNY = dearestConCNY.toFixed(2);
+                conFeeCNY = conFeeCNY.toFixed(2);
+
+                $('#medTx').text("¥" + cnyfee);
+                $('#cheapestTransfer').text("¥" + cheapestTxCNY);
+                $('#priciestTransfer').text("¥" + dearestTxCNY);
+                $('#priciestTransaction').text("¥" + dearestConCNY);
+                $('#medianContractFee').text("¥" + conFeeCNY);
+
+                $('#usd').html('<a href="#"> USD</a>');
+                $('#eur').html('<a href="#"> EUR</a>');
+                $('#gbp').html('<a href="#"> GBP</a>');
+                $('#cny').html('<a href="#"> CNY<span class="pull-right"><i class="fa fa-check"></i></span></a>');
+      }
+
+      function currencyGBP{
+                var gbpfee = <?php echo "$medianfeeGBP";?>;
+                var cheapestTxGBP = <?php echo "$cheapestTxGBP";?>;
+                var dearestTxGBP = <?php echo "$dearestTxGBP";?>;
+                var dearestConGBP = <?php echo "$dearestConGBP";?>;
+                var conFeeGBP = <?php echo "$medianConFeeGBP";?>;
+
+                gbpfee = gbpfee.toFixed(4);
+                cheapestTxGBP = cheapestTxGBP.toFixed(4);
+                dearestTxGBP = dearestTxGBP.toFixed(2);
+                dearestConGBP = dearestConGBP.toFixed(2);
+                conFeeGBP = conFeeGBP.toFixed(2);
+
+                $('#medTx').text("£" + gbpfee);
+                $('#cheapestTransfer').text("£" + cheapestTxGBP);
+                $('#priciestTransfer').text("£" + dearestTxGBP);
+                $('#priciestTransaction').text("£" + dearestConGBP);
+                $('#medianContractFee').text("£" + conFeeGBP);
+                
+
+                $('#usd').html('<a href="#"> USD</a>');
+                $('#eur').html('<a href="#"> EUR</a>');
+                $('#gbp').html('<a href="#"> GBP<span class="pull-right"><i class="fa fa-check"></i></span></a>');
+                $('#cny').html('<a href="#"> CNY</a>');
       }
       
             $("#eur").click(function(){
