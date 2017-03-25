@@ -749,7 +749,7 @@
 
       }
 
-      function currencyCNY{
+      function currencyCNY(){
                 var cnyfee = <?php echo "$medianfeeCNY";?>;
                 var cheapestTxCNY = <?php echo "$cheapestTxCNY";?>;
                 var dearestTxCNY = <?php echo "$dearestTxCNY";?>;
@@ -774,7 +774,7 @@
                 $('#cny').html('<a href="#"> CNY<span class="pull-right"><i class="fa fa-check"></i></span></a>');
       }
 
-      function currencyGBP{
+      function currencyGBP(){
                 var gbpfee = <?php echo "$medianfeeGBP";?>;
                 var cheapestTxGBP = <?php echo "$cheapestTxGBP";?>;
                 var dearestTxGBP = <?php echo "$dearestTxGBP";?>;
