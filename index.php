@@ -684,9 +684,9 @@
 
         if (currency === "eur"){
           currencyEUR();}
-        elseif (currency === "gbp"){
+        else if (currency === "gbp"){
           currencyGBP();}
-        elseif (currency === "cny"){
+        else if (currency === "cny"){
           currencyCNY();}
         else currencyUSD(); 
 
