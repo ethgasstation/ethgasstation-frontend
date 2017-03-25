@@ -616,7 +616,7 @@
 					
         		
       }]
-          xAxes:[{
+          xAxis:[{
 						scaleLabel:{
 							display:true,
 							labelString:"Block Number"
