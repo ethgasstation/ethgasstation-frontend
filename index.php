@@ -394,17 +394,17 @@
                       <tbody> 
                         <tr>
                           <td>Cheapest Transfer Fee</td>
-                          <td id="cheapestTransfer"><?php echo '<a href="https://etherscan.io/tx/' .$cheapestTxId.'"'; echo "target=\"_blank\">$cheapUSD</a>";?></td>
+                          <td id="cheapestTransfer"><?php echo '<a href="https://etherscan.io/tx/' .$cheapestTxId.'"'; echo "target=\"_blank\">$cheapestTxDisplay</a>";?></td>
                     
                         </tr>
                         <tr>
                           <td>Priciest Transfer Fee</td>
-                          <td id="priciestTransfer"><?php echo '<a href="https://etherscan.io/tx/' .$dearestTxId.'"'."target=\"_blank\">$dearUSD</a>"?></td>
+                          <td id="priciestTransfer"><?php echo '<a href="https://etherscan.io/tx/' .$dearestTxId.'"'."target=\"_blank\">$dearestTxDisplay</a>"?></td>
                           
                         </tr>
                         <tr>
                           <td>Priciest Transaction Fee</td>
-                          <td id="priciestTransaction"><?php echo '<a href="https://etherscan.io/tx/' .$dearestConId.'"'."target=\"_blank\" >$dearconUSD</a>"?></td>
+                          <td id="priciestTransaction"><?php echo '<a href="https://etherscan.io/tx/' .$dearestConId.'"'."target=\"_blank\" >$dearestConDisplay</a>"?></td>
                           
                         </tr>
                         <tr>
@@ -413,7 +413,7 @@
                         </tr>
                         <tr>
                           <td>Contracts: Median Fee</td>
-                          <td id="medianContractFee"><?php setlocale(LC_MONETARY, "en_US.UTF-8");echo money_format('%.2n', $medianConFeeUSD);?></td>
+                          <td id="medianContractFee"><?php echo "$medianConFeeDisaply";?></td>
                         </tr>
                         <tr>
                           <td>Total Transactions (last 10k blocks)</td>
@@ -823,7 +823,7 @@
             
             $("#usd").click(function(){
                  
-                
+                location = "http://24.218.144.115/index.php?curr=usd";
 			          var usdfee = <?php echo "$medianfeeUSD";?>;
                 var cheapestTxUSD = <?php echo "$cheapestTxUsd";?>;
                 var dearestTxUSD = <?php echo "$dearestTxUsd";?>;
@@ -851,6 +851,8 @@
             });
           
             $("#cny").click(function(){
+
+                location = "http://24.218.144.115/index.php?curr=cny";
                                
 			          var cnyfee = <?php echo "$medianfeeCNY";?>;
                 var cheapestTxCNY = <?php echo "$cheapestTxCNY";?>;
@@ -879,7 +881,8 @@
 
             $("#gbp").click(function(){
                  
-                
+                location = "http://24.218.144.115/index.php?curr=gbp";
+
 			          var gbpfee = <?php echo "$medianfeeGBP";?>;
                 var cheapestTxGBP = <?php echo "$cheapestTxGBP";?>;
                 var dearestTxGBP = <?php echo "$dearestTxGBP";?>;

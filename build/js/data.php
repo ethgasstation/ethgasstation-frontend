@@ -126,16 +126,7 @@ if(isset($_GET['curr']) && !empty($_GET['curr'])){
 } 
 else {$currency = 'usd';}
 
-if ($currency == 'eur'){
-	$medianfeeDisplay = '€' . round($medianfeeEUR,4);
-}
-elseif ($currency == 'cny'){
-	$medianfeeDisplay = '¥' . round($medianfeeCNY,4);
-}
-elseif ($currency == 'gbp'){
-	$medianfeeDisplay = '£' . round($medianfeeGBP,4);
-}
-else {$medianfeeDisplay = '$' . round($medianfeeUSD,4);}
+
 
 
 $medianContractGas = $row['medianContractGas'];
@@ -188,6 +179,38 @@ $dearestConGBP = $dearestCon * $ethpriceGBP / 1e9;
 $dearconUSD = money_format('%.2n', $dearestConUsd);
 
 $longestWait = round($longestWait/3600,1);
+
+if ($currency == 'eur'){
+	$medianfeeDisplay = '€' . round($medianfeeEUR,4);
+	$cheapestTxDisplay = '€' . round($cheapestTxEUR,4);
+    $dearestTxDisplay = '€' . round($dearestTxEUR,2);
+    $dearestConDisplay = '€' . round($dearestConEUR,2);
+    $medianConFeeDisplay = '€' . round($medianConFeeEUR,3);
+}
+elseif ($currency == 'cny'){
+	$medianfeeDisplay = '¥' . round($medianfeeCNY,4);
+	$cheapestTxDisplay = '¥' . round($cheapestTxCNY,4);
+    $dearestTxDisplay = '¥' . round($dearestTxCNY,2);
+    $dearestConDisplay = '¥' . round($dearestConCNY,2);
+    $medianConFeeDisplay = '¥' . round($medianConFeeCNY,3);
+}
+elseif ($currency == 'gbp'){
+	$medianfeeDisplay = '£' . round($medianfeeGBP,4);
+	$cheapestTxDisplay = '£' . round($cheapestTxGBP,4);
+    $dearestTxDisplay = '£' . round($dearestTxGBP,2);
+    $dearestConDisplay = '£' . round($dearestConGBP,2);
+    $medianConFeeDisplay = '£' . round($medianConFeeGBP,3);
+	
+}
+else {
+	$medianfeeDisplay = '$' . round($medianfeeUSD,4);
+	$cheapestTxDisplay = '$' . round($cheapestTxUSD,4);
+    $dearestTxDisplay = '$' . round($dearestTxUSD,2);
+    $dearestConDisplay = '$' . round($dearestConUSD,2);
+    $medianConFeeDisplay = '$' . round($medianConFeeUSD,3);
+
+
+}
 
 
 //Get data for Transaction confirmation by gas price graph
