@@ -129,7 +129,7 @@
                   </a>
                   <ul class="dropdown-menu">
                     <li id="usd"><a href="#USD"> USD<span class="pull-right"><i class="fa fa-check"></i></span></a></li>
-                    <li id="eur"><a href="#EUR"> EUR</a></li>
+                    <li id="eur"><a href="http://ethgasstation.info/index.php?curr=eur"> EUR</a></li>
                     <li id="gbp"><a href="#GBP"> GBP</a></li>
                     <li id="cny"><a href="#CNY"> CNY</a></li>
                   </ul>
