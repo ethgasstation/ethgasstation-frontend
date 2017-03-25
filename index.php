@@ -681,6 +681,7 @@
       $(document).ready(function(){
 
         var currency = <?php echo "$currency";?>;
+        console.log("hi" +  currency);
 
         if (currency === "eur"){
           currencyEUR();}
