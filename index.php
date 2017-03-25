@@ -427,10 +427,6 @@
                           <td>Total Contract Calls</td>
                           <td><?php echo "$totalConCalls"; $perCon =round($totalConCalls/$totTx*100); echo " ("."$perCon"."%)"?></td>
                         </tr>
-                        <tr>
-                          <td>Total Timed Transactions</td>
-                          <td><?php echo "$totalTimed"; $perTimed =round($totalTimed/$totTx*100); echo " ("."$perTimed"."%)"?></td>
-                        </tr>
                       </tbody>
                     </table>
                 </div>
@@ -565,7 +561,7 @@
 			  var lineChart = new Chart(ctx, {
 				type: 'line',
 				data: {
-				  labels: <?php echo '[' . $x1. ',' . ' ' . ','. ' '. ','. ' ' . ',' . ' '. ',' . ' ' . ','. ' '. ','. ' ' . ',' . ' '. ','. $x10 . ',' . ' ' . ','. ' '. ','. ' ' . ',' . ' '. ','. ' ' . ','. ' '. ','. ' ' . ',' . ' '. ','. ' '. ','. $x20.']'; ?>,
+				  labels: <?php echo '[' . 'Last'. ',' . ' ' . ','. ' '. ','. ' ' . ',' . ' '. ',' . ' ' . ','. ' '. ','. ' ' . ',' . ' '. ','. '-1000' . ',' . ' ' . ','. ' '. ','. ' ' . ',' . ' '. ','. ' ' . ','. ' '. ','. ' ' . ',' . ' '. ','. ' '. ','. '-2000'.']'; ?>,
 				  datasets: [{
 					label: "Avg Tx Fees Per Block (ETH)",
 					yAxisID: 'A',
@@ -620,6 +616,13 @@
 					
         		
       }]
+          xAxes:[{
+						scaleLabel:{
+							display:true,
+							labelString:"Block Number"
+						}
+
+					}]  
     }
   }
 });
