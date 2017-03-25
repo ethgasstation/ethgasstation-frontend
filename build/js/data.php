@@ -126,8 +126,6 @@ if(isset($_GET['curr']) && !empty($_GET['curr'])){
 } 
 else {$currency = 'usd';}
 
-echo "$currency";
-
 $medianContractGas = $row['medianContractGas'];
 
 $totTx = $row['totalTx'];
