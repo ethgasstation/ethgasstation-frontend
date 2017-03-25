@@ -416,7 +416,7 @@
                           <td id="medianContractFee"><?php setlocale(LC_MONETARY, "en_US.UTF-8");echo money_format('%.2n', $medianConFeeUSD);?></td>
                         </tr>
                         <tr>
-                          <td>Total Transactions</td>
+                          <td>Total Transactions (last 10k blocks)</td>
                           <td><?php echo "$totTx";?></td>
                         </tr>
                         <tr>
