@@ -715,7 +715,6 @@
                 $('#gbp').html('<a href="#"> GBP</a>');
                 $('#cny').html('<a href="#"> CNY</a>');
                                                                      
-            });
 
       }
       
