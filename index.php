@@ -413,7 +413,7 @@
                         </tr>
                         <tr>
                           <td>Contracts: Median Fee</td>
-                          <td id="medianContractFee"><?php echo "$medianConFeeDisaply";?></td>
+                          <td id="medianContractFee"><?php echo "$medianConFeeDisplay";?></td>
                         </tr>
                         <tr>
                           <td>Total Transactions (last 10k blocks)</td>
