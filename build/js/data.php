@@ -122,10 +122,9 @@ $medianConFeeGBP = $ethpriceGBP * $medianContractFee /1e9;
 $medianConFeeCNY = $ethpriceCNY * $medianContractFee /1e9;
 
 if(isset($_GET['curr']) && !empty($_GET['curr'])){
-
-	echo ($_GET["curr"]);
-
+	$currency = $_GET["curr"];
 } 
+else {$currency = 'usd';}
 
 
 $medianContractGas = $row['medianContractGas'];

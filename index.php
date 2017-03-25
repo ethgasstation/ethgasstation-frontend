@@ -677,6 +677,47 @@
           }
 
       //Curency Support
+
+      $(document).ready(function){
+
+        var currency = <?php echo "$currency";?>;
+
+        if (currency = "eur"){
+          currencyEUR();
+
+        }
+
+
+      }
+
+      function currencyEUR(){
+        var eurfee = <?php echo "$medianfeeEUR";?>;
+                var cheapestTxEUR = <?php echo "$cheapestTxEUR";?>;
+                var dearestTxEUR = <?php echo "$dearestTxEUR";?>;
+                var dearestConEUR = <?php echo "$dearestConEUR";?>;
+                var conFeeEUR = <?php echo "$medianConFeeEUR";?>;
+
+                eurfee = eurfee.toFixed(4);
+                cheapestTxEUR = cheapestTxEUR.toFixed(4);
+                dearestTxEUR = dearestTxEUR.toFixed(2);
+                dearestConEUR = dearestConEUR.toFixed(2);
+                conFeeEUR = conFeeEUR.toFixed(2);
+
+                $('#medTx').text("€" + eurfee);
+
+                $('#cheapestTransfer').text("€" + cheapestTxEUR);
+                $('#priciestTransfer').text("€" + dearestTxEUR);
+                $('#priciestTransaction').text("€" + dearestConEUR);
+                $('#medianContractFee').text("€" + conFeeEUR);
+
+                $('#usd').html('<a href="#"> USD</a>');
+                $('#eur').html('<a href="#"> EUR<span class="pull-right"><i class="fa fa-check"></i></span></a>');
+                $('#gbp').html('<a href="#"> GBP</a>');
+                $('#cny').html('<a href="#"> CNY</a>');
+                                                                     
+            });
+
+      }
       
             $("#eur").click(function(){
                  
