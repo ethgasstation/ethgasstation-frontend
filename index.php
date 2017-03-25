@@ -110,10 +110,9 @@
                 </ul>
               </div>
             </div>
-            <!-- /sidebar menu -->
+            <!-- /sidebar -->
         </div>
       </div>
-  <!-- /sidebar -->
 
         <!-- top navigation -->
         <div class="top_nav">
@@ -217,7 +216,7 @@
             <div class="col-md-4 col-sm-6 col-xs-12">
               <div class="x_panel tile fixed_height_320">
                 <div class="x_title">
-                  <h4>Transactions by Gas Price</h4>
+                  <h4>Transaction Count by Gas Price</h4>
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -225,11 +224,14 @@
                 </div>
               </div>
             </div>
+        <!-- /Transaction by Gas Price -->
+
+        <!-- Confirmation Time by Gas Price -->
 
             <div class="col-md-4 col-sm-4 col-xs-12">
               <div class="x_panel tile fixed_height_320 overflow_hidden">
                 <div class="x_title">
-                  <h4>Confirmation Time: <small>(median/95pctl)</small></h4>
+                  <h4>Confirmation Time by Gas Price: <small>(median/95pctl)</small></h4>
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -238,7 +240,7 @@
                 </div>
               </div>
 
-          <!-- /Transaction by Gas Price -->
+        <!-- /confirmation time -->
 
           <!-- Recommended User Gas Prices-->
            
