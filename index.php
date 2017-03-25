@@ -678,7 +678,7 @@
 
       //Curency Support
 
-      $(document).ready(function){
+      $(document).ready(function(){
 
         var currency = <?php echo "$currency";?>;
 
@@ -688,7 +688,7 @@
         }
 
 
-      }
+      });
 
       function currencyEUR(){
         var eurfee = <?php echo "$medianfeeEUR";?>;
