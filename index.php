@@ -150,7 +150,7 @@
           <div class="row tile_count">
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-space-shuttle"></i>Median Cost for Transfer</span>
-              <div class="count" id="medTx"><?php setlocale(LC_MONETARY, "en_US.UTF-8");echo money_format('%.4n', $medianfeeUSD) ?> </div>
+              <div class="count" id="medTx"><> </div>
             </div>
              <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-clock-o"></i> Median Wait (s)</span>
@@ -681,7 +681,7 @@
       $(document).ready(function(){
 
         var currency = <?php echo "$currency";?>;
-        console.log("hi" +  currency);
+        console.log(currency);
 
         if (currency === "eur"){
           currencyEUR();}
@@ -695,7 +695,7 @@
 
 
       function currencyEUR(){
-        var eurfee = <?php echo "$medianfeeEUR";?>;
+                var eurfee = <?php echo "$medianfeeEUR";?>;
                 var cheapestTxEUR = <?php echo "$cheapestTxEUR";?>;
                 var dearestTxEUR = <?php echo "$dearestTxEUR";?>;
                 var dearestConEUR = <?php echo "$dearestConEUR";?>;
