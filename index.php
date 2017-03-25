@@ -693,8 +693,6 @@
       });
 
 
-      });
-
       function currencyEUR(){
         var eurfee = <?php echo "$medianfeeEUR";?>;
                 var cheapestTxEUR = <?php echo "$cheapestTxEUR";?>;
