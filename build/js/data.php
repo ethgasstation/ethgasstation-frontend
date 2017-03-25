@@ -115,11 +115,11 @@ $medianfeeEUR = $ethpriceEUR * $mediantxfee /1e9;
 $medianfeeGBP = $ethpriceGBP * $mediantxfee /1e9;
 $medianfeeCNY = $ethpriceCNY * $mediantxfee /1e9;
 
-$medianContractFee = $row['medianContractFee'];
-$medianConFeeUSD = $ethprice * $medianContractFee / 1e9;
-$medianConFeeEUR = $ethpriceEUR * $medianContractFee /1e9;
-$medianConFeeGBP = $ethpriceGBP * $medianContractFee /1e9;
-$medianConFeeCNY = $ethpriceCNY * $medianContractFee /1e9;
+$avgContractFee = $row['avgContractFee'];
+$avgConFeeUSD = $ethprice * $avgContractFee / 1e9;
+$avgConFeeEUR = $ethpriceEUR * $avgContractFee /1e9;
+$avgConFeeGBP = $ethpriceGBP * $avgContractFee /1e9;
+$avgConFeeCNY = $ethpriceCNY * $avgContractFee /1e9;
 
 if(isset($_GET['curr']) && !empty($_GET['curr'])){
 	$currency = $_GET['curr'];
@@ -129,7 +129,7 @@ else {$currency = 'usd';}
 
 
 
-$medianContractGas = $row['medianContractGas'];
+$avgContractGas = $row['avgContractGas'];
 
 $totTx = $row['totalTx'];
 $totalTransfers = $row['totalTransfers'];
@@ -175,21 +175,21 @@ if ($currency == 'eur'){
 	$cheapestTxDisplay = '€' . round($cheapestTxEUR,4);
     $dearestTxDisplay = '€' . round($dearestTxEUR,2);
     $dearestConDisplay = '€' . round($dearestConEUR,2);
-    $medianConFeeDisplay = '€' . round($medianConFeeEUR,3);
+    $avgConFeeDisplay = '€' . round($avgConFeeEUR,3);
 }
 elseif ($currency == 'cny'){
 	$medianfeeDisplay = '¥' . round($medianfeeCNY,4);
 	$cheapestTxDisplay = '¥' . round($cheapestTxCNY,4);
     $dearestTxDisplay = '¥' . round($dearestTxCNY,2);
     $dearestConDisplay = '¥' . round($dearestConCNY,2);
-    $medianConFeeDisplay = '¥' . round($medianConFeeCNY,3);
+    $avgConFeeDisplay = '¥' . round($avgConFeeCNY,3);
 }
 elseif ($currency == 'gbp'){
 	$medianfeeDisplay = '£' . round($medianfeeGBP,4);
 	$cheapestTxDisplay = '£' . round($cheapestTxGBP,4);
     $dearestTxDisplay = '£' . round($dearestTxGBP,2);
     $dearestConDisplay = '£' . round($dearestConGBP,2);
-    $medianConFeeDisplay = '£' . round($medianConFeeGBP,3);
+    $avgConFeeDisplay = '£' . round($avgConFeeGBP,3);
 	
 }
 else {
@@ -197,7 +197,7 @@ else {
 	$cheapestTxDisplay = '$' . round($cheapestTxUSD,4);
     $dearestTxDisplay = '$' . round($dearestTxUSD,2);
     $dearestConDisplay = '$' . round($dearestConUSD,2);
-    $medianConFeeDisplay = '$' . round($medianConFeeUSD,3);
+    $avgConFeeDisplay = '$' . round($avgConFeeUSD,3);
 
 
 }

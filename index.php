@@ -399,21 +399,21 @@
                         </tr>
                         <tr>
                           <td>Priciest Transfer Fee</td>
-                          <td id="priciestTransfer"><?php echo '<a href="https://etherscan.io/tx/' .$dearestTxId.'"'."target=\"_blank\">$dearestTxDisplay</a>"?></td>
+                          <td><?php echo '<a href="https://etherscan.io/tx/' .$dearestTxId.'"'."target=\"_blank\">$dearestTxDisplay</a>"?></td>
                           
                         </tr>
                         <tr>
                           <td>Priciest Transaction Fee</td>
-                          <td id="priciestTransaction"><?php echo '<a href="https://etherscan.io/tx/' .$dearestConId.'"'."target=\"_blank\" >$dearestConDisplay</a>"?></td>
+                          <td><?php echo '<a href="https://etherscan.io/tx/' .$dearestConId.'"'."target=\"_blank\" >$dearestConDisplay</a>"?></td>
                           
                         </tr>
                         <tr>
-                          <td>Contracts: Median Gas Used</td>
-                          <td><?php echo "$medianContractGas";?></td>
+                          <td>Contracts: Avg Gas Used</td>
+                          <td><?php echo "$avgContractGas";?></td>
                         </tr>
                         <tr>
-                          <td>Contracts: Median Fee</td>
-                          <td id="medianContractFee"><?php echo "$medianConFeeDisplay";?></td>
+                          <td>Contracts: Avg Gas Fee</td>
+                          <td><?php echo "$avgConFeeDisplay";?></td>
                         </tr>
                         <tr>
                           <td>Total Transactions (last 10k blocks)</td>
