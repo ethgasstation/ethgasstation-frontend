@@ -690,7 +690,7 @@
           currencyCNY();}
         else currencyUSD(); 
 
-      }
+      });
 
 
       });
