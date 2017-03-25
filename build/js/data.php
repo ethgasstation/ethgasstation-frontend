@@ -116,10 +116,10 @@ $medianfeeGBP = $ethpriceGBP * $mediantxfee /1e9;
 $medianfeeCNY = $ethpriceCNY * $mediantxfee /1e9;
 
 $medianContractFee = $row['medianContractFee'];
-$medianConFeeUSD = $ethprice * medianContractFee / 1e9;
+$medianConFeeUSD = $ethprice * $medianContractFee / 1e9;
 $medianConFeeEUR = $ethpriceEUR * $medianContractFee /1e9;
 $medianConFeeGBP = $ethpriceGBP * $medianContractFee /1e9;
-$medianConFeeCNY = $ethpriceCNY * $medianContractFeefee /1e9;
+$medianConFeeCNY = $ethpriceCNY * $medianContractFee /1e9;
 
 $medianContractGas = $row['medianContractGas'];
 
