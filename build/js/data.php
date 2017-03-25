@@ -130,6 +130,7 @@ function getMedianTx($currency){
     
 	if ($currency == "eur"){
 		$medianfeeEUR = round($medianfeeEUR,4);
+		echo "€".$medianfeeEUR;
 		return ('€'.$medianfeeEUR);
           }
 }
