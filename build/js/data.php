@@ -121,7 +121,7 @@ $medianConFeeEUR = $ethpriceEUR * $medianContractFee /1e9;
 $medianConFeeGBP = $ethpriceGBP * $medianContractFee /1e9;
 $medianConFeeCNY = $ethpriceCNY * $medianContractFee /1e9;
 
-if(!empty($_GET("curr"))){
+if(isset($_GET['curr']) && !empty($_GET['curr'])){
 
 	echo ($_GET["curr"]);
 
