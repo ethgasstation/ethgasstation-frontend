@@ -1140,7 +1140,7 @@ and (max-width : 499px)
     
 }
 @media only screen 
-and (min-width : 1400px) 
+and (min-width : 1500px) 
  { 
     
     .myBar {width:85%}
