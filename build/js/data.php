@@ -318,11 +318,33 @@ function recPrice ($miners)
 {
 	$cumblocks =0;
 	$x = 0;
-	foreach ($miners as $key => $row)
+	foreach ($miners as $key => $val)
 	{
-		$cumblocks += $row['pctTot'];
+		$cumblocks += $val['pctTot'];
 		if ($cumblocks > .5){
-		return $miners[$x]['minP'];
+			return $miners[$x]['minP'];
+		}
+	$x++;
+	}
+}
+
+function safeCheap ($miners, $min50) //price with at least 25 transactions and accepted by two miners with close to full blocks
+{
+	$cumblocks =0;
+	$x =0;
+	$y =0;
+	foreach ($miners as $key => $val)
+	{
+		if ($val['pctEmp'] < .15) //miner has less than 15% emptyblocks
+		{
+			$y++;
+			if ($y>=2 && $miners[$x]['minP']>= $min50)  /*Minimum price from second miner mining nearly full blocks and at least 50 transactions mined at or below this price in last 10,000 blocks*/
+			
+			{
+				return $miners[$x]['minP'];
+			}
+
+
 		}
 	$x++;
 	}
@@ -331,6 +353,7 @@ function recPrice ($miners)
 //Assign recommended prices (cheapest = lowest price accepted); (fastest = highest min price accepted by all to 10 miners);
 
 $recPrice = recPrice($miners);
+$safeLow = safeLow($miners, $row['min50']);
 $lowPrice = $miners[0]['minP'];
 $highPrice = $miners[9]['minP'];
 
