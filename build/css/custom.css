@@ -1147,15 +1147,7 @@ and (min-width : 1450px)
     .myLine {width:85%}
     
 }
-@media only screen 
-and (min-width : 1385px)
-and (max-width : 1449px)
- { 
-    
-    .myBar {width:95%}
-    .myLine {width:95%}
-    
-}
+
 
 
 
