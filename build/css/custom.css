@@ -1120,6 +1120,15 @@ and (orientation : portrait) {
 
 }
 
+@media only screen 
+and (min-width : 375px) 
+ { 
+    
+    .myBar {width:45%}
+    
+}
+
+
 .x_content h4 {
     font-size: 16px;
     font-weight: 500
