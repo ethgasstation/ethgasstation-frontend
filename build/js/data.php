@@ -353,7 +353,7 @@ function safeCheap ($miners, $min50) //price with at least 25 transactions and a
 //Assign recommended prices (cheapest = lowest price accepted); (fastest = highest min price accepted by all to 10 miners);
 
 $recPrice = recPrice($miners);
-$safeLow = safeLow($miners, $row['min50']);
+$safeLow = safeCheap($miners, $row['min50']);
 $lowPrice = $miners[0]['minP'];
 $highPrice = $miners[9]['minP'];
 
