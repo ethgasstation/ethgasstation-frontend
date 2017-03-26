@@ -185,7 +185,7 @@
                         <div class="clearfix"></div>
                      </div>
                      <div class="x_content">
-                        <canvas id="lineChart" height="200" width="300" ></canvas> 
+                        <canvas id="lineChart" height="100" width="300" ></canvas> 
                         <div class="clearfix"></div> 
                     </div> 
                 </div>
