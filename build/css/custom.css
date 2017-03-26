@@ -1121,10 +1121,17 @@ and (orientation : portrait) {
 }
 
 @media only screen 
-and (min-width : 375px) 
+and (min-width : 667px) 
  { 
     
     .myBar {width:45%}
+    
+}
+@media only screen 
+and (min-width : 375px) 
+ { 
+    
+    .myBar {width:85%}
     
 }
 
