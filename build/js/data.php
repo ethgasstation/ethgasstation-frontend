@@ -354,7 +354,6 @@ function safeCheap ($miners, $min50) //price with at least 25 transactions and a
 
 $recPrice = recPrice($miners);
 
-echo "hi ".$row['min50'];
 $safeLow = safeCheap($miners, $row['min50']);
 $lowPrice = $miners[0]['minP'];
 $highPrice = $miners[9]['minP'];
