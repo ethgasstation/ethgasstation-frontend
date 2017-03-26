@@ -184,7 +184,7 @@
                         <h4>Recent Network Activity: <small>Gas Demand / Average Wait Time (100 block intervals)</small></h4>
                         <div class="clearfix"></div>
                      </div>
-                     <div class="x_content">
+                     <div class="x_content myLine">
                         <canvas id="lineChart" height="100" width="300" ></canvas> 
                         <div class="clearfix"></div> 
                     </div> 

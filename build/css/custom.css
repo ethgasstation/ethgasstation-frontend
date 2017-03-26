@@ -1102,6 +1102,8 @@ h2 {
     clear: both;
     margin-top: 5px
 }
+/* Iphone 6 */
+
 @media only screen 
 and (min-device-width : 375px) 
 and (max-device-width : 667px) 
@@ -1120,6 +1122,8 @@ and (orientation : portrait) {
 
 }
 
+/* Browser Resizes */
+
 @media only screen 
 and (max-width:768px)
 and (min-width: 500px) 
@@ -1135,6 +1139,16 @@ and (max-width : 499px)
     .myBar {width:85%}
     
 }
+@media only screen 
+and (min-width : 1600px) 
+ { 
+    
+    .myBar {width:85%}
+    .myLine {width:85%}
+    
+}
+
+
 
 
 .x_content h4 {
