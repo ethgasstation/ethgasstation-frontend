@@ -1060,8 +1060,8 @@ h2 {
 .x_panel {
     position: relative;
     width: 100%;
-    margin-bottom: 10px;
-    padding: 10px 17px;
+    margin-bottom: 8px;
+    padding: 8px 15px;
     display: inline-block;
     background: #fff;
     border: 1px solid #E6E9ED;

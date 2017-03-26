@@ -408,7 +408,7 @@
                           
                         </tr>
                         <tr>
-                          <td>Contracts: Avg Gas Used</td>
+                          <td>Contracts: Avg Gas Per Call</td>
                           <td><?php echo "$avgContractGas";?></td>
                         </tr>
                         <tr>
