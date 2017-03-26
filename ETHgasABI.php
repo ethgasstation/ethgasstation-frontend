@@ -94,10 +94,10 @@ $miners = array (
 //sort miners based on low price and % empty blocks
 
 $price = array();
-foreach ($miners as $key => $row)
+foreach ($miners as $key => $val)
 {
-	$price[$key] = $row['minP'];
-	$empty[$key] = $row['pctEmp'];
+	$price[$key] = $val['minP'];
+	$empty[$key] = $val['pctEmp'];
 }
 
 array_multisort($price, SORT_ASC, $empty, SORT_ASC, $miners);
