@@ -185,7 +185,7 @@
                         <div class="clearfix"></div>
                      </div>
                      <div class="x_content">
-                        <canvas id="lineChart" height="95" ></canvas> 
+                        <canvas id="lineChart" height="100" ></canvas> 
                         <div class="clearfix"></div> 
                     </div> 
                 </div>
@@ -220,7 +220,7 @@
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                  <canvas id="mybarChart2" height="190"></canvas>
+                  <canvas id="mybarChart2" height="200"></canvas>
                 </div>
               </div>
             </div>
@@ -235,7 +235,7 @@
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                        <canvas id="mybarChart" height="190"></canvas>
+                        <canvas id="mybarChart" height="200"></canvas>
                   </div>
                 </div>
               </div>
