@@ -676,21 +676,21 @@
       
             $("#eur").click(function(){
                  
-                location = "http://24.218.144.115/index.php?curr=eur";
+                location = "http://ethgasstation.info/index.php?curr=eur";
 			          
                                                                      
             });
             
             $("#usd").click(function(){
                  
-                location = "http://24.218.144.115/index.php?curr=usd";
+                location = "http://ethgasstation.info/index.php?curr=usd";
 			          
                                                                      
             });
           
             $("#cny").click(function(){
 
-                location = "http://24.218.144.115/index.php?curr=cny";
+                location = "http://ethgasstation.info/index.php?curr=cny";
                                
 			        
                                                                      
@@ -698,7 +698,7 @@
 
             $("#gbp").click(function(){
                  
-                location = "http://24.218.144.115/index.php?curr=gbp";
+                location = "http://ethgasstation.info/index.php?curr=gbp";
 
 			  
                                                                      
