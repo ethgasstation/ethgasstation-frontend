@@ -185,7 +185,7 @@
                         <div class="clearfix"></div>
                      </div>
                      <div class="x_content">
-                        <canvas id="lineChart" height="90" ></canvas> 
+                        <canvas id="lineChart" height="95" ></canvas> 
                         <div class="clearfix"></div> 
                     </div> 
                 </div>
@@ -220,7 +220,7 @@
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                  <canvas id="mybarChart2" height="180"></canvas>
+                  <canvas id="mybarChart2" height="190"></canvas>
                 </div>
               </div>
             </div>
@@ -235,7 +235,7 @@
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                        <canvas id="mybarChart" height="180"></canvas>
+                        <canvas id="mybarChart" height="190"></canvas>
                   </div>
                 </div>
               </div>
@@ -615,14 +615,7 @@
 						 }
 					
         		
-      }],
-          xAxes:[{
-						scaleLabel:{
-							display:true,
-							labelString:"Block Number"
-						}
-
-					}]  
+      }]
     }
   }
 });
