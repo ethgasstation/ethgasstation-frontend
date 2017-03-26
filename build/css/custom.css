@@ -1102,6 +1102,15 @@ h2 {
     clear: both;
     margin-top: 5px
 }
+@media only screen 
+and (min-device-width : 375px) 
+and (max-device-width : 667px) 
+and (orientation : landscape) { 
+    
+    #txCount {width:50%}
+    
+}
+
 .x_content h4 {
     font-size: 16px;
     font-weight: 500

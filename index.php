@@ -219,7 +219,7 @@
                   <h4>Transaction Count by Gas Price</h4>
                   <div class="clearfix"></div>
                 </div>
-                <div class="x_content">
+                <div class="x_content" id="txCount">
                   <canvas id="mybarChart2" height="210" width="300"></canvas>
                 </div>
               </div>
