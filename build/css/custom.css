@@ -1107,7 +1107,7 @@ and (min-device-width : 375px)
 and (max-device-width : 667px) 
 and (orientation : landscape) { 
     
-    #txCount {width:50%}
+    .myBar {width:45%}
     
 }
 
@@ -1116,7 +1116,7 @@ and (min-device-width : 375px)
 and (max-device-width : 667px) 
 and (orientation : portrait) {
     
-     #txCount {width:90%} 
+     .myBar {width:85%} 
 
 }
 
