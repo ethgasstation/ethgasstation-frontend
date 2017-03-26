@@ -1116,7 +1116,7 @@ and (min-device-width : 375px)
 and (max-device-width : 667px) 
 and (orientation : portrait) {
     
-     txCount {width:90%} 
+     #txCount {width:90%} 
 
 }
 
