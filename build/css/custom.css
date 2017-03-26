@@ -1059,7 +1059,7 @@ h2 {
 }
 .x_panel {
     position: relative;
-    width: auto;
+    width: 100%;
     margin-bottom: 8px;
     padding: 8px 15px;
     display: inline-block;
