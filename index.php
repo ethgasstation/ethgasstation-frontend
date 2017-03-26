@@ -235,7 +235,7 @@
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                        <canvas id="mybarChart" height="200"></canvas>
+                        <canvas id="mybarChart" height="200" width="300"> </canvas>
                   </div>
                 </div>
               </div>
