@@ -102,6 +102,7 @@ var setContentHeight = function () {
 // toggle small or large menu 
 $MENU_TOGGLE.on('click', function() {
 		console.log('clicked - menu toggle');
+        console.log(window.innerWidth);
 		
 		if ($BODY.hasClass('nav-md')) {
 			$SIDEBAR_MENU.find('li.active ul').hide();
@@ -146,7 +147,6 @@ $MENU_TOGGLE.on('click', function() {
 	var randNum = function() {
 	  return (Math.floor(Math.random() * (1 + 40 - 20))) + 20;
 	};
-
 
 // Panel toolbox
 $(document).ready(function() {
@@ -339,8 +339,10 @@ if (typeof NProgress != 'undefined') {
 				
 		
 		init_sidebar();
+
 		
 				
-	});	
+	});
+
 	  
 	

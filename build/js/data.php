@@ -47,34 +47,71 @@ $x9 = $graphData[2]['latestblockNum'];
 $x10 = $graphData[1]['latestblockNum'];
 $x11 = $graphData[0]['latestblockNum'];
 
-$ya1 = round($graphData[10]['ethConsumedLast100']/1000000000,2);
-$ya2 = round($graphData[9]['ethConsumedLast100']/1000000000,2);
-$ya3 = round($graphData[8]['ethConsumedLast100']/1000000000,2);
-$ya4 = round($graphData[7]['ethConsumedLast100']/1000000000,2);
-$ya5 = round($graphData[6]['ethConsumedLast100']/1000000000,2);
-$ya6 = round($graphData[5]['ethConsumedLast100']/1000000000,2);
-$ya7 = round($graphData[4]['ethConsumedLast100']/1000000000,2);
-$ya8 = round($graphData[3]['ethConsumedLast100']/1000000000,2);
-$ya9 = round($graphData[2]['ethConsumedLast100']/1000000000,2);
-$ya10 = round($graphData[1]['ethConsumedLast100']/1000000000,2);
-$ya11 = round($graphData[0]['ethConsumedLast100']/1000000000,2);
 
-$yb1 = round($graphData[10]['meanDelayLast100'],2);
-$yb2 = round($graphData[9]['meanDelayLast100'],2);
-$yb3 = round($graphData[8]['meanDelayLast100'],2);
-$yb4 = round($graphData[7]['meanDelayLast100'],2);
-$yb5 = round($graphData[6]['meanDelayLast100'],2);
-$yb6 = round($graphData[5]['meanDelayLast100'],2);
-$yb7 = round($graphData[4]['meanDelayLast100'],2);
-$yb8 = round($graphData[3]['meanDelayLast100'],2);
-$yb9 = round($graphData[2]['meanDelayLast100'],2);
-$yb10 = round($graphData[1]['meanDelayLast100'],2);
-$yb11 = round($graphData[0]['meanDelayLast100'],2);
+//convert to ETH from gwei (1e9) and divide by 100 to get average ETH per block over last 100 blocks
+
+$ya1 = round($graphData[10]['ethConsumedLast100']/1e11,4);
+$ya2 = round($graphData[9]['ethConsumedLast100']/1e11,4);
+$ya3 = round($graphData[8]['ethConsumedLast100']/1e11,4);
+$ya4 = round($graphData[7]['ethConsumedLast100']/1e11,4);
+$ya5 = round($graphData[6]['ethConsumedLast100']/1e11,4);
+$ya6 = round($graphData[5]['ethConsumedLast100']/1e11,4);
+$ya7 = round($graphData[4]['ethConsumedLast100']/1e11,4);
+$ya8 = round($graphData[3]['ethConsumedLast100']/1e11,4);
+$ya9 = round($graphData[2]['ethConsumedLast100']/1e11,4);
+$ya10 = round($graphData[1]['ethConsumedLast100']/1e11,4);
+$ya11 = round($graphData[0]['ethConsumedLast100']/1e11,4);
+
+
+
+$yb1 = round($graphData[10]['medianDelayLast100'],2);
+$yb2 = round($graphData[9]['medianDelayLast100'],2);
+$yb3 = round($graphData[8]['medianDelayLast100'],2);
+$yb4 = round($graphData[7]['medianDelayLast100'],2);
+$yb5 = round($graphData[6]['medianDelayLast100'],2);
+$yb6 = round($graphData[5]['medianDelayLast100'],2);
+$yb7 = round($graphData[4]['medianDelayLast100'],2);
+$yb8 = round($graphData[3]['medianDelayLast100'],2);
+$yb9 = round($graphData[2]['medianDelayLast100'],2);
+$yb10 = round($graphData[1]['medianDelayLast100'],2);
+$yb11 = round($graphData[0]['medianDelayLast100'],2);
+
+
+// Get values for Misc transactions table
 
 $latestblock = $row['latestblockNum'];
-$ethprice = $row['ETHprice'];
+$ethprice = $row['ETHpriceUSD'];
+$ethpriceEUR = $row['ETHpriceEUR'];
+$ethpriceCNY = $row['ETHpriceCNY'];
+$ethpriceGBP = $row['ETHpriceGBP'];
+
 $mediantxfee = $row['mediantxfee'];
-$medianfeeusd = $ethprice * $mediantxfee / 1000000000;
+$medianfeeUSD = $ethprice * $mediantxfee / 1e9;
+$medianfeeEUR = $ethpriceEUR * $mediantxfee /1e9;
+$medianfeeGBP = $ethpriceGBP * $mediantxfee /1e9;
+$medianfeeCNY = $ethpriceCNY * $mediantxfee /1e9;
+
+$avgContractFee = $row['avgContractFee'];
+$avgConFeeUSD = $ethprice * $avgContractFee / 1e9;
+$avgConFeeEUR = $ethpriceEUR * $avgContractFee /1e9;
+$avgConFeeGBP = $ethpriceGBP * $avgContractFee /1e9;
+$avgConFeeCNY = $ethpriceCNY * $avgContractFee /1e9;
+
+if(isset($_GET['curr']) && !empty($_GET['curr'])){
+	$currency = $_GET['curr'];
+} 
+else {$currency = 'usd';}
+
+
+
+
+$avgContractGas = $row['avgContractGas'];
+
+$totTx = $row['totalTx'];
+$totalTransfers = $row['totalTransfers'];
+$totalConCalls = $row['totalConCalls'];
+$totalTimed= $row['totalTimed'];
+
 settype($medianfeeusd, "float");
 $medianwaitsec = $row['medianTime'];
 $medianwaitblock = $row['medianMinedDelay'];
@@ -91,18 +128,58 @@ $dearestConId = $row['dearConTxID'];
 $longestWait = $row['longestWait'];
 $longestWaitId = $row['longestWaitID'];
 
-$cheapestTxUsd = $cheapestTx * $ethprice / 1000000000;
-setlocale(LC_MONETARY, "en_US.UTF-8");
-$cheapUSD = money_format('%.4n', $cheapestTxUsd);
-$dearestTxUsd = $dearestTx * $ethprice / 1000000000;
-$dearUSD = money_format('%.2n', $dearestTxUsd);
-$dearestConUsd = $dearestCon * $ethprice / 1000000000;
-$dearconUSD = money_format('%.2n', $dearestConUsd);
+$cheapestTxUSD = $cheapestTx * $ethprice / 1e9;
+$cheapestTxEUR = $cheapestTx * $ethpriceEUR / 1e9;
+$cheapestTxCNY = $cheapestTx * $ethpriceCNY / 1e9;
+$cheapestTxGBP = $cheapestTx * $ethpriceGBP / 1e9;
+
+$dearestTxUSD = $dearestTx * $ethprice / 1e9;
+$dearestTxEUR = $dearestTx * $ethpriceEUR / 1e9;
+$dearestTxCNY = $dearestTx * $ethpriceCNY / 1e9;
+$dearestTxGBP = $dearestTx * $ethpriceGBP / 1e9;
+
+$dearestConUSD = $dearestCon * $ethprice / 1e9;
+$dearestConEUR = $dearestCon * $ethpriceEUR / 1e9;
+$dearestConCNY = $dearestCon * $ethpriceCNY / 1e9;
+$dearestConGBP = $dearestCon * $ethpriceGBP / 1e9;
+
 
 $longestWait = round($longestWait/3600,1);
 
-$totTx = $row['totalTx'];
+if ($currency == 'eur'){
+	$medianfeeDisplay = '€' . round($medianfeeEUR,4);
+	$cheapestTxDisplay = '€' . round($cheapestTxEUR,4);
+    $dearestTxDisplay = '€' . round($dearestTxEUR,2);
+    $dearestConDisplay = '€' . round($dearestConEUR,2);
+    $avgConFeeDisplay = '€' . round($avgConFeeEUR,3);
+}
+elseif ($currency == 'cny'){
+	$medianfeeDisplay = '¥' . round($medianfeeCNY,4);
+	$cheapestTxDisplay = '¥' . round($cheapestTxCNY,4);
+    $dearestTxDisplay = '¥' . round($dearestTxCNY,2);
+    $dearestConDisplay = '¥' . round($dearestConCNY,2);
+    $avgConFeeDisplay = '¥' . round($avgConFeeCNY,3);
+}
+elseif ($currency == 'gbp'){
+	$medianfeeDisplay = '£' . round($medianfeeGBP,4);
+	$cheapestTxDisplay = '£' . round($cheapestTxGBP,4);
+    $dearestTxDisplay = '£' . round($dearestTxGBP,2);
+    $dearestConDisplay = '£' . round($dearestConGBP,2);
+    $avgConFeeDisplay = '£' . round($avgConFeeGBP,3);
+	
+}
+else {
+	$medianfeeDisplay = '$' . round($medianfeeUSD,4);
+	$cheapestTxDisplay = '$' . round($cheapestTxUSD,4);
+    $dearestTxDisplay = '$' . round($dearestTxUSD,2);
+    $dearestConDisplay = '$' . round($dearestConUSD,2);
+    $avgConFeeDisplay = '$' . round($avgConFeeUSD,3);
 
+
+}
+
+
+//Get data for Transaction confirmation by gas price graph
 
 $cat1Tx = $row['cat1gasTotTx'];
 $cat1TimeMed = $row['cat1gasMedianTime'];
@@ -148,6 +225,7 @@ $cat3Time95Min = round($cat3Time95/60, 1);
 $cat4Time95Min = round($cat4Time95/60, 1);
 $cat5Time95Min = round($cat5Time95/60, 1);
 
+//Data for miner ranking table
 
 $miners = array (
 	array (
@@ -222,31 +300,61 @@ $miners = array (
 	)
 );
 
+//sort miners based on low price and % empty blocks
 
 $price = array();
-foreach ($miners as $key => $row)
+foreach ($miners as $key => $val)
 {
-	$price[$key] = $row['minP'];
-	$empty[$key] = $row['pctEmp'];
+	$price[$key] = $val['minP'];
+	$empty[$key] = $val['pctEmp'];
 }
 
 array_multisort($price, SORT_ASC, $empty, SORT_ASC, $miners);
+
+
+//find gas price accepted by 50% of top 10 miners
 
 function recPrice ($miners)
 {
 	$cumblocks =0;
 	$x = 0;
-	foreach ($miners as $key => $row)
+	foreach ($miners as $key => $val)
 	{
-		$cumblocks += $row['pctTot'];
+		$cumblocks += $val['pctTot'];
 		if ($cumblocks > .5){
-		return $miners[$x]['minP'];
+			return $miners[$x]['minP'];
 		}
 	$x++;
 	}
 }
 
+function safeCheap ($miners, $min50) //price with at least 25 transactions and accepted by two miners with close to full blocks
+{
+	$cumblocks =0;
+	$x =0;
+	$y =0;
+	foreach ($miners as $key => $val)
+	{
+		if ($val['pctEmp'] < .15) //miner has less than 15% emptyblocks
+		{
+			$y++;
+			if ($y>=2 && $miners[$x]['minP']>= $min50)  /*Minimum price from second miner mining nearly full blocks and at least 50 transactions mined at or below this price in last 10,000 blocks*/
+			
+			{
+				return $miners[$x]['minP'];
+			}
+
+
+		}
+	$x++;
+	}
+}
+
+//Assign recommended prices (cheapest = lowest price accepted); (fastest = highest min price accepted by all to 10 miners);
+
 $recPrice = recPrice($miners);
+
+$safeLow = safeCheap($miners, $row['min50']);
 $lowPrice = $miners[0]['minP'];
 $highPrice = $miners[9]['minP'];
 
@@ -255,6 +363,8 @@ $result->close();
 
 //close connection
 $mysqli->close();
+
+
 
 
 ?>

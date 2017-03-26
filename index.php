@@ -71,18 +71,20 @@
   <body class="nav-md">
     <div class="container body">
       <div class="main_container">
+
+<!-- Sidebar -->
+
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
+
             <div class="navbar nav_title" style="border: 0;">
               <a href="index.php" class="site_title"><img src="images/ETHgas.png" style="height:32px;width:32px"> <span>ETH Gas Station</span></a>
             </div>
             
             <div class="clearfix"></div>
-
-
             <br />
 
-<div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
+          <div id="sidebar-menu" class="main_menu_side hidden-print main_menu">
               <div class="menu_section">
                 <h3>General</h3>
                 <ul class="nav side-menu">
@@ -108,12 +110,9 @@
                 </ul>
               </div>
             </div>
-
-            <!-- /sidebar menu -->
+            <!-- /sidebar -->
         </div>
-        </div>
-
-
+      </div>
 
         <!-- top navigation -->
         <div class="top_nav">
@@ -122,22 +121,36 @@
               <div class="nav toggle">
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
-              <span class="navbar-text"><strong><?php echo "Estimates over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock </span>" ?></strong></span>
+
+              <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                  <a href="#" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-globe"></i><span style="color:#768399"> Change Currency</span>
+                    <span class=" fa fa-angle-down"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li id="usd"><a href="#"> USD<?php if($currency=='usd'){echo'<span class="pull-right"><i class="fa fa-check"></i></span>';}?></a></li>
+                    <li id="eur"><a href="#"> EUR<?php if($currency=='eur'){echo'<span class="pull-right"><i class="fa fa-check"></i></span>';}?></a></li>
+                    <li id="gbp"><a href="#"> GBP<?php if($currency=='gbp'){echo'<span class="pull-right"><i class="fa fa-check"></i></span>';}?></a></li>
+                    <li id="cny"><a href="#"> CNY<?php if($currency=='cny'){echo'<span class="pull-right"><i class="fa fa-check"></i></span>';}?></a></li>
+                  </ul>
+                </li>
+              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Estimates over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
+              </p>
+            </ul>
             </nav>
           </div>
          </div>
-
-        
 
         <!-- /top navigation -->
 
         <!-- page content -->
         <div class="right_col" role="main">
+
           <!-- top tiles -->
           <div class="row tile_count">
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-space-shuttle"></i>Median Cost for Transfer</span>
-              <div class="count"><?php setlocale(LC_MONETARY, "en_US.UTF-8");echo money_format('%.4n', $medianfeeusd) ?> </div>
+              <div class="count" id="medTx"><?php echo "$medianfeeDisplay";?></div>
             </div>
              <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-clock-o"></i> Median Wait (s)</span>
@@ -164,19 +177,22 @@
 
           <div class="row">
 
-             <div class="col-md-8 col-sm-12 col-xs-12">
+          <!-- Network Activity Graph -->
+             <div class="col-md-8 col-sm-8 col-xs-12">
                  <div class="x_panel tile fixed_height_320">
                      <div class="x_title">
-                        <h4>Recent Network Activity: <small>Gas Demand / Average Wait Time</small></h4>
+                        <h4>Recent Network Activity: <small>Gas Demand / Average Wait Time (100 block intervals)</small></h4>
                         <div class="clearfix"></div>
                      </div>
-                     <div class="x_content">
-                        <canvas id="lineChart" height="100" ></canvas> 
+                     <div class="x_content myLine">
+                        <canvas id="lineChart" height="100" width="300" ></canvas> 
                         <div class="clearfix"></div> 
                     </div> 
                 </div>
             </div>
+          <!-- /network activity graph -->
 
+          <!-- Speedometer -->
             <div class="col-md-4 col-sm-4 col-xs-12">
               <div class="x_panel tile fixed_height_320">
                 <div class="x_title">
@@ -184,48 +200,50 @@
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
-                    <div id="speedometer" class="speedometer">
-                    </div>
+                    <div id="speedometer" class="speedometer"></div>
                     <p id="blockNum">Last Block: </p> 
                 </div>
-                </div>
               </div>
-
             </div>
+          <!--/Speedometer -->
 
+       </div>
 
-
+       <!-- Transactions by Gas Price -->
 
         <div class="row">
 
-            <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="col-md-4 col-sm-4 col-xs-12">
               <div class="x_panel tile fixed_height_320">
                 <div class="x_title">
-                  <h4>Transactions by Gas Price</h4>
+                  <h4>Transaction Count by Gas Price</h4>
                   <div class="clearfix"></div>
                 </div>
-                <div class="x_content">
-                  <canvas id="mybarChart2" height="210"></canvas>
+                <div class="x_content myBar">
+                  <canvas id="mybarChart2" height="210" width="300"></canvas>
                 </div>
               </div>
             </div>
+        <!-- /Transaction by Gas Price -->
+
+        <!-- Confirmation Time by Gas Price -->
 
             <div class="col-md-4 col-sm-4 col-xs-12">
               <div class="x_panel tile fixed_height_320 overflow_hidden">
                 <div class="x_title">
-                  <h4>Confirmation Time: <small>(median/95pctl)</small></h4>
+                  <h4>Confirmation Time by Gas Price</h4>
                   <div class="clearfix"></div>
                 </div>
-                <div class="x_content">
-                        <canvas id="mybarChart" height="210"></canvas>
+                <div class="x_content myBar">
+                        <canvas id="mybarChart" height="210" width="300"> </canvas>
                   </div>
                 </div>
               </div>
 
+        <!-- /confirmation time -->
 
+          <!-- Recommended User Gas Prices-->
            
-
-    
              <div class="col-md-4 col-sm-4 col-xs-12">
               <div class="x_panel tile fixed_height_320">
                 <div class="x_title">
@@ -246,8 +264,8 @@
                           <td style = "color:#03586A" ><?php echo "$lowPrice" ?></td>
                         </tr>
                         <tr>
-                          <td>At cost</td>
-                          <td style = "color:#03586A" ><?php echo "15" ?></td>
+                          <td>Safe Low</td>
+                          <td style = "color:#03586A" ><?php echo "$safeLow" ?></td>
                         </tr>
                         <tr>
                           <td>Average</td>
@@ -265,11 +283,17 @@
           <div class="clearfix"></div>
         </div>
 
+        <!-- /Recommended prices -->
+
+
   <div class="row">
+
+        <!-- Miner Rankings -->
+
             <div class="col-md-8 col-sm-12 col-xs-12">
               <div class="x_panel tile fixed_height_420">
                 <div class="x_title">
-                  <h2>Miner Rankings: <small> Support for user transactions</small></h2>
+                  <h4>Miner Rankings: <small> Support for user transactions</small></h4>
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -348,10 +372,15 @@
                 </div>
             </div>
         </div>
+
+        <!-- /miner rankings -->
+
+        <!-- Misc Transaction Table -->
+
             <div class="col-md-4 col-sm-4 col-xs-12">
-              <div class="x_panel tile fixed_height_320">
+              <div class="x_panel tile fixed_height_420">
                 <div class="x_title">
-                  <h4>Misc Transactions</h4>
+                  <h4>Misc Stats</h4>
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -365,22 +394,38 @@
                       <tbody> 
                         <tr>
                           <td>Cheapest Transfer Fee</td>
-                          <td><?php echo '<a href="https://etherscan.io/tx/' .$cheapestTxId.'"'; echo "target=\"_blank\">$cheapUSD</a>";?></td>
+                          <td id="cheapestTransfer"><?php echo '<a href="https://etherscan.io/tx/' .$cheapestTxId.'"'; echo "target=\"_blank\">$cheapestTxDisplay</a>";?></td>
                     
                         </tr>
                         <tr>
                           <td>Priciest Transfer Fee</td>
-                          <td><?php echo '<a href="https://etherscan.io/tx/' .$dearestTxId.'"'."target=\"_blank\">$dearUSD</a>"?></td>
+                          <td><?php echo '<a href="https://etherscan.io/tx/' .$dearestTxId.'"'."target=\"_blank\">$dearestTxDisplay</a>"?></td>
                           
                         </tr>
                         <tr>
                           <td>Priciest Transaction Fee</td>
-                          <td><?php echo '<a href="https://etherscan.io/tx/' .$dearestConId.'"'."target=\"_blank\" >$dearconUSD</a>"?></td>
+                          <td><?php echo '<a href="https://etherscan.io/tx/' .$dearestConId.'"'."target=\"_blank\" >$dearestConDisplay</a>"?></td>
                           
                         </tr>
                         <tr>
-                          <td>Longest Wait For Confirm (Hours)</td>
-                          <td><?php echo '<a href="https://etherscan.io/tx/' .$longestWaitId.'"'."target=\"_blank\" >$longestWait</a>"?></td>
+                          <td>Contracts: Avg Gas Per Call</td>
+                          <td><?php echo "$avgContractGas";?></td>
+                        </tr>
+                        <tr>
+                          <td>Contracts: Avg Gas Fee</td>
+                          <td><?php echo "$avgConFeeDisplay";?></td>
+                        </tr>
+                        <tr>
+                          <td>Total Transactions (last 10k blocks)</td>
+                          <td><?php echo "$totTx";?></td>
+                        </tr>
+                        <tr>
+                          <td>Total Transfers</td>
+                          <td><?php echo "$totalTransfers"; $perTr =round($totalTransfers/$totTx*100); echo " ("."$perTr"."%)"?></td>
+                        </tr>
+                        <tr>
+                          <td>Total Contract Calls</td>
+                          <td><?php echo "$totalConCalls"; $perCon =round($totalConCalls/$totTx*100); echo " ("."$perCon"."%)"?></td>
                         </tr>
                       </tbody>
                     </table>
@@ -389,18 +434,12 @@
         </div>
     </div>
 
+    <!-- /misc transactions -->
 
-
-
-
-
-    </div>
-
-
-
-    </div>
+  </div>
+</div>
              
-        <!-- /page content -->
+<!-- /page content -->
 
         <!-- footer content -->
         <footer>
@@ -410,19 +449,22 @@
           <div class="clearfix"></div>
         </footer>
         <!-- /footer content -->
+
       </div>
     </div>
 
-    <!-- jQuery -->
+ <!-- jQuery -->
     <script src="vendors/jquery/dist/jquery.min.js"></script>
-    <!-- Bootstrap -->
+ <!-- Bootstrap -->
     <script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-    <!-- Chart.js -->
+ <!-- Chart.js -->
     <script src="vendors/Chart.js/dist/Chart.min.js"></script>
     
 
-    <!-- Custom Theme Scripts -->
+<!-- Custom Theme Scripts -->
     <script>
+
+    //Data for Transaction Count by Gas Price Graph
 
         if ($('#mybarChart2').length ){ 
 			  
@@ -463,6 +505,8 @@
 				}
 			  });
         }
+
+        //Data for Confirmation Time by Gas Price Graph
 
         if ($('#mybarChart').length ){ 
 			  
@@ -509,6 +553,7 @@
 			  
 			} 
 
+      //Data for Network Activity Graph
       			 
 			if ($('#lineChart').length ){	
 			
@@ -518,7 +563,7 @@
 				data: {
 				  labels: <?php echo '[' . $x1. ',' . ' ' . ','. ' '. ','. ' ' . ',' . ' '. ','. $x6 . ',' . ' ' . ','. ' '. ','. ' ' . ',' . ' '. ','. $x11.']'; ?>,
 				  datasets: [{
-					label: "Total Transaction Fees (ETH)",
+					label: "Avg Tx Fees Per Block (ETH)",
 					yAxisID: 'A',
 					backgroundColor: "rgba(38, 185, 154, 0.31)",
 					borderColor: "rgba(38, 185, 154, 0.7)",
@@ -529,7 +574,7 @@
 					pointBorderWidth: 1,
 					pointHoverRadius:5,
 					pointHitRadius:10,
-					data: <?php echo '[' . $ya1. ',' . $ya2 . ',' . $ya3 . ',' . $ya4 . ',' . $ya5 . ',' . $ya6 . ',' . $ya7 .',' . $ya8 . ',' . $ya9 . ',' . $ya10. ',' .$ya11. ']'; ?>
+					data:  <?php echo '[' . $ya1. ',' . $ya2 . ',' . $ya3 . ',' . $ya4 . ',' . $ya5 . ',' . $ya6 . ',' . $ya7 .',' . $ya8 . ',' . $ya9 . ',' . $ya10. ',' .$ya11. ']'; ?>
 				  }, {
 					label: "Median Confirm Time (s)",
 					yAxisID: 'B',
@@ -556,7 +601,7 @@
 							beginAtZero: false },
 						 scaleLabel: {
 							display:true,
-							labelString: 'Transaction Fees (ETH)'	
+							labelString: 'Avg Tx Fees Per Block (ETH)'	
 						 }
       }, {
         		id: 'B',
@@ -577,6 +622,8 @@
 
 			
 };
+
+    //Speedometer
 			  
           if ($('#speedometer').length ){
               var speedometer;
@@ -624,6 +671,40 @@
 
 
           }
+
+      //Curency Support
+      
+            $("#eur").click(function(){
+                 
+                location = "http://24.218.144.115/index.php?curr=eur";
+			          
+                                                                     
+            });
+            
+            $("#usd").click(function(){
+                 
+                location = "http://24.218.144.115/index.php?curr=usd";
+			          
+                                                                     
+            });
+          
+            $("#cny").click(function(){
+
+                location = "http://24.218.144.115/index.php?curr=cny";
+                               
+			        
+                                                                     
+            });
+
+            $("#gbp").click(function(){
+                 
+                location = "http://24.218.144.115/index.php?curr=gbp";
+
+			  
+                                                                     
+            });
+
+         
 
 
 
