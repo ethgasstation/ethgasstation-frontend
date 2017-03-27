@@ -264,7 +264,7 @@
                           <td style = "color:#03586A" ><?php echo "$lowPrice" ?></td>
                         </tr>
                         <tr>
-                          <td>Safe Low</td>
+                          <td>Safe Slow</td>
                           <td style = "color:#03586A" ><?php echo "$safeLow" ?></td>
                         </tr>
                         <tr>
