@@ -90,13 +90,12 @@
                 <ul class="nav side-menu">
                   <li><a href="index.php"><i class ="fa fa-home"></i>Main Page</a></li>
                   <li><a href="about.html"><i class="fa fa-question"></i> What Is This Site?</a></li>
-                  <li><a><i class="fa fa-paw"></i>FAQ<span class="fa fa-chevron-down"></span></a>
+                  <li><a><i class="fa fa-bookmark-o"></i>FAQ<span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="gasrecs.html">About The Gas Price Recommendations</a></li>
+                      <li><a href="gasrecs.html">Gas Price Recommendations</a></li>
                       <li><a href="FAQpage.html">Other FAQ</a></li>
                     </ul>
                   </li>
-                  <li><a href="ethgasABI.php"><i class="fa fa-bookmark-o"></i> Gas Price ABI</a></li>
                   <li><a><i class="fa fa-link"></i> External Links <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="https://coincenter.org/entry/what-is-ethereum" target="_blank">What is Ethereum?</a></li>
