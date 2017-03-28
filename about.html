@@ -108,13 +108,25 @@
                   </div>
                  <div class="blog_content">
 
+                  <p><br></p>
+                  <h4 id="about"><b>About This Site:</b></h4>
+                  <p></br></p>
+                  <p>The long term success of Ethereum depends on a healthy and efficient market for the price of gas.</p></br>
+                  <p><b>ETH Gas Station increases the transparency of gas prices, transaction confirmation times, and miner policies on the ETH network in order to enable a more efficient gas market.</b></p></br>
+                  <p> The information on this site is gathered from a single Ethereum node located in the US. Therefore, the numbers may not match the experience of all users globally.</p> 
+                  <p><br></p>
+                  <p><br></p>
+                  <p> We run simple scripts that monitor a standard Ethereum node (geth or parity).  The scripts record when a transaction is broadcast to the node as a pending transaction and when the transaction is later mined.  These times as well as other standard information about the transaction are recoded to a database.  Automated queries are then run every 100 blocks to update the webpage based on the information from the past 10,000 blocks (about 2 days).  The speedometer is updated every 5 seconds and reflects the percent gas used of the block gas limit from the prior 10 blocks.</p>
+
 
                   <h4 id="faq"><b>FAQ</b></h4>
                   <p><b>Why should I pay a gas price?</b></p>
-                  <p>The price of gas that a user offers should generally reflect how fast they want a transaction mined. Most users also want to avoid offering a price this is so low that it will never be mined (or require them to resend the transaction at a higher price).  While offering a high gas price can speed up confirmation some, there is a limit to the acceleration.  Offering a higher gas price than what is needed for acceptance by all top miners is unlikely to speed up the transaction time, but the miners will be happy to take the extra money from you.</p>
+                  <p>The price of gas that a user offers should generally reflect how fast they want a transaction mined. Most users also want to avoid offering a price this is so low that it will never be mined (or require them to resend the transaction at a higher price).  While offering a high gas price can speed up confirmation some, there is a limit to the acceleration.  Offering a higher gas price than what is needed for acceptance by all top miners is unlikely to speed up the transaction time, but the miners will be happy to take the extra tip.</p>
                   <p><br></p>
                   <p><b> What determines the price miners charge for gas?</b><p>
                   <p>Miners in theory should specify a gas price that reflects their cost of inclusion of the transaction in the block (which currently is related to their uncle rate). Miners can increase their efficiency (through uncle inclusion mechanisms) so that they can bring down these costs, but there may be little incentive to do so unless users offer a meaningful number of transactions at low gas prices. Furthermore, while miners may believe that accepting only those transactions with high gas prices will help their profitability, adverse effects on network usability may ultimately lead to lower profits if it translates into a lower value of their block reward.</p>
+                  <p><b>How are the graphs and data generated?</b></p>
+                  
                   <p><br></p>
                   <p><br></p>
 

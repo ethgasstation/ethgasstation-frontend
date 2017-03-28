@@ -89,9 +89,9 @@
                 <h3>General</h3>
                 <ul class="nav side-menu">
                   <li><a href="index.php"><i class ="fa fa-home"></i>Main Page</a></li>
-                  <li><a href="FAQpage.html#about"><i class="fa fa-question"></i> What Is This Site?</a></li>
-                  <li><a href="FAQpage.html#recs"><i class="fa fa-question"></i> About Gas Price Recommendations</a></li>
-                  <li><a href="ETHgasABI.php"><i class="fa fa-question"></i> Gas Price ABI</a></li>
+                  <li><a href="about.html#about"><i class="fa fa-question"></i> What Is This Site?</a></li>
+                  <li><a href="gasrecs.html#recs"><i class="fa fa-anchor"></i> About The Gas Price Recommendations</a></li>
+                  <li><a href="ethgasABI.php"><i class="fa fa-bookmark-o"></i> Gas Price ABI</a></li>
                   <li><a href="FAQpage.html#faq"><i class="fa fa-paw"></i> Other FAQ</a></li>
                   <li><a><i class="fa fa-link"></i> External Links <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
