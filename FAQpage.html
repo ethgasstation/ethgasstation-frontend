@@ -60,11 +60,6 @@
                 <h3>General</h3>
                 <ul class="nav side-menu">
                   <li><a href="index.php"><i class ="fa fa-home"></i>Main Page</a></li>
-                   <li><a><i class="fa fa-paw"></i> Gas Blog<span class="fa fa-chevron-down"></span></a>
-                    <ul class="nav child_menu">
-                      <li><a href="speeding_up_tx.html">Speeding up ETH transactions</a></li>
-                    </ul>
-                  </li>
                   <li><a><i class="fa fa-question"></i> About This Site <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="FAQpage.html">FAQ</a></li>
@@ -73,7 +68,7 @@
                   <li><a><i class="fa fa-link"></i> External Links <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="https://coincenter.org/entry/what-is-ethereum" target="_blank">What is Ethereum?</a></li>
-                      <li><a href="https://www.ethereum.org/" target="_blank">Ethereum Foundation</a></li>
+                      <li><a href="https://www.ethereum.org/ether" target="_blank">Ethereum FAQ</a></li>
                       <li><a href="https://media.consensys.net/ethereum-gas-fuel-and-fees-3333e17fe1dc#.krqnhnkav" target="_blank">What is gas?</a></li>
                       <li><a href="https://blog.ethereum.org/2016/10/31/uncle-rate-transaction-fee-analysis/" target="_blank">Gas Market: Advanced reading</a></li>
                     </ul>
@@ -114,26 +109,34 @@
                  <div class="blog_content">
 
                   <p><br></p>
-                  <h4><b>About This Site:</b></h4>
+                  <h4 id="about"><b>About This Site:</b></h4>
                   <p></br></p>
                   <p>The long term success of Ethereum depends on a healthy and efficient market for the price of gas.</p></br>
-                  <p><b>ETH Gas Station is an effort to increase the transparency of gas prices, transaction confirmation times, and miner policies on the ETH network in order to enable a more efficient gas market.</b></p></br>
-                  <p> The information on this site is gathered from a single Ethereum node located in the US. Therefore, the numbers may not match the experience of all users globally.  All price and time data are estimates over the last 10,000 blocks except as follows- the gas demand/wait time graph is estimated over prior 500 block intervals and the gas consumption speedometer is estimated as the average of the prior 10 blocks.</p> 
+                  <p><b>ETH Gas Station increases the transparency of gas prices, transaction confirmation times, and miner policies on the ETH network in order to enable a more efficient gas market.</b></p></br>
+                  <p> The information on this site is gathered from a single Ethereum node located in the US. Therefore, the numbers may not match the experience of all users globally.</p> 
                   <p><br></p>
+                  <p><br></p>
+
+
+                  <h4 id="faq"><b>FAQ</b></h4>
                   <p><b>Why should I pay a gas price?</b></p>
-                  <p>The price of gas that a user offers should generally reflect how fast they want a transaction mined. Most users also want to avoid offering a price this is so low that it will never be mined (or require them to resend the transaction at a higher price).  While offering a high gas price can speed up confirmation some, there is a limit to the acceleration.  Offering a higher gas price than what is needed for acceptance by all top miners is unlikely to seed up the transaction time but will give a tip to the miner if this is desired (note you won't know in advance which miner will get the tip).</p>
+                  <p>The price of gas that a user offers should generally reflect how fast they want a transaction mined. Most users also want to avoid offering a price this is so low that it will never be mined (or require them to resend the transaction at a higher price).  While offering a high gas price can speed up confirmation some, there is a limit to the acceleration.  Offering a higher gas price than what is needed for acceptance by all top miners is unlikely to speed up the transaction time, but the miners will be happy to take the extra tip.</p>
                   <p><br></p>
                   <p><b> What determines the price miners charge for gas?</b><p>
                   <p>Miners in theory should specify a gas price that reflects their cost of inclusion of the transaction in the block (which currently is related to their uncle rate). Miners can increase their efficiency (through uncle inclusion mechanisms) so that they can bring down these costs, but there may be little incentive to do so unless users offer a meaningful number of transactions at low gas prices. Furthermore, while miners may believe that accepting only those transactions with high gas prices will help their profitability, adverse effects on network usability may ultimately lead to lower profits if it translates into a lower value of their block reward.</p>
+                  <p><b>How are the graphs and data generated?</b></p>
+                  <p> We run simple scripts that monitor a standard Ethereum node (geth or parity).  The scripts record when a transaction in broadcast to the node as a pending transaction and when the transaction is mined.  These times as well as other standard information about the transaction is recoded to a database.  Automated queries are then run every to update the webpage.  The data is updated every 100 blocks and the calculations are based on the past 10,000 blocks.  The speedometer is updated every 5 seconds and reflects the percent gas used of the block gas limit from the prior 10 blocks.</p>
                   <p><br></p>
-                  <p><b> How are the recommended user prices determined?</b></p>
-                  <p>As many uses of Ethereum are not particularly time sensitive, it may be advantageous for users to incentivize miner efficiency by offering low but reasonable gas prices, particularly when transaction time is not a major concern. This can also help to keep the network more usable and affordable for the many diverse use cases that Ethereum has to offer.
+                  <p><br></p>
 
-                  <p>Therefore, recommended gas prices are offered on this site related to <em>desired transaction speed and cost:</em><p></br>
-                  <p>1) <b>Cheapest</b> - This is the lowest gas price accepted by a top ten miner within the previous day (approx).This is a price that should result in the transaction being mined but may require ~ 5-15min before confirmation. This price is not guaranteed to result in acceptance so users who offer this gas price may sometimes need to resend the transaction at a later point.</p></br>
-                  <p>2) <b>At cost</b> - This is a price estimated for the actual cost of a highly efficient miner for including gas in blocks. Offering transactions at this price may incentivize miner efficiency and should make economic sense for the miner to include the transaction in a a block.  See here for further detials: <a href="https://blog.ethereum.org/2016/10/31/uncle-rate-transaction-fee-analysis/" target="_blank">Miner Fee Analysis</a></p></br>
-                  <p>3) <b>Average</i></b> - This is the minimum price accepted by 50% of the top ten miners- safe and prompt. Usually reflects the wallet defaults.</p></br>
-                  <p>4) <b>Fastest</b> - This is the lowest gas price that is accepted by all top miners (estimated over the last day approx). Therefore, transactions with this gas price should be accepted by all the top pools. Paying more than this price is probably just a tip to the miner and is unlikely to provide increase in transaction confirmation time.</p>
+
+                  <h4 id="recs"><b> What are the recommended user gas prices?</b></h4>
+                  <p>Many people use the default gas price from their wallet when they make a transaction, and this is generally OK.  However, sometimes it makes sense to pay more if you want the transaction mined quickly or you may want to save some money and offer a cheap gas price especially if you don't care how quickly it is mined as long as it eventually gets through. However, in these cases, its hard to know what to change the price to unless you are monitoring the network (or chekcing this site frequently).  
+                  <p>Therefore, we publish these recommendations to simplify the gas price choice based on <em>desired transaction speed and cost:</em><p></br>
+                  <p>1) <b>Cheapest</b> - This is the price to use if you are a real bargain hunter. It is the lowest gas price accepted by a top ten miner within the previous day (approx).This is a price that should result in the transaction being mined but may require ~ 5-15min before confirmation. This price is not guaranteed to result in acceptance so users who offer this gas price may sometimes need to resend the transaction at a later point.</p></br>
+                  <p>2) <b>Safe Slow</b> - This is a gas price that is intended to be both cheap and successful.  It may take a bit longer to get a confirmation with this price (e.g. 5-10 minutes), but it is safer than using the cheapest price if you really dont want to have to worry about it not getting confirmed. This price is determined by having at least two reliable top ten miners accept the price and one with at least 50 transactions mined within the last day.
+                  <p>3) <b>Average</i></b> - This is the price accepted by top miners who account for at leat 50% of the blocks mined- safe and prompt. Usually reflects the wallet defaults.</p></br>
+                  <p>4) <b>Fastest</b> - This is the lowest gas price that is accepted by all top miners (estimated over the last day approx). Therefore, transactions with this gas price should be accepted by all the top pools. Paying more than this price is unlikely to increase transaction confirmation time under normal circumstances.</p>
                   <p><br></p>
                   <p><br></p>
                  
