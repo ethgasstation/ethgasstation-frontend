@@ -347,7 +347,7 @@ foreach($miners as $key => $val)
 	}
 	$x = $miners[$key]['reliability'];
 	$y = round ($x , 4);
-	echo "$y ";
+	
 }
 
 //find gas price accepted by 50% of top 10 miners
