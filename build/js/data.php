@@ -321,7 +321,7 @@ $cat5cum = $cat5TxPct;
 
 foreach($miners as $key => $val)
 {
-	if ($miners[$key][$val]['minp'] <10)
+	if ($val['minp'] <10)
 	{
 		$cat = 1;
 	}
