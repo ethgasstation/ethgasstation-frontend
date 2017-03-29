@@ -319,7 +319,7 @@ $cat3cum = $cat3TxPct + $cat4TxPct + $cat5TxPct;
 $cat4cum = $cat4TxPct + $cat5TxPct;
 $cat5cum = $cat5TxPct;
 
-echo "hi" . "$cat1cum" . "," "$cat5cum" . ", $cat4cum /n";
+echo "hi" . "$cat1cum" . ",". "$cat5cum" . ", $cat4cum /n" ;
 
 foreach($miners as $key => $val)
 {
