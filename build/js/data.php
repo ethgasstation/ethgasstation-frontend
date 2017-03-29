@@ -323,25 +323,25 @@ foreach($miners as $key => $val)
 {
 	if ($val['minP'] <10)
 	{
-		$cat = 1;
+		$miners[$key]['reliability'] = (1-$miners[$key]['pctEmp'])/$cat1cum;
 	}
 	elseif ($val['minP'] >=10 && $val['minP'] < 20)
 	{
-		$cat = 2;
+		$miners[$key]['reliability'] = (1-$miners[$key]['pctEmp'])/$cat2cum;
 	}
 	elseif ($val['minP'] ==20)
 	{
-		$cat = 3;
+		$miners[$key]['reliability'] = (1-$miners[$key]['pctEmp'])/$cat3cum;
 	}
 	elseif ($val['minP'] >20 && $val['minP'] <= 30)
 	{
-		$cat = 4;
+		$miners[$key]['reliability'] = (1-$miners[$key]['pctEmp'])/$cat4cum;
 	}
 	else 
 	{
-		$cat = 5;
+		$miners[$key]['reliability'] = (1-$miners[$key]['pctEmp'])/$cat1cum;
 	}
-	echo $cat;
+	echo "$miners[$key]['reliability']";
 }
 
 //find gas price accepted by 50% of top 10 miners
