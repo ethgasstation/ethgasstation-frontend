@@ -321,7 +321,27 @@ $cat5cum = $cat5TxPct;
 
 foreach($miners as $key => $val)
 {
-	echo "key = ".$key ."val = ".$val;
+	if ($miners[$key][$val]['minp'] <10)
+	{
+		$cat = 1;
+	}
+	elseif ($miners[$key][$val]['minp'] >=10 && $miners[$key][$val]['minp'] < 20)
+	{
+		$cat = 2;
+	}
+	elseif ($miners[$key][$val]['minp'] ==20)
+	{
+		$cat = 3;
+	}
+	elseif ($miners[$key][$val]['minp'] >20 && $miners[$key][$val]['minp'] <= 30)
+	{
+		$cat = 4;
+	}
+	else 
+	{
+		$cat = 5;
+	}
+	echo $cat;
 }
 
 //find gas price accepted by 50% of top 10 miners
