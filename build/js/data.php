@@ -311,6 +311,18 @@ foreach ($miners as $key => $val)
 
 array_multisort($price, SORT_ASC, $empty, SORT_ASC, $miners);
 
+//define miner reliability index 
+
+$cat1cum = 1;
+$cat2cum = $cat2TxPct + $cat3TxPct + $cat4TxPct + $cat5TxPct;
+$cat3cum = $cat3TxPct + $cat4TxPct + $cat5TxPct;
+$cat4cum = $cat4TxPct + $cat5TxPct;
+$cat5cum = $cat5TxPct;
+
+foreach($miners as $key => $val)
+{
+	echo "key = ".$key ."val = ".$val;
+}
 
 //find gas price accepted by 50% of top 10 miners
 
@@ -328,7 +340,7 @@ function recPrice ($miners)
 	}
 }
 
-function safeCheap ($miners, $min50) //price with at least 25 transactions and accepted by two miners with close to full blocks
+function safeCheap ($miners, $min50) //price with at least 50 transactions and accepted by two reliable miners
 {
 	$cumblocks =0;
 	$x =0;

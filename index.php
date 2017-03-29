@@ -459,7 +459,7 @@
 			  var mybarChart = new Chart(ctx, {
 				type: 'bar',
 				data: {
-				  labels: ["<15", "15-20", "20", ">20-30", ">30"],
+				  labels: ["<10", "10-20", "20", ">20-30", ">30"],
 				  datasets: [{
                     label: "Percent of transactions",  
 					backgroundColor: "#26B99A",
@@ -501,7 +501,7 @@
 			  var mybarChart = new Chart(ctx, {
 				type: 'bar',
 				data: {
-				  labels: ["<15","15-20", "20", "20-30", ">30"],
+				  labels: ["<10","10-20", "20", "20-30", ">30"],
 				  datasets: [{
 					label: 'Median- Time to Confirm',
 					backgroundColor: "#26B99A",
