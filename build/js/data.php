@@ -342,8 +342,8 @@ foreach($miners as $key => $val)
 		$miners[$key]['reliability'] = (1-$miners[$key]['pctEmp'])/$cat1cum;
 	}
 	$x = $miners[$key]['reliability'];
-	round ($x , 3);
-	echo "$x\n";
+	$y = round ($x , 4);
+	echo "$y ";
 }
 
 //find gas price accepted by 50% of top 10 miners
