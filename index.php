@@ -251,7 +251,7 @@
                           <td style = "color:#03586A" ><?php echo "$lowPrice" ?></td>
                         </tr>
                         <tr>
-                          <td>Safe Slow</td>
+                          <td>Safe Low</td>
                           <td style = "color:#03586A" ><?php echo "$safeLow" ?></td>
                         </tr>
                         <tr>
@@ -367,7 +367,7 @@
             <div class="col-md-4 col-sm-4 col-xs-12">
               <div class="x_panel tile fixed_height_420">
                 <div class="x_title">
-                  <h4>Misc Stats</h4>
+                  <h4>Misc Stats <small> (Last 10,000 blocks)</small></h4>
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
