@@ -22,10 +22,6 @@
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
     <link href="vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
-    <!-- NProgress -->
-    <link href="vendors/nprogress/nprogress.css" rel="stylesheet">
-    <!-- iCheck -->
-    <link href="vendors/iCheck/skins/flat/green.css" rel="stylesheet">
 
     <!--Favicon-->
     <link rel="apple-touch-icon" sizes="57x57" href="images/apple-icon-57x57.png">
@@ -45,13 +41,7 @@
     <meta name="msapplication-TileColor" content="#ffffff">
     <meta name="msapplication-TileImage" content="images/ms-icon-144x144.png">
     <meta name="theme-color" content="#ffffff">
-	
-    <!-- bootstrap-progressbar -->
-    <link href="vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">
-    <!-- JQVMap -->
-    <link href="vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet"/>
-    <!-- bootstrap-daterangepicker -->
-    <link href="vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
+
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.css" rel="stylesheet">
