@@ -319,6 +319,8 @@ $cat3cum = $cat3TxPct + $cat4TxPct + $cat5TxPct;
 $cat4cum = $cat4TxPct + $cat5TxPct;
 $cat5cum = $cat5TxPct;
 
+echo "hi" . "$cat1cum" . "," "$cat5cum" . ", $cat4cum /n";
+
 foreach($miners as $key => $val)
 {
 	if ($val['minP'] <10)
@@ -336,12 +338,10 @@ foreach($miners as $key => $val)
 	elseif ($val['minP'] >20 && $val['minP'] <= 30)
 	{
 		$miners[$key]['reliability'] = (100-$miners[$key]['pctEmp']*100)/$cat4cum;
-		echo "$cat4cum";
 	}
 	else 
 	{
-		$miners[$key]['reliability'] = (100-$miners[$key]['pctEmp']*100)/$cat5cum;
-		echo "$cat5cum";
+		$miners[$key]['reliability'] = (100-$miners[$key]['pctEmp']*100)/$cat5cum;	
 	}
 	$x = $miners[$key]['reliability'];
 	$y = round ($x , 4);
