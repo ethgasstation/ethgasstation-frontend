@@ -337,7 +337,7 @@ foreach($miners as $key => $val)
 	elseif ($val['minP'] >20 && $val['minP'] <= 30)
 	{
 		$miners[$key]['reliability'] = (100-$miners[$key]['pctEmp']*100)/$cat4cum;
-		echo "$cat4cum :"
+		echo "$cat4cum :";
 		$y= $miners[$key]['pctEmp'];
 		echo "$y xxx";
 	}
