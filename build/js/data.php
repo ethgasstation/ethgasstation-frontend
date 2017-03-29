@@ -321,19 +321,19 @@ $cat5cum = $cat5TxPct;
 
 foreach($miners as $key => $val)
 {
-	if ($val['minp'] <10)
+	if ($val['minP'] <10)
 	{
 		$cat = 1;
 	}
-	elseif ($miners[$key][$val]['minp'] >=10 && $miners[$key][$val]['minp'] < 20)
+	elseif ($val['minP'] >=10 && $val['minP'] < 20)
 	{
 		$cat = 2;
 	}
-	elseif ($miners[$key][$val]['minp'] ==20)
+	elseif ($val['minP'] ==20)
 	{
 		$cat = 3;
 	}
-	elseif ($miners[$key][$val]['minp'] >20 && $miners[$key][$val]['minp'] <= 30)
+	elseif ($val['minP'] >20 && $val['minP'] <= 30)
 	{
 		$cat = 4;
 	}
