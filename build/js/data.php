@@ -324,29 +324,28 @@ foreach($miners as $key => $val)
 {
 	if ($val['minP'] <10)
 	{
-		$miners[$key]['reliability'] = (100-$miners[$key]['pctEmp']*100)/$cat1cum;
+		$miners[$key]['reliability'] = ($miners[$key]['pctEmp']*100)/$cat1cum;
 	}
 	elseif ($val['minP'] >=10 && $val['minP'] < 20)
 	{
-		$miners[$key]['reliability'] = (100-$miners[$key]['pctEmp']*100)/$cat2cum;
+		$miners[$key]['reliability'] = ($miners[$key]['pctEmp']*100)/$cat2cum;
 	}
 	elseif ($val['minP'] ==20)
 	{
-		$miners[$key]['reliability'] = (100-$miners[$key]['pctEmp']*100)/$cat3cum;
+		$miners[$key]['reliability'] = ($miners[$key]['pctEmp']*100)/$cat3cum;
 	}
 	elseif ($val['minP'] >20 && $val['minP'] <= 30)
 	{
-		$miners[$key]['reliability'] = (100-$miners[$key]['pctEmp']*100)/$cat4cum;
-		echo "$cat4cum :";
-		$y= $miners[$key]['pctEmp'];
-		echo "$y xxx";
+		$miners[$key]['reliability'] = ($miners[$key]['pctEmp']*100)/$cat4cum;
+	
 	}
 	else 
 	{
-		$miners[$key]['reliability'] = (100-$miners[$key]['pctEmp']*100)/$cat5cum;	
+		$miners[$key]['reliability'] = ($miners[$key]['pctEmp']*100)/$cat5cum;	
 	}
 	$x = $miners[$key]['reliability'];
 	$y = round ($x , 4);
+	echo "$y , ";
 	
 }
 
