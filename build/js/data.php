@@ -359,17 +359,15 @@ function safeCheap ($miners, $min50) //price with at least 50 transactions and a
 	$y =0;
 	foreach ($miners as $key => $val)
 	{
-		if ($val['pctEmp'] < .15) //miner has less than 15% emptyblocks
-		{
-			$y++;
-			if ($y>=2 && $miners[$key]['minP']>= $min50)  /*Minimum price from second miner mining nearly full blocks and at least 50 transactions mined at or below this price in last 10,000 blocks*/
+		
+			if ($lowRate < 8  && $miners[$key]['minP']>= $min50)  /*Minimum price from second miner mining nearly full blocks and at least 50 transactions mined at or below this price in last 10,000 blocks*/
 			
 			{
-				return $miners[$x]['minP'];
+				return $miners[$key]['minP'];
 			}
 
 
-		}
+		
 	}
 }
 
