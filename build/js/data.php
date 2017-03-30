@@ -353,7 +353,7 @@ function recPrice ($miners)
 	}
 }
 
-function safeCheap ($miners, $min50) //price with at least 50 transactions and accepted by two reliable miners
+function safeCheap ($miners, $min50, $lowRate) //price with at least 50 transactions and accepted by two reliable miners
 {
 	$cumblocks =0;
 	$y =0;
@@ -375,7 +375,7 @@ function safeCheap ($miners, $min50) //price with at least 50 transactions and a
 
 $recPrice = recPrice($miners);
 
-$safeLow = safeCheap($miners, $row['min50']);
+$safeLow = safeCheap($miners, $row['min50'], $lowRate);
 $lowPrice = $miners[0]['minP'];
 $highPrice = $miners[9]['minP'];
 
