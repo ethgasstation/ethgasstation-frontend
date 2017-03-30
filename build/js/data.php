@@ -337,7 +337,7 @@ else
 }
 
 echo $lowRate;
-echo $row['cat1gasMeanDelay'];
+echo "bye" . $row['cat1gasMeanDelay'];
 echo "hi" . $row['cat5gasMeanDelay'];
 
 //find gas price accepted by 50% of top 10 miners
