@@ -318,7 +318,7 @@ if ($row['min50']<10)
 	$lowRate = $row['cat1gasMeanDelay']/$row['cat5gasMeanDelay'];
 	if ($lowRate ==0)
 	{
-		$row['min50'] = 10;
+		$row['min50'] = 7;
 	}
 
 } 
