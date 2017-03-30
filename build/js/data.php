@@ -316,7 +316,7 @@ array_multisort($price, SORT_ASC, $empty, SORT_ASC, $miners);
 if ($row['min50']<10)
 {
 	$lowRate = $row['cat1gasMeanDelay']/$row['cat5gasMeanDelay'];
-	if ($lowrate ==0)
+	if ($lowRate ==0)
 	{
 		$row['min50'] = 10;
 	}
@@ -380,7 +380,7 @@ function safeCheap ($miners, $min50, $lowRate) //price with at least 50 transact
 //Assign recommended prices (cheapest = lowest price accepted); (fastest = highest min price accepted by all to 10 miners);
 
 $recPrice = recPrice($miners);
-
+echo $min50;
 $safeLow = safeCheap($miners, $row['min50'], $lowRate);
 $lowPrice = $miners[0]['minP'];
 $highPrice = $miners[9]['minP'];
