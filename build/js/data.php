@@ -333,7 +333,7 @@ elseif ($row['min50']>20 && $row['min50']<=30)
 
 else 
 {
-	$lowRate = 1
+	$lowRate = 1;
 }
 
 echo $lowRate;
