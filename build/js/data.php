@@ -311,43 +311,32 @@ foreach ($miners as $key => $val)
 
 array_multisort($price, SORT_ASC, $empty, SORT_ASC, $miners);
 
-//define miner reliability index 
+//SafeLow Blocks Mining Rate
 
-$cat1cum = 100;
-$cat2cum = $cat2TxPct + $cat3TxPct + $cat4TxPct + $cat5TxPct;
-$cat3cum = $cat3TxPct + $cat4TxPct + $cat5TxPct;
-$cat4cum = $cat4TxPct + $cat5TxPct;
-$cat5cum = $cat5TxPct;
-
-
-foreach($miners as $key => $val)
+if ($row['min50']<10)
 {
-	if ($val['minP'] <10)
-	{
-		$miners[$key]['reliability'] = ($miners[$key]['pctEmp']*100)/$cat1cum;
-	}
-	elseif ($val['minP'] >=10 && $val['minP'] < 20)
-	{
-		$miners[$key]['reliability'] = ($miners[$key]['pctEmp']*100)/$cat2cum;
-	}
-	elseif ($val['minP'] ==20)
-	{
-		$miners[$key]['reliability'] = ($miners[$key]['pctEmp']*100)/$cat3cum;
-	}
-	elseif ($val['minP'] >20 && $val['minP'] <= 30)
-	{
-		$miners[$key]['reliability'] = ($miners[$key]['pctEmp']*100)/$cat4cum;
-	
-	}
-	else 
-	{
-		$miners[$key]['reliability'] = ($miners[$key]['pctEmp']*100)/$cat5cum;	
-	}
-	$x = $miners[$key]['reliability'];
-	$y = round ($x , 4);
-	echo "$y , ";
-	
+	$lowRate = $row['cat1gasMeanDelay']/$row['cat5gasMeanDelay'];
+
+} 
+elseif ($row['min50']>=10 && $row['min50']<20)
+{
+	$lowRate = $row['cat2gasMeanDelay']/$row['cat5gasMeanDelay'];
 }
+elseif ($row['min50']==20)
+{
+	$lowRate = $row['cat3gasMeanDelay']/$row['cat5gasMeanDelay'];
+}
+elseif ($row['min50']>20 && $row['min50']<=30)
+{
+	$lowRate = $row['cat4gasMeanDelay']/$row['cat5gasMeanDelay'];
+}
+
+else 
+{
+	$lowRate = 1
+}
+
+echo $lowRate;
 
 //find gas price accepted by 50% of top 10 miners
 
@@ -359,23 +348,21 @@ function recPrice ($miners)
 	{
 		$cumblocks += $val['pctTot'];
 		if ($cumblocks > .5){
-			return $miners[$x]['minP'];
+			return $miners[$key]['minP'];
 		}
-	$x++;
 	}
 }
 
 function safeCheap ($miners, $min50) //price with at least 50 transactions and accepted by two reliable miners
 {
 	$cumblocks =0;
-	$x =0;
 	$y =0;
 	foreach ($miners as $key => $val)
 	{
 		if ($val['pctEmp'] < .15) //miner has less than 15% emptyblocks
 		{
 			$y++;
-			if ($y>=2 && $miners[$x]['minP']>= $min50)  /*Minimum price from second miner mining nearly full blocks and at least 50 transactions mined at or below this price in last 10,000 blocks*/
+			if ($y>=2 && $miners[$key]['minP']>= $min50)  /*Minimum price from second miner mining nearly full blocks and at least 50 transactions mined at or below this price in last 10,000 blocks*/
 			
 			{
 				return $miners[$x]['minP'];
@@ -383,7 +370,6 @@ function safeCheap ($miners, $min50) //price with at least 50 transactions and a
 
 
 		}
-	$x++;
 	}
 }
 
