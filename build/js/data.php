@@ -316,11 +316,19 @@ array_multisort($price, SORT_ASC, $empty, SORT_ASC, $miners);
 if ($row['min50']<10)
 {
 	$lowRate = $row['cat1gasMeanDelay']/$row['cat5gasMeanDelay'];
+	if ($lowrate ==0)
+	{
+		$row['min50'] = 10;
+	}
 
 } 
-elseif ($row['min50']>=10 && $row['min50']<20)
+elseif (($row['min50']>=10 && $row['min50']<20)) 
 {
 	$lowRate = $row['cat2gasMeanDelay']/$row['cat5gasMeanDelay'];
+	if ($lowrate ==0)
+	{
+		$row['min50'] = 20;
+	}
 }
 elseif ($row['min50']==20)
 {
@@ -335,10 +343,6 @@ else
 {
 	$lowRate = 1;
 }
-
-echo $lowRate;
-echo "bye" . $row['cat1gasMeanDelay'];
-echo "hi" . $row['cat5gasMeanDelay'];
 
 //find gas price accepted by 50% of top 10 miners
 
@@ -362,7 +366,7 @@ function safeCheap ($miners, $min50, $lowRate) //price with at least 50 transact
 	foreach ($miners as $key => $val)
 	{
 		
-			if ($lowRate < 8  && $miners[$key]['minP']>= $min50)  /*Minimum price from second miner mining nearly full blocks and at least 50 transactions mined at or below this price in last 10,000 blocks*/
+			if ($lowRate <8 && $miners[$key]['minP']>= $min50)  /*Minimum price from second miner mining nearly full blocks and at least 50 transactions mined at or below this price in last 10,000 blocks*/
 			
 			{
 				return $miners[$key]['minP'];
