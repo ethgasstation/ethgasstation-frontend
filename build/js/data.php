@@ -104,7 +104,7 @@ else {$currency = 'usd';}
 
 $totalBlocks = $row['totalBlocks'];
 $emptyBlocks = $row['emptyBlocks'];
-$percentEmpty = round($emtpyBlocks/$totalBlocks*100);
+$percentEmpty = round($emptyBlocks/$totalBlocks*100);
 
 
 $avgContractGas = $row['avgContractGas'];
