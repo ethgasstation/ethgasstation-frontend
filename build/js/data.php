@@ -102,7 +102,9 @@ if(isset($_GET['curr']) && !empty($_GET['curr'])){
 } 
 else {$currency = 'usd';}
 
-
+$totalBlocks = $row['totalBlocks'];
+$emptyBlocks = $row['emptyBlocks'];
+$percentEmpty = round($emtpyblocks/$totalblocks*100);
 
 
 $avgContractGas = $row['avgContractGas'];
@@ -311,7 +313,7 @@ foreach ($miners as $key => $val)
 
 array_multisort($price, SORT_ASC, $empty, SORT_ASC, $miners);
 
-//SafeLow Blocks Mining Rate
+//SafeLow Blocks Mining Cat
 
 if ($row['min50']<10)
 {

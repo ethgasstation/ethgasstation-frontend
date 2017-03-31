@@ -414,6 +414,10 @@
                           <td>Total Contract Calls</td>
                           <td><?php echo "$totalConCalls"; $perCon =round($totalConCalls/$totTx*100); echo " ("."$perCon"."%)"?></td>
                         </tr>
+                        <tr>
+                          <td>% Empty Blocks</td>
+                          <td><?php echo "$percentEmpty";?></td>
+                        </tr>
                       </tbody>
                     </table>
                 </div>
