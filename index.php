@@ -385,12 +385,12 @@
                     
                         </tr>
                         <tr>
-                          <td>Priciest Transfer Fee</td>
+                          <td>Highest Transfer Fee</td>
                           <td><?php echo '<a href="https://etherscan.io/tx/' .$dearestTxId.'"'."target=\"_blank\">$dearestTxDisplay</a>"?></td>
                           
                         </tr>
                         <tr>
-                          <td>Priciest Transaction Fee</td>
+                          <td>Highest Transaction Fee</td>
                           <td><?php echo '<a href="https://etherscan.io/tx/' .$dearestConId.'"'."target=\"_blank\" >$dearestConDisplay</a>"?></td>
                           
                         </tr>

@@ -21,12 +21,6 @@ $query = "SELECT * FROM txDataLast10k ORDER BY id DESC LIMIT 1";
 $result = $mysqli->query($query);
 $row = $result->fetch_assoc();
 
-if ($row['medianMinedDelay'] == null)
-{
-	$query = "SELECT * FROM txDataLast10k ORDER BY id DESC LIMIT 2,1";
-	$result= makeQuery($mysqli,$query);
-}
-
 $graphData = array();
 $query2 = "SELECT * FROM txDataLast100b ORDER BY id DESC LIMIT 11";
 $result2 = $mysqli->query($query2);
@@ -313,45 +307,77 @@ foreach ($miners as $key => $val)
 
 array_multisort($price, SORT_ASC, $empty, SORT_ASC, $miners);
 
-//SafeLow Blocks Mining Cat
+//Estimate Empty-block Adjusted Haspower At Safe Low Price 
+
+foreach ($miners as $key => $val)
+{
+	$val['emptyAdjustedRate'] = $val['pctTot'] * $val['pctEmp'];
+
+	if ($val['minP']<10)
+	{
+		$val['minpCat'] = 1;
+	}
+	elseif ($val['minP']>=10 && $val['minP'] < 20)
+	{
+		$val['minpCat'] = 2;
+	}
+	elseif ($val['minP']== 20)
+	{
+		$val['minpCat'] = 3;
+	}
+	elseif ($val['minP']>20 && $val['minP'] <=30)
+	{
+		$val['minpCat'] = 4;
+	}
+	else 
+	{
+		$val['minpCat'] = 5;
+	}
+}
+
+// Find the Gas Price Category for the Lowest Gas Price with at least 50 transactions mined in last 10k blocks. 
 
 if ($row['min50']<10)
 {
-	$lowRate = $row['cat1gasMeanDelay']/$row['cat5gasMeanDelay'];
-	if ($lowRate ==0) //no timed transactions
-	{
-		$row['min50'] = 10;
-	}
-
+	$lowCat = 1;
 } 
 elseif (($row['min50']>=10 && $row['min50']<20)) 
 {
-	$lowRate = $row['cat2gasMeanDelay']/$row['cat5gasMeanDelay'];
-	if ($lowrate ==0)
-	{
-		$row['min50'] = 20;
-	}
+	$lowCat = 2;
 }
 elseif ($row['min50']==20)
 {
-	$lowRate = $row['cat3gasMeanDelay']/$row['cat5gasMeanDelay'];
+	$lowCat = 3;
 }
 elseif ($row['min50']>20 && $row['min50']<=30)
 {
-	$lowRate = $row['cat4gasMeanDelay']/$row['cat5gasMeanDelay'];
+	$lowCat = 4;
 }
 
 else 
 {
-	$lowRate = 1;
+	$lowCat = 5;
 }
+
+// Now sum the Empty-Adjusted Hashpower for Low category
+
+$categoryHashPower = 0;
+
+foreach ($miners as $key => $val)
+{
+	if ($val['minpCat'] == $lowCat)
+	{
+		$categoryHashPower += $val['emptyAdjustedRate'];
+	}
+}
+
+console.log ($categoryHashPower);
 
 //find gas price accepted by 50% of top 10 miners
 
 function recPrice ($miners)
 {
 	$cumblocks =0;
-	$x = 0;
 	foreach ($miners as $key => $val)
 	{
 		$cumblocks += $val['pctTot'];
@@ -363,8 +389,7 @@ function recPrice ($miners)
 
 function safeCheap ($miners, $min50, $lowRate) //price with at least 50 transactions and accepted by two reliable miners
 {
-	$cumblocks =0;
-	$y =0;
+
 	foreach ($miners as $key => $val)
 	{
 		
