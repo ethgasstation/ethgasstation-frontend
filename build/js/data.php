@@ -311,7 +311,7 @@ array_multisort($price, SORT_ASC, $empty, SORT_ASC, $miners);
 
 foreach ($miners as $key => $val)
 {
-	$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp'])
+	$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
 
 	if ($val['minP']<10)
 	{
@@ -401,7 +401,7 @@ $hashpower = array (
 
 foreach ($hashpower as $key => $val)
 {
-	
+
 	if ($val > .05){
 		$safeLowCat = $key;
 		break;
