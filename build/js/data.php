@@ -400,6 +400,7 @@ $hashpower = array (
 
 foreach ($hashpower as $key => $val)
 {
+	echo ("hi" . $val);
 	if ($val > .05){
 		$safeLowCat = $key;
 		break;
