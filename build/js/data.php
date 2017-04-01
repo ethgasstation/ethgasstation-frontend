@@ -399,16 +399,17 @@ $hashpower = array (
 	'cat5' => $cat5HashPower
 );
 
+$x=1;
 foreach ($hashpower as $key => $val)
 {
 
 	if ($val > .05){
-		$safeLowCat = $key;
+		$safeLowCat = $x;
 		break;
 	}
+	$x++;
 }
 
-echo $safeLowCat;
 
 //find gas price accepted by 50% of top 10 miners
 
@@ -423,31 +424,60 @@ function recPrice ($miners)
 		}
 	}
 }
-/*
-function safeCheap ($miners, $min50, $categoryHashPower) //price with at least 50 transactions and 5% empty-adjusted hashpower
-{
 
+function safeCheap ($miners, $min50, $safeLowCat, $lowCat) 
+
+{
 	foreach ($miners as $key => $val)
 	{
-		
-			if ($val]['minP']>= $min50 )  /*Minimum gas price at which there are at least 50 transactions mined at or below this price in last 10,000 blocks and category has at least 20% of the non-empty blocks*/
-		/*	
+		if ($safeLowCat == $lowCat) //the price with 50 tx is in a category with 5% hashpower
+		{
+			if ($val['minP']<= $min50) //Miner's lowest price is at or below the price with 50 transactions
 			{
-				return $miners[$key]['minP'];
+				return $min50;
 			}
+			else //Miner's lowest price is above the price with 50 transactions
+			{
+				return $val['minP']; 
+			}
+					
+		}
+		elseif ($safeLowCat > $lowCat) //the lowest cat with 5% hashpower is higher than than the lowest cat with 50 transactions
+		{
+			if ($safeLowCat == 2)
+			{
+				return 10;
+			}
+			elseif ($safeLowCat == 3)
+			{
+				return 20;
+			}
+			elseif ($safeLowCat == 4)
+			{
+				return 21;
+			}
+			elseif ($safeLowCat == 5)
+			{
+				return 31;
+			}
+		}
+		else //the lowest category with 5% hashpower is below the lowest category with 50 transactions
+		{
+			return $min50;
+		}
 
-
-		
 	}
+
 }
 
 //Assign recommended prices (cheapest = lowest price accepted); (fastest = highest min price accepted by all to 10 miners);
 
 $recPrice = recPrice($miners);
-$safeLow = safeCheap($miners, $row['min50'], $categoryHashPower);
+$safeLow = safeCheap($miners, $row['min50'], $safeLowCat, $lowCat);
+echo ("hi ". $safeLow);
 $lowPrice = $miners[0]['minP'];
 $highPrice = $miners[9]['minP'];
-*/
+
 //free memory associated with result
 $result->close();
 
