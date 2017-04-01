@@ -334,7 +334,7 @@ foreach ($miners as $key => $val)
 		$miners[$key]['minpCat'] = 5;
 	}
 }
-echo ($miners[0]['minpCat']);
+
 
 // Find the Gas Price Category for the Lowest Gas Price with at least 50 transactions mined in last 10k blocks. 
 
@@ -360,19 +360,53 @@ else
 	$lowCat = 5;
 }
 
-// Now sum the Empty-Adjusted Hashpower for Low category
+// Now sum the Empty-Adjusted Hashpower for Each category
 
-$categoryHashPower = 0;
 
 foreach ($miners as $key => $val)
 {
-	if ($val['minpCat'] == $lowCat)
+	if ($val['minpCat'] == 1)
 	{
-		$categoryHashPower += $val['emptyAdjustedRate'];
+		$cat1HashPower += $val['emptyAdjustedRate'];
+	}
+	elseif ($val['minpCat'] == 2)
+	{
+		$cat2HashPower += $val['emptyAdjustedRate'];
+	}
+	elseif ($val['minpCat'] == 3)
+	{
+		$cat3HashPower += $val['emptyAdjustedRate'];
+	}
+	elseif ($val['minpCat'] == 4)
+	{
+		$cat4HashPower += $val['emptyAdjustedRate'];
+	}
+	elseif ($val['minpCat'] == 5)
+	{
+		$cat5HashPower += $val['emptyAdjustedRate'];
 	}
 }
 
-echo ($categoryHashPower);
+
+// Now find the lowest category with at least 5% empty adjusted Hashpower
+
+$haspower = array (
+	'cat1' => $cat1HashPower,
+	'cat2' => $cat2HashPower,
+	'cat3' => $cat3HashPower,
+	'cat4' => $cat4HashPower,
+	'cat5' => $cat5HashPower
+)
+
+foreach ($hashpower as $key => $val)
+{
+	if ($val > .05){
+		$safeLowCat = $key;
+		break;
+	}
+}
+
+echo $safeLowCat;
 
 //find gas price accepted by 50% of top 10 miners
 
@@ -388,13 +422,13 @@ function recPrice ($miners)
 	}
 }
 
-function safeCheap ($miners, $min50, $lowRate) //price with at least 50 transactions and accepted by two reliable miners
+function safeCheap ($miners, $min50, $categoryHashPower) //price with at least 50 transactions and 5% empty-adjusted hashpower
 {
 
 	foreach ($miners as $key => $val)
 	{
 		
-			if ($lowRate <8 && $miners[$key]['minP']>= $min50)  /*Minimum gas price at which there are at least 50 transactions mined at or below this price in last 10,000 blocks and category has at least 20% of the non-empty blocks*/
+			if ($val]['minP']>= $min50 )  /*Minimum gas price at which there are at least 50 transactions mined at or below this price in last 10,000 blocks and category has at least 20% of the non-empty blocks*/
 			
 			{
 				return $miners[$key]['minP'];
@@ -408,7 +442,7 @@ function safeCheap ($miners, $min50, $lowRate) //price with at least 50 transact
 //Assign recommended prices (cheapest = lowest price accepted); (fastest = highest min price accepted by all to 10 miners);
 
 $recPrice = recPrice($miners);
-$safeLow = safeCheap($miners, $row['min50'], $lowRate);
+$safeLow = safeCheap($miners, $row['min50'], $categoryHashPower);
 $lowPrice = $miners[0]['minP'];
 $highPrice = $miners[9]['minP'];
 
