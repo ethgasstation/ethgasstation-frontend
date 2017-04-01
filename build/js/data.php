@@ -322,13 +322,13 @@ $hashPower = 0;
 $found = false;
 foreach ($miners as $key => $val) //$miners is sorted by minP
 {
-	$minerGP = $val['minP']
+	$minerGP = $val['minP'];
 
 		foreach ($miners as $key2 => $val2)
 		{
 			if ($val['minP'] <= $minGP)
 			{
-				$hashpower += $val['emptyAdjustedRate']
+				$hashpower += $val['emptyAdjustedRate'];
 				if ($hashpower >= 0.05)
 				{
 					$found = true;
