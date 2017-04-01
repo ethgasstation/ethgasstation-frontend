@@ -364,7 +364,7 @@ else
 
 foreach ($miners as $key => $val)
 {
-	echo ("$val['emptyAdjustedRate']\n");
+	echo ($val['emptyAdjustedRate']."\n");
 }
 
 $cat1HashPower = $cat2HashPower = $cat3HashPower = $cat4HashPower = $cat5HashPower = 0;
