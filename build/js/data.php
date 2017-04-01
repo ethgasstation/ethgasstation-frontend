@@ -307,7 +307,7 @@ foreach ($miners as $key => $val)
 
 array_multisort($price, SORT_ASC, $empty, SORT_ASC, $miners);
 
-//Estimate Empty-block Adjusted Haspower At Safe Low Price 
+//Calculate Miner's Empty-block Adjusted Haspower and Miners Low Price Category
 
 foreach ($miners as $key => $val)
 {
@@ -364,6 +364,7 @@ else
 
 
 $cat1HashPower = $cat2HashPower = $cat3HashPower = $cat4HashPower = $cat5HashPower = 0;
+
 foreach ($miners as $key => $val)
 {
 	if ($val['minpCat'] == 1)
@@ -444,9 +445,9 @@ function safeCheap ($miners, $min50, $safeLowCat, $lowCat)
 		}
 		elseif ($safeLowCat > $lowCat) //the lowest cat with 5% hashpower is higher than than the lowest cat with 50 transactions
 		{
-			if ($safeLowCat == 2)
+			if ($safeLowCat == 2) 
 			{
-				return 10;
+				return 10;  //return the lowest gasprice in the category with 5% hashpower
 			}
 			elseif ($safeLowCat == 3)
 			{
@@ -474,7 +475,6 @@ function safeCheap ($miners, $min50, $safeLowCat, $lowCat)
 
 $recPrice = recPrice($miners);
 $safeLow = safeCheap($miners, $row['min50'], $safeLowCat, $lowCat);
-echo ("hi ". $safeLow . " ". $row['min50']);
 $lowPrice = $miners[0]['minP'];
 $highPrice = $miners[9]['minP'];
 
