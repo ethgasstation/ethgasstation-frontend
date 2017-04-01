@@ -362,7 +362,7 @@ else
 
 // Now sum the Empty-Adjusted Hashpower for Each category
 
-
+$cat1HashPower = $cat2HashPower = $cat3HashPower = $cat4HashPower = $cat5HashPower = 0;
 foreach ($miners as $key => $val)
 {
 	if ($val['minpCat'] == 1)
@@ -390,7 +390,7 @@ foreach ($miners as $key => $val)
 
 // Now find the lowest category with at least 5% empty adjusted Hashpower
 
-$haspower = array (
+$hashpower = array (
 	'cat1' => $cat1HashPower,
 	'cat2' => $cat2HashPower,
 	'cat3' => $cat3HashPower,
