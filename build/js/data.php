@@ -313,103 +313,39 @@ foreach ($miners as $key => $val)
 {
 	$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
 
-	if ($val['minP']<10)
-	{
-		$miners[$key]['minpCat'] = 1;
-	}
-	elseif ($val['minP']>=10 && $val['minP'] < 20)
-	{
-		$miners[$key]['minpCat'] = 2;
-	}
-	elseif ($val['minP']== 20)
-	{
-		$miners[$key]['minpCat'] = 3;
-	}
-	elseif ($val['minP']>20 && $val['minP'] <=30)
-	{
-		$miners[$key]['minpCat'] = 4;
-	}
-	else 
-	{
-		$miners[$key]['minpCat'] = 5;
-	}
 }
 
+// Now find the lowest gas price accepted by miners with 5% adjusted hashpower
 
-// Find the Gas Price Category for the Lowest Gas Price with at least 50 transactions mined in last 10k blocks. 
 
-if ($row['min50']<10)
+$hashPower = 0;
+$found = false;
+foreach ($miners as $key => $val) //$miners is sorted by minP
 {
-	$lowCat = 1;
-} 
-elseif (($row['min50']>=10 && $row['min50']<20)) 
-{
-	$lowCat = 2;
-}
-elseif ($row['min50']==20)
-{
-	$lowCat = 3;
-}
-elseif ($row['min50']>20 && $row['min50']<=30)
-{
-	$lowCat = 4;
-}
+	$minerGP = $val['minP']
 
-else 
-{
-	$lowCat = 5;
-}
-
-// Now sum the Empty-Adjusted Hashpower for Each category
-
-
-$cat1HashPower = $cat2HashPower = $cat3HashPower = $cat4HashPower = $cat5HashPower = 0;
-
-foreach ($miners as $key => $val)
-{
-	if ($val['minpCat'] == 1)
+		foreach ($miners as $key2 => $val2)
+		{
+			if ($val['minP'] <= $minGP)
+			{
+				$hashpower += $val['emptyAdjustedRate']
+				if ($hashpower >= 0.05)
+				{
+					$found = true;
+					$gasPrice5Mining = $val['minP'];
+					break;
+				}
+			}
+		}
+	if ($found)
 	{
-		$cat1HashPower += $val['emptyAdjustedRate'];
-	}
-	elseif ($val['minpCat'] == 2)
-	{
-		$cat2HashPower += $val['emptyAdjustedRate'];
-	}
-	elseif ($val['minpCat'] == 3)
-	{
-		$cat3HashPower += $val['emptyAdjustedRate'];
-	}
-	elseif ($val['minpCat'] == 4)
-	{
-		$cat4HashPower += $val['emptyAdjustedRate'];
-	}
-	elseif ($val['minpCat'] == 5)
-	{
-		$cat5HashPower += $val['emptyAdjustedRate'];
-	}
-}
-
-
-// Now find the lowest category with at least 5% empty adjusted Hashpower
-
-$hashpower = array (
-	'cat1' => $cat1HashPower,
-	'cat2' => $cat2HashPower,
-	'cat3' => $cat3HashPower,
-	'cat4' => $cat4HashPower,
-	'cat5' => $cat5HashPower
-);
-
-$x=1;
-foreach ($hashpower as $key => $val)
-{
-
-	if ($val > .05){
-		$safeLowCat = $x;
 		break;
 	}
-	$x++;
+	$hashpower = 0;
+		
 }
+
+
 
 
 //find gas price accepted by 50% of top 10 miners
@@ -426,47 +362,16 @@ function recPrice ($miners)
 	}
 }
 
-function safeCheap ($miners, $min50, $safeLowCat, $lowCat) 
+function safeCheap ($min50, $gasPrice5Mining) 
 
 {
-	foreach ($miners as $key => $val)
+	if ($min50 <= $gasPrice5Mining)
 	{
-		if ($safeLowCat == $lowCat) //the price with 50 tx is in a category with 5% hashpower
-		{
-			if ($val['minP']<= $min50) //Miner's lowest price is at or below the price with 50 transactions
-			{
-				return $min50;
-			}
-			else //Miner's lowest price is above the price with 50 transactions
-			{
-				return $val['minP']; 
-			}
-					
-		}
-		elseif ($safeLowCat > $lowCat) //the lowest cat with 5% hashpower is higher than than the lowest cat with 50 transactions
-		{
-			if ($safeLowCat == 2) 
-			{
-				return 10;  //return the lowest gasprice in the category with 5% hashpower
-			}
-			elseif ($safeLowCat == 3)
-			{
-				return 20;
-			}
-			elseif ($safeLowCat == 4)
-			{
-				return 21;
-			}
-			elseif ($safeLowCat == 5)
-			{
-				return 31;
-			}
-		}
-		else //the lowest category with 5% hashpower is below the lowest category with 50 transactions
-		{
-			return $min50;
-		}
-
+		return $gasPrice5Mining;
+	}
+	else
+	{
+		return $min50;
 	}
 
 }
@@ -474,7 +379,7 @@ function safeCheap ($miners, $min50, $safeLowCat, $lowCat)
 //Assign recommended prices (cheapest = lowest price accepted); (fastest = highest min price accepted by all to 10 miners);
 
 $recPrice = recPrice($miners);
-$safeLow = safeCheap($miners, $row['min50'], $safeLowCat, $lowCat);
+$safeLow = safeCheap( $row['min50'], $gasPrice5Mining);
 $lowPrice = $miners[0]['minP'];
 $highPrice = $miners[9]['minP'];
 
