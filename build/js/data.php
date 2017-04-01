@@ -474,7 +474,7 @@ function safeCheap ($miners, $min50, $safeLowCat, $lowCat)
 
 $recPrice = recPrice($miners);
 $safeLow = safeCheap($miners, $row['min50'], $safeLowCat, $lowCat);
-echo ("hi ". $safeLow);
+echo ("hi ". $safeLow . " ". $row['min50']);
 $lowPrice = $miners[0]['minP'];
 $highPrice = $miners[9]['minP'];
 
