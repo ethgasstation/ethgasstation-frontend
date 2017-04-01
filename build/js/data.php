@@ -328,8 +328,8 @@ foreach ($miners as $key => $val) //$miners is sorted by minP
 		{
 			if ($val['minP'] <= $minerGP)
 			{
-				$hashpower += $val['emptyAdjustedRate'];
-				if ($hashpower >= 0.05)
+				$hashPower += $val['emptyAdjustedRate'];
+				if ($hashPower >= 0.05)
 				{
 					$found = true;
 					$gasPrice5Mining = $val['minP'];
@@ -341,7 +341,7 @@ foreach ($miners as $key => $val) //$miners is sorted by minP
 	{
 		break;
 	}
-	$hashpower = 0;
+	$hashPower = 0;
 		
 }
 
