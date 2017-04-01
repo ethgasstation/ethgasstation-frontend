@@ -312,10 +312,11 @@ array_multisort($price, SORT_ASC, $empty, SORT_ASC, $miners);
 foreach ($miners as $key => $val)
 {
 	$val['emptyAdjustedRate'] = $val['pctTot'] * $val['pctEmp'];
-
+	echo ($val['minP']);
 	if ($val['minP']<10)
 	{
 		$val['minpCat'] = 1;
+		echo ($val['minpCat'] . "hi");
 	}
 	elseif ($val['minP']>=10 && $val['minP'] < 20)
 	{
