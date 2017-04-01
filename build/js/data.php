@@ -312,27 +312,26 @@ array_multisort($price, SORT_ASC, $empty, SORT_ASC, $miners);
 foreach ($miners as $key => $val)
 {
 	$val['emptyAdjustedRate'] = $val['pctTot'] * $val['pctEmp'];
-	echo ($val['minP']);
+	
 	if ($val['minP']<10)
 	{
-		$val['minpCat'] = 1;
-		echo ($val['minpCat'] . "hi");
+		$miners[$key]['minpCat'] = 1;
 	}
 	elseif ($val['minP']>=10 && $val['minP'] < 20)
 	{
-		$val['minpCat'] = 2;
+		$miners[$key]['minpCat'] = 2;
 	}
 	elseif ($val['minP']== 20)
 	{
-		$val['minpCat'] = 3;
+		$miners[$key]['minpCat'] = 3;
 	}
 	elseif ($val['minP']>20 && $val['minP'] <=30)
 	{
-		$val['minpCat'] = 4;
+		$miners[$key]['minpCat'] = 4;
 	}
 	else 
 	{
-		$val['minpCat'] = 5;
+		$miners[$key]['minpCat'] = 5;
 	}
 }
 echo ($miners[0]['minpCat']);
