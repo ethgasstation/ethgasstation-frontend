@@ -334,7 +334,7 @@ foreach ($miners as $key => $val)
 		$val['minpCat'] = 5;
 	}
 }
-echo ($miner[0]);
+echo ($miners[0]);
 
 // Find the Gas Price Category for the Lowest Gas Price with at least 50 transactions mined in last 10k blocks. 
 
