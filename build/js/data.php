@@ -396,7 +396,7 @@ $haspower = array (
 	'cat3' => $cat3HashPower,
 	'cat4' => $cat4HashPower,
 	'cat5' => $cat5HashPower
-)
+);
 
 foreach ($hashpower as $key => $val)
 {
@@ -421,7 +421,7 @@ function recPrice ($miners)
 		}
 	}
 }
-
+/*
 function safeCheap ($miners, $min50, $categoryHashPower) //price with at least 50 transactions and 5% empty-adjusted hashpower
 {
 
@@ -429,7 +429,7 @@ function safeCheap ($miners, $min50, $categoryHashPower) //price with at least 5
 	{
 		
 			if ($val]['minP']>= $min50 )  /*Minimum gas price at which there are at least 50 transactions mined at or below this price in last 10,000 blocks and category has at least 20% of the non-empty blocks*/
-			
+		/*	
 			{
 				return $miners[$key]['minP'];
 			}
@@ -445,7 +445,7 @@ $recPrice = recPrice($miners);
 $safeLow = safeCheap($miners, $row['min50'], $categoryHashPower);
 $lowPrice = $miners[0]['minP'];
 $highPrice = $miners[9]['minP'];
-
+*/
 //free memory associated with result
 $result->close();
 
