@@ -311,8 +311,8 @@ array_multisort($price, SORT_ASC, $empty, SORT_ASC, $miners);
 
 foreach ($miners as $key => $val)
 {
-	$val['emptyAdjustedRate'] = $val['pctTot'] * $val['pctEmp'];
-	
+	$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * $val['pctEmp'];
+
 	if ($val['minP']<10)
 	{
 		$miners[$key]['minpCat'] = 1;
