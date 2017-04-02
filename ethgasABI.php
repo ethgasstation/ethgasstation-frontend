@@ -103,51 +103,148 @@ foreach ($miners as $key => $val)
 array_multisort($price, SORT_ASC, $empty, SORT_ASC, $miners);
 
 
+//Calculate Miner's Empty-block Adjusted Haspower
+
+/*First determine if empty block percentage is higher than expected based on minimum price.  If it is then the empty-adjusted rate is the pecent of total blocks * (1-%empty blocks).  i.e. if a miner mines 10% of blocks but has 40% of blocks empty and has a mininum price that should allow for 99% of transactions to be mined, then then empty adjusted haspower as a pecent of total blocks mined is .1 * (1-.4) = 6%.  Howerver, if a miner mines 10% of all blocks and has 40% blocks empty but has a minimum price that only includes 10% of transactions (so 90% of blocks could be empty), then the empty-adjusted hashpower is the same as their total hashpower (i.e 10%). */
+
+foreach ($miners as $key => $val)
+{
+	if ($val['minP'] < 10) //In this category, we assume that there should be no empty blocks
+	{
+		
+		$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
+		
+	}
+	elseif ($val['minP'] >=10 && $val['minP'] < 20)
+	{
+		$eligibleTransactions = ($cat2Tx+$cat3Tx+$cat4Tx+$cat5Tx)/$totTx;
+		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
+
+		if ($observedExpectedRatio > 1) 
+		{
+			$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
+		}
+		else
+		{
+			$miners[$key]['emptyAdjustedRate'] = $val['pctTot'];
+		}
+
+	}
+	elseif ($val['minP'] >=10 && $val['minP'] == 20)
+	{
+		$eligibleTransactions = ($cat3Tx+$cat4Tx+$cat5Tx)/$totTx;
+		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
+		
+		if ($observedExpectedRatio > 1) 
+		{
+			$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
+		}
+		else
+		{
+			$miners[$key]['emptyAdjustedRate'] = $val['pctTot'];
+		}
+		
+	}
+	elseif ($val['minP'] >20 && $val['minP'] <= 30)
+	{
+		$eligibleTransactions = ($cat4Tx+$cat5Tx)/$totTx;
+		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
+		
+		if ($observedExpectedRatio > 1 ) 
+		{
+			$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
+		}
+		else
+		{
+			$miners[$key]['emptyAdjustedRate'] = $val['pctTot'];
+		}
+
+	}
+	else
+	{
+		$eligibleTransactions = ($cat5Tx)/$totTx;
+		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
+		
+		if ($observedExpectedRatio > 1) 
+		{
+			$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
+		}
+		else
+		{
+			$miners[$key]['emptyAdjustedRate'] = $val['pctTot'];
+		}
+	
+	}
+	
+	
+}
+
+
+// Now find the lowest gas price accepted by miners with 5% adjusted hashpower
+
+
+$hashPower = 0;
+$found = false;
+foreach ($miners as $key => $val) //$miners is sorted by minP
+{
+	$minerGP = $val['minP'];
+
+		foreach ($miners as $key2 => $val2)
+		{
+			if ($val['minP'] <= $minerGP)
+			{
+				$hashPower += $val['emptyAdjustedRate'];
+				if ($hashPower >= 0.05)
+				{
+					$found = true;
+					$gasPrice5Mining = $val['minP'];
+					break;
+				}
+			}
+		}
+	if ($found)
+	{
+		break;
+	}
+	$hashPower = 0;
+		
+}
+
+
+
+
 //find gas price accepted by 50% of top 10 miners
 
 function recPrice ($miners)
 {
 	$cumblocks =0;
-	$x = 0;
 	foreach ($miners as $key => $val)
 	{
 		$cumblocks += $val['pctTot'];
 		if ($cumblocks > .5){
-			return $miners[$x]['minP'];
+			return $miners[$key]['minP'];
 		}
-	$x++;
 	}
 }
 
-function safeCheap ($miners, $min50) //price with at least 25 transactions and accepted by two miners with close to full blocks
-{
-	$cumblocks =0;
-	$x =0;
-	$y =0;
-	foreach ($miners as $key => $val)
-	{
-		if ($val['pctEmp'] < .15) //miner has less than 15% emptyblocks
-		{
-			$y++;
-			if ($y>=2 && $miners[$x]['minP']>= $min50)  /*Minimum price from second miner mining nearly full blocks and at least 50 transactions mined at or below this price in last 10,000 blocks*/
-			
-			{
-				return $miners[$x]['minP'];
-			}
-            elseif ($x ==9)
-            {
-                return $miners[$x]['minP'];
-            }
+function safeCheap ($min50, $gasPrice5Mining) 
 
-		}
-	$x++;
+{
+	if ($min50 <= $gasPrice5Mining)
+	{
+		return $gasPrice5Mining;
 	}
+	else
+	{
+		return $min50;
+	}
+
 }
 
 //Assign recommended prices (cheapest = lowest price accepted); (fastest = highest min price accepted by all to 10 miners);
 
 $recPrice = recPrice($miners);
-$safeLow = safeCheap($miners, $row['min50']);
+$safeLow = safeCheap( $row['min50'], $gasPrice5Mining);
 $lowPrice = $miners[0]['minP'];
 $highPrice = $miners[9]['minP'];
 
@@ -157,10 +254,7 @@ $result->close();
 //close connection
 $mysqli->close();
 
-$array = array ('cheapest'=>$lowPrice, 'safeLow'=> $safeLow, 'average'=>$recPrice, 'fastest'=>$highPrice);
 
-print json_encode($array);
+
 
 ?>
-
-
