@@ -309,11 +309,78 @@ array_multisort($price, SORT_ASC, $empty, SORT_ASC, $miners);
 
 //Calculate Miner's Empty-block Adjusted Haspower and Miners Low Price Category
 
+/*First determine if empty block percentage is higher than expected based on minimum price.  If it is then the empty-adjusted rate is the pecent of total blocks * (1-%empty blocks).  i.e. if a miner mines 10% of blocks but has 40% of blocks empty and has a mininum price that should allow for 99% of transactions to be mined, then then empty adjusted haspower as a pecent of total blocks mined is .1 * (1-.4) = 6%.  Howerver, if a miner mines 10% of all blocks and has 40% blocks empty but has a minimum price that only includes 10% of transactions (so 90% of blocks could be empty), then the empty-adjusted hashpower is the same as their total hashpower (i.e 10%). */
+
 foreach ($miners as $key => $val)
 {
-	$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
+	if ($val['minP'] < 10) //In this category, we assume that there should be no empty blocks
+	{
+		$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
+	}
+	elseif ($val['minP'] >=10 && $val['minP'] < 20)
+	{
+		$eligibleTransactions = ($cat2Tx+$cat3Tx+$cat4Tx+$cat5Tx)/$totTx;
+		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
 
+		if ($observedExpectedRatio < 0.7) //allow for variance
+		{
+			$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
+		}
+		else
+		{
+			$miners[$key]['emptyAdjustedRate'] = $val['pctTot'];
+		}
+		$miners[$key]['minpCat'] = 2;
+	}
+	elseif ($val['minP'] >=10 && $val['minP'] == 20)
+	{
+		$eligibleTransactions = ($cat3Tx+$cat4Tx+$cat5Tx)/$totTx;
+		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
+		
+		if ($observedExpectedRatio < 0.7) //allow for variance
+		{
+			$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
+		}
+		else
+		{
+			$miners[$key]['emptyAdjustedRate'] = $val['pctTot'];
+		}
+		
+	}
+	elseif ($val['minP'] >20 && $val['minP'] <= 30)
+	{
+		$eligibleTransactions = ($cat4Tx+$cat5Tx)/$totTx;
+		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
+		
+		if ($observedExpectedRatio < 0.7) //allow for variance
+		{
+			$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
+		}
+		else
+		{
+			$miners[$key]['emptyAdjustedRate'] = $val['pctTot'];
+		}
+
+	}
+	else
+	{
+		$eligibleTransactions = ($cat5Tx)/$totTx;
+		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
+		
+		if ($observedExpectedRatio < 0.7) //allow for variance
+		{
+			$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
+		}
+		else
+		{
+			$miners[$key]['emptyAdjustedRate'] = $val['pctTot'];
+		}
+		$miners[$key]['minpCat'] = 2;
+	}
+	
+	echo ($key . " " . $val['pctTot'] . " ". $val['pctEmp']. " " . $miners[$key]['emptyAdjustedRate']. "break ");
 }
+
 
 // Now find the lowest gas price accepted by miners with 5% adjusted hashpower
 
