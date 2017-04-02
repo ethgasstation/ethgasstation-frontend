@@ -354,7 +354,7 @@ foreach ($miners as $key => $val)
 		$eligibleTransactions = ($cat4Tx+$cat5Tx)/$totTx;
 		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
 
-		echo("hi" . $eligibleTransactions . " " . $observedExpectedRatio);
+		echo("hi" . $eligibleTransactions . " " . $val['pctEmp']. " " .$observedExpectedRatio);
 		
 		if ($observedExpectedRatio > .8 ) //allow for variance
 		{
