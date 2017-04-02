@@ -254,7 +254,14 @@ $result->close();
 //close connection
 $mysqli->close();
 
+$abi = array(
+	"Cheapest"=>$lowPrice,
+	"SafeLow"=>$safeLow,
+	"Average"=>$recPrice,
+	"Fastest"=>$highPrice
+);
 
+print json_encode($abi);
 
 
 ?>
