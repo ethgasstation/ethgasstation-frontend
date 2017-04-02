@@ -353,8 +353,6 @@ foreach ($miners as $key => $val)
 	{
 		$eligibleTransactions = ($cat4Tx+$cat5Tx)/$totTx;
 		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
-
-		echo("hi" . $eligibleTransactions . " " . $val['pctEmp']. " " .$observedExpectedRatio);
 		
 		if ($observedExpectedRatio > 1 ) 
 		{
@@ -382,7 +380,7 @@ foreach ($miners as $key => $val)
 	
 	}
 	
-	echo ($val['name']. " " . $val['pctTot'] . " ". $val['pctEmp']. " " . $miners[$key]['emptyAdjustedRate']. " break ");
+	
 }
 
 
