@@ -378,7 +378,7 @@ foreach ($miners as $key => $val)
 		$miners[$key]['minpCat'] = 2;
 	}
 	
-	echo ($key . " " . $val['pctTot'] . " ". $val['pctEmp']. " " . $miners[$key]['emptyAdjustedRate']. "break ");
+	echo ($val['name']. " " . $val['pctTot'] . " ". $val['pctEmp']. " " . $miners[$key]['emptyAdjustedRate']. " break ");
 }
 
 
