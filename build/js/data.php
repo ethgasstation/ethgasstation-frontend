@@ -324,7 +324,7 @@ foreach ($miners as $key => $val)
 		$eligibleTransactions = ($cat2Tx+$cat3Tx+$cat4Tx+$cat5Tx)/$totTx;
 		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
 
-		if ($observedExpectedRatio > .8) //Allow for variance
+		if ($observedExpectedRatio > 1) 
 		{
 			$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
 		}
@@ -339,7 +339,7 @@ foreach ($miners as $key => $val)
 		$eligibleTransactions = ($cat3Tx+$cat4Tx+$cat5Tx)/$totTx;
 		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
 		
-		if ($observedExpectedRatio > .8) //allow for variance
+		if ($observedExpectedRatio > 1) 
 		{
 			$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
 		}
@@ -356,7 +356,7 @@ foreach ($miners as $key => $val)
 
 		echo("hi" . $eligibleTransactions . " " . $val['pctEmp']. " " .$observedExpectedRatio);
 		
-		if ($observedExpectedRatio > .8 ) //allow for variance
+		if ($observedExpectedRatio > 1 ) 
 		{
 			$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
 		}
@@ -371,7 +371,7 @@ foreach ($miners as $key => $val)
 		$eligibleTransactions = ($cat5Tx)/$totTx;
 		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
 		
-		if ($observedExpectedRatio > .8) //allow for variance
+		if ($observedExpectedRatio > 1) 
 		{
 			$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
 		}
