@@ -315,17 +315,9 @@ foreach ($miners as $key => $val)
 {
 	if ($val['minP'] < 10) //In this category, we assume that there should be no empty blocks
 	{
-		$eligibleTransactions = ($cat1Tx+$cat2Tx+$cat3Tx+$cat4Tx+$cat5Tx)/$totTx;
-		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
-
-		if ($observedExpectedRatio > .8) //Allow for variance
-		{
-			$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
-		}
-		else
-		{
-			$miners[$key]['emptyAdjustedRate'] = $val['pctTot'];
-		}
+		
+		$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
+		
 	}
 	elseif ($val['minP'] >=10 && $val['minP'] < 20)
 	{
