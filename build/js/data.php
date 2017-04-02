@@ -315,7 +315,7 @@ foreach ($miners as $key => $val)
 {
 	if ($val['minP'] < 10) //In this category, we assume that there should be no empty blocks
 	{
-		$eligibleTransactions = ($cat1tx+$cat2Tx+$cat3Tx+$cat4Tx+$cat5Tx)/$totTx;
+		$eligibleTransactions = ($cat1Tx+$cat2Tx+$cat3Tx+$cat4Tx+$cat5Tx)/$totTx;
 		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
 
 		if ($observedExpectedRatio > .8) //Allow for variance
