@@ -141,7 +141,7 @@ foreach ($miners as $key => $val)
 	{
 		
 		$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
-		echo "$key ". " hi ". $val['name'] . " ". $miners[$key]['emptyAdjustedRate'];
+
 	}
 	elseif ($val['minP'] >=10 && $val['minP'] < 20)
 	{
@@ -219,7 +219,7 @@ foreach ($miners as $key => $val) //$miners is sorted by minP
 	$minerGP = $val['minP'];
 
 		foreach ($miners as $key2 => $val2)
-		{	echo "a ". "$minerGP ". $val2['name']. " ddd ". $val2['minP'];
+		{	
 			if ($val2['minP'] <= $minerGP)
 			{
 				$hashPower += $val2['emptyAdjustedRate'];
@@ -272,7 +272,6 @@ function safeCheap ($min50, $gasPrice5Mining)
 
 //Assign recommended prices (cheapest = lowest price accepted); (fastest = highest min price accepted by all to 10 miners);
 
-echo "\n ttt $gasPrice5Mining ff" . $row['min50'];
 
 $recPrice = recPrice($miners);
 $safeLow = safeCheap( $row['min50'], $gasPrice5Mining);

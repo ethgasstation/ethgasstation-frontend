@@ -321,7 +321,7 @@ foreach ($miners as $key => $val)
 	}
 	elseif ($val['minP'] >=10 && $val['minP'] < 20)
 	{
-		$eligibleTransactions = ($cat2Tx+$cat3Tx+$cat4Tx+$cat5Tx)/$totTx;
+		$eligibleTransactions = ($cat2Tx+$cat3Tx+$cat4Tx+$cat5Tx)/$totTx - .0001; //prevent div 0
 		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
 
 		if ($observedExpectedRatio > 1) 
@@ -336,7 +336,7 @@ foreach ($miners as $key => $val)
 	}
 	elseif ($val['minP'] >=10 && $val['minP'] == 20)
 	{
-		$eligibleTransactions = ($cat3Tx+$cat4Tx+$cat5Tx)/$totTx;
+		$eligibleTransactions = ($cat3Tx+$cat4Tx+$cat5Tx)/$totTx - .0001;
 		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
 		
 		if ($observedExpectedRatio > 1) 
@@ -351,7 +351,7 @@ foreach ($miners as $key => $val)
 	}
 	elseif ($val['minP'] >20 && $val['minP'] <= 30)
 	{
-		$eligibleTransactions = ($cat4Tx+$cat5Tx)/$totTx;
+		$eligibleTransactions = ($cat4Tx+$cat5Tx)/$totTx - .0001;
 		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
 		
 		if ($observedExpectedRatio > 1 ) 
@@ -366,7 +366,7 @@ foreach ($miners as $key => $val)
 	}
 	else
 	{
-		$eligibleTransactions = ($cat5Tx)/$totTx;
+		$eligibleTransactions = ($cat5Tx)/$totTx - .0001;
 		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
 		
 		if ($observedExpectedRatio > 1) 
@@ -395,13 +395,13 @@ foreach ($miners as $key => $val) //$miners is sorted by minP
 
 		foreach ($miners as $key2 => $val2)
 		{
-			if ($val['minP'] <= $minerGP)
+			if ($val2['minP'] <= $minerGP)
 			{
-				$hashPower += $val['emptyAdjustedRate'];
+				$hashPower += $val2['emptyAdjustedRate'];
 				if ($hashPower >= 0.05)
 				{
 					$found = true;
-					$gasPrice5Mining = $val['minP'];
+					$gasPrice5Mining = $val2['minP'];
 					break;
 				}
 			}
