@@ -219,7 +219,7 @@ foreach ($miners as $key => $val) //$miners is sorted by minP
 	$minerGP = $val['minP'];
 
 		foreach ($miners as $key2 => $val2)
-		{
+		{	echo "a ". "$minerGP ". $val['name']. " ddd ". $val['minP'];
 			if ($val['minP'] <= $minerGP)
 			{
 				$hashPower += $val['emptyAdjustedRate'];
