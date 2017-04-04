@@ -17,6 +17,33 @@ $query = "SELECT * FROM txDataLast10k ORDER BY id DESC LIMIT 1";
 $result = $mysqli->query($query);
 $row = $result->fetch_assoc();
 
+//Get data for Transaction confirmation by gas price graph
+
+$cat1Tx = $row['cat1gasTotTx'];
+$cat1TimeMed = $row['cat1gasMedianTime'];
+$cat1Time95 = $row['cat1gas95DelayTime'];
+
+$cat2Tx = $row['cat2gasTotTx'];
+$cat2TimeMed = $row['cat2gasMedianTime'];
+$cat2Time95 = $row['cat2gas95DelayTime'];
+
+$cat3Tx = $row['cat3gasTotTx'];
+$cat3TimeMed = $row['cat3gasMedianTime'];
+$cat3Time95 = $row['cat3gas95DelayTime'];
+
+$cat4Tx = $row['cat4gasTotTx'];
+$cat4TimeMed = $row['cat4gasMedianTime'];
+$cat4Time95 = $row['cat4gas95DelayTime'];
+
+$cat5Tx = $row['cat5gasTotTx'];
+$cat5TimeMed = $row['cat5gasMedianTime'];
+$cat5Time95 = $row['cat5gas95DelayTime'];
+
+if ($cat1Tx == null)
+{
+	$cat1tx = 0 ;
+}
+
 
 $miners = array (
 	array (
@@ -113,7 +140,7 @@ foreach ($miners as $key => $val)
 	{
 		
 		$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
-		echo "$key ". " hi ". "pctEmp" . 'emptyAdjustedRate';
+		echo "$key ". " hi ". "$val['pctEmp']" . '$miners[$key]['emptyAdjustedRate'];
 	}
 	elseif ($val['minP'] >=10 && $val['minP'] < 20)
 	{
