@@ -140,11 +140,12 @@ foreach ($miners as $key => $val)
 	{
 		
 		$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
-		echo "$key ". " hi ". $val[pctEmp] . " ". $miners[$key]['emptyAdjustedRate'];
+		echo "$key ". " hi ". $val['name'] . " ". $miners[$key]['emptyAdjustedRate'];
 	}
 	elseif ($val['minP'] >=10 && $val['minP'] < 20)
 	{
-		$eligibleTransactions = ($cat2Tx+$cat3Tx+$cat4Tx+$cat5Tx)/$totTx;
+		$eligibleTransactions = ($cat2Tx+$cat3Tx+$cat4Tx+$cat5Tx)/$totTx - .0001;
+
 		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
 
 		if ($observedExpectedRatio > 1) 
@@ -159,7 +160,7 @@ foreach ($miners as $key => $val)
 	}
 	elseif ($val['minP'] >=10 && $val['minP'] == 20)
 	{
-		$eligibleTransactions = ($cat3Tx+$cat4Tx+$cat5Tx)/$totTx;
+		$eligibleTransactions = ($cat3Tx+$cat4Tx+$cat5Tx)/$totTx - 0.0001;
 		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
 		
 		if ($observedExpectedRatio > 1) 
@@ -174,7 +175,7 @@ foreach ($miners as $key => $val)
 	}
 	elseif ($val['minP'] >20 && $val['minP'] <= 30)
 	{
-		$eligibleTransactions = ($cat4Tx+$cat5Tx)/$totTx;
+		$eligibleTransactions = ($cat4Tx+$cat5Tx)/$totTx - 0.0001;
 		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
 		
 		if ($observedExpectedRatio > 1 ) 
@@ -189,7 +190,7 @@ foreach ($miners as $key => $val)
 	}
 	else
 	{
-		$eligibleTransactions = ($cat5Tx)/$totTx;
+		$eligibleTransactions = ($cat5Tx)/$totTx -0.0001;
 		$observedExpectedRatio = $val['pctEmp']/(1-$eligibleTransactions);
 		
 		if ($observedExpectedRatio > 1) 
