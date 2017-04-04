@@ -272,6 +272,8 @@ function safeCheap ($min50, $gasPrice5Mining)
 
 //Assign recommended prices (cheapest = lowest price accepted); (fastest = highest min price accepted by all to 10 miners);
 
+echo "\n " . $row['min50'];
+
 $recPrice = recPrice($miners);
 $safeLow = safeCheap( $row['min50'], $gasPrice5Mining);
 $lowPrice = $miners[0]['minP'];
