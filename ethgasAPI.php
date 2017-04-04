@@ -140,7 +140,7 @@ foreach ($miners as $key => $val)
 	{
 		
 		$miners[$key]['emptyAdjustedRate'] = $val['pctTot'] * (1-$val['pctEmp']);
-		echo "$key ". " hi ". "$val['pctEmp']" . '$miners[$key]['emptyAdjustedRate'];
+		echo "$key ". " hi ". $val[pctEmp] . " ". $miners[$key]['emptyAdjustedRate'];
 	}
 	elseif ($val['minP'] >=10 && $val['minP'] < 20)
 	{
