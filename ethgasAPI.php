@@ -18,6 +18,7 @@ $result = $mysqli->query($query);
 $row = $result->fetch_assoc();
 
 //Get data for Transaction confirmation by gas price graph
+$totTx = $row['totalTx'];
 
 $cat1Tx = $row['cat1gasTotTx'];
 $cat1TimeMed = $row['cat1gasMedianTime'];
