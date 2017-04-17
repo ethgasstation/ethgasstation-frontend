@@ -291,7 +291,9 @@ $abi = array(
 	"Fastest"=>$highPrice
 );
 
-print json_encode($abi);
+$output = json_encode($abi, JSON_NUMERIC_CHECK);
+file_put_contents ('ethgasAPI.html', $output);
 
+echo ("API complete");
 
 ?>
