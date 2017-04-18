@@ -675,7 +675,7 @@ function writeAPIandCALC (){
         }
         console.log(stdout);
     })
-    const child = execFile('gascalc.py', (error, stdout, stderr) => {
+    const child2 = execFile('gascalc.py', (error, stdout, stderr) => {
         if (error) {
             throw error
         }
