@@ -669,13 +669,13 @@ function writeAPIandCALC (){
        
         //Create gasAPI /Calculator
     const execFile = require('child_process').execFile;
-    const child = execFile('ethgasAPI.php', (error, stdout, stderr) => {
+    const child = execFile('php ethgasAPI.php', (error, stdout, stderr) => {
         if (error) {
             throw error;
         }
         console.log(stdout);
     })
-    const child2 = execFile('gascalc.py', (error, stdout, stderr) => {
+    const child2 = execFile('python gascalc.py', (error, stdout, stderr) => {
         if (error) {
             throw error
         }
