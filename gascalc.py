@@ -4,10 +4,11 @@ import numpy as np
 import matplotlib.pyplot as plt 
 import statsmodels.api as sm
 import math
+import sys
 
 # Get current Gas Price Cats
 import urllib,json
-url = "http://localhost/website/ethgasAPI.html"
+url = "http://localhost/ethgasAPI.html"
 response = urllib.urlopen(url)
 gasdata = json.loads(response.read())
 response.close()
@@ -30,13 +31,14 @@ head = cursor.column_names
 txData = pd.DataFrame(cursor.fetchall())
 txData.columns = head
 
-
+print (sys.argv)
 #Clean Data
 txData['minedGasPrice'] = pd.to_numeric(txData['minedGasPrice'], errors='coerce')
 txData['delay'] = pd.to_numeric(txData['delay'], errors='coerce')
 
-txData.loc[txData['delay']>50, 'delay'] =  np.nan
-txData.loc[txData['delaysecs']>725, 'delaysecs'] = np.nan
+txData.loc[(txData['delay']>50) | (txData['delay']<=0), 'delay'] =  np.nan
+txData.loc[(txData['delaysecs']>725) | (txData['delaysecs']<=0), 'delaysecs'] = np.nan
+
 txData = txData.dropna()
 
 #--Clean Data

@@ -675,7 +675,8 @@ function writeAPIandCALC (){
         }
         console.log(stdout);
     })
-    const child2 = exec('python gascalc.py', (error, stdout, stderr) => {
+    execString = 'python gascalc.py ' + startSelect + ' ' + toBlock
+    const child2 = exec(execString, (error, stdout, stderr) => {
         if (error) {
             throw error
         }
