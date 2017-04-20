@@ -8,7 +8,7 @@ import sys
 
 # Get current Gas Price Cats
 import urllib,json
-url = "ethgasAPI.html"
+url = "http://localhost/ethgasAPI.html"
 response = urllib.urlopen(url)
 gasdata = json.loads(response.read())
 response.close()
