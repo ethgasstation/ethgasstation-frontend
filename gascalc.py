@@ -8,7 +8,7 @@ import sys
 
 # Get current Gas Price Cats
 import urllib,json
-url = "http://localhost/ethgasAPI.html"
+url = "ethgasAPI.html"
 response = urllib.urlopen(url)
 gasdata = json.loads(response.read())
 response.close()
@@ -201,9 +201,32 @@ def definegasvars(ncat1, ncat2, txData):
 ncat1 = len(txData.loc[txData['minedGasPrice'] <10, :].index)
 ncat2 = len(txData.loc[(txData['minedGasPrice'] >= 10) & (txData['minedGasPrice'] < 20), :].index)
 '''
+# sort dataframe by gasprice
+
+txData = txData.sort_values('minedGasPrice')
+txData = txData.reset_index(drop=True)
+
+x= len(txData)
+y=0
+while y < (x-50):
+    txDataSub = txData.iloc[y:y+50]
+
+    if (txDataSub['delay'].mean())<=15:
+        print(txDataSub.loc[y+49,['minedGasPrice']])
+        print(y)
+        print(txDataSub['delay'].mean())
+        print(txDataSub['delaysecs'].mean())
+        break
+    y=y+1
+
+txDataMiner = pd.DataFrame ({'count':txData.groupby('miner').size()}).reset_index()
+
+txDataMiner = txDataMiner.sort_values('count', ascending=False)
+print(txDataMiner)
+
 #define gas predictors
 
-
+'''
 dep = pd.DataFrame()
 dep['cat1'] = (txData['minedGasPrice'] < gasdata['Average']).astype(int)
 dep['cat2'] = (txData['minedGasPrice'] == gasdata['Average']).astype(int)
@@ -242,7 +265,7 @@ print (results.summary())
 dep['predict'] = results.predict()
 dep['delay'] = indep
 print(dep)
-
+'''
 
 '''
 
