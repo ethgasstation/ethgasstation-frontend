@@ -16,22 +16,23 @@ for key in gasdata:
     gasdata[key] = int(gasdata[key])
 
 #-- GasPriceCats
-
+startBlock = sys.argv[1]
+endBlock = sys.argv[2]
 
 cnx = mysql.connector.connect(user='jake', password='dopamine', host='127.0.0.1', database='tx')
 
 cursor = cnx.cursor()
 
 
-query = ("SELECT (minedtransactions.minedBlock - transactions.postedBlock) as delay, (minedtransactions.tsMined - transactions.tsPosted) as delaysecs, minedtransactions.gasused, transactions.gasOffered, minedtransactions.minedGasPrice,minedtransactions.minedGasPriceCat, minedtransactions.miner FROM transactions INNER JOIN minedtransactions ON transactions.txHash = minedtransactions.txHash WHERE transactions.postedBlock IS NOT NULL AND transactions.postedBlock > 1 AND transactions.postedBlock < 5000000 ORDER BY delay")
+query = ("SELECT (minedtransactions.minedBlock - transactions.postedBlock) as delay, (minedtransactions.tsMined - transactions.tsPosted) as delaysecs, minedtransactions.gasused, transactions.gasOffered, minedtransactions.minedGasPrice,minedtransactions.minedGasPriceCat, minedtransactions.miner FROM transactions INNER JOIN minedtransactions ON transactions.txHash = minedtransactions.txHash WHERE transactions.postedBlock IS NOT NULL AND transactions.postedBlock > %s AND transactions.postedBlock < %s ORDER BY delay")
 
-cursor.execute(query)
+cursor.execute(query, (startBlock, endBlock))
 head = cursor.column_names
 
 txData = pd.DataFrame(cursor.fetchall())
 txData.columns = head
 
-print (sys.argv)
+
 #Clean Data
 txData['minedGasPrice'] = pd.to_numeric(txData['minedGasPrice'], errors='coerce')
 txData['delay'] = pd.to_numeric(txData['delay'], errors='coerce')
@@ -83,8 +84,8 @@ plotvars.plot(kind='scatter', x='dep', y='indep', ax=ax)
 plt.savefig('lowess.png')
 #-- Lowess Price Data
 '''
-
 '''
+
 #lowess gasused data
 
 pruned2 = txData.loc[txData['gasused']==21000]
@@ -201,6 +202,8 @@ def definegasvars(ncat1, ncat2, txData):
 ncat1 = len(txData.loc[txData['minedGasPrice'] <10, :].index)
 ncat2 = len(txData.loc[(txData['minedGasPrice'] >= 10) & (txData['minedGasPrice'] < 20), :].index)
 '''
+
+'''
 # sort dataframe by gasprice
 
 txData = txData.sort_values('minedGasPrice')
@@ -224,9 +227,12 @@ txDataMiner = pd.DataFrame ({'count':txData.groupby('miner').size()}).reset_inde
 txDataMiner = txDataMiner.sort_values('count', ascending=False)
 print(txDataMiner)
 
+#--sort dataframe by gas price
+'''
+
 #define gas predictors
 
-'''
+
 dep = pd.DataFrame()
 dep['cat1'] = (txData['minedGasPrice'] < gasdata['Average']).astype(int)
 dep['cat2'] = (txData['minedGasPrice'] == gasdata['Average']).astype(int)
@@ -265,7 +271,7 @@ print (results.summary())
 dep['predict'] = results.predict()
 dep['delay'] = indep
 print(dep)
-'''
+
 
 '''
 

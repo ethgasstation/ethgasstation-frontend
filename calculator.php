@@ -159,7 +159,7 @@
                     </div>
                     <div class="checkbox">
                         <label>
-                        <input type="checkbox" class="flat" id="cheap"> Cheapest
+                        <input type="checkbox" class="flat" id="cheap"> Cheap
                         <?php echo ("(".$gasPriceRecs['Cheapest']." Gwei)") ?></label>
                     </div>
                      <div class="checkbox">
