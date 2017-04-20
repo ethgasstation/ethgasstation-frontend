@@ -681,7 +681,8 @@ function writeAPIandCALC (){
             throw error
         }
         console.log(stdout)
-        })
+    })
+    getETHprice();
 
 }
 
