@@ -675,7 +675,7 @@ function writeAPIandCALC (){
         }
         console.log(stdout);
     })
-    execString = 'python gascalc.py ' + startSelect-10000 + ' ' + toBlock
+    execString = 'python gascalc.py ' + startSelect + ' ' + toBlock
     const child2 = exec(execString, (error, stdout, stderr) => {
         if (error) {
             throw error
@@ -789,7 +789,7 @@ var filter = web3.eth.filter('latest');
     if (currentBlock>toBlock){
         protect = 0;
     }
-    var pruneBlock = currentBlock - 50000;
+    var pruneBlock = currentBlock - 30000;
     
     //keep database from getting too large
 

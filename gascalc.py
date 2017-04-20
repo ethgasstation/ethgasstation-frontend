@@ -37,8 +37,8 @@ txData.columns = head
 txData['minedGasPrice'] = pd.to_numeric(txData['minedGasPrice'], errors='coerce')
 txData['delay'] = pd.to_numeric(txData['delay'], errors='coerce')
 
-txData.loc[(txData['delay']>50) | (txData['delay']<=0), 'delay'] =  np.nan
-txData.loc[(txData['delaysecs']>725) | (txData['delaysecs']<=0), 'delaysecs'] = np.nan
+txData.loc[(txData['delay']>100) | (txData['delay']<=0), 'delay'] =  np.nan
+txData.loc[(txData['delaysecs']>1500) | (txData['delaysecs']<=0), 'delaysecs'] = np.nan
 
 txData = txData.dropna()
 
@@ -265,13 +265,15 @@ dictResults = dict(results.params)
 with open('calc.html', 'w') as outfile:
     json.dump(dictResults, outfile)
 
-print ("calc complete")
 
 print (results.summary())
+
+'''
+
 dep['predict'] = results.predict()
 dep['delay'] = indep
 print(dep)
-
+'''
 
 '''
 
