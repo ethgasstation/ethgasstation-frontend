@@ -301,13 +301,8 @@
               paramGasCat3 = <?php echo ($calcParams['gasCat3']) ?>;
               paramGasCat4 = <?php echo ($calcParams['gasCat4']) ?>;
 
-              console.log(paramPriceCat1);
-              console.log(pCat['cat1']);
-              console.log(paramCons);
-
               exp = paramCons + (paramPriceCat1*pCat['cat1']) + (paramPriceCat3*pCat['cat3']) + (paramPriceCat4*pCat['cat4']) + (paramGasCat2*gCat['gas2']) + (paramGasCat3*gCat['gas3']) + (paramGasCat4*gCat['gas4']); 
               
-              console.log(exp);
               wait = (Math.exp(exp));
               return Number(wait.toFixed(2));
             }
