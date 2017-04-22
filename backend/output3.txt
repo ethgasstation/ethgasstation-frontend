@@ -1,0 +1,21 @@
+/Users/jacobelkins/Sites/website/gasStationAnalyze.js:681
+            throw error
+            ^
+
+Error: Command failed: python gascalc.py 3550500 3560500
+Traceback (most recent call last):
+  File "gascalc.py", line 13, in <module>
+    gasdata = json.loads(response.read())
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/json/__init__.py", line 338, in loads
+    return _default_decoder.decode(s)
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/json/decoder.py", line 366, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "/System/Library/Frameworks/Python.framework/Versions/2.7/lib/python2.7/json/decoder.py", line 384, in raw_decode
+    raise ValueError("No JSON object could be decoded")
+ValueError: No JSON object could be decoded
+
+    at ChildProcess.exithandler (child_process.js:211:12)
+    at emitTwo (events.js:106:13)
+    at ChildProcess.emit (events.js:191:7)
+    at maybeClose (internal/child_process.js:885:16)
+    at Process.ChildProcess._handle.onexit (internal/child_process.js:226:5)
