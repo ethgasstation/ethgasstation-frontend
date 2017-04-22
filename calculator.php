@@ -444,7 +444,7 @@
 
               currency = <?php echo ($currency) ?>;
               exchangeRate =<?php echo ($exchangeRate) ?>;
-              blockInterval = <?php echo $calcParams['blockInterval'] ?>
+              blockInterval = <?php echo ($calcParams['blockInterval']) ?>;
           
 
               txMeanSecs = Math.round(blocksWait*blockInterval);
