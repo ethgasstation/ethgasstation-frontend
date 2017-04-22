@@ -444,8 +444,10 @@
 
               currency = <?php echo ($currency) ?>;
               exchangeRate =<?php echo ($exchangeRate) ?>;
+              blockInterval = <?php echo $calcParams['blockInterval'] ?>
+          
 
-              txMeanSecs = Math.round(blocksWait*14.5);
+              txMeanSecs = Math.round(blocksWait*blockInterval);
               txFeeEth = txGasPrice/1e9 * txGasUsed;
               txFeeEth = Number((txFeeEth).toFixed(6))
               txFeeFiat = txFeeEth * exchangeRate;
