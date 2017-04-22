@@ -51,6 +51,8 @@ elseif ($currency == 'gbp'){
 $calcParamString = file_get_contents("calc.html");
 $calcParams = json_decode($calcParamString, true);
 
+
+
 $gasPriceRecString = file_get_contents("ethgasAPI.html");
 $gasPriceRecs = json_decode($gasPriceRecString, true);
 

@@ -160,7 +160,7 @@
                     <div class="checkbox">
                         <label>
                         <input type="checkbox" class="flat" id="cheap"> Cheap
-                        <?php echo ("(".$gasPriceRecs['Cheapest']." Gwei)") ?></label>
+                        <?php echo ("(".$gasPriceRecs['SafeLow']." Gwei)") ?></label>
                     </div>
                      <div class="checkbox">
                         <label>
@@ -290,40 +290,116 @@
               $("#oth_val").parent().next(".validation").remove();
               $("#gas_used").parent().next(".validation").remove();
             })
+  
+            function estimateWait (gCat, pCat)
+            {
+              paramPriceCat1 = <?php echo ($calcParams['priceCat1']) ?>;
+              paramPriceCat3 = <?php echo ($calcParams['priceCat3']) ?>;
+              paramPriceCat4 = <?php echo ($calcParams['priceCat4']) ?>;
+              paramCons = <?php echo ($calcParams['const']) ?>;
+              paramGasCat2 = <?php echo ($calcParams['gasCat2']) ?>;
+              paramGasCat3 = <?php echo ($calcParams['gasCat3']) ?>;
+              paramGasCat4 = <?php echo ($calcParams['gasCat4']) ?>;
+
+              console.log(paramPriceCat1);
+              console.log(pCat['cat1']);
+              console.log(paramCons);
+
+              exp = paramCons + (paramPriceCat1*pCat['cat1']) + (paramPriceCat3*pCat['cat3']) + (paramPriceCat4*pCat['cat4']) + (paramGasCat2*gCat['gas2']) + (paramGasCat3*gCat['gas3']) + (paramGasCat4*gCat['gas4']); 
+              
+              console.log(exp);
+              wait = (Math.exp(exp));
+              return Number(wait.toFixed(2));
+            }
+            
+            function getPriceCats(gasPrice)
+            {
+              pCats= {};
+              if ((gasPrice >= <?php echo($gasPriceRecs['SafeLow']) ?>) && (gasPrice < <?php echo($gasPriceRecs['Average']) ?>))
+              {
+                pCats['cat1'] = 1;
+                pCats['cat3'] = 0;
+                pCats['cat4'] = 0;
+              }
+              else if (gasPrice == <?php echo($gasPriceRecs['Average']) ?>)
+              {
+                pCats['cat1'] = 0;
+                pCats['cat3'] = 0;
+                pCats['cat4'] = 0;
+              }
+              else if ((gasPrice > <?php echo($gasPriceRecs['Average']) ?>) && (gasPrice < <?php echo($gasPriceRecs['Fastest']) ?>))
+              {
+                pCats['cat1'] = 0;
+                pCats['cat3'] = 1;
+                pCats['cat4'] = 0;
+              }
+              else if (gasPrice >= <?php echo($gasPriceRecs['Fastest']) ?>)
+              {
+                pCats['cat1'] = 0;
+                pCats['cat3'] = 0;
+                pCats['cat4'] = 1;
+              }
+              return pCats;
+            }
+
+            function getGasUsedCats (gasUsed)
+            { gCats={};
+              if (gasUsed === 21000)
+              {
+                gCats['gas2']=0;
+                gCats['gas3']=0;
+                gCats['gas4']=0;
+              }
+              else if (gasUsed > 21000 && gasUsed <= <?php echo ($calcParams['75pct'])?>)
+              {
+                gCats['gas2']=1;
+                gCats['gas3']=0;
+                gCats['gas4']=0;
+              }
+              else if (gasUsed > <?php echo ($calcParams['75pct'])?> && gasUsed < <?php echo ($calcParams['90pct'])?>)
+              {
+                gCats['gas2']=0;
+                gCats['gas3']=1;
+                gCats['gas4']=0;
+              }
+              else if (gasUsed >= <?php echo ($calcParams['90pct'])?>)
+              {
+                gCats['gas2']=0;
+                gCats['gas3']=0;
+                gCats['gas4']=1;
+              }
+              return gCats;
+            }
+
 
             $('form').submit(function(event){
-              $currency = <?php echo ($currency) ?>;
-              $exchangeRate =<?php echo ($exchangeRate) ?>;
-              $cat1 = <?php echo ($calcParams['cat1']) ?>;
-              $cat3 = <?php echo ($calcParams['cat3']) ?>;
-              $cat4 = <?php echo ($calcParams['cat4']) ?>;
-              $cons = <?php echo ($calcParams['const']) ?>;
-              $transfer = <?php echo ($calcParams['transferCat']) ?>;
-              $gasUsedParam = <?php echo ($calcParams['gasUsedCont']) ?>;
+              
+              //Error Check
               if(!$('#gas_used').val()){
                 $("#gas_used").parent().next(".validation").remove();
-                $txGasUsed = 21000;
+                txGasUsed = 21000;
               }
               else if ($('#gas_used').val() > 4000000){
-                $string = "<div class='validation' style='color:red;margin-bottom: 20px;'>Please enter gas used less than 4,000,000 (block limit)";
+                if ($("#gas_used").parent().next(".validation").length == 0){
+                  $string = "<div class='validation' style='color:red;margin-bottom: 20px;'>Please enter gas used less than 4,000,000 (block limit)";
                   $("#gas_used").parent().after($string);
-                    event.preventDefault(); // prevent form from POST to server
-                    $('#gas_used').focus();
-                    focusSet = true;
-                    return;
+                }
+                event.preventDefault(); // prevent form from POST to server
+                $('#gas_used').focus();
+                focusSet = true;
+                return;
               }
-              else{
+              else {
                 $("#gas_used").parent().next(".validation").remove();
-                $txGasUsed = $('#gas_used').val();
+                txGasUsed = $('#gas_used').val();
               }
-              if ($txGasUsed != 21000){
-                $transfer = 0
-              }
+              //Gas Used Set - Now find Gas Price
               if($('#other').prop('checked')===true){
-                $otherGasPrice = $('#oth_val').val()
-                if (!$otherGasPrice){
+                otherGasPrice = $('#oth_val').val();
+                if (!otherGasPrice || otherGasPrice < <?php echo($gasPriceRecs['SafeLow']) ?>)
+                {
                     if ($("#oth_val").parent().next(".validation").length == 0){ // only add if not added
-                      $("#oth_val").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;'>Please enter gas price in gwei</div>");
+                      $("#oth_val").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;'>Please enter gas price >= <?php echo($gasPriceRecs['SafeLow'])?> gwei</div>");
                     }
                     event.preventDefault(); // prevent form from POST to server
                     $('#oth_val').focus();
@@ -332,74 +408,55 @@
                 } 
                 else {
                 $("#oth_val").parent().next(".validation").remove();//remove it
-                $txGasPrice = $("#oth_val").val()
-                if ($txGasPrice >= <?php echo($gasPriceRecs['Fastest']) ?>){
-                  $blocksWait = Math.exp($cons + $cat4 + ($gasUsedParam * $txGasUsed/100000)+ $transfer);
-                  $blocksWait = Number(($blocksWait).toFixed(2))
-                }
-                else if ($txGasPrice > <?php echo($gasPriceRecs['Average']) ?> && $txGasPrice < <?php echo($gasPriceRecs['Fastest']) ?>){
-                  $blocksWait = Math.exp($cons + $cat3 + ($gasUsedParam * $txGasUsed/100000)+ $transfer);
-                  $blocksWait = Number(($blocksWait).toFixed(2))
-                }
-                else if ($txGasPrice === <?php echo($gasPriceRecs['Average']) ?>) {
-                  $blocksWait = Math.exp($cons + ($gasUsedParam * $txGasUsed/100000)+ $transfer);
-                  $blocksWait = Number(($blocksWait).toFixed(2))
-                }
-                else if ($txGasPrice >= <?php echo($gasPriceRecs['Cheapest']) ?> && $txGasPrice < <?php echo($gasPriceRecs['Average']) ?>){
-                  $blocksWait = Math.exp($cons + $cat1 + ($gasUsedParam * $txGasUsed/100000) + $transfer);
-                  $blocksWait = Number(($blocksWait).toFixed(2))
-                }
-                else {
-                  $string = "<div class='validation' style='color:red;margin-bottom: 20px;'>Please enter gas price >= <?php echo($gasPriceRecs['Cheapest'])?> gwei</div>";
-                  $("#oth_val").parent().after($string);
-                    event.preventDefault(); // prevent form from POST to server
-                    $('#oth_val').focus();
-                    focusSet = true;
-                    return;
+                txGasPrice = $("#oth_val").val();
+                gCats = getGasUsedCats(txGasUsed);
+                pCats = getPriceCats(txGasPrice);
+                blocksWait = estimateWait(gCats, pCats);
                 }
               }
-            }
-
               else {
                 if ($('#fast').prop('checked')===true){
-                  $txGasPrice = <?php echo($gasPriceRecs['Fastest']) ?>;
-                  $blocksWait = Math.exp($cons + $cat4 + ($gasUsedParam * $txGasUsed/100000)+$transfer);
-                  $blocksWait = Number(($blocksWait).toFixed(2))
+                  txGasPrice = <?php echo($gasPriceRecs['Fastest']) ?>;
+                  gCats = getGasUsedCats(txGasUsed);
+                  pCats = getPriceCats(txGasPrice);
+                  blocksWait = estimateWait(gCats, pCats);
                 }
                 else if ($('#avg').prop('checked')===true){
-                  $txGasPrice = <?php echo($gasPriceRecs['Average']) ?>;
-                  $blocksWait = Math.exp($cons + ($gasUsedParam * $txGasUsed/100000)+$transfer);
-                  $blocksWait = Number(($blocksWait).toFixed(2))
+                  txGasPrice = <?php echo($gasPriceRecs['Average']) ?>;
+                  gCats = getGasUsedCats(txGasUsed);
+                  pCats = getPriceCats(txGasPrice);
+                  blocksWait = estimateWait(gCats, pCats);
                 }
                 else if ($('#cheap').prop('checked')===true){
-                  $txGasPrice = <?php echo($gasPriceRecs['Cheapest']) ?>;
-                  $blocksWait = Math.exp($cons + $cat1 + ($gasUsedParam * $txGasUsed/100000)+$transfer);
-                  $blocksWait = Number(($blocksWait).toFixed(2))
+                  txGasPrice = <?php echo($gasPriceRecs['SafeLow']) ?>;
+                  gCats = getGasUsedCats(txGasUsed);
+                  pCats = getPriceCats(txGasPrice);
+                  blocksWait = estimateWait(gCats, pCats);
                 }
                $('#oth_val').val("");
                $("#oth_val").parent().next(".validation").remove();
               }
 
-              
               event.preventDefault();
-              $txArgs = "Predictions: <small><span style='color:red'> Gas Used = "+ $txGasUsed + "; Gas Price = " + $txGasPrice + " gwei</span></small>";
-              $('#txArgs').html($txArgs);
-              
-              $txMeanSecs = Math.round($blocksWait*14.5);
-
-              $txFeeEth = $txGasPrice/1e9 * $txGasUsed;
-              $txFeeEth = Number(($txFeeEth).toFixed(6))
-              $txFeeFiat = $txFeeEth * $exchangeRate;
-              $txFeeFiat = Number(($txFeeFiat).toFixed(3));
-              
+              txArgs = "Predictions: <small><span style='color:red'> Gas Used = "+ txGasUsed + "; Gas Price = " + txGasPrice + " gwei</span></small>";
+              $('#txArgs').html(txArgs);
               
 
-              $('#meanBlocks').html($blocksWait);
-              $('#meanSecs').html($txMeanSecs);
-              $('#txEth').html($txFeeEth);
-              if ($currency='usd'){
-                $string="$"+$txFeeFiat
-              $('#txFiat').html($string);
+              currency = <?php echo ($currency) ?>;
+              exchangeRate =<?php echo ($exchangeRate) ?>;
+
+              txMeanSecs = Math.round(blocksWait*14.5);
+              txFeeEth = txGasPrice/1e9 * txGasUsed;
+              txFeeEth = Number((txFeeEth).toFixed(6))
+              txFeeFiat = txFeeEth * exchangeRate;
+              txFeeFiat = Number((txFeeFiat).toFixed(3));
+
+              $('#meanBlocks').html(blocksWait);
+              $('#meanSecs').html(txMeanSecs);
+              $('#txEth').html(txFeeEth);
+              if (currency='usd'){
+                string="$"+txFeeFiat
+              $('#txFiat').html(string);
               }
               
 

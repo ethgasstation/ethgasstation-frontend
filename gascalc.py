@@ -234,10 +234,10 @@ print(txDataMiner)
 
 
 dep = pd.DataFrame()
-dep['cat1'] = (txData['minedGasPrice'] < gasdata['Average']).astype(int)
-dep['cat2'] = (txData['minedGasPrice'] == gasdata['Average']).astype(int)
-dep['cat3'] = ((txData['minedGasPrice'] > gasdata['Average']) & (txData['minedGasPrice'] < gasdata['Fastest'])).astype(int)
-dep['cat4'] = (txData['minedGasPrice'] > gasdata['Fastest']).astype(int)
+dep['priceCat1'] = (txData['minedGasPrice'] < gasdata['Average']).astype(int)
+dep['priceCat2'] = (txData['minedGasPrice'] == gasdata['Average']).astype(int)
+dep['priceCat3'] = ((txData['minedGasPrice'] > gasdata['Average']) & (txData['minedGasPrice'] < gasdata['Fastest'])).astype(int)
+dep['priceCat4'] = (txData['minedGasPrice'] > gasdata['Fastest']).astype(int)
 
 #dep = pd.DataFrame()
 #dep['gasPrice'] = txData['minedGasPrice']
@@ -246,30 +246,46 @@ dep['cat4'] = (txData['minedGasPrice'] > gasdata['Fastest']).astype(int)
 dep['transferCat'] = (txData['gasused'] == 21000).astype(int)
 dep['gasUsedCont'] = txData['gasused']/100000
 #dep['offered']=txData['gasOffered']/100000
-#More gasused categories not significant
-#txData['transfer2'] = ((txData['gasused']>21000) & (txData['gasused']<=1000000))
-#txData['transfer3'] = (txData['gasused']>1000000)
+
+# Define gasused cats
+
+quantiles= txData['gasused'].quantile([.5, .75, .9, 1])
+
+
+dep['gasCat2'] = ((txData['gasused']>21000) & (txData['gasused']<=quantiles[.75])).astype(int)
+dep['gasCat3'] = ((txData['gasused']>quantiles[.75]) & (txData['gasused']<=quantiles[.9])).astype(int)
+dep['gasCat4'] = (txData['gasused']> quantiles[.9]).astype(int)
 
 dep = sm.add_constant(dep)
 
 indep = txData['delay']
 #indep = txData['delaysecs']
 
-model = sm.Poisson(indep, dep.iloc[:,[0,1,3,4,5,6]])
+model = sm.Poisson(indep, dep.iloc[:,[0,1,3,4,7,8,9]])
 
 #model = sm.Poisson(indep, dep.iloc[:,[0,5]])
 
 results = model.fit(disp=0)
 dictResults = dict(results.params)
 
+
+quantiles = quantiles.reset_index(drop=True)
+quantiles.rename({0: '50pct', 1: '75pct', 2: '90pct', 3: 'max'}, inplace=True)
+quantiles = quantiles.to_dict()
+
+dictResults.update(quantiles)
+print (dictResults)
+
 with open('calc.html', 'w') as outfile:
     json.dump(dictResults, outfile)
+    #json.dump(quantiles, outfile)
 
 
 print (results.summary())
 
-'''
 
+
+'''
 dep['predict'] = results.predict()
 dep['delay'] = indep
 print(dep)
