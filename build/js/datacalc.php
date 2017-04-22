@@ -48,12 +48,12 @@ elseif ($currency == 'gbp'){
     $exchangeRate = $ethpriceGBP;
 }
 
-$calcParamString = file_get_contents("calc.html");
+$calcParamString = file_get_contents("http://localhost/json/calc.html");
 $calcParams = json_decode($calcParamString, true);
 
 
 
-$gasPriceRecString = file_get_contents("ethgasAPI.html");
+$gasPriceRecString = file_get_contents("http://localhost/json/ethgasAPI.html");
 $gasPriceRecs = json_decode($gasPriceRecString, true);
 
 
