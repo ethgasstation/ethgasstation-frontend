@@ -94,7 +94,7 @@ quantiles = quantiles.to_dict()
 dictResults.update(quantiles)
 dictResults.update(blockTime)
 
-with open('calc.html', 'w') as outfile:
+with open('../json/calc.html', 'w') as outfile:
     json.dump(dictResults, outfile)
 
 print (results.summary())
