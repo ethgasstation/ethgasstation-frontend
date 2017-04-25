@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import statsmodels.api as sm
 import math
 import sys
+import os
+
 
 # Get current Gas Price Cats
 import urllib,json
@@ -94,7 +96,10 @@ quantiles = quantiles.to_dict()
 dictResults.update(quantiles)
 dictResults.update(blockTime)
 
-with open('../json/calc.html', 'w') as outfile:
+parentdir = os.path.dirname(os.getcwd())
+filepath_calc = parentdir + '/json/calc.html'
+
+with open(filepath_calc, 'w') as outfile:
     json.dump(dictResults, outfile)
 
 print (results.summary())

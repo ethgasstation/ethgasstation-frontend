@@ -339,7 +339,7 @@
 
             function getGasUsedCats (gasUsed)
             { gCats={};
-              if (gasUsed === 21000)
+              if (gasUsed <= 21000)
               {
                 gCats['gas2']=0;
                 gCats['gas3']=0;
@@ -421,6 +421,7 @@
                   gCats = getGasUsedCats(txGasUsed);
                   pCats = getPriceCats(txGasPrice);
                   blocksWait = estimateWait(gCats, pCats);
+                  console.log(blocksWait);
                 }
                 else if ($('#cheap').prop('checked')===true){
                   txGasPrice = <?php echo($gasPriceRecs['SafeLow']) ?>;

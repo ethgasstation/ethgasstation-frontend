@@ -149,11 +149,10 @@ $MENU_TOGGLE.on('click', function() {
     $(document).ready(function() {
 				
 		
-		init_sidebar();
-
-		
+		init_sidebar();	
 				
 	});
+    
 
 	  
 	
