@@ -35,19 +35,14 @@ txData = pd.DataFrame(cursor.fetchall())
 txData.columns = head
 
 
+
 #Clean Data
 txData['minedGasPrice'] = pd.to_numeric(txData['minedGasPrice'], errors='coerce')
 txData['delay'] = pd.to_numeric(txData['delay'], errors='coerce')
 
-txData.loc[(txData['delay']>500) | (txData['delay']<=0), 'delay'] =  np.nan
-txData.loc[(txData['delaysecs']>60000) | (txData['delaysecs']<=0), 'delaysecs'] = np.nan
-
-txData = txData.dropna()
-
 #--Clean Data
 
-blockTime = txData[['tsMined', 'minedBlock']]
-blockTime = blockTime.sort_values('minedBlock')
+blockTime = txData[['tsMined', 'minedBlock']].sort_values('minedBlock')
 blockTime2 = blockTime.groupby('minedBlock', as_index=False).mean()
 
 blockTime2 = blockTime2.diff()
@@ -70,10 +65,13 @@ dep['priceCat4'] = (txData['minedGasPrice'] > gasdata['Fastest']).astype(int)
 
 
 # Define gasused cats
+txData.loc[(txData['delay']>500) | (txData['delay']<=0), 'delay'] =  np.nan
+txData.loc[(txData['delaysecs']>60000) | (txData['delaysecs']<=0), 'delaysecs'] = np.nan
+txData = txData.dropna()
+
+
 
 quantiles= txData['gasused'].quantile([.5, .75, .9, 1])
-
-
 dep['gasCat2'] = ((txData['gasused']>21000) & (txData['gasused']<=quantiles[.75])).astype(int)
 dep['gasCat3'] = ((txData['gasused']>quantiles[.75]) & (txData['gasused']<=quantiles[.9])).astype(int)
 dep['gasCat4'] = (txData['gasused']> quantiles[.9]).astype(int)
@@ -81,6 +79,7 @@ dep['gasCat4'] = (txData['gasused']> quantiles[.9]).astype(int)
 dep = sm.add_constant(dep)
 
 indep = txData['delay']
+
 
 model = sm.Poisson(indep, dep.iloc[:,[0,1,3,4,5,6,7]])
 

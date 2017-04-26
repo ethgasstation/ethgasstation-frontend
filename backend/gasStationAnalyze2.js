@@ -713,9 +713,22 @@ function countEmpty (startSelect, toBlock){
     
         post['emptyBlocks'] = result[0]['cnt'];
         console.log('27');
+        countFull(startSelect, toBlock);
+    });
+}
+function countFull (startSelect, toBlock){
+    connection.query('SELECT speed FROM speedo WHERE minedblock > ? AND minedblock <? and speed >0.99', [startSelect , toBlock], function (err, result){
+        
+        if (err){
+            console.error(err.stack);
+        }
+    
+        post['fullBlocks'] = result[0]['speed'];
+        console.log('28');
         getETHprice();
     });
 }
+
 
 function getETHprice (){
 
@@ -737,7 +750,7 @@ const req = https.request(options, (res) =>{
         post['priceEUR'] = pricej['EUR'];
         post['priceCNY'] = pricej['CNY'];
         post['priceGBP'] = pricej['GBP'];
-        console.log('28');
+        console.log('29');
         errorCheck('txData');
     }) 
 
@@ -822,6 +835,7 @@ function writeData10k () {
     rowsChanged:post.changedRows,
     totalBlocks:post.totalBlocksInDataset,
     emptyBlocks:post.emptyBlocks,
+    fullBlocks:post.fullBlocks,
 
     totalTx: post.totalTx,
     totalTimed: post.totalTimed,
