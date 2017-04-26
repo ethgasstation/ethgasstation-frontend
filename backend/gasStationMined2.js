@@ -75,21 +75,22 @@ filter.watch(function(err,blockHash)
                             post['fromAddress'] = tx.from;
                             post['toAddress'] = tx.to;
                             post['txHash'] = tx.hash;
-                        }
+                        
                     
-                        web3.eth.getTransactionReceipt(tx.hash, function (err, receipt)
-                        {
-                            if (err)
+                            web3.eth.getTransactionReceipt(tx.hash, function (err, receipt)
                             {
-                                console.error(err.stack);
-                                return;
-                            }
-                            if (receipt != null){  
+                                if (err)
+                                {
+                                    console.error(err.stack);
+                                    return;
+                                }
+                                if (receipt != null){  
                                 
-                                post['gasused'] = receipt.gasUsed;
-                            }
-                            writeData(post, 'minedtransactions');
-                        });
+                                    post['gasused'] = receipt.gasUsed;
+                                }
+                                writeData(post, 'minedtransactions');
+                            });
+                        }
                     });
                 }
             }
