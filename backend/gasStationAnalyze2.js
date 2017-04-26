@@ -717,7 +717,7 @@ function countEmpty (startSelect, toBlock){
     });
 }
 function countFull (startSelect, toBlock){
-    connection.query('SELECT speed FROM speedo WHERE minedblock > ? AND minedblock <? and speed >0.99', [startSelect , toBlock], function (err, result){
+    connection.query('SELECT speed FROM speedo WHERE blockNum > ? AND blockNum <? and speed >0.99', [startSelect , toBlock], function (err, result){
         
         if (err){
             console.error(err.stack);
