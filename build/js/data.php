@@ -100,7 +100,7 @@ $totalBlocks = $row['totalBlocks'];
 $emptyBlocks = $row['emptyBlocks'];
 $fullBlocks = $row['fullBlocks'];
 $percentEmpty = round($emptyBlocks/$totalBlocks*100);
-$percentFull = round($fullBlocks/$totalBlocks*100);
+$percentFull = round($fullBlocks/$totalBlocks*100, 4);
 
 
 $avgContractGas = $row['avgContractGas'];
