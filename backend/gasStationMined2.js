@@ -57,6 +57,7 @@ filter.watch(function(err,blockHash)
                 post['emptyBlock'] = false;
                 for(x=0; x <block.transactions.length; x++)
                 {
+                    console.log("loop " + x)
                     web3.eth.getTransaction(block.transactions[x], function (err, tx)
                     {
                         if (err)
@@ -82,7 +83,6 @@ filter.watch(function(err,blockHash)
                                 if (err)
                                 {
                                     console.error(err.stack);
-                                    return;
                                 }
                                 if (receipt != null){  
                                 
