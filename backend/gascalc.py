@@ -55,6 +55,12 @@ blockTime = {
 }
 
 #define gas predictors
+# Define gasused cats
+txData.loc[(txData['delay']>500) | (txData['delay']<=0), 'delay'] =  np.nan
+txData.loc[(txData['delaysecs']>60000) | (txData['delaysecs']<=0), 'delaysecs'] = np.nan
+txData = txData.dropna()
+
+
 
 
 dep = pd.DataFrame()
@@ -64,10 +70,7 @@ dep['priceCat3'] = ((txData['minedGasPrice'] > gasdata['Average']) & (txData['mi
 dep['priceCat4'] = (txData['minedGasPrice'] > gasdata['Fastest']).astype(int)
 
 
-# Define gasused cats
-txData.loc[(txData['delay']>500) | (txData['delay']<=0), 'delay'] =  np.nan
-txData.loc[(txData['delaysecs']>60000) | (txData['delaysecs']<=0), 'delaysecs'] = np.nan
-txData = txData.dropna()
+
 
 
 
