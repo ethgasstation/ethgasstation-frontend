@@ -56,9 +56,10 @@ blockTime = {
 
 #define gas predictors
 # Define gasused cats
+print(txData)
 txData.loc[(txData['delay']>500) | (txData['delay']<=0), 'delay'] =  np.nan
 txData.loc[(txData['delaysecs']>60000) | (txData['delaysecs']<=0), 'delaysecs'] = np.nan
-txData = txData.dropna()
+txData = txData.loc[:,['delay', 'minedGasPrice', 'gasused']].dropna()
 
 
 
