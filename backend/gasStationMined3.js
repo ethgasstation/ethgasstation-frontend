@@ -2,6 +2,7 @@
 
 var Web3 = require('web3');
 var mysql = require('mysql');
+const fs = require('fs');
 var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 var connection = mysql.createConnection({
     host:'localhost',
@@ -131,12 +132,14 @@ filter.watch(function(err,blockHash)
                         validateTx(watchedTx[x]);
                    } 
                 }
-                var txtFile = "validated.txt";
-                var file = new File(txtFile,"write");
+
                 var str = JSON.stringify(validationStatus);
-                file.open(); 
-                file.writeline(str);
-                file.close();
+                fs.writeFile('validated.json', str, (err) => {
+                    if (err){
+                        console.log(err.stack)
+                    }
+
+                })
             }
 
         }
