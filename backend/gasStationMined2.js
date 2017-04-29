@@ -24,13 +24,15 @@ var txCounter=0;
 var filter = web3.eth.filter('latest');
 var filter2 = web3.eth.filter('pending');
 
+function postObject(){};
+
 
 filter.watch(function(err,blockHash)
 {
     if (err){
         console.error(err);
     }
-    var post = {};
+    var post = new postObject();
     web3.eth.getBlock(blockHash, function (err, block)
     {
         if (err){
@@ -123,7 +125,7 @@ filter2.watch(function(err, txHash)
         return;
     }
     
-    var post2 ={};
+    var post2 = new postObject();
 
     if (txHash != null)
     {
