@@ -25,7 +25,7 @@ var filter = web3.eth.filter('latest');
 var filter2 = web3.eth.filter('pending');
 
 
-
+watchedTx = [];
 
 filter.watch(function(err,blockHash)
 {
@@ -41,8 +41,6 @@ filter.watch(function(err,blockHash)
         if (block != null)
         {
             var ts = Math.round(+new Date()/1000);
-        
-
             if (block.transactions.length === 0)
             {
                 var post = {
@@ -56,7 +54,6 @@ filter.watch(function(err,blockHash)
             }
             else
             {   
-    
                 for(x=0; x <block.transactions.length; x++)
                 {
                     web3.eth.getTransaction(block.transactions[x], function (err, tx)
@@ -73,14 +70,14 @@ filter.watch(function(err,blockHash)
                             gasPrice = gasPrice/1e9; //convert to Gwei
                             var gasPriceCat = getGasPriceCat(gasPrice);
                             
-
                             web3.eth.getTransactionReceipt(tx.hash, function (err, receipt)
                             {
                                 if (err)
                                 {
                                     console.error(err.stack);
                                 }
-                                if (receipt != null){  
+                                if (receipt != null){
+                                    console.log(receipt.txHash);  
                                     var post = {
                                         txHash: receipt.transactionHash,
                                         minedBlock: receipt.blockNumber,
@@ -113,10 +110,8 @@ filter.watch(function(err,blockHash)
             {
                 commandString = 'node gasStationAnalyze2.js ' + currentBlock + ' &>output2.txt';
                 commandString2 = 'python gascalc.py ' + startQuery + ' ' +  currentBlock + ' &>output3.txt';
-                //commandString3 = 'python getPrice.py';
                 launchProcess (commandString);
-                launchProcess (commandString2);
-                //launchProcess (commandString3);  
+                launchProcess (commandString2); 
             
              }
 
@@ -166,6 +161,8 @@ filter2.watch(function(err, txHash)
                         gasPrice: gasPrice,
                         gasPriceCat: gasPriceCat,
                         tsPosted: ts2
+                    }
+                    
                     }
                     writeData(post2, 'transactions');
             }
