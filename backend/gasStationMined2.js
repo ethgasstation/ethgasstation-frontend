@@ -51,7 +51,6 @@ filter.watch(function(err,blockHash)
                     tsMined: ts,
                     emptyBlock: true
                 }
-                console.log(post);
                 writeData(post, 'minedtransactions');
 
             }
@@ -79,8 +78,7 @@ filter.watch(function(err,blockHash)
                                 {
                                     console.error(err.stack);
                                 }
-                                if (receipt != null){
-                                    console.log(receipt.transactionHash);  
+                                if (receipt != null){ 
                                     var post = {
                                         txHash: receipt.transactionHash,
                                         minedBlock: receipt.blockNumber,
@@ -157,6 +155,7 @@ filter2.watch(function(err, txHash)
                     var gasPrice = result.gasPrice.toString(10);
                     gasPrice = gasPrice/1e9;
                     var gasPriceCat = getGasPriceCat(gasPrice);
+                    console.log(post2);
                     var post2 = {
                         txHash: result.txHash,
                         postedBlock: blockNum,
