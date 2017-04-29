@@ -59,7 +59,6 @@ filter.watch(function(err,blockHash)
     
                 for(x=0; x <block.transactions.length; x++)
                 {
-                    console.log("loop " + x)
                     web3.eth.getTransaction(block.transactions[x], function (err, tx)
                     {
                         if (err)
