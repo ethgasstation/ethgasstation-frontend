@@ -163,11 +163,10 @@ filter2.watch(function(err, txHash)
                         gasPriceCat: gasPriceCat,
                         tsPosted: ts2
                     }
-                    console.log(post2);
                     
-                    }
+                    
                     writeData(post2, 'transactions');
-            
+                }
         
             });
         })
