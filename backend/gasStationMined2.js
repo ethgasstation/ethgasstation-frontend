@@ -127,7 +127,7 @@ filter2.watch(function(err, txHash)
         console.error(err.stack);
         return;
     }
-
+    var txHash = txHash;
     if (txHash != null)
     {
         
