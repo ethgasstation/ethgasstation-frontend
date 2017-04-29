@@ -156,7 +156,7 @@ filter2.watch(function(err, txHash)
                     var gasPriceCat = getGasPriceCat(gasPrice);
                     
                     var post2 = {
-                        txHash: result.txHash,
+                        txHash: txHash,
                         postedBlock: blockNum,
                         gasOffered: result.gas,
                         gasPrice: gasPrice,
