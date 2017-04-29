@@ -46,6 +46,7 @@ filter.watch(function(err,blockHash)
                 console.log("emptyBlock");
                 var post = {
                     txHash: block.number,
+                    minedBlock: block.number,
                     miner: block.miner,
                     tsMined: ts,
                     emptyBlock: true
