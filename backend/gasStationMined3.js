@@ -197,7 +197,6 @@ filter2.watch(function(err, txHash)
                     {
                         watchedTx.push(post2);
                     }
-                    console.log(watchedTx);
                 }
         
             });
