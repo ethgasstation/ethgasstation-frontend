@@ -43,12 +43,14 @@ filter.watch(function(err,blockHash)
             var ts = Math.round(+new Date()/1000);
             if (block.transactions.length === 0)
             {
+                console.log("emptyBlock");
                 var post = {
                     txHash: block.number,
                     miner: block.miner,
                     tsMined: ts,
                     emptyBlock: true
                 }
+                console.log(post);
                 writeData(post, 'minedtransactions');
 
             }
