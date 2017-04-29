@@ -43,7 +43,6 @@ filter.watch(function(err,blockHash)
             var ts = Math.round(+new Date()/1000);
             if (block.transactions.length === 0)
             {
-                console.log("emptyBlock");
                 var post = {
                     txHash: block.number,
                     minedBlock: block.number,
@@ -155,7 +154,7 @@ filter2.watch(function(err, txHash)
                     var gasPrice = result.gasPrice.toString(10);
                     gasPrice = gasPrice/1e9;
                     var gasPriceCat = getGasPriceCat(gasPrice);
-                    console.log(post2);
+                    
                     var post2 = {
                         txHash: result.txHash,
                         postedBlock: blockNum,
@@ -164,6 +163,7 @@ filter2.watch(function(err, txHash)
                         gasPriceCat: gasPriceCat,
                         tsPosted: ts2
                     }
+                    console.log(post2);
                     
                     }
                     writeData(post2, 'transactions');
