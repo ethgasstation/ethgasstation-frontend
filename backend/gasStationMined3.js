@@ -132,8 +132,9 @@ filter.watch(function(err,blockHash)
                         validateTx(watchedTx[x]);
                    } 
                 }
-
+                console.log(validationStatus);
                 var str = JSON.stringify(validationStatus);
+                console.log(str);
                 fs.writeFile('validated.json', str, (err) => {
                     if (err){
                         console.log(err.stack)
@@ -285,8 +286,7 @@ function validateTx (tx)
             lastValidTx['mined'] = false;
             validationStatus[tx.gasPrice] = lastValidTx;
         }
-        console.log(tx);
-        console.log(validationStatus);
+       
     })
     
 }          
