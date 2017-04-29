@@ -142,19 +142,17 @@ filter2.watch(function(err, txHash)
                 console.log(err.stack);
             }
             var blockNum = blockNum;
-            
-        })
 
-        web3.eth.getTransaction(txHash, function(err,result)
-        {
-            if (err)
-            { 
-                console.error(err.stack);
-                return;
-            }
+            web3.eth.getTransaction(txHash, function(err,result)
+            {
+                if (err)
+                { 
+                    console.error(err.stack);
+                    return;
+                }
 
-            if (result != null)
-            {    
+                if (result != null)
+                {    
                     var gasPrice = result.gasPrice.toString(10);
                     gasPrice = gasPrice/1e9;
                     var gasPriceCat = getGasPriceCat(gasPrice);
@@ -169,7 +167,8 @@ filter2.watch(function(err, txHash)
                     writeData(post2, 'transactions');
             }
         
-        });
+            });
+        })
                 
         txCounter++;
         console.log(txCounter);
