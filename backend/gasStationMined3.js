@@ -278,6 +278,8 @@ function validateTx (tx)
         {
             validationStatus[tx.gasPrice] = false;
         }
+        console.log(tx);
+        console.log(validationStatus);
     })
     
 }          
