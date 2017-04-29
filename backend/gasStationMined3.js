@@ -272,14 +272,18 @@ function validateTx (tx)
             console.error(err.stack);
             return;
         }
+        
         if (result != null)
         {
             var lastValidTx = new lastValid(tx.txHash, tx.gasPrice, tx.postedBlock, result.blockNumber);
+            lastValidTx['mined'] = true;
             validationStatus[tx.gasPrice] = lastValidTx;
         }
         else
         {
-            validationStatus[tx.gasPrice] = false;
+            var lastValidTx = new lastValid(tx.txHash, tx.gasPrice, tx.postedBlock);
+            lastValidTx['mined'] = false;
+            validationStatus[tx.gasPrice] = lastValidTx;
         }
         console.log(tx);
         console.log(validationStatus);
