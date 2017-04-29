@@ -131,6 +131,12 @@ filter.watch(function(err,blockHash)
                         validateTx(watchedTx[x]);
                    } 
                 }
+                var txtFile = "validated.txt";
+                var file = new File(txtFile,"write");
+                var str = JSON.stringify(validationStatus);
+                file.open(); 
+                file.writeline(str);
+                file.close();
             }
 
         }
@@ -273,6 +279,6 @@ function validateTx (tx)
             validationStatus[tx.gasPrice] = false;
         }
     })
-    console.log(validationStatus);
+    
 }          
     
