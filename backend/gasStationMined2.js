@@ -165,7 +165,7 @@ filter2.watch(function(err, txHash)
                     
                     }
                     writeData(post2, 'transactions');
-            }
+            
         
             });
         })
