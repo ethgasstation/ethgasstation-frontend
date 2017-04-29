@@ -82,15 +82,17 @@ filter.watch(function(err,blockHash)
                     
                             web3.eth.getTransactionReceipt(tx.hash, function (err, receipt)
                             {
+                                console.log("loop2 " + x)
                                 if (err)
                                 {
                                     console.error(err.stack);
                                 }
                                 if (receipt != null){  
-                                
+                                    console.log("loop3 " + x)
                                     post['gasused'] = receipt.gasUsed;
+                                    writeData(post, 'minedtransactions');
                                 }
-                                writeData(post, 'minedtransactions');
+                                
                             });
                         }
                     });
