@@ -141,6 +141,7 @@ filter2.watch(function(err, txHash)
             {
                 console.log(err.stack);
             }
+            var blockNum = blockNum;
             
         })
 
