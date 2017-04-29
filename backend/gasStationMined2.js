@@ -45,8 +45,12 @@ filter.watch(function(err,blockHash)
 
             if (block.transactions.length === 0)
             {
-                post['txHash'] = block.number;
-                post['emptyBlock'] = true;
+                var post = {
+                    txHash: block.number,
+                    miner: block.miner,
+                    tsMined: ts,
+                    emptyBlock: true
+                }
                 writeData(post, 'minedtransactions');
 
             }
