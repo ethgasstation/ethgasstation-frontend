@@ -197,6 +197,7 @@ filter2.watch(function(err, txHash)
                     {
                         watchedTx.push(post2);
                     }
+                    console.log(watchedTx);
                 }
         
             });
@@ -274,7 +275,7 @@ function validateTx (tx)
         }
         if (result != null)
         {
-            var lastValidTx = new lastValid(tx.hash, tx.gasPrice, tx.postedBlock, result.blockNumber);
+            var lastValidTx = new lastValid(tx.txHash, tx.gasPrice, tx.postedBlock, result.blockNumber);
             validationStatus[tx.gasPrice] = lastValidTx;
         }
         else
