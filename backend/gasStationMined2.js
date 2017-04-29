@@ -78,17 +78,16 @@ filter.watch(function(err,blockHash)
                             post['fromAddress'] = tx.from;
                             post['toAddress'] = tx.to;
                             post['txHash'] = tx.hash;
-                        
-                    
+
                             web3.eth.getTransactionReceipt(tx.hash, function (err, receipt)
                             {
-                                console.log("loop2 " + x)
+                                console.log("loop2 " + receipt.hash)
                                 if (err)
                                 {
                                     console.error(err.stack);
                                 }
                                 if (receipt != null){  
-                                    console.log("loop3 " + x)
+                                    console.log("loop3 " + receipt.hash)
                                     post['gasused'] = receipt.gasUsed;
                                     writeData(post, 'minedtransactions');
                                 }
