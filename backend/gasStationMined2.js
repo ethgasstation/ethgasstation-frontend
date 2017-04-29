@@ -89,6 +89,7 @@ filter.watch(function(err,blockHash)
                                 if (receipt != null){  
                                     console.log("loop3 " + receipt.transactionHash)
                                     post['gasused'] = receipt.gasUsed;
+                                    console.log(post);
                                     writeData(post, 'minedtransactions');
                                 }
                                 
