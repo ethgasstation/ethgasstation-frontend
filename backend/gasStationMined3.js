@@ -141,7 +141,10 @@ filter.watch(function(err,blockHash)
                             }
                             if (result != null)
                             {
+                                console.log(tx);
                                 var lastValidTx = new lastValid(tx.txHash, tx.gasPrice, tx.postedBlock, result.blockNumber);
+                                console.log('hi');
+                                console.log(lastValidTx);
                                 lastValidTx['mined'] = true;
                                 validationStatus[tx.gasPrice] = lastValidTx;
                             }
