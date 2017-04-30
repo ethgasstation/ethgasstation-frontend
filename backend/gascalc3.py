@@ -130,21 +130,16 @@ validationTable.sort_index()
 validationTable= validationTable.reset_index()
 print(validationTable)
 
-for x in range(len(validationTable)):
-    lowestMined = validationTable[validationTable.loc[x,'mined']]
-    break
 
+lowestMined = validationTable[validationTable['mined']==True, 'index']
 print (lowestMined)
 
-for x in range(len(validationTable)):
-    lowestRejected = validationTable[validationTable.loc[x,'mined']==False, 'index']
-    break
+lowestMined = lowestMined.min()
 
-if (lowestRejected):
-    print('hi')
-    for x in range(len(validationTable)):
-        lowestMined = validationTable[(validationTable.loc[x,'mined']=='True') & (validationTable.loc[x,'index']>lowestRejected), 'index']
-        break
+lowestRejected = validationTable[validationTable['mined']==False, 'index']
+print (lowestRejected)
+
+lowetRejected = lowestRejected.min()
 
 if (lowestRejected):
     if (lowestMined > gpRecs['safeLow']):
