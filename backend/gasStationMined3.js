@@ -284,8 +284,9 @@ function validateTx (tx, finished)
         }
         if (result != null)
         {
-            var lastValidTx = new lastValid (txCheck.txHash, txCheck.gasPrice, txCheck.postedBlock, result.blockNum);
+            var lastValidTx = new lastValid (txCheck.txHash, txCheck.gasPrice, txCheck.postedBlock, result.blockNumber);
             lastValidTx['mined'] = true;
+            console.log(lastValidTx);
             validationStatus[txCheck.gasPrice] = lastValidTx;
         }
         else
