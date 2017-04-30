@@ -163,7 +163,6 @@ filter.watch(function(err,blockHash)
                    else
                    {
                        watchedTx.push(tx);
-                       console.log(watchedTx);
                        if (x === (y-1))
                        {
                             writeValidTx();
