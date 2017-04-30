@@ -131,7 +131,7 @@ validationTable= validationTable.reset_index()
 print(validationTable)
 
 for x in range(len(validationTable)):
-    lowestMined = validationTable[validationTable.loc[x,'mined']==True, 'index']
+    lowestMined = validationTable[validationTable.loc[x,'mined']==True, 'minedBlock']
     break
 
 print (lowestMined)
