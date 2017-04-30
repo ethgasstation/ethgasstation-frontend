@@ -160,6 +160,7 @@ filter.watch(function(err,blockHash)
                    else
                    {
                        watchedTx.push(tx);
+                       console.log(watchedTx);
                        if (x === (y-1))
                        {
                             writeValidTx();
@@ -290,7 +291,6 @@ function launchProcess (commandString)
 function writeValidTx ()
 
 {
-    console.log(watchedTx);
     console.log(validationStatus);
     var str = JSON.stringify(validationStatus);
     fs.writeFile('validated.json', str, (err) => {
