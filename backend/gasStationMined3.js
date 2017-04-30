@@ -48,6 +48,8 @@ filter.watch(function(err,blockHash)
             console.error(err.stack);
             return;
         }
+        console.log(watchedTx);
+        console.log(validationStatus);
         if (block != null)
         {
             var ts = Math.round(+new Date()/1000);
