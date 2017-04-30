@@ -131,12 +131,12 @@ validationTable= validationTable.reset_index()
 print(validationTable)
 
 
-lowestMined = validationTable[validationTable.loc[:,'mined']==True, 'index']
+lowestMined = validationTable[validationTable.loc['mined'], 'index']
 print (lowestMined)
 
 lowestMined = lowestMined.min()
 
-lowestRejected = validationTable[validationTable.loc[:,'mined']==False, 'index']
+lowestRejected = validationTable[validationTable.loc['mined'], 'index']
 print (lowestRejected)
 
 lowetRejected = lowestRejected.min()
