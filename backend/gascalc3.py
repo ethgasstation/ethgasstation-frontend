@@ -125,7 +125,7 @@ response.close()
 
 #findLowest validated status
 
-validationTable = pd.DataFrame.from_dict(validation, orient='index').sort_index
+validationTable = pd.DataFrame.from_dict(validation, orient='index').sort_index()
 
 print (validationTable)
 
