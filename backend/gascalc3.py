@@ -131,7 +131,7 @@ validationTable.sort_index()
 indexValues = validationTable.index.tolist()
 print (indexValues)
 validationTable['minP']=indexValues
-validationTable.reset_index()
+validationTable = validationTable.reset_index()
 print(validationTable)
 
 
