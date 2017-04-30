@@ -126,6 +126,7 @@ filter.watch(function(err,blockHash)
              }
             if (block.number % 50 === 0 )
             {
+                writeValidTx();
                 var y = watchedTx.length;
                 for (var x = 0; x < y; x++ )
                 {
@@ -153,20 +154,12 @@ filter.watch(function(err,blockHash)
                                 var lastValidTx = new lastValid(tx.txHash, tx.gasPrice, tx.postedBlock);
                                 lastValidTx['mined'] = false;
                                 validationStatus[tx.gasPrice] = lastValidTx;
-                            }
-                            if (x === (y-1))
-                            {
-                                writeValidTx();
                             }           
                         })
                    }
                    else
                    {
                        watchedTx.push(tx);
-                       if (x === (y-1))
-                       {
-                            writeValidTx();
-                        } 
                    } 
                 }               
             }
