@@ -36,6 +36,20 @@ function lastValid (txHash, gasPrice, postedBlock, minedBlock)
     this.minedBlock = minedBlock;
 }
 
+function writeValidTx ()
+
+{
+     console.log(watchedTx);
+     console.log(validationStatus);
+     var str = JSON.stringify(validationStatus);
+     console.log(str);
+     fs.writeFile('validated.json', str, (err) => {
+        if (err){
+            console.log(err.stack)
+        }
+
+    })
+}
 filter.watch(function(err,blockHash)
 {
     if (err){
@@ -127,20 +141,25 @@ filter.watch(function(err,blockHash)
             {
                 for (var x = 0; x < watchedTx.length; x++ )
                 {
-                   if (watchedTx[x].postedBlock < (block.number-50))
+                   tx = watchedTx.shift()
+                   if (x == (watchedTx.length-1))
                    {
-                        validateTx(watchedTx[x]);
+                       var complete = true;
+                   }
+                   else
+                   {
+                       complete = false;
+                   } 
+                   if (tx.postedBlock < (block.number-50))
+                   {
+                        validateTx(tx, complete, writeValidTx);
+                   }
+                   else
+                   {
+                       watchedTx.push(tx);
                    } 
                 }
-                console.log(validationStatus);
-                var str = JSON.stringify(validationStatus);
-                console.log(str);
-                fs.writeFile('validated.json', str, (err) => {
-                    if (err){
-                        console.log(err.stack)
-                    }
-
-                })
+                
             }
 
         }
@@ -263,7 +282,7 @@ function launchProcess (commandString)
     })
 }
 
-function validateTx (tx)
+function validateTx (tx, complete, callback)
 {
     var tx = tx;
     web3.eth.getTransaction(tx.txHash, function(err, result)
@@ -286,8 +305,9 @@ function validateTx (tx)
             lastValidTx['mined'] = false;
             validationStatus[tx.gasPrice] = lastValidTx;
         }
-       
+    console.log(validationStatus);   
     })
+
     
 }          
     

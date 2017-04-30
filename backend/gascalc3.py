@@ -127,7 +127,7 @@ response.close()
 
 validationTable = pd.DataFrame.from_dict(validation)
 
-print (validation)
+print (validationTable)
 
 #Poisson Regression
 
