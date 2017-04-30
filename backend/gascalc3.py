@@ -126,9 +126,18 @@ response.close()
 #findLowest validated status
 
 validationTable = pd.DataFrame.from_dict(validation, orient='index')
-validationTable.sort_index()
+print(validationTable)
+indexValues = validationTable.sort_index().index.to_list()
+print (indexValues)
+validationTable['minP']=indexValues
+validationTable.reset_index()
+print(validationTable)
+
 
 print (validationTable)
+
+
+
 
 #Poisson Regression
 
