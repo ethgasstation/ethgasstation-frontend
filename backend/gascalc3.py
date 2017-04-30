@@ -126,14 +126,32 @@ response.close()
 #findLowest validated status
 
 validationTable = pd.DataFrame.from_dict(validation, orient='index')
-print(validationTable)
 validationTable.sort_index()
 validationTable.index.tolist()
-validationTable = validationTable.reset_index()
 print(validationTable)
 
+for x in range(len(validationTable)):
+    lowestMined = validationTable[validationTable.loc[x,'mined']==True, 'index']
+    break
 
-print (validationTable)
+print (lowestMined)
+
+for x in range(len(validationTable)):
+    lowestRejected = validationTable[validationTable.loc[x,'mined']==False, 'index']
+    break
+
+if (lowestRejected):
+    print('hi')
+    for x in range(len(validationTable)):
+        lowestMined = validationTable[(validationTable.loc[x,'mined']==True) & (validationTable.loc[x,'index']>lowestRejected, 'index']
+        break
+
+if (lowestRejected):
+    if (lowestMined > gpRecs['safeLow']):
+        gpRecs['safeLow'] = lowestMined
+
+print (gpRecs)
+print (lowestRejected)
 
 
 
