@@ -126,15 +126,17 @@ filter.watch(function(err,blockHash)
              }
             if (block.number % 50 === 0 )
             {
-                writeValidTx();
+                console.log(watchedTx);
                 var y = watchedTx.length;
                 for (var x = 0; x < y; x++ )
                 {
                    tx = watchedTx.shift();
                    if (tx.postedBlock < (block.number-50))
                    {
+                        console.log('1');
                         web3.eth.getTransaction(tx.txHash, function(err, result)
                         {
+                            console.log('2');
                             if (err)
                             {
                                 console.error(err.stack);
