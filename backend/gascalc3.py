@@ -143,7 +143,7 @@ for x in range(len(validationTable)):
 if (lowestRejected):
     print('hi')
     for x in range(len(validationTable)):
-        lowestMined = validationTable[(validationTable.loc[x,'mined']==True) & (validationTable.loc[x,'index']>lowestRejected, 'index']
+        lowestMined = validationTable[(validationTable.loc[x,'mined']==True) & (validationTable.loc[x,'index']>lowestRejected), 'index']
         break
 
 if (lowestRejected):
