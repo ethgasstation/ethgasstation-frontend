@@ -127,7 +127,8 @@ response.close()
 
 validationTable = pd.DataFrame.from_dict(validation, orient='index')
 print(validationTable)
-indexValues = validationTable.sort_index().index.to_list()
+validationTable.sort_index()
+indexValues = validationTable.index.to_list()
 print (indexValues)
 validationTable['minP']=indexValues
 validationTable.reset_index()
