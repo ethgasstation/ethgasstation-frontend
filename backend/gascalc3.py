@@ -141,7 +141,7 @@ print (lowestRejected)
 
 lowetRejected = lowestRejected.min()
 
-if (lowestRejected.bool()):
+if (lowestRejected.item()):
     print('hi')
     if (lowestMined > gpRecs['safeLow']):
         gpRecs['safeLow'] = lowestMined
