@@ -36,20 +36,7 @@ function lastValid (txHash, gasPrice, postedBlock, minedBlock)
     this.minedBlock = minedBlock;
 }
 
-function writeValidTx ()
 
-{
-     console.log(watchedTx);
-     console.log(validationStatus);
-     var str = JSON.stringify(validationStatus);
-     console.log(str);
-     fs.writeFile('validated.json', str, (err) => {
-        if (err){
-            console.log(err.stack)
-        }
-
-    })
-}
 filter.watch(function(err,blockHash)
 {
     if (err){
@@ -139,29 +126,47 @@ filter.watch(function(err,blockHash)
              }
             if (block.number % 50 === 0 )
             {
-                for (var x = 0; x < watchedTx.length; x++ )
+                var y = watchedTx.length;
+                for (var x = 0; x < y; x++ )
                 {
-                   tx = watchedTx.shift()
-                   if (x == (watchedTx.length-1))
-                   {
-                       var complete = true;
-                   }
-                   else
-                   {
-                       complete = false;
-                   } 
+                   tx = watchedTx.shift();
                    if (tx.postedBlock < (block.number-50))
                    {
-                        validateTx(tx, complete, writeValidTx);
+                        web3.eth.getTransaction(tx.txHash, function(err, result)
+                        {
+                            if (err)
+                            {
+                                console.error(err.stack);
+                                return;
+                            }
+                            if (result != null)
+                            {
+                                var lastValidTx = new lastValid(tx.txHash, tx.gasPrice, tx.postedBlock, result.blockNumber);
+                                lastValidTx['mined'] = true;
+                                validationStatus[tx.gasPrice] = lastValidTx;
+                            }
+                            else
+                            {
+                                var lastValidTx = new lastValid(tx.txHash, tx.gasPrice, tx.postedBlock);
+                                lastValidTx['mined'] = false;
+                                validationStatus[tx.gasPrice] = lastValidTx;
+                            }
+                            if (x === (y-1))
+                            {
+                                writeValidTx();
+                            }           
+                        })
                    }
                    else
                    {
                        watchedTx.push(tx);
+                       if (x === (y-1))
+                       {
+                            writeValidTx();
+                        } 
                    } 
-                }
-                
+                }               
             }
-
         }
     })
 })
@@ -282,32 +287,16 @@ function launchProcess (commandString)
     })
 }
 
-function validateTx (tx, complete, callback)
-{
-    var tx = tx;
-    web3.eth.getTransaction(tx.txHash, function(err, result)
-    {
-        if (err)
-        {
-            console.error(err.stack);
-            return;
-        }
-        
-        if (result != null)
-        {
-            var lastValidTx = new lastValid(tx.txHash, tx.gasPrice, tx.postedBlock, result.blockNumber);
-            lastValidTx['mined'] = true;
-            validationStatus[tx.gasPrice] = lastValidTx;
-        }
-        else
-        {
-            var lastValidTx = new lastValid(tx.txHash, tx.gasPrice, tx.postedBlock);
-            lastValidTx['mined'] = false;
-            validationStatus[tx.gasPrice] = lastValidTx;
-        }
-    console.log(validationStatus);   
-    })
+function writeValidTx ()
 
-    
-}          
+{
+    console.log(watchedTx);
+    console.log(validationStatus);
+    var str = JSON.stringify(validationStatus);
+    fs.writeFile('validated.json', str, (err) => {
+        if (err){
+            console.log(err.stack)
+        }
+    }) 
+}     
     
