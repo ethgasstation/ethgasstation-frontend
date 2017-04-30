@@ -127,7 +127,7 @@ response.close()
 
 validationTable = pd.DataFrame.from_dict(validation, orient='index')
 validationTable.sort_index()
-validationTable.reset_index()
+validationTable= validationTable.reset_index()
 print(validationTable)
 
 for x in range(len(validationTable)):
