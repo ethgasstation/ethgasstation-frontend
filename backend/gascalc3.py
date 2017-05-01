@@ -139,9 +139,10 @@ lowestMined = lowestMined.min()
 lowestRejected = validationTable.loc[validationTable['mined']==False, 'index']
 print (lowestRejected)
 
-lowestRejected = lowestRejected.min()
+
 
 if (not lowestRejected.empty):
+    lowestRejected = lowestRejected.min()
     if (lowestRejected > gpRecs['safeLow']):
         if (lowestMined > lowestRejected):
             gpRecs['safeLow'] = lowestMined
