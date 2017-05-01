@@ -126,7 +126,7 @@ filter.watch(function(err,blockHash)
                 launchProcess (commandString2); 
             
              }
-            if (block.number % 50 === 0 )
+            if (block.number % 10 === 0 )
             {
                 console.log(watchedTx);
                 var y = watchedTx.length;
@@ -299,7 +299,7 @@ function validateTx (tx, finished)
         {
             console.log(validationStatus);
             var str = JSON.stringify(validationStatus);
-            fs.writeFile('validated.json', str, (err) => {
+            fs.writeFile('../json/validated.json', str, (err) => {
                 if (err){
                 console.log(err.stack)
                 }

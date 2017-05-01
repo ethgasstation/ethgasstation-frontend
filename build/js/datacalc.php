@@ -1,6 +1,4 @@
 <?php
-//setting header to json
-//header('Content-Type: application/json');
 
 //database
 define('DB_HOST', '127.0.0.1');
@@ -48,12 +46,12 @@ elseif ($currency == 'gbp'){
     $exchangeRate = $ethpriceGBP;
 }
 
-$calcParamString = file_get_contents("http://localhost/json/calc.html");
+$calcParamString = file_get_contents("http://localhost/json/calc.json");
 $calcParams = json_decode($calcParamString, true);
 
 
 
-$gasPriceRecString = file_get_contents("http://localhost/json/ethgasAPI.html");
+$gasPriceRecString = file_get_contents("http://localhost/json/ethgasAPI.json");
 $gasPriceRecs = json_decode($gasPriceRecString, true);
 
 

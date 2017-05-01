@@ -118,7 +118,7 @@ for x in range(len(priceTable)):
 
 print(gpRecs)
 
-url = "http://localhost/backend/validated.json"
+url = "http://localhost/json/validated.json"
 response = urllib.urlopen(url)
 validation = json.loads(response.read())
 response.close()
@@ -132,14 +132,9 @@ print(validationTable)
 
 
 lowestMined = validationTable.loc[validationTable['mined']==True, 'index']
-print (lowestMined)
-
 lowestMined = lowestMined.min()
 
 lowestRejected = validationTable.loc[validationTable['mined']==False, 'index']
-print (lowestRejected)
-
-
 
 if (not lowestRejected.empty):
     lowestRejected = lowestRejected.min()
@@ -195,16 +190,14 @@ model = sm.Poisson(indep, dep.iloc[:,[0,1,3,4,6,7,8]])
 results = model.fit(disp=0)
 dictResults = dict(results.params)
 dep['predict'] = results.predict()
-print(dep)
+
+
 #check to see if really fastest
+predictAverage = dep.loc[(dep['priceCat1']==2) & (dep['gasCat1']==1), 'predict'].mean()
+predictFastest = dep.loc[(dep['priceCat1']==4) & (dep['gasCat1']==1), 'predict'].mean()
 
-predictFast = dep.loc[(dep['priceCat2']==1) & (dep['gasCat1']==1), 'predict'].mean()
-
-print(predictFast)
-
-
-
-
+if (predictFastest > predictAverage):
+    gpRecs['Fastest'] = gpRecs['Average']
 
 
 quantiles = quantiles.reset_index(drop=True)
@@ -213,13 +206,17 @@ quantiles = quantiles.to_dict()
 
 dictResults.update(quantiles)
 dictResults.update(blockTime)
-dictResults.update(gpRecs)
+
 
 parentdir = os.path.dirname(os.getcwd())
-filepath_calc = parentdir + '/json/calc.html'
+filepath_calc = parentdir + '/json/calc.json'
+filepate_recs = parentdir + '/json/ethgasAPI.json'
 
 with open(filepath_calc, 'w') as outfile:
     json.dump(dictResults, outfile)
+
+with open(filepath_recs, 'w') as outfile:
+    json.dump(gpRecs, outfile)
 
 print (results.summary())
 print (gpRecs)
