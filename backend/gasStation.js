@@ -300,7 +300,7 @@ function validateTx (tx, finished)
         {
             console.log(validationStatus);
             var str = JSON.stringify(validationStatus);
-            fs.writeFile(path.join(__dirname, '..', '/json/validated.json', str, (err) => {
+            fs.writeFile(path.join(__dirname, '..', '/json/validated.json'), str, (err) => {
                 if (err){
                 console.log(err.stack)
                 }
