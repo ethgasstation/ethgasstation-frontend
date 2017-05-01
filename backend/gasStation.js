@@ -3,6 +3,7 @@
 var Web3 = require('web3');
 var mysql = require('mysql');
 const fs = require('fs');
+var path = require('path');
 var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 var connection = mysql.createConnection({
     host:'localhost',
@@ -299,7 +300,7 @@ function validateTx (tx, finished)
         {
             console.log(validationStatus);
             var str = JSON.stringify(validationStatus);
-            fs.writeFile('../json/validated.json', str, (err) => {
+            fs.writeFile(path.join(__dirname, '..', '/json/validated.json', str, (err) => {
                 if (err){
                 console.log(err.stack)
                 }
