@@ -197,7 +197,7 @@ dep['predict'] = results.predict()
 print(dep)
 #check to see if really fastest
 
-predictFast = dep.loc[(dep['priceCat2']==1) & (dep['gasCat1']==1), 'predict'].avg()
+predictFast = dep.loc[(dep['priceCat2']==1) & (dep['gasCat1']==1), 'predict'].mean()
 
 print(predictFast)
 
