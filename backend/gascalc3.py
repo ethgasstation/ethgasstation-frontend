@@ -179,7 +179,7 @@ dep['priceCat4'] = (txData['minedGasPrice'] > gpRecs['Fastest']).astype(int)
 
 quantiles= txData['gasused'].quantile([.5, .75, .9, 1])
 
-
+dep['gasCat1'] = txData['gasused'] == 21000.astype(int)
 dep['gasCat2'] = ((txData['gasused']>21000) & (txData['gasused']<=quantiles[.75])).astype(int)
 dep['gasCat3'] = ((txData['gasused']>quantiles[.75]) & (txData['gasused']<=quantiles[.9])).astype(int)
 dep['gasCat4'] = (txData['gasused']> quantiles[.9]).astype(int)
@@ -193,7 +193,7 @@ dep['predict'] = results.predict()
 print(dep)
 #check to see if really fastest
 
-predictFast = dep.loc[dep['priceCat2']==1, 'predict'].min()
+predictFast = dep.loc[(dep['priceCat2']==1) & (dep['gasCat1']==1), 'predict'].avg()
 
 print(predictFast)
 
