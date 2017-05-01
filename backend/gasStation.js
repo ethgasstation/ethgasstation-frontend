@@ -131,18 +131,15 @@ filter.watch(function(err,blockHash)
             {
                 console.log(watchedTx);
                 var y = watchedTx.length;
+                var finished = false;
                 for (var x = 0; x < y; x++ )
                 {
                    tx = watchedTx.shift();
                    if (x === (y-1))
                    {
-                        var finished = true;
-                    }
-                    else
-                    {
-                        finished = false;
-                    }
-                   if (tx.postedBlock < (block.number-50))
+                        finished = true;
+                   }
+                   if (tx.postedBlock < (block.number-10))
                    {    
                        validateTx(tx, finished);
                    }
@@ -269,6 +266,7 @@ function launchProcess (commandString)
             throw error;
         }
         console.log(stdout);
+        console.log(stderr);
     })
 }     
 
