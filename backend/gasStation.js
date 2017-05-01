@@ -120,7 +120,7 @@ filter.watch(function(err,blockHash)
             startQuery = currentBlock - 10000;
             if (block.number % 100 === 0 )
             {
-                commandString = 'node gasStationAnalyze2.js ' + currentBlock + ' &>output2.txt';
+                commandString = 'node gasStationAnalyze.js ' + currentBlock + ' &>output2.txt';
                 commandString2 = 'python gascalc.py ' + startQuery + ' ' +  currentBlock + ' &>output3.txt';
                 launchProcess (commandString);
                 launchProcess (commandString2); 
