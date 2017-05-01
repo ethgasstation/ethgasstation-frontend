@@ -98,6 +98,7 @@ for x in range(len(priceTable)):
         priceTable.loc[x, 'cumPctTotBlocks'] = priceTable.loc[x-1, 'cumPctTotBlocks'] + priceTable.loc[x, 'pctTotBlocks']
     y=y+1
 
+print(priceTable)
 #--cumulative columns
 
 #get Initial Gas Price Recs based on % of blocks excluding empty blocks
