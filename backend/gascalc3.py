@@ -164,6 +164,7 @@ txData = pd.DataFrame(cursor.fetchall())
 txData.columns = head
 
 txData['delay'] = pd.to_numeric(txData['delay'], errors='coerce')
+(txData['delay']>500).np.nan
 txData = txData.dropna()
 
 
