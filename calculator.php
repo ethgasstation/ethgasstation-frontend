@@ -45,7 +45,7 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.css" rel="stylesheet">
-     <?php include 'build/js/datacalc.php'; ?>
+     <?php include 'build/php/datacalc.php'; ?>
 
    
 

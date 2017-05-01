@@ -45,7 +45,7 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.css" rel="stylesheet">
-     <?php include 'build/js/data.php'; ?>
+     <?php include 'build/php/data.php'; ?>
 
     <script type="text/javascript" src="speedometer/xcanvas.js"></script>
     <script type="text/javascript" src="speedometer/tbe.js"></script>
@@ -665,7 +665,7 @@
 
           
                     $.ajax({
-		                      url: "build/js/speedo.php",
+		                      url: "build/php/speedo.php",
 		                      method: "GET",
                               dataType: "json",
 		                      success: function(data) {
