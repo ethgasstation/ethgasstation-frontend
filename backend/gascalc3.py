@@ -190,6 +190,9 @@ dep = sm.add_constant(dep)
 indep = txData['delay']
 
 model = sm.Poisson(indep, dep.iloc[:,[0,1,3,4,5,6,7]])
+
+results = model.fit(disp=0)
+dictResults = dict(results.params)
 dep['predict'] = results.predict()
 print(dep)
 #check to see if really fastest
@@ -200,8 +203,7 @@ print(predictFast)
 
 
 
-results = model.fit(disp=0)
-dictResults = dict(results.params)
+
 
 
 quantiles = quantiles.reset_index(drop=True)
