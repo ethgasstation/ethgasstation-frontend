@@ -210,7 +210,7 @@ dictResults.update(blockTime)
 
 parentdir = os.path.dirname(os.getcwd())
 filepath_calc = parentdir + '/json/calc.json'
-filepate_recs = parentdir + '/json/ethgasAPI.json'
+filepath_recs = parentdir + '/json/ethgasAPI.json'
 
 with open(filepath_calc, 'w') as outfile:
     json.dump(dictResults, outfile)
