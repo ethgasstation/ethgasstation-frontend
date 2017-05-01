@@ -139,17 +139,16 @@ lowestMined = lowestMined.min()
 lowestRejected = validationTable.loc[validationTable['mined']==False, 'index']
 print (lowestRejected)
 
-lowetRejected = lowestRejected.min()
+lowestRejected = lowestRejected.min()
 
-if (lowestRejected.empty):
-    print('hi')
-    if (lowestMined > gpRecs['safeLow']):
-        gpRecs['safeLow'] = lowestMined
+if (not lowestRejected.empty):
+    if (lowestRejected > gpRecs['safeLow']):
+        if (lowestMined > lowestRejected):
+            gpRecs['safeLow'] = lowestMined
+        else:
+            gpRecs['safeLow'] = gpRecs['Average']
 
 print (gpRecs)
-print (lowestRejected)
-
-
 
 
 #Poisson Regression
@@ -190,6 +189,14 @@ dep = sm.add_constant(dep)
 indep = txData['delay']
 
 model = sm.Poisson(indep, dep.iloc[:,[0,1,3,4,5,6,7]])
+dep['predict'] = results.predict()
+print(dep)
+#check to see if really fastest
+
+predictFast = dep.loc[dep['priceCat2']==1, 'predict'].min()
+
+print(predictFast)
+
 
 
 results = model.fit(disp=0)
@@ -215,9 +222,7 @@ print (gpRecs)
 
 
 '''
-dep['predict'] = results.predict()
-dep['delay'] = indep
-print(dep)
+
 '''
 
 
