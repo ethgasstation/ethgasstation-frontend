@@ -310,7 +310,7 @@
             function getPriceCats(gasPrice)
             {
               pCats= {};
-              if ((gasPrice >= <?php echo($gasPriceRecs['SafeLow']) ?>) && (gasPrice < <?php echo($gasPriceRecs['Average']) ?>))
+              if ((gasPrice >= <?php echo($gasPriceRecs['safeLow']) ?>) && (gasPrice < <?php echo($gasPriceRecs['Average']) ?>))
               {
                 pCats['cat1'] = 1;
                 pCats['cat3'] = 0;
