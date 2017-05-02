@@ -22,7 +22,7 @@ $result = $mysqli->query($query);
 $row = $result->fetch_assoc();
 
 $result->close();
-$mysqli->close();
+
 
 
 $graphData = array();
@@ -32,6 +32,8 @@ $result2 = $mysqli->query($query2);
 while ($row2 = $result2->fetch_assoc()){
 	array_push($graphData,$row2);
 }
+$result2->close();
+$mysqli->close();
 
 $x1 = $graphData[10]['latestblockNum'];
 $x2 = $graphData[9]['latestblockNum'];
@@ -301,6 +303,18 @@ $miners = array (
 	'minP' => $row['miner10minP']
 	)
 );
+
+//sort miners based on low price and % empty blocks
+
+$price = array();
+foreach ($miners as $key => $val)
+{
+	$price[$key] = $val['minP'];
+	$empty[$key] = $val['pctEmp'];
+}
+
+array_multisort($price, SORT_ASC, $empty, SORT_ASC, $miners);
+
 
 $gpRecsString = file_get_contents("http://localhost/json/ethgasAPI.json");
 $gpRecs = json_decode($gpRecsString, true);
