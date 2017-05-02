@@ -30,6 +30,7 @@ $ethpriceGBP = $row['ETHpriceGBP'];
 
 if(isset($_GET['curr']) && !empty($_GET['curr'])){
 	$currency = $_GET['curr'];
+
 } 
 else {$currency = 'usd';}
 

@@ -472,7 +472,8 @@
               $('#txArgs').html(txArgs);
               
 
-              currency = <?php echo ($currency) ?>;
+              currency = '<?php echo ($currency) ?>';
+              console.log(currency);
               exchangeRate =<?php echo ($exchangeRate) ?>;
               blockInterval = <?php echo ($calcParams['blockInterval']) ?>;
           
@@ -486,19 +487,19 @@
               $('#meanBlocks').html(blocksWait);
               $('#meanSecs').html(txMeanSecs);
               $('#txEth').html(txFeeEth);
-              if (currency='usd'){
+              if (currency=='usd'){
                 string="$"+txFeeFiat
               $('#txFiat').html(string);
             }
-              else if (currency='eur'){
+              else if (currency=='eur'){
                 string="€"+txFeeFiat
               $('#txFiat').html(string);
             }
-              else if (currency='cny'){
+              else if (currency=='cny'){
                 string="¥"+txFeeFiat
               $('#txFiat').html(string);
             }
-              else if (currency='gbp'){
+              else if (currency=='gbp'){
                 string="£"+txFeeFiat
               $('#txFiat').html(string);
             }
