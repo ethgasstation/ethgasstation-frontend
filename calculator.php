@@ -455,8 +455,19 @@
               if (currency='usd'){
                 string="$"+txFeeFiat
               $('#txFiat').html(string);
-              }
-              
+            }
+              else if (currency='eur'){
+                string="€"+txFeeFiat
+              $('#txFiat').html(string);
+            }
+              else if (currency='cny'){
+                string="¥"+txFeeFiat
+              $('#txFiat').html(string);
+            }
+              else if (currency='gbp'){
+                string="£"+txFeeFiat
+              $('#txFiat').html(string);
+            }
 
           })
 
