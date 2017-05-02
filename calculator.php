@@ -391,10 +391,10 @@
               //Gas Used Set - Now find Gas Price
               if($('#other').prop('checked')===true){
                 otherGasPrice = $('#oth_val').val();
-                if (!otherGasPrice || otherGasPrice < <?php echo($gasPriceRecs['SafeLow']) ?>)
+                if (!otherGasPrice || otherGasPrice < <?php echo($gasPriceRecs['safeLow']) ?>)
                 {
                     if ($("#oth_val").parent().next(".validation").length == 0){ // only add if not added
-                      $("#oth_val").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;'>Please enter gas price >= <?php echo($gasPriceRecs['SafeLow'])?> gwei</div>");
+                      $("#oth_val").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;'>Please enter gas price >= <?php echo($gasPriceRecs['safeLow'])?> gwei</div>");
                     }
                     event.preventDefault(); // prevent form from POST to server
                     $('#oth_val').focus();
@@ -424,7 +424,7 @@
                   console.log(blocksWait);
                 }
                 else if ($('#cheap').prop('checked')===true){
-                  txGasPrice = <?php echo($gasPriceRecs['SafeLow']) ?>;
+                  txGasPrice = <?php echo($gasPriceRecs['safeLow']) ?>;
                   gCats = getGasUsedCats(txGasUsed);
                   pCats = getPriceCats(txGasPrice);
                   blocksWait = estimateWait(gCats, pCats);
