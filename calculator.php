@@ -160,7 +160,7 @@
                     <div class="checkbox">
                         <label>
                         <input type="checkbox" class="flat" id="cheap"> Cheap
-                        <?php echo ("(".$gasPriceRecs['SafeLow']." Gwei)") ?></label>
+                        <?php echo ("(".$gasPriceRecs['safeLow']." Gwei)") ?></label>
                     </div>
                      <div class="checkbox">
                         <label>
