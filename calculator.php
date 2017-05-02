@@ -259,7 +259,7 @@
       //Curency Support
       
             $("#eur").click(function(){     
-                location = "http://ethgasstation.info/calculator.php?curr=eur";                              
+                location = "http://localhost/calculator.php?curr=eur";                              
             });
             
             $("#usd").click(function(){
