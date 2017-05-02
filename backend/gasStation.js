@@ -49,8 +49,6 @@ filter.watch(function(err,blockHash)
             console.error(err.stack);
             return;
         }
-        console.log(watchedTx);
-        console.log(validationStatus);
         if (block != null)
         {
             var ts = Math.round(+new Date()/1000);
@@ -116,13 +114,13 @@ filter.watch(function(err,blockHash)
             }
             writeSpeedo(block); //for Speedometer
             blockCounter++;
-            console.log(web3.eth.blockNumber);
+            console.log(block.number);
             currentBlock = block.number;
             startQuery = currentBlock - 10000;
             if (block.number % 100 === 0 )
             {
-                commandString = 'node gasStationAnalyze.js ' + currentBlock + ' &>output2.txt';
-                commandString2 = 'python gascalc.py ' + startQuery + ' ' +  currentBlock + ' &>output3.txt';
+                commandString = 'node gasStationAnalyze.js ' + currentBlock;
+                commandString2 = 'python gascalc.py ' + startQuery + ' ' +  currentBlock;
                 launchProcess (commandString);
                 launchProcess (commandString2); 
             
@@ -285,13 +283,14 @@ function validateTx (tx, finished)
         {
             var lastValidTx = new lastValid (txCheck.txHash, txCheck.gasPrice, txCheck.postedBlock, result.blockNumber);
             lastValidTx['mined'] = true;
-            console.log(lastValidTx);
+            txCheck.gasPrice = Math.round(txCheck.gasPrice);
             validationStatus[txCheck.gasPrice] = lastValidTx;
         }
         else
         {
             var lastValidTx = new lastValid (txCheck.txHash, txCheck.gasPrice, txCheck.postedBlock);
             lastValidTx['mined'] = false;
+            txCheck.gasPrice = Math.round(txCheck.gasPrice);
             validationStatus[txCheck.gasPrice] = lastValidTx;
         }
         if (loopCheck)
