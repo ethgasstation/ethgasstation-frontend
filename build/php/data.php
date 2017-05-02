@@ -316,7 +316,7 @@ foreach ($miners as $key => $val)
 array_multisort($price, SORT_ASC, $empty, SORT_ASC, $miners);
 
 
-$gpRecsString = file_get_contents("http://localhost/json/ethgasAPI.json");
+$gpRecsString = file_get_contents("http://ethgasstation.info/json/ethgasAPI.json");
 $gpRecs = json_decode($gpRecsString, true);
 
 
