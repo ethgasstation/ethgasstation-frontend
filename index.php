@@ -248,19 +248,19 @@
                       <tbody>
                         <tr>
                           <td>Cheapest</td>
-                          <td style = "color:#03586A" ><?php echo "$lowPrice" ?></td>
+                          <td style = "color:#03586A" ><?php echo ($gpRecs['Cheapest']) ?></td>
                         </tr>
                         <tr>
                           <td>Safe Low</td>
-                          <td style = "color:#03586A" ><?php echo "$safeLow" ?></td>
+                          <td style = "color:#03586A" ><?php echo ($gpRecs['safeLow']) ?></td>
                         </tr>
                         <tr>
                           <td>Average</td>
-                          <td style = "color:#03586A"><?php echo "$recPrice" ?></td>
+                          <td style = "color:#03586A"><?php echo ($gpRecs['Average']) ?></td>
                         </tr>
                         <tr>
                           <td>Fastest</td>
-                          <td style = "color:red"><?php echo "$highPrice" ?></td>
+                          <td style = "color:red"><?php echo ($gpRecs['Fastest']) ?></td>
                         </tr>
                       </tbody>
                     </table>

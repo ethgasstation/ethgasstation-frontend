@@ -104,6 +104,8 @@ print(priceTable)
 #get Initial Gas Price Recs based on % of blocks excluding empty blocks
 gpRecs = {}
 
+gpRecs['Cheapest'] = priceTable.loc[0, 'minPrice']
+
 for x in range(len(priceTable)):
     if (priceTable.loc[x, 'cumPctTxBlocks']) >= .05:
         gpRecs['safeLow'] = priceTable.loc[x, 'minPrice']
