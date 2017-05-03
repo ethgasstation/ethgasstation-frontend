@@ -272,7 +272,7 @@ function validateTx (tx, finished)
 {
     var loopCheck= finished;
     var txCheck = tx;
-    web3.eth.getTransaction(txCheck.txHash, function(err, result)
+    web3.eth.getTransactionReceipt(txCheck.txHash, function(err, result)
     {
         if (err)
         {
