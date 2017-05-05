@@ -116,7 +116,7 @@ filter.watch(function(err,blockHash)
             blockCounter++;
             console.log(block.number);
             currentBlock = block.number;
-            startQuery = currentBlock - 10000;
+            startQuery = currentBlock - 5760;
             if (block.number % 100 === 0 )
             {
                 commandString = 'node gasStationAnalyze.js ' + currentBlock;
