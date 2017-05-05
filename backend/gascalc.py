@@ -136,7 +136,7 @@ print(validationTable)
 
 lowestMined = validationTable.loc[validationTable['mined']==True, ['index', 'postedBlock']]
 lowestMinedgp = lowestMined['index'].min()
-lowestMinedBlock = lowestMined.loc[lowestMined['index']==lowestMinedgp, 'postedBlock']
+lowestMinedBlock = lowestMined.loc[lowestMined['index']==lowestMinedgp, 'postedBlock'].astype(int)
 print (lowestMinedBlock)
 print (lowestMinedgp)
 
