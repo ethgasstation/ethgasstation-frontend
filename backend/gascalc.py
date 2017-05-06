@@ -236,6 +236,7 @@ dictResults.update(blockTime)
 priceTable = priceTable.to_json(orient = 'records')
 miningTable = txDataMiner.to_json(orient = 'records')
 
+print (txDataMiner)
 
 parentdir = os.path.dirname(os.getcwd())
 filepath_calc = parentdir + '/json/calc.json'
