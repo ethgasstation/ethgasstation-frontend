@@ -128,7 +128,6 @@ filter.watch(function(err,blockHash)
              }
             if (block.number % 50 === 0 )
             {
-                console.log(watchedTx);
                 var y = watchedTx.length;
                 var finished = false;
                 for (var x = 0; x < y; x++ )
@@ -138,7 +137,7 @@ filter.watch(function(err,blockHash)
                    {
                         finished = true;
                    }
-                   if (tx.postedBlock < (block.number-50))
+                   if (tx.postedBlock <= (block.number-50))
                    {    
                        validateTx(tx, finished);
                    }
@@ -298,8 +297,6 @@ function validateTx (tx, finished)
         }
         if (loopCheck)
         {
-            console.log(validationStatus);
-            console.log('hi');
             var str = JSON.stringify(validationStatus);
             console.log(str);
             fs.writeFile(path.join(__dirname, '..', '/json/validated.json'), str, (err) => {
