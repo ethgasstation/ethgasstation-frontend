@@ -74,6 +74,7 @@
                 <ul class="nav side-menu">
                   <li><a href="index.php"><i class ="fa fa-home"></i>Main Page</a></li>
                   <li><a href="calculator.php"><i class ="fa fa-calculator"></i>Gas-Time Calculator</a></li>
+                  <li><a href="minerTable.php"><i class ="fa fa-cubes"></i>Complete Miner Stats</a></li>
                   <li><a href="about.html"><i class="fa fa-question"></i> What Is This Site?</a></li>
                   <li><a><i class="fa fa-bookmark-o"></i>FAQ<span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
