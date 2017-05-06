@@ -212,7 +212,7 @@ dep['cons'] = 1
 
 indep = txData['delay']
 
-model = sm.Poisson(indep, dep.loc[:,['priceCat1', 'priceCat3', 'priceCat4', 'gasCat1', 'gasCat3', 'gasCat4', 'cons']])
+model = sm.Poisson(indep, dep.loc[:,['priceCat1', 'priceCat3', 'priceCat4', 'gasCat2', 'gasCat3', 'gasCat4', 'cons']])
 
 results = model.fit(disp=0)
 dictResults = dict(results.params)
@@ -233,8 +233,8 @@ quantiles = quantiles.to_dict()
 
 dictResults.update(quantiles)
 dictResults.update(blockTime)
-mining = priceTable.to_json()
-watch = validationTable.to_json()
+mining = priceTable.to_json(orient = 'records')
+watch = validationTable.to_json(orient = 'records')
 
 
 parentdir = os.path.dirname(os.getcwd())
