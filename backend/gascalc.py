@@ -241,7 +241,7 @@ parentdir = os.path.dirname(os.getcwd())
 filepath_calc = parentdir + '/json/calc.json'
 filepath_recs = parentdir + '/json/ethgasAPI.json'
 filepath_mining = parentdir + '/json/mining.json'
-filepath_watch = parentdir + 'json/watch.json'
+filepath_watch = parentdir + '/json/watch.json'
 
 with open(filepath_calc, 'w') as outfile:
     json.dump(dictResults, outfile)
