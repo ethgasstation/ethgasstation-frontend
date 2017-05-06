@@ -151,7 +151,7 @@ if not (rejected.empty):
 
     #check to see if there is an accepted gas price lower than rejected but mined later
     latestGp =  validationTable.loc[(validationTable['mined'] == True) & (validationTable['postedBlock'] > rejMaxPostedBlock)]
-    if not (lastestGp.empty):
+    if not (latestGp.empty):
         latestGp= latestGp['index'].min()
     else:
         latestGp = None
