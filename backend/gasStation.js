@@ -284,6 +284,7 @@ function validateTx (tx, finished)
         {
             var lastValidTx = new lastValid (txCheck.txHash, txCheck.gasPrice, txCheck.postedBlock, result.blockNumber);
             lastValidTx['mined'] = true;
+            lastValidTx['miner'] = result.miner;
             txCheck.gasPrice = Math.round(txCheck.gasPrice);
             validationStatus[txCheck.gasPrice] = lastValidTx;
         }
@@ -298,6 +299,7 @@ function validateTx (tx, finished)
         {
             console.log(validationStatus);
             var str = JSON.stringify(validationStatus);
+            console.log(str);
             fs.writeFile(path.join(__dirname, '..', '/json/validated.json'), str, (err) => {
                 if (err){
                 console.log(err.stack)

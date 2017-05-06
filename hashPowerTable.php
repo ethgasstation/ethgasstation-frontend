@@ -154,8 +154,6 @@
                     </table>
 
                  </div>
-    
-    
         </div>
     </div>
                     
@@ -188,10 +186,7 @@
     
 
 <!-- Custom Theme Scripts -->
-   <script>
 
-
- </script>
 
 
 
