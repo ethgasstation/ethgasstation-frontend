@@ -117,6 +117,8 @@
                     <li id="cny"><a href="#"> CNY<?php if($currency=='cny'){echo'<span class="pull-right"><i class="fa fa-check"></i></span>';}?></a></li>
                   </ul>
                 </li>
+                <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Estimates over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
+              </p>
             </ul>
             </nav>
           </div>
@@ -236,39 +238,7 @@
 
         <!-- footer content -->
         <footer>
-          <div class="tip-button"></div>
-          <div class="message"></div>
           
-          <script>
-          var tipButton = document.querySelector('.tip-button')
-          renderMessage('Tips- use the safelow gas price!');
-          tipButton.addEventListener('click', function() {
-          if (typeof web3 === 'undefined') {
-          return renderMessage('You need to install MetaMask to use this feature.  https://metamask.io')
-          }
-          var user_address = web3.eth.accounts[0];
-          web3.eth.sendTransaction({
-          to: '0x446fa0c8EaD753c7ABf0B821f90D4338e72De380',
-          from: user_address,
-          value: web3.toWei('.01', 'ether'),
-            }, function (err, transactionHash) {
-              if (err) return renderMessage('Oh no!: ' + err.message)
-
-            // If you get a transactionHash, you can assume it was sent,
-            // or if you want to guarantee it was received, you can poll
-          // for that transaction to be mined first.
-          renderMessage('Thanks!')
-          })
-        })
-        function renderMessage (message) {
-          var messageEl = document.querySelector('.message')
-          messageEl.innerHTML = message
-        }
-
-           </script>
-
-
-
           <div class="pull-right">
             Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
           </div>
