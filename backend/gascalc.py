@@ -75,7 +75,7 @@ txDataMiner['pctTxBlocks'] = txDataMiner['txBlocks']/totTxBlocks*100
 
 pctTxBlocks = totTxBlocks/totalBlocks
 
-txDataMiner  = txDataMiner.sort_values(['minPrice','totBlocks'])
+txDataMiner  = txDataMiner.sort_values(['minPrice','totBlocks'], ascending = [True, False])
 
 #Make Table with Key Miner Stats
 priceTable = txDataMiner[['pctTxBlocks', 'minPrice']].groupby('minPrice').sum().reset_index()
