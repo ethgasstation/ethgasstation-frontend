@@ -134,7 +134,6 @@
                           <th>Min Gas Price<br>Accepted (Gwei)</th>
                           <th>Total <br> Blocks</th>
                           <th>Empty <br>Blocks</th>
-                          <th>Transaction <br>Blocks</th>
                           <th>% of Total <br>Blocks</th>
                           <th>% of Non-empty<br> Blocks</th>
                         </tr>
@@ -161,7 +160,6 @@
                         echo("<td>". $row['minPrice']. "</td>");
                         echo("<td>". $row['totBlocks']. "</td>");
                         echo("<td>". $row['emptyBlocks']. "</td>");
-                        echo("<td>". $row['txBlocks']. "</td>");
                         echo("<td>". round($row['pctTot'],1). "</td>");
                         echo("<td>". round($row['pctTxBlocks'],1). "</td>");
 
