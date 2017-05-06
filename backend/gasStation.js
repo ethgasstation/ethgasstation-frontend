@@ -1,4 +1,5 @@
 //Monitor pending transactions and mined blocks- post data to MySQL
+//Also montior low gas price transactions to alert if they aren't mined
 
 var Web3 = require('web3');
 var mysql = require('mysql');

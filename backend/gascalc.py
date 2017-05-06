@@ -156,6 +156,7 @@ if not (rejected.empty):
     else:
         latestGp = None
     
+    print (acceptGp, latestGp)
     if ((acceptGp is not None) & (latestGp is not None)):
         gpRecs['safeLow']= min(acceptGp, latestGp)
     elif (acceptGp is not None):
@@ -208,6 +209,8 @@ dep = sm.add_constant(dep)
 
 indep = txData['delay']
 
+print (dep)
+print (indep)
 model = sm.Poisson(indep, dep.iloc[:,[0,1,3,4,6,7,8]])
 
 results = model.fit(disp=0)
