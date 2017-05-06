@@ -152,11 +152,8 @@
                       );
                       foreach ($minersArray as $row){
                         echo('<tr>');
-                        if($minerNames[$row['miner']]){
-                        $name = $minerNames[$row['miner']];}
-                        if (!empty($name)){
-                            $row['miner'] = $name;
-                        }
+                        if(array_key_exists ($row['miner'],$minerNames)){
+                        $row['miner'] = $minerNames[$row['miner']];}
                         echo("<td>". $row['miner']. "</td>");
                         echo("<td>". $row['minPrice']. "</td>");
                         echo("<td>". $row['totBlocks']. "</td>");
