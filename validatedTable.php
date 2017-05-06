@@ -141,7 +141,7 @@
                       <?php
                       foreach ($validatedArray as $row){
                         echo('<tr>');
-                        echo("<td>". $row['gasPrice']. "</td>");
+                        echo("<td>". round($row['gasPrice']). "</td>");
                         echo("<td>". $row['txHash']. "</td>");
                         echo("<td>". $row['postedBlock']. "</td>");
                         if (!$row['mined']){
