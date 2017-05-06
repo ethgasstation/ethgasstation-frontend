@@ -233,15 +233,15 @@ quantiles = quantiles.to_dict()
 
 dictResults.update(quantiles)
 dictResults.update(blockTime)
-mining = priceTable.to_json(orient = 'records')
-watch = validationTable.to_json(orient = 'records')
+priceTable = priceTable.to_json(orient = 'records')
+miningTable = txDataMiner.to_json(orient = 'records')
 
 
 parentdir = os.path.dirname(os.getcwd())
 filepath_calc = parentdir + '/json/calc.json'
 filepath_recs = parentdir + '/json/ethgasAPI.json'
-filepath_mining = parentdir + '/json/mining.json'
-filepath_watch = parentdir + '/json/watch.json'
+filepath_pricetable = parentdir + '/json/price.json'
+filepath_miners = parentdir + '/json/miners.json'
 
 with open(filepath_calc, 'w') as outfile:
     json.dump(dictResults, outfile)
@@ -249,11 +249,11 @@ with open(filepath_calc, 'w') as outfile:
 with open(filepath_recs, 'w') as outfile:
     json.dump(gpRecs, outfile)
 
-with open(filepath_mining, 'w') as outfile:
-    outfile.write(mining)
+with open(filepath_pricetable, 'w') as outfile:
+    outfile.write(priceTable)
 
-with open(filepath_watch, 'w') as outfile:
-    outfile.write(watch)
+with open(filepath_miners, 'w') as outfile:
+    outfile.write(miningTable)
 
 print (results.summary())
 print (gpRecs)
