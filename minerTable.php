@@ -152,7 +152,8 @@
                       );
                       foreach ($minersArray as $row){
                         echo('<tr>');
-                        $name = $minerNames[$row['miner']];
+                        if($minerNames[$row['miner']]){
+                        $name = $minerNames[$row['miner']];}
                         if (!empty($name)){
                             $row['miner'] = $name;
                         }
