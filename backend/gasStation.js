@@ -125,7 +125,7 @@ filter.watch(function(err,blockHash)
                 launchProcess (commandString2); 
             
              }
-            if (block.number % 50 === 0 )
+            if (block.number % 5 === 0 )
             {
                 console.log(watchedTx);
                 var y = watchedTx.length;
@@ -137,7 +137,7 @@ filter.watch(function(err,blockHash)
                    {
                         finished = true;
                    }
-                   if (tx.postedBlock < (block.number-50))
+                   if (tx.postedBlock < (block.number-5))
                    {    
                        validateTx(tx, finished);
                    }
