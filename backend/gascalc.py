@@ -158,6 +158,8 @@ if not (rejected.empty):
     
     print (acceptGp, latestGp)
     if ((acceptGp is not None) & (latestGp is not None)):
+        acceptGp = int(acceptGp)
+        latestGp = int(latestGp)
         gpRecs['safeLow']= min(acceptGp, latestGp)
     elif (acceptGp is not None):
         gpRecs['safeLow'] = acceptGp
@@ -205,13 +207,13 @@ dep['gasCat2'] = ((txData['gasused']>21000) & (txData['gasused']<=quantiles[.75]
 dep['gasCat3'] = ((txData['gasused']>quantiles[.75]) & (txData['gasused']<=quantiles[.9])).astype(int)
 dep['gasCat4'] = (txData['gasused']> quantiles[.9]).astype(int)
 
-dep = sm.add_constant(dep)
+dep['cons'] = 1
 
 indep = txData['delay']
 
 print (dep)
 print (indep)
-model = sm.Poisson(indep, dep.iloc[:,[0,1,3,4,6,7,8]])
+model = sm.Poisson(indep, dep.loc[:,['priceCat1', 'priceCat3', 'priceCat4', 'gasCat1', 'gasCat3', 'gasCat4', 'cons']])
 
 results = model.fit(disp=0)
 dictResults = dict(results.params)
