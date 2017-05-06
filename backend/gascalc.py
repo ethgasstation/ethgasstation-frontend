@@ -212,8 +212,6 @@ dep['cons'] = 1
 
 indep = txData['delay']
 
-print (dep)
-print (indep)
 model = sm.Poisson(indep, dep.loc[:,['priceCat1', 'priceCat3', 'priceCat4', 'gasCat1', 'gasCat3', 'gasCat4', 'cons']])
 
 results = model.fit(disp=0)
@@ -235,17 +233,27 @@ quantiles = quantiles.to_dict()
 
 dictResults.update(quantiles)
 dictResults.update(blockTime)
+mining = priceTable.to_json
+watch = validationTable.to_json
 
 
 parentdir = os.path.dirname(os.getcwd())
 filepath_calc = parentdir + '/json/calc.json'
 filepath_recs = parentdir + '/json/ethgasAPI.json'
+filepath_mining = parentdir + '/json/mining.json'
+filepath_watch = parentdir + 'json/watch.json'
 
 with open(filepath_calc, 'w') as outfile:
     json.dump(dictResults, outfile)
 
 with open(filepath_recs, 'w') as outfile:
     json.dump(gpRecs, outfile)
+
+with open(filepath_mining, 'w') as outfile:
+    outfile.write(mining)
+
+with open(filepath_watch, 'w') as outfile:
+    outfile.write(watch)
 
 print (results.summary())
 print (gpRecs)
