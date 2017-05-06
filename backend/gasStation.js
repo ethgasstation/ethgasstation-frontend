@@ -272,6 +272,7 @@ function launchProcess (commandString)
 function validateTx (tx, finished)
 {
     var loopCheck= finished;
+    console.log(loopCheck + ' loop');
     var txCheck = tx;
     web3.eth.getTransactionReceipt(txCheck.txHash, function(err, result)
     {
@@ -298,6 +299,7 @@ function validateTx (tx, finished)
         if (loopCheck)
         {
             console.log(validationStatus);
+            console.log('hi');
             var str = JSON.stringify(validationStatus);
             console.log(str);
             fs.writeFile(path.join(__dirname, '..', '/json/validated.json'), str, (err) => {
