@@ -233,8 +233,8 @@ quantiles = quantiles.to_dict()
 
 dictResults.update(quantiles)
 dictResults.update(blockTime)
-mining = priceTable.to_json
-watch = validationTable.to_json
+mining = priceTable.to_json()
+watch = validationTable.to_json()
 
 
 parentdir = os.path.dirname(os.getcwd())
