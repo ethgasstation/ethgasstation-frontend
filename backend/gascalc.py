@@ -208,9 +208,6 @@ dep = sm.add_constant(dep)
 
 indep = txData['delay']
 
-print (dep)
-
-
 model = sm.Poisson(indep, dep.iloc[:,[0,1,3,4,6,7,8]])
 
 results = model.fit(disp=0)
