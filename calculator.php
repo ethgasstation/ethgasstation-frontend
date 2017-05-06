@@ -304,7 +304,7 @@
               paramPriceCat1 = <?php echo ($calcParams['priceCat1']) ?>;
               paramPriceCat3 = <?php echo ($calcParams['priceCat3']) ?>;
               paramPriceCat4 = <?php echo ($calcParams['priceCat4']) ?>;
-              paramCons = <?php echo ($calcParams['const']) ?>;
+              paramCons = <?php echo ($calcParams['cons']) ?>;
               paramGasCat2 = <?php echo ($calcParams['gasCat2']) ?>;
               paramGasCat3 = <?php echo ($calcParams['gasCat3']) ?>;
               paramGasCat4 = <?php echo ($calcParams['gasCat4']) ?>;
