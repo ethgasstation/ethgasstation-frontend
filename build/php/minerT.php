@@ -23,4 +23,9 @@ $latestblock = $dataRow['latestblockNum'];
 $minerString = file_get_contents("http://localhost/json/miners.json");
 $minersArray = json_decode($minerString, true);
 
+$priceString = file_get_contents("http://localhost/json/price.json");
+$priceArray = json_decode($priceString, true);
+
+$validatedString = file_get_contents("http://localhost/json/validated.json");
+$validatedArray = json_decode($validatedString, true);
 ?>
