@@ -134,22 +134,38 @@ validationTable= validationTable.reset_index()
 print(validationTable)
 
 
-lowestMined = validationTable.loc[validationTable['mined']==True, ['index', 'postedBlock']]
-lowestMinedgp = lowestMined['index'].min()
-lowestMinedBlock = lowestMined.loc[lowestMined['index']==lowestMinedgp, 'postedBlock'].values[0]
-print (lowestMinedBlock)
-print (lowestMinedgp)
+#Check if transactions are rejceted, is so, find one with higher gas price or one with lower gas price but mined later
 
+rejected = validationTable.loc[validationTable['mined']==False, ['index', 'postedBlock']]
 
-lowestRejected = validationTable.loc[validationTable['mined']==False, 'index']
+if not (rejected.empty):
+    rejectedMaxgp = rejected['index'].max()
+    rejMaxPostedBlock = rejected['postedBlock'].max()
 
-if (not lowestRejected.empty):
-    lowestRejected = lowestRejected.min()
-    if (lowestRejected > gpRecs['safeLow']):
-        if (lowestMined > lowestRejected):
-            gpRecs['safeLow'] = lowestMined
-        else:
-            gpRecs['safeLow'] = gpRecs['Average']
+    #check to see if there is an accepted gas price above the highest rejected
+    acceptGp = validationTable.loc[(validationTable['mined'] == True) & (validationTable['index'] > rejectedMaxgp)]
+    if not(acceptGp.empty):
+        acceptGp = acceptGp['index'].min()
+    else:
+        acceptGp = None
+
+    #check to see if there is an accepted gas price lower than rejected but mined later
+    latestGp =  validationTable.loc[(validationTable['mined'] == True) & (validationTable['postedBlock'] > rejMaxPostedBlock)]
+    if not (lastestGp.empty):
+        latestGp= latestGp['index'].min()
+    else:
+        latestGp = None
+    
+    if ((acceptGp is not None) & (latestGp is not None)):
+        gpRecs['safeLow']= min(acceptGp, latestGp)
+    elif (acceptGp is not None):
+        gpRecs['safeLow'] = acceptGp
+    elif (latestGp is not None):
+        gpRecs['safeLow'] = latestGp
+    else:
+        gpRecs['safeLow'] = gpRecs['Average']
+    
+
 
 print (gpRecs)
 
