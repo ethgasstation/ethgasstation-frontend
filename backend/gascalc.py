@@ -65,13 +65,13 @@ for x in range(len(txDataMiner)):
 
 
 #Convert to percentages
-txDataMiner['pctTot'] = txDataMiner['totBlocks']/totalBlocks
-txDataMiner['pctEmp'] = txDataMiner['emptyBlocks']/txDataMiner['totBlocks']
+txDataMiner['pctTot'] = txDataMiner['totBlocks']/totalBlocks*100
+txDataMiner['pctEmp'] = txDataMiner['emptyBlocks']/txDataMiner['totBlocks']*100
 
 #Distinguish between Empty blocks and those that contain Tx
 txDataMiner['txBlocks'] = txDataMiner['totBlocks'] - txDataMiner['emptyBlocks']
 totTxBlocks = txDataMiner['txBlocks'].sum()
-txDataMiner['pctTxBlocks'] = txDataMiner['txBlocks']/totTxBlocks
+txDataMiner['pctTxBlocks'] = txDataMiner['txBlocks']/totTxBlocks*100
 
 pctTxBlocks = totTxBlocks/totalBlocks
 
