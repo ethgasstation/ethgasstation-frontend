@@ -45,7 +45,7 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.css" rel="stylesheet">
-    <?php include 'build/php/minerTable.php'; ?>
+    <?php include 'build/php/minerT.php'; ?>
 
    
 
