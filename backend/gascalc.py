@@ -75,6 +75,7 @@ txDataMiner['pctTxBlocks'] = txDataMiner['txBlocks']/totTxBlocks*100
 
 pctTxBlocks = totTxBlocks/totalBlocks
 
+
 #Make Table with Key Miner Stats
 priceTable = txDataMiner[['pctTxBlocks', 'minPrice']].groupby('minPrice').sum().reset_index()
 priceTable['pctTotBlocks'] = priceTable['pctTxBlocks']*pctTxBlocks
@@ -107,15 +108,15 @@ gpRecs = {}
 gpRecs['Cheapest'] = priceTable.loc[0, 'minPrice']
 
 for x in range(len(priceTable)):
-    if (priceTable.loc[x, 'cumPctTxBlocks']) >= .05:
+    if (priceTable.loc[x, 'cumPctTxBlocks']) >= 5:
         gpRecs['safeLow'] = priceTable.loc[x, 'minPrice']
         break
 for x in range(len(priceTable)):
-    if (priceTable.loc[x, 'cumPctTxBlocks']) >= .50:
+    if (priceTable.loc[x, 'cumPctTxBlocks']) >= 50:
         gpRecs['Average'] = priceTable.loc[x, 'minPrice']
         break
 for x in range(len(priceTable)):
-    if (priceTable.loc[x, 'cumPctTxBlocks']) >= .99:
+    if (priceTable.loc[x, 'cumPctTxBlocks']) >= 99:
         gpRecs['Fastest'] = priceTable.loc[x, 'minPrice']
         break
 
