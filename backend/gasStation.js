@@ -284,6 +284,7 @@ function validateTx (tx, blockNum, last)
         }
         else
         {
+            console.log(txCheck.postedBlock + ' ' + currentBlock);
             if (txCheck.postedBlock <= currentBlock - 50)
             {
                 watchedTx.push(txCheck);
