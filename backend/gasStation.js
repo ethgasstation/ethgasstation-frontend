@@ -129,6 +129,7 @@ filter.watch(function(err,blockHash)
             if (block.number % 50 === 0 )
             {
                 var y = watchedTx.length;
+                console.log(y);
                 var finished = false;
                 for (var x = 0; x < y; x++ )
                 {
@@ -136,6 +137,7 @@ filter.watch(function(err,blockHash)
                    {
                         finished = true;
                    }
+                   console.log(x);
                     tx = watchedTx.shift();
                    if (tx.postedBlock <= (block.number-50))
                    {    

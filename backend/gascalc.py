@@ -44,7 +44,7 @@ blockTime = {
 txDataMiner = pd.DataFrame({'count':txData.groupby('miner').size()}).reset_index()
 txDataMiner = txDataMiner.sort_values('count', ascending=False).reset_index(drop=True)
 txDataTx = pd.DataFrame({'count':txData.groupby('minedGasPrice').size()}).reset_index()
-print(txDataTx)
+
 
 # Next Find Each Miners Mininum Price of All Mined Transactions
 for x in range(len(txDataMiner)):
