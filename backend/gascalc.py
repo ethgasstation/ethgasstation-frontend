@@ -106,7 +106,7 @@ for x in range(len(priceTable)):
 print(priceTable)
 #--cumulative columns
 
-highMiners = txDatMiner.loc[txDataMiner['pctTxBlocks']>=5, :]
+highMiners = txDataMiner.loc[txDataMiner['pctTxBlocks']>=5, :]
 
 
 
