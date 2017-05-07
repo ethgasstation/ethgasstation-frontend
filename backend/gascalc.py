@@ -137,6 +137,7 @@ for index,row in txDataMiner.iterrows():
 txDataMiner  = txDataMiner.sort_values(['adjustedMinP','totBlocks'], ascending = [True, False])
 
 print(txDataMiner)
+print(txDataTx)
 #Make Table with Key Miner Stats
 priceTable = txDataMiner[['pctTxBlocks', 'adjustedMinP']].groupby('adjustedMinP').sum().reset_index()
 priceTable['pctTotBlocks'] = priceTable['pctTxBlocks']*pctTxBlocks
