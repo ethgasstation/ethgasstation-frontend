@@ -16,7 +16,7 @@ cnx = mysql.connector.connect(user='jake', password='dopamine', host='127.0.0.1'
 cursor = cnx.cursor()
 
 # First Query to Determine Block TIme, and Estimate Miner Policies
-query = ("SELECT minedGasPrice, miner, tsMined, minedBlock, emptyBlock FROM minedtransactions WHERE minedBlock > %s AND minedBlock < %s ")
+query = ("SELECT minedGasPrice, miner, tsMined, minedBlock, emptyBlock, minedGasPriceCat FROM minedtransactions WHERE minedBlock > %s AND minedBlock < %s ")
 
 cursor.execute(query, (startBlock, endBlock))
 head = cursor.column_names
@@ -43,7 +43,7 @@ blockTime = {
 # First Identify all Unique Miners in list
 txDataMiner = pd.DataFrame({'count':txData.groupby('miner').size()}).reset_index()
 txDataMiner = txDataMiner.sort_values('count', ascending=False).reset_index(drop=True)
-txDataTx = pd.DataFrame({'count':txData.groupby('minedGasPrice').size()}).reset_index()
+txDataTx = pd.DataFrame({'count':txData.groupby('minedGasPriceCat').size()}).reset_index()
 
 
 
@@ -154,7 +154,7 @@ if not (rejected.empty):
     #check to see if there is an accepted gas price above the highest rejected
     acceptGp = validationTable.loc[(validationTable['mined'] == True) & (validationTable['index'] > rejectedMaxgp)]
     if not(acceptGp.empty):
-        acceptGp = acceptGp['index'].min()
+        acceptGp = int(round(acceptGp['gasPrice'].min()))
     else:
         acceptGp = None
 
@@ -162,7 +162,7 @@ if not (rejected.empty):
     latestGp =  validationTable.loc[(validationTable['mined'] == True) & (validationTable['postedBlock'] > rejMaxPostedBlock)]
     if not (latestGp.empty):
         print(latestGp)
-        latestGp= latestGp['index'].min()
+        latestGp= int(round(latestGp['gasPrice'].min()))
     else:
         latestGp = None
     
