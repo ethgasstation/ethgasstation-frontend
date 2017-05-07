@@ -46,6 +46,7 @@ txDataMiner = txDataMiner.sort_values('count', ascending=False).reset_index(drop
 txDataTx = pd.DataFrame({'count':txData.groupby('minedGasPrice').size()}).reset_index()
 
 
+
 # Next Find Each Miners Mininum Price of All Mined Transactions
 for x in range(len(txDataMiner)):
     minerName = txDataMiner.loc[x,'miner']
@@ -105,6 +106,10 @@ for x in range(len(priceTable)):
 print(priceTable)
 #--cumulative columns
 
+highMiners = txDatMiner.loc[txDataMiner['pctTxBlocks']>=5, :]
+
+
+
 #get Initial Gas Price Recs based on % of blocks excluding empty blocks
 gpRecs = {}
 
@@ -156,6 +161,7 @@ if not (rejected.empty):
     #check to see if there is an accepted gas price lower than rejected but mined later
     latestGp =  validationTable.loc[(validationTable['mined'] == True) & (validationTable['postedBlock'] > rejMaxPostedBlock)]
     if not (latestGp.empty):
+        print(latestGp)
         latestGp= latestGp['index'].min()
     else:
         latestGp = None
