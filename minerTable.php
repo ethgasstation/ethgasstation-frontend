@@ -131,7 +131,7 @@
                       <thead>
                         <tr>
                           <th>Miner</th>
-                          <th>Adjusted Min Gas Price<br>Accepted (Gwei)</th>
+                          <th>Min Gas Price<br>Accepted<sup>*</sup> (Gwei)</th>
                           <th>Total <br> Blocks</th>
                           <th>Empty <br>Blocks</th>
                           <th>% of Total <br>Blocks</th>
