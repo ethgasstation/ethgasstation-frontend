@@ -138,6 +138,17 @@ txDataMiner  = txDataMiner.sort_values(['adjustedMinP','totBlocks'], ascending =
 
 print(txDataMiner)
 print(txDataTx)
+
+topMiners = txDataMiner.sort_values('totBlocks', ascending=False)
+
+
+
+topMiners = topMiners.loc[:,['miner','adjustedMinP','pctEmp', 'pctTot']].head(10)
+topMiners = topMiners.sort_values(['adjustedMinP','pctEmp'], ascending = [True, True]).reset_index(drop=True)
+
+print(topMiners)
+
+
 #Make Table with Key Miner Stats
 priceTable = txDataMiner[['pctTxBlocks', 'adjustedMinP']].groupby('adjustedMinP').sum().reset_index()
 priceTable['pctTotBlocks'] = priceTable['pctTxBlocks']*pctTxBlocks
@@ -301,12 +312,14 @@ dictResults.update(quantiles)
 dictResults.update(blockTime)
 priceTable = priceTable.to_json(orient = 'records')
 miningTable = txDataMiner.to_json(orient = 'records')
+topMinerTable = topMiners.to_json(orient = 'records')
 
 parentdir = os.path.dirname(os.getcwd())
 filepath_calc = parentdir + '/json/calc.json'
 filepath_recs = parentdir + '/json/ethgasAPI.json'
 filepath_pricetable = parentdir + '/json/price.json'
 filepath_miners = parentdir + '/json/miners.json'
+filepath_topMiners = parentdir + '/json/topMiners.json'
 
 with open(filepath_calc, 'w') as outfile:
     json.dump(dictResults, outfile)
@@ -319,6 +332,9 @@ with open(filepath_pricetable, 'w') as outfile:
 
 with open(filepath_miners, 'w') as outfile:
     outfile.write(miningTable)
+
+with open(filepath_topMiners, 'w') as outfile:
+    outfile.write(topMinerTable)
 
 print (results.summary())
 print (gpRecs)

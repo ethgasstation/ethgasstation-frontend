@@ -299,66 +299,32 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td><?php echo "{$miners[0]['name']}" ?></td>
-                          <td><?php echo "{$miners[0]['minP']}" ?></td>
-                          <td><?php $pct = round($miners[0]['pctEmp'],2)*100 ; echo"$pct"; ?></td>
-                          <td><?php $pct = round($miners[0]['pctTot'],2)*100 ; echo"$pct"; ?></td>
-                        </tr>
-                        <tr>
-                          <td><?php echo "{$miners[1]['name']}" ?></td>
-                          <td><?php echo "{$miners[1]['minP']}" ?></td>
-                          <td><?php $pct = round($miners[1]['pctEmp'],2)*100 ; echo"$pct"; ?></td>
-                          <td><?php $pct = round($miners[1]['pctTot'],2)*100 ; echo"$pct"; ?></td>
-                        </tr>
-                         <tr>
-                          <td><?php echo "{$miners[2]['name']}" ?></td>
-                          <td><?php echo "{$miners[2]['minP']}" ?></td>
-                          <td><?php $pct = round($miners[2]['pctEmp'],2)*100 ; echo"$pct"; ?></td>
-                          <td><?php $pct = round($miners[2]['pctTot'],2)*100 ; echo"$pct"; ?></td>
-                        </tr>
-                         <tr>
-                          <td><?php echo "{$miners[3]['name']}" ?></td>
-                          <td><?php echo "{$miners[3]['minP']}" ?></td>
-                          <td><?php $pct = round($miners[3]['pctEmp'],2)*100 ; echo"$pct"; ?></td>
-                          <td><?php $pct = round($miners[3]['pctTot'],2)*100 ; echo"$pct"; ?></td>
-                        </tr>
-                          <tr>
-                          <td><?php echo "{$miners[4]['name']}" ?></td>
-                          <td><?php echo "{$miners[4]['minP']}" ?></td>
-                          <td><?php $pct = round($miners[4]['pctEmp'],2)*100 ; echo"$pct"; ?></td>
-                          <td><?php $pct = round($miners[4]['pctTot'],2)*100 ; echo"$pct"; ?></td>
-                        </tr>
-                         <tr>
-                          <td><?php echo "{$miners[5]['name']}" ?></td>
-                          <td><?php echo "{$miners[5]['minP']}" ?></td>
-                          <td><?php $pct = round($miners[5]['pctEmp'],2)*100 ; echo"$pct"; ?></td>
-                          <td><?php $pct = round($miners[5]['pctTot'],2)*100 ; echo"$pct"; ?></td>
-                        </tr>
-                         <tr>
-                          <td><?php echo "{$miners[6]['name']}" ?></td>
-                          <td><?php echo "{$miners[6]['minP']}" ?></td>
-                          <td><?php $pct = round($miners[6]['pctEmp'],2)*100 ; echo"$pct"; ?></td>
-                          <td><?php $pct = round($miners[6]['pctTot'],2)*100 ; echo"$pct"; ?></td>
-                        </tr>
-                         <tr>
-                          <td><?php echo "{$miners[7]['name']}" ?></td>
-                          <td><?php echo "{$miners[7]['minP']}" ?></td>
-                          <td><?php $pct = round($miners[7]['pctEmp'],2)*100 ; echo"$pct"; ?></td>
-                          <td><?php $pct = round($miners[7]['pctTot'],2)*100 ; echo"$pct"; ?></td>
-                        </tr>
-                         <tr>
-                          <td><?php echo "{$miners[8]['name']}" ?></td>
-                          <td><?php echo "{$miners[8]['minP']}" ?></td>
-                          <td><?php $pct = round($miners[8]['pctEmp'],2)*100 ; echo"$pct"; ?></td>
-                          <td><?php $pct = round($miners[8]['pctTot'],2)*100 ; echo"$pct"; ?></td>
-                        </tr>
-                         <tr>
-                          <td><?php echo "{$miners[9]['name']}" ?></td>
-                          <td><?php echo "{$miners[9]['minP']}" ?></td>
-                          <td><?php $pct = round($miners[9]['pctEmp'],2)*100 ; echo"$pct"; ?></td>
-                          <td><?php $pct = round($miners[9]['pctTot'],2)*100 ; echo"$pct"; ?></td>
-                        </tr>
+                        <?php
+                      $minerNames = array(
+    '0xea674fdde714fd979de3edf0f56aa9716b898ec8'=>'Ethermine',
+    '0x1e9939daaad6924ad004c2560e90804164900341'=>'ethfans',
+    '0xb2930b35844a230f00e51431acae96fe543a0347'=>'miningpoolhub',
+    '0x4bb96091ee9d802ed039c4d1a5f6216f90f81b01'=>'Ethpool',
+    '0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5'=>'Nanopool',
+    '0x2a65aca4d5fc5b5c859090a6c34d164135398226'=>'Dwarfpool',
+    '0x61c808d82a3ac53231750dadc13c777b59310bd9'=>'f2pool',
+    '0xa42af2c70d316684e57aefcc6e393fecb1c7e84e'=>'Coinotron',
+    '0x6c7f03ddfdd8a37ca267c88630a4fee958591de0'=>'alpereum'
+
+                      );
+                      foreach ($topMiners as $row){
+                        echo('<tr>');
+                        if(array_key_exists ($row['miner'],$minerNames)){
+                        $row['miner'] = $minerNames[$row['miner']];}
+                        echo("<td>". $row['miner']. "</td>");
+                        echo("<td>". $row['adjustedMinP']. "</td>");
+                        echo("<td>". round($row['pctEmp']). "</td>");
+                        echo("<td>". round($row['pctTot']). "</td>");
+
+                        echo('</tr>');
+
+                      }
+                      ?>
                       </tbody>
                     </table>
                 </div>
