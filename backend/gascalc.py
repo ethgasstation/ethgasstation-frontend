@@ -108,8 +108,6 @@ txDataMiner['pctTxBlocks'] = txDataMiner['txBlocks']/totTxBlocks*100
 
 pctTxBlocks = totTxBlocks/totalBlocks
 
-txDataMiner  = txDataMiner.sort_values(['minPrice','totBlocks'], ascending = [True, False])
-
 
 #Adjust miner's min gas price if they mine < 20% of the expected number of transactions in their low gas price category
 def getAdjustedMinPCat(miner):
@@ -136,6 +134,9 @@ for index, row in txDataMiner.iterrows():
 for index,row in txDataMiner.iterrows():
     txDataMiner.loc[index, 'adjustedMinP'] = getAdjustedMinP(row['minCat'], row['adjustedMinPCat'], row['minPrice'])
 
+txDataMiner  = txDataMiner.sort_values(['adjustedMinP','totBlocks'], ascending = [True, False])
+
+print(txDataMiner)
 #Make Table with Key Miner Stats
 priceTable = txDataMiner[['pctTxBlocks', 'adjustedMinP']].groupby('adjustedMinP').sum().reset_index()
 priceTable['pctTotBlocks'] = priceTable['pctTxBlocks']*pctTxBlocks
