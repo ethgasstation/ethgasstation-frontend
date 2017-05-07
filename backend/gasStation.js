@@ -128,25 +128,17 @@ filter.watch(function(err,blockHash)
              }
             if (block.number % 50 === 0 )
             {
+
                 var y = watchedTx.length;
-                console.log(y);
-                var finished = false;
+                var last = false;
                 for (var x = 0; x < y; x++ )
                 {
-                   if (x === (y-1))
-                   {
-                        finished = true;
-                   }
-                   console.log(x);
+                    if (x === (y-1))
+                    {
+                        last = true;
+                    }
                     tx = watchedTx.shift();
-                   if (tx.postedBlock <= (block.number-50))
-                   {    
-                       validateTx(tx, finished);
-                   }
-                   else
-                   {
-                       watchedTx.push(tx);
-                   } 
+                    validateTx(tx, block.number, last);
                 }               
             }
         }
@@ -270,11 +262,11 @@ function launchProcess (commandString)
     })
 }     
 
-function validateTx (tx, finished)
+function validateTx (tx, blockNum, last)
 {
-    var loopCheck= finished;
-    console.log(loopCheck + ' loop');
+    var currentBlock = blockNum;
     var txCheck = tx;
+    var last = last;
     web3.eth.getTransactionReceipt(txCheck.txHash, function(err, result)
     {
         if (err)
@@ -292,22 +284,30 @@ function validateTx (tx, finished)
         }
         else
         {
-            var lastValidTx = new lastValid (txCheck.txHash, txCheck.gasPrice, txCheck.postedBlock);
-            lastValidTx['mined'] = false;
-            txCheck.gasPrice = Math.round(txCheck.gasPrice);
-            validationStatus[txCheck.gasPrice] = lastValidTx;
+            if (txCheck.postedBlock <= currentBlock - 50)
+            {
+                watchedTx.push(txCheck);
+            }
+            else
+            {
+                var lastValidTx = new lastValid (txCheck.txHash, txCheck.gasPrice, txCheck.postedBlock);
+                lastValidTx['mined'] = false;
+                txCheck.gasPrice = Math.round(txCheck.gasPrice);
+                validationStatus[txCheck.gasPrice] = lastValidTx;
+            }
+            
         }
-        if (loopCheck)
+        if (last)
         {
             var str = JSON.stringify(validationStatus);
             console.log(str);
             fs.writeFile(path.join(__dirname, '..', '/json/validated.json'), str, (err) => {
-                if (err){
-                console.log(err.stack)
+                if (err)
+                {
+                    console.log(err.stack)
                 }
-            }) 
-        }
-                  
+            })
+        }       
     })
 
 }
