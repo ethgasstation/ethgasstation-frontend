@@ -284,14 +284,12 @@ function validateTx (tx, blockNum, last)
         }
         else
         {
-            console.log(txCheck.postedBlock + ' ' + txCheck.txHash + ' ' + currentBlock);
-            if (txCheck.postedBlock <= currentBlock - 50)
+            if (txCheck.postedBlock >= currentBlock - 50)
             {
                 watchedTx.push(txCheck);
             }
             else
             {
-                console.log('hi '+ txCheck.txHash);
                 var lastValidTx = new lastValid (txCheck.txHash, txCheck.gasPrice, txCheck.postedBlock);
                 lastValidTx['mined'] = false;
                 txCheck.gasPrice = Math.round(txCheck.gasPrice);
