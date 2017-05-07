@@ -132,11 +132,11 @@ filter.watch(function(err,blockHash)
                 var finished = false;
                 for (var x = 0; x < y; x++ )
                 {
-                   tx = watchedTx.shift();
                    if (x === (y-1))
                    {
                         finished = true;
                    }
+                    tx = watchedTx.shift();
                    if (tx.postedBlock <= (block.number-50))
                    {    
                        validateTx(tx, finished);
