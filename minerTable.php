@@ -131,7 +131,7 @@
                       <thead>
                         <tr>
                           <th>Miner</th>
-                          <th>Min Gas Price<br>Accepted (Gwei)</th>
+                          <th>Adjusted Min Gas Price<br>Accepted (Gwei)</th>
                           <th>Total <br> Blocks</th>
                           <th>Empty <br>Blocks</th>
                           <th>% of Total <br>Blocks</th>
@@ -157,7 +157,7 @@
                         if(array_key_exists ($row['miner'],$minerNames)){
                         $row['miner'] = $minerNames[$row['miner']];}
                         echo("<td>". $row['miner']. "</td>");
-                        echo("<td>". $row['minPrice']. "</td>");
+                        echo("<td>". $row['adjustedMinP']. "</td>");
                         echo("<td>". $row['totBlocks']. "</td>");
                         echo("<td>". $row['emptyBlocks']. "</td>");
                         echo("<td>". round($row['pctTot'],1). "</td>");

@@ -43,15 +43,45 @@ blockTime = {
 # First Identify all Unique Miners in list
 txDataMiner = pd.DataFrame({'count':txData.groupby('miner').size()}).reset_index()
 txDataMiner = txDataMiner.sort_values('count', ascending=False).reset_index(drop=True)
-txDataTx = pd.DataFrame({'count':txData.groupby('minedGasPriceCat').size()}).reset_index()
+txDataTx = pd.DataFrame({'count':txData.groupby(by=['minedGasPriceCat','miner']).size()}).reset_index()
+txDataCat = pd.DataFrame({'count':txData.groupby('minedGasPriceCat').size()}).reset_index()
 
-
+totalTx = len(txData)
 
 # Next Find Each Miners Mininum Price of All Mined Transactions
 for x in range(len(txDataMiner)):
-    minerName = txDataMiner.loc[x,'miner']
     minP = txData.loc[txData['miner'] == txDataMiner.loc[x,'miner'], 'minedGasPrice']
+    minC = txData.loc[txData['miner'] == txDataMiner.loc[x,'miner'], 'minedGasPriceCat']
     txDataMiner.loc[x,'minPrice'] = minP.min()
+    txDataMiner.loc[x,'minCat'] = minC.min()
+
+def getMinPrice(miner):
+    minP = txDataMiner.loc[txDataMiner['miner']==miner, 'minPrice'].values[0]
+    return minP
+
+def getPctCat(cat, minP):
+    catTotal = txDataCat.loc[txDataCat['minedGasPriceCat']==cat, 'count'].values[0]
+    numAboveMinP = len(txData.loc[(txData['minedGasPriceCat']==cat) & (txData['minedGasPrice']>=minP)])
+    x= float(numAboveMinP)/catTotal
+    return x
+
+def getExpected(miner, cat, pctCat):
+    totTxforMiner = len(txData.loc[txData['miner'] == miner])
+    pctTotTxMiner = float(totTxforMiner)/totalTx
+    catTotal = txDataCat.loc[txDataCat['minedGasPriceCat']==cat, 'count'].values[0]
+    expected = catTotal * pctCat * pctTotTxMiner
+    return expected 
+for index, row in txDataTx.iterrows():
+    txDataTx.loc[index, 'minP'] = getMinPrice(row['miner'])
+
+for index, row in txDataTx.iterrows():
+    txDataTx.loc[index, 'pctCat'] = getPctCat(row['minedGasPriceCat'], row['minP'])
+
+for index, row in txDataTx.iterrows():
+    txDataTx.loc[index, 'expected'] = getExpected(row['miner'], row['minedGasPriceCat'], row['pctCat'])
+
+txDataTx['oeRatio'] = txDataTx['count']/txDataTx['expected']
+
 
 #-- Miner Min PRice
 
@@ -80,8 +110,34 @@ pctTxBlocks = totTxBlocks/totalBlocks
 
 txDataMiner  = txDataMiner.sort_values(['minPrice','totBlocks'], ascending = [True, False])
 
+
+#Adjust miner's min gas price if they mine < 20% of the expected number of transactions in their low gas price category
+def getAdjustedMinPCat(miner):
+    validMinP = txDataTx.loc[(txDataTx['oeRatio'] > 0.2) & (txDataTx['miner']==miner)]
+    minerMinValidCat = validMinP['minedGasPriceCat'].min()
+    return minerMinValidCat
+
+def getAdjustedMinP(minCat, adjustedMinCat, minPrice):
+    if (adjustedMinCat > minCat):
+        if (adjustedMinCat == 2):
+            minP = 15
+        elif (adjustedMinCat == 3):
+            minP = 20
+        elif (adjustedMinCat == 4):
+            minP = 25
+        elif (adjustedMinCat == 5):
+            minP = 40
+        return minP
+    else:
+        return minPrice
+for index, row in txDataMiner.iterrows():
+    txDataMiner.loc[index, 'adjustedMinPCat'] = getAdjustedMinPCat(row['miner'])
+
+for index,row in txDataMiner.iterrows():
+    txDataMiner.loc[index, 'adjustedMinP'] = getAdjustedMinP(row['minCat'], row['adjustedMinPCat'], row['minPrice'])
+
 #Make Table with Key Miner Stats
-priceTable = txDataMiner[['pctTxBlocks', 'minPrice']].groupby('minPrice').sum().reset_index()
+priceTable = txDataMiner[['pctTxBlocks', 'adjustedMinP']].groupby('adjustedMinP').sum().reset_index()
 priceTable['pctTotBlocks'] = priceTable['pctTxBlocks']*pctTxBlocks
 
 
@@ -106,26 +162,26 @@ for x in range(len(priceTable)):
 print(priceTable)
 #--cumulative columns
 
-highMiners = txDataMiner.loc[txDataMiner['pctTxBlocks']>=5, :]
+
 
 
 
 #get Initial Gas Price Recs based on % of blocks excluding empty blocks
 gpRecs = {}
 
-gpRecs['Cheapest'] = priceTable.loc[0, 'minPrice']
+gpRecs['Cheapest'] = priceTable.loc[0, 'adjustedMinP']
 
 for x in range(len(priceTable)):
     if (priceTable.loc[x, 'cumPctTxBlocks']) >= 5:
-        gpRecs['safeLow'] = priceTable.loc[x, 'minPrice']
+        gpRecs['safeLow'] = priceTable.loc[x, 'adjustedMinP']
         break
 for x in range(len(priceTable)):
     if (priceTable.loc[x, 'cumPctTxBlocks']) >= 50:
-        gpRecs['Average'] = priceTable.loc[x, 'minPrice']
+        gpRecs['Average'] = priceTable.loc[x, 'adjustedMinP']
         break
 for x in range(len(priceTable)):
     if (priceTable.loc[x, 'cumPctTxBlocks']) >= 99:
-        gpRecs['Fastest'] = priceTable.loc[x, 'minPrice']
+        gpRecs['Fastest'] = priceTable.loc[x, 'adjustedMinP']
         break
 
 print(gpRecs)
@@ -161,7 +217,6 @@ if not (rejected.empty):
     #check to see if there is an accepted gas price lower than rejected but mined later
     latestGp =  validationTable.loc[(validationTable['mined'] == True) & (validationTable['postedBlock'] > rejMaxPostedBlock)]
     if not (latestGp.empty):
-        print(latestGp)
         latestGp= int(round(latestGp['gasPrice'].min()))
     else:
         latestGp = None
@@ -244,8 +299,6 @@ dictResults.update(quantiles)
 dictResults.update(blockTime)
 priceTable = priceTable.to_json(orient = 'records')
 miningTable = txDataMiner.to_json(orient = 'records')
-
-print (txDataMiner)
 
 parentdir = os.path.dirname(os.getcwd())
 filepath_calc = parentdir + '/json/calc.json'
