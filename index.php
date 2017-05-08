@@ -248,24 +248,29 @@
                         <tr>
                           <th>Desired Tx Speed</th>
                           <th>Gas Price (gwei)</th>
+                          <th>Average Wait (s)</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
                           <td>Cheapest</td>
                           <td style = "color:#03586A" ><?php echo ($gpRecs['Cheapest']) ?></td>
+                          
                         </tr>
                         <tr>
                           <td>Safe Low</td>
                           <td style = "color:#03586A" ><?php echo ($gpRecs['safeLow']) ?></td>
+                          <td style = "color:#03586A" ><?php echo ($lowWait) ?></td>
                         </tr>
                         <tr>
                           <td>Average</td>
                           <td style = "color:#03586A"><?php echo ($gpRecs['Average']) ?></td>
+                          <td style = "color:#03586A" ><?php echo ($avgWait) ?></td>
                         </tr>
                         <tr>
                           <td>Fastest</td>
                           <td style = "color:red"><?php echo ($gpRecs['Fastest']) ?></td>
+                          <td style = "color:#03586A" ><?php echo ($fastWait) ?></td>
                         </tr>
                       </tbody>
                     </table>

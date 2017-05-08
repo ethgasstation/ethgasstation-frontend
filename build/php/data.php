@@ -237,9 +237,10 @@ $topMiners = json_decode($minerString, true);
 $gpRecsString = file_get_contents("http://ethgasstation.info/json/ethgasAPI.json");
 $gpRecs = json_decode($gpRecsString, true);
 
+$calcParamString = file_get_contents("http://ethgasstation.info/json/calc.json");
+$calcParams = json_decode($calcParamString, true);
 
-
-
-
-
+$safeLowWait = round(exp($calcParams['cons'] + $calcParams['priceCat1']));
+$avgWait = round(exp($calcParams['cons']));
+$fastWait = round(exp($calcParams['cons'] + $calcParams['priceCat4']));
 ?>
