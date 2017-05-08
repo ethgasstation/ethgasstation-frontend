@@ -655,7 +655,7 @@ function medianTransferFee (startSelect, toBlock) {
 }
 
 function medContractFee (startSelect, toBlock) {
-    connection.query('SELECT (gasused*minedgasprice) as fee FROM minedtransactions WHERE gasused != 21000 AND minedblock > ? AND minedblock <? AND minedgasprice IS NOT NULL AND gasused IS NOT NULL', [startSelect , toBlock], function (err, result){
+    connection.query('SELECT (gasused*minedgasprice) as fee FROM minedtransactions WHERE gasused > 21000 AND minedblock > ? AND minedblock <? AND minedgasprice IS NOT NULL AND gasused IS NOT NULL', [startSelect , toBlock], function (err, result){
 
     if (err){
             console.error(err.stack);
@@ -674,7 +674,7 @@ function medContractFee (startSelect, toBlock) {
 }
 
 function medContractGas (startSelect, toBlock) {
-    connection.query('SELECT gasused as gas FROM minedtransactions WHERE gasused != 21000 AND minedblock > ? AND minedblock <? AND gasused IS NOT NULL', [startSelect , toBlock], function (err, result){
+    connection.query('SELECT gasused as gas FROM minedtransactions WHERE gasused > 21000 AND minedblock > ? AND minedblock <? AND gasused IS NOT NULL', [startSelect , toBlock], function (err, result){
 
     if (err){
             console.error(err.stack);
