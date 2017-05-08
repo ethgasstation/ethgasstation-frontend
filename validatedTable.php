@@ -123,7 +123,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel tile fixed_height_420">
                   <div class="x_title">
-                    <h4>Most Recent Low Gas Price Transactions</h4>
+                    <h4>Most Recent Low Gas Price Transactions (Updated every 50 blocks)</h4>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
@@ -156,6 +156,7 @@
                       ?>
                         </tbody>
                     </table>
+                    <p>Note: All transactions posted to the network with a gas price < 20 gwei are monitored for confirmation.  If one does not confirm in 50 blocks, the 'Safe Low' gas price us updated to either 1) a gas price higher than the one that failed to confirm or 2) a lower priced transaction that was posted and confirmed after the transaction that did not confirm.  If neither is available, it is updated to the average gas price until a new low gas price transaction is posted and mined.</p>
 
                  </div>
     

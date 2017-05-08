@@ -22,14 +22,29 @@ connection.connect(function(err) {
   console.log('connected as id ' + connection.threadId);
 });
 
+var obj;
+fs.readFile('file', 'utf8', function (err, data) {
+  if (err) throw err;
+  obj = JSON.parse(data);
+});
+
+validationStatus = {};
+watchedTx = [];
+
+fs.readFile(path.join(__dirname, '..', '/json/validated.json'), 'utf8', function(err , data) {
+    if (err){
+        console.log(err.stack);
+    }
+    validationStatus = JSON.parse(data);
+    console.log(validationStatus);
+})
+
 var blockCounter=0;
 var txCounter=0;
 var filter = web3.eth.filter('latest');
 var filter2 = web3.eth.filter('pending');
 
 
-watchedTx = [];
-validationStatus = {};
 function lastValid (txHash, gasPrice, postedBlock, minedBlock)
 {
     this.txHash = txHash;
