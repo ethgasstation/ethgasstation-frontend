@@ -93,6 +93,8 @@
                   </li>
                   <li><a><i class="fa fa-link"></i> External Links <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
+                      <li><a href="https://medium.com/@ethgasstation/current-dynamics-of-transaction-inclusion-on-ethereum-ae8912edc960" target="_blank">Dynamics of Transaction Inclusion on Ethereum</a></li>
+                      <li><a href="https://medium.com/@ethgasstation/the-safe-low-gas-price-fb44fdc85b91" target="_blank">The Safe Low Gas Price</a></li>
                       <li><a href="https://coincenter.org/entry/what-is-ethereum" target="_blank">What is Ethereum?</a></li>
                       <li><a href="https://www.ethereum.org/ether" target="_blank">Ethereum FAQ</a></li>
                       <li><a href="https://media.consensys.net/ethereum-gas-fuel-and-fees-3333e17fe1dc#.krqnhnkav" target="_blank">What is gas?</a></li>
@@ -248,19 +250,14 @@
                         <tr>
                           <th>Desired Tx Speed</th>
                           <th>Gas Price (gwei)</th>
-                          <th>Average Wait (s)</th>
+                          <th>Average Wait (m)</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <td>Cheapest</td>
-                          <td style = "color:#03586A" ><?php echo ($gpRecs['Cheapest']) ?></td>
-                          
-                        </tr>
-                        <tr>
                           <td>Safe Low</td>
                           <td style = "color:#03586A" ><?php echo ($gpRecs['safeLow']) ?></td>
-                          <td style = "color:#03586A" ><?php echo ($lowWait) ?></td>
+                          <td style = "color:#03586A" ><?php echo ($safeLowWait) ?></td>
                         </tr>
                         <tr>
                           <td>Average</td>
@@ -269,7 +266,7 @@
                         </tr>
                         <tr>
                           <td>Fastest</td>
-                          <td style = "color:red"><?php echo ($gpRecs['Fastest']) ?></td>
+                          <td style = "color:#03586A"><?php echo ($gpRecs['Fastest']) ?></td>
                           <td style = "color:#03586A" ><?php echo ($fastWait) ?></td>
                         </tr>
                       </tbody>

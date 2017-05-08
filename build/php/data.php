@@ -240,7 +240,7 @@ $gpRecs = json_decode($gpRecsString, true);
 $calcParamString = file_get_contents("http://ethgasstation.info/json/calc.json");
 $calcParams = json_decode($calcParamString, true);
 
-$safeLowWait = round(exp($calcParams['cons'] + $calcParams['priceCat1']));
-$avgWait = round(exp($calcParams['cons']));
-$fastWait = round(exp($calcParams['cons'] + $calcParams['priceCat4']));
+$safeLowWait = round(exp($calcParams['cons'] + $calcParams['priceCat1'])*$calcParams['blockInterval']/60,1);
+$avgWait = round(exp($calcParams['cons'])*$calcParams['blockInterval']/60,1);
+$fastWait = round(exp($calcParams['cons'] + $calcParams['priceCat4'])*$calcParams['blockInterval']/60,1);
 ?>
