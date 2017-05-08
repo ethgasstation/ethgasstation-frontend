@@ -366,11 +366,11 @@
                           
                         </tr>
                         <tr>
-                          <td>Contracts: Avg Gas Per Call</td>
+                          <td>Contracts: Median Gas Per Call</td>
                           <td><?php echo "$avgContractGas";?></td>
                         </tr>
                         <tr>
-                          <td>Contracts: Avg Gas Fee</td>
+                          <td>Contracts: Median Gas Fee</td>
                           <td><?php echo "$avgConFeeDisplay";?></td>
                         </tr>
                         <tr>

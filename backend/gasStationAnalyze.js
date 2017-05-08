@@ -648,37 +648,41 @@ function medianTransferFee (startSelect, toBlock) {
     post['medianTxFee'] = result[midPoint]['fee'];
     console.log('23');
 
-    avgContractFee(startSelect, toBlock);
+    medContractFee(startSelect, toBlock);
 
     });
 
 }
 
-function avgContractFee (startSelect, toBlock) {
-    connection.query('SELECT AVG(gasused*minedgasprice) as fee FROM minedtransactions WHERE gasused != 21000 AND minedblock > ? AND minedblock <? AND minedgasprice IS NOT NULL AND gasused IS NOT NULL', [startSelect , toBlock], function (err, result){
+function medContractFee (startSelect, toBlock) {
+    connection.query('SELECT (gasused*minedgasprice) as fee FROM minedtransactions WHERE gasused != 21000 AND minedblock > ? AND minedblock <? AND minedgasprice IS NOT NULL AND gasused IS NOT NULL', [startSelect , toBlock], function (err, result){
 
     if (err){
             console.error(err.stack);
     }
 
-    post['avgContractFee'] = result[0]['fee'];
+    var numRows = result.length;
+    var midPoint = Math.ceil(numRows/2);
+
+    post['avgContractFee'] = result[midPoint]['fee'];
     console.log('24');
 
-    avgContractGas(startSelect, toBlock);
+    medContractGas(startSelect, toBlock);
 
     });
 
 }
 
-function avgContractGas (startSelect, toBlock) {
-    connection.query('SELECT AVG(gasused) as gas FROM minedtransactions WHERE gasused != 21000 AND minedblock > ? AND minedblock <? AND gasused IS NOT NULL', [startSelect , toBlock], function (err, result){
+function medContractGas (startSelect, toBlock) {
+    connection.query('SELECT gasused as gas FROM minedtransactions WHERE gasused != 21000 AND minedblock > ? AND minedblock <? AND gasused IS NOT NULL', [startSelect , toBlock], function (err, result){
 
     if (err){
             console.error(err.stack);
     }
+    var numRows = result.length;
+    var midPoint = Math.ceil(numRows/2);
 
-
-    post['avgContractGas'] = result[0]['gas'];
+    post['avgContractGas'] = result[midPoint]['gas'];
     console.log('25');
 
     min50(startSelect, toBlock);
