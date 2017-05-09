@@ -4281,21 +4281,6 @@ ul.notifications {
 
 }
 
-.tip-button {
-  width: 204px;
-  height: 35px;
-  background-size: 100%;
-  background-image: url('http://localhost/images/6_pay_mm_off.png');
-  cursor: pointer;
-  margin: 10px 0;
-}
-.tip-button:hover {
-  background-image: url('http://localhost/images/6_pay_mm_over.png');
-}
-
-.tip-button:active {
-  background-image: url('http://localhost/images/6_pay_mm_off.png');
-}
 
 			
 .daterangepicker.xdisplay { width:228px; }

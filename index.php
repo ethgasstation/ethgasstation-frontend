@@ -411,12 +411,14 @@
 
         <!-- footer content -->
         <footer>
-          <div class="tip-button"></div>
+          <div class="tip-button">
+             <button type="button" class="btn btn-round btn-success">ETH Tips - Thank you!</button>
+          </div>
           <div class="message"></div>
           
           <script>
           var tipButton = document.querySelector('.tip-button')
-          renderMessage('Tips- use the safelow gas price!');
+          renderMessage('Try the safelow gas price with metamask or mist');
           tipButton.addEventListener('click', function() {
           if (typeof web3 === 'undefined') {
           return renderMessage('You need to install MetaMask to use this feature.  https://metamask.io')
