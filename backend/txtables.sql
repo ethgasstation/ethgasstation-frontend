@@ -1,8 +1,8 @@
-CREATE TABLE transactions (txHash VARCHAR(75), postedBlock INT, gasPrice INT, gasPriceCat INT, gasOffered INT, tsPosted INT,
+CREATE TABLE transactions (txHash VARCHAR(75), postedBlock INT, gasPrice DECIMAL(8,3), gasPriceCat INT, gasOffered INT, tsPosted INT,
 PRIMARY KEY(txHash));
 
 CREATE TABLE minedtransactions (txHash VARCHAR(75), minedBlock int, toAddress VARCHAR(50), fromAddress VARCHAR(50),
-miner text, minedGasPrice INT, minedGasPriceCat INT, gasused INT, blockGasUsed INT, blockGasLimit INT, tsMined INT, emptyBlock BOOLEAN, PRIMARY KEY(txHash));
+miner text, minedGasPrice DECIMAL(8,3), minedGasPriceCat INT, gasused INT, blockGasUsed INT, blockGasLimit INT, tsMined INT, emptyBlock BOOLEAN, PRIMARY KEY(txHash));
 
 CREATE TABLE speedo (id INT NOT NULL AUTO_INCREMENT, blockNum INT, avgWait INT, speed DECIMAL(3,3), numTx INT, PRIMARY KEY (id));
 
