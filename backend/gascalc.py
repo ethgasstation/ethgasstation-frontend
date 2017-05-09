@@ -12,7 +12,7 @@ import urllib,json
 
 startBlock = sys.argv[1]
 endBlock = sys.argv[2]
-cnx = mysql.connector.connect(user='jake', password='dopamine', host='127.0.0.1', database='tx')
+cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
 cursor = cnx.cursor()
 
 # First Query to Determine Block TIme, and Estimate Miner Policies
@@ -45,6 +45,16 @@ txDataMiner = pd.DataFrame({'count':txData.groupby('miner').size()}).reset_index
 txDataMiner = txDataMiner.sort_values('count', ascending=False).reset_index(drop=True)
 txDataTx = pd.DataFrame({'count':txData.groupby(by=['minedGasPriceCat','miner']).size()}).reset_index()
 txDataCat = pd.DataFrame({'count':txData.groupby('minedGasPriceCat').size()}).reset_index()
+txDataPrice = pd.DataFrame({'count':txData.groupby('minedGasPrice').size()}).reset_index()
+
+#require a price where at least 50 transactions have been mined 
+
+txDataPrice['sum'] = txDataPrice['count'].cumsum()
+
+for index, row in txDataPrice.iterrows():
+    if row['sum'] > 50:
+        minLow = row['minedGasPrice']
+        break
 
 totalTx = len(txData)
 
@@ -303,7 +313,11 @@ predictFastest = dep.loc[(dep['priceCat1']==4) & (dep['gasCat1']==1), 'predict']
 if (predictFastest > predictAverage):
     gpRecs['Fastest'] = gpRecs['Average']
 
-#safeLow cannot be zero 
+#safeLow cannot be zero and must have 50 transactions mined at or below price over last 10,000 blocks
+
+if (gpRecs['safeLow'] < minLow):
+    gpRecs['safeLow'] = minLow
+
 if (gpRecs['safeLow'] == 0):
     gpRecs['safeLow'] = 1
 
