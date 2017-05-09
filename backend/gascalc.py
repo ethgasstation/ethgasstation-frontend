@@ -303,6 +303,9 @@ predictFastest = dep.loc[(dep['priceCat1']==4) & (dep['gasCat1']==1), 'predict']
 if (predictFastest > predictAverage):
     gpRecs['Fastest'] = gpRecs['Average']
 
+#safeLow cannot be zero 
+if (gpRecs['safeLow'] == 0):
+    gpRecs['safeLow'] = 1
 
 quantiles = quantiles.reset_index(drop=True)
 quantiles.rename({0: '50pct', 1: '75pct', 2: '90pct', 3: 'max'}, inplace=True)

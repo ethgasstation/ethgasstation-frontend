@@ -187,9 +187,7 @@ filter2.watch(function(err, txHash)
                 if (result != null)
                 {    
                     var gasPrice = result.gasPrice.toString(10);
-                    console.log(gasPrice);
                     gasPrice = gasPrice/1e9;
-                    console.log(gasPrice);
                     var gasPriceCat = getGasPriceCat(gasPrice);
                     
                     var post2 = {
