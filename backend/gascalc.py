@@ -214,6 +214,7 @@ try:
     response = urllib.urlopen(url)
     validation = json.loads(response.read())
     response.close()
+    validationTable = pd.DataFrame.from_dict(validation, orient='index')
 except:
     validation = {
         'mined': True,
@@ -224,7 +225,7 @@ except:
 
 #findLowest validated status
 
-validationTable = pd.DataFrame.from_dict(validation, orient='index')
+
 print (validationTable)
 validationTable.sort_index()
 validationTable= validationTable.reset_index()
