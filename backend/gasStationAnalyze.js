@@ -726,10 +726,10 @@ function countFull (startSelect, toBlock){
         if (err){
             console.error(err.stack);
         }
-    
+        if (result){
         post['fullBlocks'] = result[0]['speed'];
         console.log('28');
-        getETHprice();
+        getETHprice();}
     });
 }
 
