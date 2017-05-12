@@ -19,11 +19,9 @@ cursor = cnx.cursor()
 query = ("SELECT minedGasPrice, miner, tsMined, minedBlock, emptyBlock, minedGasPriceCat FROM minedtransactions WHERE minedBlock > %s AND minedBlock < %s ")
 
 cursor.execute(query, (startBlock, endBlock))
-data = cursor.fetchall
-head = cursor.column_names
 
 txData = pd.DataFrame(cursor.fetchall())
-txData.columns = head
+txData.columns = ['minedGasPrice', 'miner', 'tsMined', 'minedBlock', 'emptyBlock', 'minedGasPriceCat']
 cursor.close()
 
 #Calculate Block Time
@@ -268,10 +266,9 @@ cursor = cnx.cursor()
 query = ("SELECT (minedtransactions.minedBlock - transactions.postedBlock) as delay, minedtransactions.gasused, transactions.gasOffered, minedtransactions.minedGasPrice FROM transactions INNER JOIN minedtransactions ON transactions.txHash = minedtransactions.txHash WHERE transactions.postedBlock IS NOT NULL AND transactions.postedBlock > %s AND transactions.postedBlock < %s ORDER BY delay")
 
 cursor.execute(query, (startBlock, endBlock))
-head = cursor.column_names
 
 txData = pd.DataFrame(cursor.fetchall())
-txData.columns = head
+txData.columns = ['delay', 'gasused', 'gasOffered', 'minedGasPrice']
 
 txData['delay'] = pd.to_numeric(txData['delay'], errors='coerce')
 txData[txData['delay']>1000] = np.nan
