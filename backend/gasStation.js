@@ -117,6 +117,10 @@ filter.watch(function(err,blockHash)
                                     }
                             
                                     writeData(post, 'minedtransactions');
+                                    if (block.uncles.length > 0)
+                                    {
+                                        recordUncles(block);
+                                    }
                                 }
                                 
                             });
@@ -321,4 +325,18 @@ function validateTx (tx, blockNum, last)
         }       
     })
 
+}
+
+function recordUncles (block)
+{
+    var uncArray = block.uncles;
+    var blocNum = block.number;
+
+    for (var pos in uncArray)
+    {
+        web3.eth.getUncle(blockNum, pos, function (err, receipt)
+        {
+            console.log(receipt);
+        })
+    }
 }
