@@ -19,7 +19,7 @@ $query = "SELECT * FROM txDataLast10k ORDER BY id DESC LIMIT 1";
 $result = $mysqli->query($query);
 $dataRow = $result->fetch_assoc();
 $latestblock = $dataRow['latestblockNum'];
-
+try{
 $minerString = file_get_contents("http://localhost/json/miners.json");
 $minersArray = json_decode($minerString, true);
 
@@ -28,4 +28,7 @@ $priceArray = json_decode($priceString, true);
 
 $validatedString = file_get_contents("http://localhost/json/validated.json");
 $validatedArray = json_decode($validatedString, true);
+} catch (Exception $e){
+	echo 'keep waiting';
+}
 ?>

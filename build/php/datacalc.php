@@ -47,13 +47,17 @@ elseif ($currency == 'gbp'){
     $exchangeRate = $ethpriceGBP;
 }
 
-$calcParamString = file_get_contents("http://ethgasstation.info/json/calc.json");
-$calcParams = json_decode($calcParamString, true);
+try{
+    $calcParamString = file_get_contents("http://localhost/json/calc.json");
+    $calcParams = json_decode($calcParamString, true);
 
 
 
-$gasPriceRecString = file_get_contents("http://ethgasstation.info/json/ethgasAPI.json");
-$gasPriceRecs = json_decode($gasPriceRecString, true);
+    $gasPriceRecString = file_get_contents("http://localhost/json/ethgasAPI.json");
+    $gasPriceRecs = json_decode($gasPriceRecString, true);
+} catch (Exception $e) {
+    echo 'waith for tables to be populated';
+}
 
 
 //free memory associated with result

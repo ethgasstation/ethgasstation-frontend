@@ -230,17 +230,22 @@ $cat4Time95Min = round($cat4Time95/60, 1);
 $cat5Time95Min = round($cat5Time95/60, 1);
 
 //Data for miner ranking table
+try{
+    $minerString = file_get_contents("http://localhost/json/topMiners.json");
+    $topMiners = json_decode($minerString, true);
 
-$minerString = file_get_contents("http://localhost/json/topMiners.json");
-$topMiners = json_decode($minerString, true);
+    $gpRecsString = file_get_contents("http://localhost/json/ethgasAPI.json");
+    $gpRecs = json_decode($gpRecsString, true);
 
-$gpRecsString = file_get_contents("http://ethgasstation.info/json/ethgasAPI.json");
-$gpRecs = json_decode($gpRecsString, true);
+    $calcParamString = file_get_contents("http://localhost/json/calc.json");
+    $calcParams = json_decode($calcParamString, true);
 
-$calcParamString = file_get_contents("http://ethgasstation.info/json/calc.json");
-$calcParams = json_decode($calcParamString, true);
+    $safeLowWait = round(exp($calcParams['cons'] + $calcParams['priceCat1'])*$calcParams['blockInterval']/60,1);
+    $avgWait = round(exp($calcParams['cons'])*$calcParams['blockInterval']/60,1);
+    $fastWait = round(exp($calcParams['cons'] + $calcParams['priceCat4'])*$calcParams['blockInterval']/60,1);
+} catch (Exception $e){
+    echo 'waith for tables to be populated';
+}
 
-$safeLowWait = round(exp($calcParams['cons'] + $calcParams['priceCat1'])*$calcParams['blockInterval']/60,1);
-$avgWait = round(exp($calcParams['cons'])*$calcParams['blockInterval']/60,1);
-$fastWait = round(exp($calcParams['cons'] + $calcParams['priceCat4'])*$calcParams['blockInterval']/60,1);
+
 ?>
