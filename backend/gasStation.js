@@ -31,7 +31,7 @@ try {
     }
 
 catch (e) {
-    console.log("warn: no txFile available");
+    console.log("Transaction watch list not available");
 }
 
 
