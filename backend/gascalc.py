@@ -225,6 +225,7 @@ except:
 #findLowest validated status
 
 validationTable = pd.DataFrame.from_dict(validation, orient='index')
+print (validationTable)
 validationTable.sort_index()
 validationTable= validationTable.reset_index()
 print(validationTable)
