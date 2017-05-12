@@ -25,14 +25,11 @@ connection.connect(function(err) {
 validationStatus = {};
 watchedTx = [];
 try {
-    fs.readFile(path.join(__dirname, '..', '/json/validated.json'), 'utf8', function(err , data) {
-        if (err){
-            console.log(err.stack);
-        }
+    fs.readFileSync(path.join(__dirname, '..', '/json/validated.json'), 'utf8')
         validationStatus = JSON.parse(data);
         console.log(validationStatus);
-    })
-}
+    }
+
 catch (e) {
     console.log(e);
 }
