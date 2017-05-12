@@ -728,8 +728,8 @@ function countFull (startSelect, toBlock){
         }
         if (result){
         post['fullBlocks'] = result[0]['speed'];
-        console.log('28');
-        getETHprice();}
+        console.log('28');}
+        getETHprice();
     });
 }
 
