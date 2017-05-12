@@ -216,9 +216,9 @@ try:
     response.close()
 except:
     validation = {
-        'mined':"",
-        'index':"",
-        'postedBlock':""
+        'mined': True,
+        'index': 0,
+        'postedBlock': 0
 
     }
 
