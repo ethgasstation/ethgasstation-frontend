@@ -12,7 +12,7 @@ import urllib,json
 
 startBlock = sys.argv[1]
 endBlock = sys.argv[2]
-cnx = mysql.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
+cnx = mysql.connect("localhost", "ethgas", "station","tx")
 cursor = cnx.cursor()
 
 # First Query to Determine Block TIme, and Estimate Miner Policies
