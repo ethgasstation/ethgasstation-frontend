@@ -1,4 +1,4 @@
-import MySQLdb as mysql
+import mysql.connector
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt 
@@ -12,16 +12,17 @@ import urllib,json
 
 startBlock = sys.argv[1]
 endBlock = sys.argv[2]
-cnx = mysql.connect("localhost", "ethgas", "station","tx")
+cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
 cursor = cnx.cursor()
 
 # First Query to Determine Block TIme, and Estimate Miner Policies
 query = ("SELECT minedGasPrice, miner, tsMined, minedBlock, emptyBlock, minedGasPriceCat FROM minedtransactions WHERE minedBlock > %s AND minedBlock < %s ")
 
 cursor.execute(query, (startBlock, endBlock))
+head = cursor.column_names
 
 txData = pd.DataFrame(cursor.fetchall())
-txData.columns = ['minedGasPrice', 'miner', 'tsMined', 'minedBlock', 'emptyBlock', 'minedGasPriceCat']
+txData.columns = head
 cursor.close()
 
 #Calculate Block Time
@@ -266,9 +267,10 @@ cursor = cnx.cursor()
 query = ("SELECT (minedtransactions.minedBlock - transactions.postedBlock) as delay, minedtransactions.gasused, transactions.gasOffered, minedtransactions.minedGasPrice FROM transactions INNER JOIN minedtransactions ON transactions.txHash = minedtransactions.txHash WHERE transactions.postedBlock IS NOT NULL AND transactions.postedBlock > %s AND transactions.postedBlock < %s ORDER BY delay")
 
 cursor.execute(query, (startBlock, endBlock))
+head = cursor.column_names
 
 txData = pd.DataFrame(cursor.fetchall())
-txData.columns = ['delay', 'gasused', 'gasOffered', 'minedGasPrice']
+txData.columns = head
 
 txData['delay'] = pd.to_numeric(txData['delay'], errors='coerce')
 txData[txData['delay']>1000] = np.nan
