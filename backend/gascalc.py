@@ -214,9 +214,17 @@ try:
     response = urllib.urlopen(url)
     validation = json.loads(response.read())
     response.close()
-    print (validation)
-    print (type(validation))
-    validationTable = pd.DataFrame.from_dict(validation, orient='index')
+    if any(validation):
+        validationTable = pd.DataFrame.from_dict(validation, orient='index')
+    else:
+        validation = {
+        'mined': [True],
+        'index': [0],
+        'postedBlock': [0]
+
+        }
+        validationTable = pd.DataFrame.from_dict(validation, orient='columns')
+
 except:
     validation = {
         'mined': [True],
