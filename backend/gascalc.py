@@ -217,9 +217,9 @@ try:
     validationTable = pd.DataFrame.from_dict(validation, orient='index')
 except:
     validation = {
-        'mined': True,
-        'index': 0,
-        'postedBlock': 0
+        'mined': [True],
+        'index': [0],
+        'postedBlock': [0]
 
     }
     validationTable = pd.DataFrame.from_dict(validation, orient='columns')
