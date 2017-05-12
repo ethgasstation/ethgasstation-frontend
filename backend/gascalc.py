@@ -209,10 +209,18 @@ for x in range(len(priceTable)):
 
 print(gpRecs)
 
-url = "http://localhost/json/validated.json"
-response = urllib.urlopen(url)
-validation = json.loads(response.read())
-response.close()
+try:
+    url = "http://localhost/json/validated.json"
+    response = urllib.urlopen(url)
+    validation = json.loads(response.read())
+    response.close()
+except:
+    validation = {
+        'mined':"",
+        'index':"",
+        'postedBlock':""
+
+    }
 
 #findLowest validated status
 
