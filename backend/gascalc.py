@@ -222,7 +222,7 @@ except:
         'postedBlock': 0
 
     }
-    validationTable = pd.DataFrame.from_dict(validation, index=[1])
+    validationTable = pd.DataFrame.from_dict(validation, orient='columns')
 
 #findLowest validated status
 
