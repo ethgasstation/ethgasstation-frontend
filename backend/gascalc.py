@@ -214,6 +214,8 @@ try:
     response = urllib.urlopen(url)
     validation = json.loads(response.read())
     response.close()
+    print (validation)
+    print (type(validation))
     validationTable = pd.DataFrame.from_dict(validation, orient='index')
 except:
     validation = {
