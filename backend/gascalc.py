@@ -19,6 +19,7 @@ cursor = cnx.cursor()
 query = ("SELECT minedGasPrice, miner, tsMined, minedBlock, emptyBlock, minedGasPriceCat FROM minedtransactions WHERE minedBlock > %s AND minedBlock < %s ")
 
 cursor.execute(query, (startBlock, endBlock))
+data = cursor.fetchall
 head = cursor.column_names
 
 txData = pd.DataFrame(cursor.fetchall())
