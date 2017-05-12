@@ -24,14 +24,19 @@ connection.connect(function(err) {
 
 validationStatus = {};
 watchedTx = [];
+try {
+    fs.readFile(path.join(__dirname, '..', '/json/validated.json'), 'utf8', function(err , data) {
+        if (err){
+            console.log(err.stack);
+        }
+        validationStatus = JSON.parse(data);
+        console.log(validationStatus);
+    })
+}
+catch (e) {
+    console.log(e);
+}
 
-fs.readFile(path.join(__dirname, '..', '/json/validated.json'), 'utf8', function(err , data) {
-    if (err){
-        console.log(err.stack);
-    }
-    validationStatus = JSON.parse(data);
-    console.log(validationStatus);
-})
 
 var blockCounter=0;
 var txCounter=0;
