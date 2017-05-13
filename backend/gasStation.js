@@ -117,10 +117,7 @@ filter.watch(function(err,blockHash)
                                     }
                             
                                     writeData(post, 'minedtransactions');
-                                    if (block.uncles.length > 0)
-                                    {
-                                        recordUncles(block);
-                                    }
+                                    
                                 }
                                 
                             });
@@ -129,6 +126,10 @@ filter.watch(function(err,blockHash)
                 }
             }
             writeSpeedo(block); //for Speedometer
+            if (block.uncles.length > 0)
+            {
+                recordUncles(block);
+            }
             blockCounter++;
             console.log(block.number);
             currentBlock = block.number;
