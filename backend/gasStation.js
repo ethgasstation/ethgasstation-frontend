@@ -243,6 +243,16 @@ function writeSpeedo (blockObj)
     post3['blockNum']= blockObj.number;
     post3['speed'] = blockObj.gasUsed / blockObj.gasLimit;
     writeData (post3, 'speedo');
+
+    var main =
+    {
+        blockHash: block.transactionsRoot,
+        mainBlockNum: block.number,
+        miner: block.miner,
+        blockGas: block.gasUsed,
+        uncle: false
+    }
+    writeData(main, 'uncles');
 }
     
 function getGasPriceCat (gasPrice)
@@ -330,15 +340,9 @@ function validateTx (tx, blockNum, last)
 
 function recordUncles (block)
 {
-    var main =
-    {
-        blockHash: block.transactionsRoot,
-        mainBlockNum: block.number,
-        miner: block.miner,
-        blockGas: block.gasUsed,
-        uncle: false
-    }
-    writeData(main, 'uncles');
+   var mainBlock = block.number
+
+    for (pos in block.uncles)
     {
         web3.eth.getUncle(block.number, pos, function (err, uncleBlock)
         {
@@ -348,7 +352,7 @@ function recordUncles (block)
                 {
                     blockHash: uncleBlock.transactionsRoot,
                     uncleBlockNum: uncleBlock.number,
-                    mainBlockNum: main.mainBlock,
+                    mainBlockNum: mainBlock,
                     miner: uncleBlock.miner,
                     blockGas: uncleBlock.gasUsed,
                     uncle: true
