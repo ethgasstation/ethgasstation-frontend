@@ -353,6 +353,8 @@ miningTable = txDataMiner.to_json(orient = 'records')
 topMinerTable = topMiners.to_json(orient = 'records')
 
 parentdir = os.path.dirname(os.getcwd())
+if not os.path.exists(parentdir + '/json'):
+    os.mkdir(parentdir + '/json')
 filepath_calc = parentdir + '/json/calc.json'
 filepath_recs = parentdir + '/json/ethgasAPI.json'
 filepath_pricetable = parentdir + '/json/price.json'
