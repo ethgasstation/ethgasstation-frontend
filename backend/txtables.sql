@@ -162,7 +162,7 @@ CREATE TABLE txDataLast100b (
 );
 
 CREATE TABLE uncles (
-    blockHash TEXT NOT NULL,
+    blockHash VARCHAR(75) NOT NULL,
     uncleBlockNum INT,
     mainBlockNum INT,
     miner TEXT,
