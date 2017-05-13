@@ -161,6 +161,15 @@ CREATE TABLE txDataLast100b (
     PRIMARY KEY (id)
 );
 
+CREATE TABLE uncles (
+    blockHash TEXT NOT NULL,
+    uncleBlockNum INT,
+    mainBlockNum INT,
+    miner TEXT,
+    blockGas INT,
+    PRIMARY KEY (blockHash)
+);
+
 CREATE USER 'ethgas'@'localhost' IDENTIFIED BY 'station';
 
 GRANT ALL PRIVILEGES ON tx.* TO 'ethgas'@'localhost';

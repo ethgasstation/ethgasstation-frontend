@@ -330,14 +330,33 @@ function validateTx (tx, blockNum, last)
 
 function recordUncles (block)
 {
-    var uncArray = block.uncles;
-    var blockNum = block.number;
-
-    for (var pos in uncArray)
+    var main =
     {
-        web3.eth.getUncle(blockNum, pos, function (err, receipt)
+        blockHash: block.transactionsRoot,
+        mainBlockNum: block.number,
+        miner: block.miner,
+        blockGas: block.gasUsed,
+        uncle: false
+    }
+    writeData(main, 'uncles');
+    {
+        web3.eth.getUncle(block.number, pos, function (err, uncleBlock)
         {
-            console.log(receipt);
+            if (receipt !=null)
+            {
+                var post = 
+                {
+                    blockHash: uncleBlock.transactionsRoot,
+                    uncleBlockNum: uncleBlock.number,
+                    mainBlockNum: main.mainBlock,
+                    miner: uncleBlock.miner,
+                    blockGas: uncleBlock.gasUsed,
+                    uncle: true
+
+                }
+                writeData(post, 'uncles');
+            }
+            
         })
     }
 }
