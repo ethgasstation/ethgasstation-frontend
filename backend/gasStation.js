@@ -330,7 +330,7 @@ function validateTx (tx, blockNum, last)
 function recordUncles (block)
 {
     var uncArray = block.uncles;
-    var blocNum = block.number;
+    var blockNum = block.number;
 
     for (var pos in uncArray)
     {
