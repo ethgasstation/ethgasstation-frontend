@@ -25,7 +25,9 @@ print (minerData)
 
 mainBlocks = minerData.loc[minerData['uncle']==0]
 
-duplicates = mainBlocks.duplicated(subset='blockNum')
+mainBlocks['duplicates'] = mainBlocks.duplicated(subset='blockNum', keep = 'first')
+
+print(mainBlocks.loc[mainBlocks['duplicates']==true])
 
 print(duplicates.sum())
 
