@@ -16,4 +16,4 @@ minerData = pd.DataFrame(cursor.fetchall())
 minerData.columns = head
 cursor.close()
 
-print (minerData['uncleBlockNum'].notnull())
+print (minerData.loc[minerData['uncle']== 1])
