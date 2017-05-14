@@ -40,7 +40,7 @@ print (minerBlocks)
 uncleBlocks = minerData.loc[minerData['uncle']==1]
 uncleBlocks['awards']= 5*((uncleBlocks['includedBlockNum'] - uncleBlocks['blockNum'])/8) 
 minerUncleBlocks = uncleBlocks.groupby('miner').sum()
-minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'averageTx', 'numUncs', 'numTx', 'main'], axis=1)
+minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'numUncs', 'numTx', 'main'], axis=1)
 
 print (minerUncleBlocks)
 
