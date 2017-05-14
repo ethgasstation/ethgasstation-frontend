@@ -44,7 +44,7 @@ uncleBlocks = pd.DataFrame(minerData.loc[minerData['uncle'] == 1])
 uncleBlocks['incDelay']= uncleBlocks['includedBlockNum'] - uncleBlocks['blockNum']
 uncleBlocks['uncleAwards'] = uncleBlocks['incDelay']/8 * 5
 minerUncleBlocks = uncleBlocks.groupby('miner').sum()
-minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'uncsReported', 'numTx', 'main', 'includedBlockNum', 'incDelay'], axis=1)
+minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'uncsReported', 'numTx', 'main', 'duplicates', 'keep', 'includedBlockNum', 'incDelay'], axis=1)
 minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
 
 
@@ -54,18 +54,16 @@ mainBlocks = pd.DataFrame(minerData.loc[minerData['uncle']==0])
 
 #create summary table
 minerBlocks = mainBlocks.groupby('miner').sum()
-minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'uncle'], axis=1)
+minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'duplicates', 'keep', 'uncle'], axis=1)
 
 
 # Merge the two tables on miner
 minerBlocks = minerBlocks.join(minerUncleBlocks)
 
-print(minerBlocks)
 
+minerBlocks['totalBlocks'] = minerBlocks['main'] + minerBlocks['uncle']
 
-#minerBlocks['uncsPerMain'] = minerBlocks[]
-
-#print (minerBlocks)
+print (minerBlocks)
 
 
 
