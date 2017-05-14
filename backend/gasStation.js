@@ -332,6 +332,7 @@ function writeSpeedo (block)
         miner: block.miner,
         numTx: totalTx,
         uncle: false,
+        main: true,
         speed: speed,
         numUncs: numUncs
 
@@ -353,7 +354,8 @@ function writeSpeedo (block)
                     miner: uncleBlock.miner,
                     gasUsed: uncleBlock.gasUsed,
                     gasLimit: uncleBlock.gasLimit,
-                    uncle: true
+                    uncle: true,
+                    main: false
                     }
                 writeData(post, 'speedo');
                 }

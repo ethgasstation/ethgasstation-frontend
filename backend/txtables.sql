@@ -174,6 +174,7 @@ CREATE TABLE speedo (
     gasUsed INT,
     miner TEXT,
     uncle BOOLEAN,
+    main BOOLEAN,
     numUncs INT,
     gasLimit INT,
     blockHash TEXT,
