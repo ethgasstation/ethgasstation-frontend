@@ -347,9 +347,10 @@ function writeSpeedo (block)
                     {
                     blockHash: uncleBlock.transactionsRoot,
                     uncleBlockNum: uncleBlock.number,
-                    mainBlockNum: block.number,
+                    blockNum: block.number,
                     miner: uncleBlock.miner,
                     gasUsed: uncleBlock.gasUsed,
+                    gasLimit: uncleBlock.gasLimit,
                     uncle: true
                     }
                 writeData(post, 'speedo');
