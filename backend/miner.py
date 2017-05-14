@@ -42,7 +42,9 @@ minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'numUncs
 
 minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
 
-print (minerUncleBlocks)
+minerBlocks.join(minerUncleBlocks, on='miner')
+
+print (minerBlocks)
 
 # now we have following uncle aggregates by miner:  total uncles, total gasUsed in uncleBlocks, uncleAwards
 
