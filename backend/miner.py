@@ -71,7 +71,8 @@ print (minerBlocks)
 minerData['const'] = 1
 print(minerData)
 minerData = minerData.loc[:,['gasUsed','main']].dropna()
-model = sm.OLS(minerData['gasUsed'])
+print(minerData)
+model = sm.OLS(minerData['gasUsed'], minerData['const'])
 results = model.fit()
 print (results.summary)
 
