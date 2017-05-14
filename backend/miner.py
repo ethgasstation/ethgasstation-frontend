@@ -21,7 +21,7 @@ cursor.close()
 
 # Find Block Totals Excluding Uncles
 
-mainBlocks = minerData.loc[:, minerData.loc[:, 'uncle']==0]
+mainBlocks = minerData.loc[minerData['uncle']==0]
 
 # Clean blocks first reported as mainchain that later become uncles
 mainBlocks['duplicates'] = mainBlocks.duplicated(subset='blockNum', keep = False)
