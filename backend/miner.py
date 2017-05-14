@@ -37,7 +37,7 @@ print (minerBlocks)
 
 # Find Uncle Stats
 
-uncleBlocks = minerData.loc[minerData['uncle'] == 1, :] 
+uncleBlocks = pd.DataFrame(minerData.loc[minerData['uncle'] == 1]) 
 print(uncleBlocks)
 uncleBlocks['incDelay']= uncleBlocks['includedBlockNum'] - uncleBlocks['blockNum']
 uncleBlocks['uncleAwards'] = uncleBlocks['incDelay']/8 * 5
