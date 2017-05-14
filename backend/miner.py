@@ -44,6 +44,7 @@ def resolveDup(blockHash):
     else:
         return True 
 
+mainBlocks['keep'] = True
 for index, row in mainBlocks.iterrows():
     if row['duplicates'] == True:
         mainBlocks.loc[index, 'keep'] = resolveDup(row['blockHash'])
