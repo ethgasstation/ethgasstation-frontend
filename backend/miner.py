@@ -72,7 +72,7 @@ minerData['const'] = 1
 
 print(minerData[minerData['gasUsed'].isnull()])
 
-model = sm.OLS(minerData['gasUsed'], minerData['const'])
+model = sm.OLS(minerData['gasUsed'], minerData[['const','main'])
 results = model.fit()
 print (results.summary())
 
