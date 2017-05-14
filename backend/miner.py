@@ -24,7 +24,7 @@ cursor.close()
 mainBlocks = minerData.loc[minerData['uncle']==0]
 
 # Clean blocks first reported as mainchain that later become uncles
-mainBlocks['duplicates'] = mainBlocks.duplicated(subset='blockNum', keep = False)
+mainBlocks.loc[:, 'duplicates'] = mainBlocks.duplicated(subset='blockNum', keep = False)
 
 
 
