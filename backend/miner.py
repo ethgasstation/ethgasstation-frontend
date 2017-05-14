@@ -62,17 +62,15 @@ minerBlocks = minerBlocks.join(minerUncleBlocks)
 
 
 minerBlocks['totalBlocks'] = minerBlocks['main'] + minerBlocks['uncle']
-
 minerBlocks['pctUncs'] = minerBlocks['uncle'] / minerBlocks['totalBlocks']
-
 minerBlocks = minerBlocks.sort_values('pctUncs')
 print (minerBlocks)
 
+
+# Regression model for gas
 minerData['const'] = 1
-
-print(minerData[minerData['gasUsed'].isnull()])
-
-model = sm.OLS(minerData['gasUsed'], minerData[['const','main']])
+minerData['gasUsedPerM'] = minerData['gasUsed']/1e6
+model = sm.OLS(minerData['main'], minerData[['const','gasUsedPerM']])
 results = model.fit()
 print (results.summary())
 
