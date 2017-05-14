@@ -38,8 +38,8 @@ print (minerBlocks)
 # Find Uncle Stats
 
 uncleBlocks = minerData.loc[minerData['uncle']==1]
-uncleBlocks['incDelay']= uncleBlocks['includedBlockNum'] - uncleBlocks['blockNum']
-uncleBlocks['awards'] = uncleBlocks['incDleay']/8 * 5
+uncleBlocks['incDelay']= uncleBlocks.loc['includedBlockNum', :] - uncleBlocks.loc['blockNum', :]
+uncleBlocks['awards'] = uncleBlocks['incDelay']/8 * 5
 minerUncleBlocks = uncleBlocks.groupby('miner').sum()
 minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'numUncs', 'numTx', 'main', 'includedBlockNum', 'incDelay'], axis=1)
 
