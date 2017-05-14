@@ -69,9 +69,9 @@ minerBlocks = minerBlocks.sort_values('pctUncs')
 print (minerBlocks)
 
 minerData['const'] = 1
-print(minerData)
+
 print(minerData[minerData['gasUsed'].isnull()])
-print(minerData)
+
 model = sm.OLS(minerData['gasUsed'], minerData['const'])
 results = model.fit()
 print (results.summary())
