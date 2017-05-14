@@ -7,7 +7,7 @@ cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1
 cursor = cnx.cursor()
 
 # First Query to Determine Block TIme, and Estimate Miner Policies
-query = ("SELECT * FROM speedo LEFT JOIN uncles ON speedo.blockNum = uncles.uncleBlockNum where speedo.blockNum>=3702847")
+query = ("SELECT * FROM speedo where speedo.blockNum>=3702847")
 
 cursor.execute(query)
 head = cursor.column_names
@@ -16,4 +16,4 @@ minerData = pd.DataFrame(cursor.fetchall())
 minerData.columns = head
 cursor.close()
 
-print (minerData.loc[minerData['uncle']== 1])
+print (minerData)
