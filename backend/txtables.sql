@@ -175,6 +175,7 @@ CREATE TABLE speedo (
     miner TEXT,
     uncle BOOLEAN,
     numUncs INT,
+    gasLimit INT,
     blockHash TEXT,
     avgWait INT, 
     speed DECIMAL(3,3), 
