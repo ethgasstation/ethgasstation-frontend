@@ -1,4 +1,4 @@
-import mysql.connector
+import mysql.connector, sys
 import pandas as pd
 import numpy as np
 import statsmodels.api as sm
