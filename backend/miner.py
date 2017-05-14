@@ -49,7 +49,7 @@ for index, row in mainBlocks.iterrows():
     if row['duplicates'] == True:
         mainBlocks.loc[index, 'keep'] = resolveDup(row['blockHash'])
 
-
+print (mainBlocks.loc[mainBlocks['duplicates']==True])
 
 minerBlocks = mainBlocks.groupby('miner').sum()
 minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'uncle'], axis=1)
