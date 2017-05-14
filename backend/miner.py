@@ -26,8 +26,9 @@ minerData['keep'] = True
 print (minerData)
 
 def resolveDup(blockHash):
-    match = (minerData.loc[(minerData['blockHash'] == blockHash) & (minerData['uncle']==True)]).sum()
-    if match > 0:
+    match = minerData.loc[(minerData['blockHash'] == blockHash) & (minerData['uncle'] == True)]
+
+    if len(match) > 0:
         return False
     else:
         return True 
