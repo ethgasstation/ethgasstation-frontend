@@ -27,9 +27,8 @@ print (minerData.loc[(minerData['duplicates']==True) & (minerData['keep']==False
 
 def resolveDup(blockHash):
     match = minerData.loc[(minerData['blockHash'] == blockHash) & (minerData['uncle'] == True)]
-    print (match)
-    print len(match)
     if len(match) > 0:
+        print('hi')
         return False
     else:
         return True 
