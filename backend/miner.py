@@ -23,8 +23,6 @@ cursor.close()
 minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
 minerData['keep'] = True
 
-print (minerData.loc[(minerData['duplicates']==True) & (minerData['keep']==False)])
-
 def resolveDup(blockHash):
     match = minerData.loc[(minerData['blockHash'] == blockHash) & (minerData['uncle'] == True)]
     if len(match) > 0:
@@ -38,9 +36,6 @@ for index, row in minerData.iterrows():
         minerData.loc[index, 'keep'] = resolveDup(row['blockHash'])
 
 #drop the duplicate row from mainBlocks- it is actually an uncle
-
-
-print (minerData.loc[(minerData['duplicates']==True) & (minerData['keep']==False)])
 
 minerData= minerData[minerData['keep'] == True]
 
@@ -57,16 +52,15 @@ minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
 # Create mainchain dataframe to summarize mined blocks
 mainBlocks = pd.DataFrame(minerData.loc[minerData['uncle']==0])
 
-
-
-
 #create summary table
 minerBlocks = mainBlocks.groupby('miner').sum()
 minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'uncle'], axis=1)
 
 
 # Merge the two tables on miner
-#minerBlocks = minerBlocks.join(minerUncleBlocks)
+minerBlocks = minerBlocks.join(minerUncleBlocks)
+
+print(minerBlocks)
 
 
 #minerBlocks['uncsPerMain'] = minerBlocks[]
