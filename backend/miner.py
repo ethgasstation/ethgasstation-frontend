@@ -65,12 +65,12 @@ minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum'
 
 
 # Merge the two tables on miner
-minerBlocks = minerBlocks.join(minerUncleBlocks)
+#minerBlocks = minerBlocks.join(minerUncleBlocks)
 
 
 #minerBlocks['uncsPerMain'] = minerBlocks[]
 
-print (minerBlocks)
+#print (minerBlocks)
 
 
 
