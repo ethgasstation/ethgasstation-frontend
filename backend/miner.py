@@ -40,7 +40,7 @@ mainBlocks['duplicates'] = mainBlocks.duplicated(subset='blockNum', keep = False
 
 def resolveDup(blockHash):
     match = (uncleBlocks['blockHash'] == blockHash).sum()
-    if len(match) > 0:
+    if match > 0:
         return False
     else:
         return True 
