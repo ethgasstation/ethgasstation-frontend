@@ -322,6 +322,7 @@ function writeSpeedo (block)
 {
     speed = block.gasUsed/block.gasLimit;
     numUncs = block.uncles.length;
+    totalTx = block.transactions.length;
     var post3 = 
     {
         blockNum: block.number,
@@ -329,6 +330,7 @@ function writeSpeedo (block)
         gasLimit: block.gasLimit,
         blockHash: block.transactionsRoot,
         miner: block.miner,
+        numTx: totalTx,
         uncle: false,
         speed: speed,
         numUncs: numUncs
@@ -346,8 +348,8 @@ function writeSpeedo (block)
                     var post = 
                     {
                     blockHash: uncleBlock.transactionsRoot,
-                    uncleBlockNum: uncleBlock.number,
-                    blockNum: block.number,
+                    includedBlockNum: block.number,
+                    blockNum: uncleBlock.number,
                     miner: uncleBlock.miner,
                     gasUsed: uncleBlock.gasUsed,
                     gasLimit: uncleBlock.gasLimit,

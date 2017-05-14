@@ -180,8 +180,7 @@ CREATE TABLE speedo (
     avgWait INT, 
     speed DECIMAL(3,3), 
     numTx INT,
-    uncleBlockNum INT,
-    mainBlockNum INT, 
+    uncleBlockNum INT, 
     PRIMARY KEY (id));
 
 CREATE USER 'ethgas'@'localhost' IDENTIFIED BY 'station';
@@ -197,7 +196,6 @@ ALTER TABLE speedo ADD COLUMN uncle BOOLEAN;
 ALTER TABLE speedo ADD COLUMN numUncs INT;
 ALTER TABLE speedo ADD COLUMN blockHash TEXT;
 ALTER TABLE speedo ADD COLUMN uncleBlockNum INT;
-ALTER TABLE speedo ADD COLUMN mainBlockNum INT;
 
 
 
