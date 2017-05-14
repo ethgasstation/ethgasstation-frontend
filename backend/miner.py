@@ -24,7 +24,7 @@ cursor.close()
 mainBlocks = minerData.loc[minerData['uncle']==0, :]
 
 # Clean blocks first reported as mainchain that later become uncles
-mainBlocks.loc[: , 'duplicates'] = mainBlocks.duplicated(subset='blockNum', keep = False)
+mainBlocks['duplicates'] = mainBlocks.duplicated(subset='blockNum', keep = False)
 
 print(mainBlocks.loc[mainBlocks['duplicates']==True])
 
@@ -38,8 +38,9 @@ print (minerBlocks)
 # Find Uncle Stats
 
 uncleBlocks = minerData.loc[minerData['uncle'] == 1, :] 
+print(uncleBlocks)
 uncleBlocks['incDelay']= uncleBlocks['includedBlockNum'] - uncleBlocks['blockNum']
-uncleBlocks.loc[:, 'uncleAwards'] = uncleBlocks['incDelay']/8 * 5
+uncleBlocks['uncleAwards'] = uncleBlocks['incDelay']/8 * 5
 minerUncleBlocks = uncleBlocks.groupby('miner').sum()
 minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'numUncs', 'numTx', 'main', 'includedBlockNum', 'incDelay'], axis=1)
 
