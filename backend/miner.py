@@ -19,6 +19,27 @@ minerData = pd.DataFrame(cursor.fetchall())
 minerData.columns = head
 cursor.close()
 
+# Clean blocks first reported as mainchain that later become uncles
+minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
+minderData['keep'] = True
+
+print (minerData)
+def resolveDup(blockHash):
+    match = (minerData.loc[(minerData['blockHash'] == blockHash) & (minerData['uncle']==True)]).sum()
+    if match > 0:
+        return False
+    else:
+        return True 
+
+
+for index, row in minderData.iterrows():
+    if ((row['duplicates'] == True) & (row['main'] == True)):
+        minerData.loc[index, 'keep'] = resolveDup(row['blockHash'])
+
+#drop the duplicate row from mainBlocks- it is actually an uncle
+minderData= minderData[minderData['keep'] == True]
+
+print(minerData)
 
 # Create uncle dataframe to summarize uncle stats
 uncleBlocks = pd.DataFrame(minerData.loc[minerData['uncle'] == 1]) 
@@ -34,23 +55,7 @@ minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
 mainBlocks = pd.DataFrame(minerData.loc[minerData['uncle']==0])
 
 
-# Clean blocks first reported as mainchain that later become uncles
-mainBlocks['duplicates'] = mainBlocks.duplicated(subset='blockNum', keep = False)
 
-def resolveDup(blockHash):
-    match = (uncleBlocks['blockHash'] == blockHash).sum()
-    if match > 0:
-        return False
-    else:
-        return True 
-
-mainBlocks['keep'] = True
-for index, row in mainBlocks.iterrows():
-    if row['duplicates'] == True:
-        mainBlocks.loc[index, 'keep'] = resolveDup(row['blockHash'])
-
-#drop the duplicate row from mainBlocks- it is actually an uncle
-mainBlocks= mainBlocks[mainBlocks['keep'] == True]
 
 #create summary table
 minerBlocks = mainBlocks.groupby('miner').sum()
@@ -59,6 +64,9 @@ minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum'
 
 # Merge the two tables on miner
 minerBlocks = minerBlocks.join(minerUncleBlocks)
+
+
+minerBlocks['uncsPerMain'] = minerBlocks[]
 
 print (minerBlocks)
 
