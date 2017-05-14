@@ -23,7 +23,7 @@ cursor.close()
 minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
 minerData['keep'] = True
 
-print (minerData.loc[minerData['duplicates']==True])
+print (minerData.loc[(minerData['duplicates']==True) & (minerData['keep']==False)])
 
 def resolveDup(blockHash):
     match = minerData.loc[(minerData['blockHash'] == blockHash) & (minerData['uncle'] == True)]
@@ -41,7 +41,7 @@ for index, row in minerData.iterrows():
 #drop the duplicate row from mainBlocks- it is actually an uncle
 minerData= minerData[minerData['keep'] == True]
 
-print (minerData.loc[minerData['duplicates']==True])
+print (minerData.loc[(minerData['duplicates']==True) & (minerData['keep']==False)])
 
 # Create uncle dataframe to summarize uncle stats
 uncleBlocks = pd.DataFrame(minerData.loc[minerData['uncle'] == 1]) 
