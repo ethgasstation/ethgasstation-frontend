@@ -41,7 +41,7 @@ for index, row in minerData.iterrows():
 #drop the duplicate row from mainBlocks- it is actually an uncle
 minerData= minerData[minerData['keep'] == True]
 
-print (minerData.loc[minerData['duplicates']==true])
+print (minerData.loc[minerData['duplicates']==True])
 
 # Create uncle dataframe to summarize uncle stats
 uncleBlocks = pd.DataFrame(minerData.loc[minerData['uncle'] == 1]) 
