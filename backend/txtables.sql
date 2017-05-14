@@ -4,8 +4,6 @@ PRIMARY KEY(txHash));
 CREATE TABLE minedtransactions (txHash VARCHAR(75), minedBlock int, toAddress VARCHAR(50), fromAddress VARCHAR(50),
 miner text, minedGasPrice INT, minedGasPriceCat INT, gasused INT, blockGasUsed INT, blockGasLimit INT, tsMined INT, emptyBlock BOOLEAN, PRIMARY KEY(txHash));
 
-CREATE TABLE speedo (id INT NOT NULL AUTO_INCREMENT, blockNum INT, avgWait INT, speed DECIMAL(3,3), numTx INT, PRIMARY KEY (id));
-
 CREATE TABLE txDataLast10k (
     id INT NOT NULL AUTO_INCREMENT,
     latestblockNum INT,
@@ -166,9 +164,22 @@ CREATE TABLE uncles (
     uncleBlockNum INT,
     mainBlockNum INT,
     miner TEXT,
-    blockGas INT,
+    gasUsed INT,
     PRIMARY KEY (blockHash)
 );
+
+CREATE TABLE speedo (
+    id INT NOT NULL AUTO_INCREMENT, 
+    blockNum INT, 
+    gasUsed INT,
+    miner TEXT,
+    uncle BOOLEAN,
+    numUncs INT,
+    blockHash TEXT,
+    avgWait INT, 
+    speed DECIMAL(3,3), 
+    numTx INT, 
+    PRIMARY KEY (id));
 
 CREATE USER 'ethgas'@'localhost' IDENTIFIED BY 'station';
 
@@ -177,6 +188,11 @@ GRANT ALL PRIVILEGES ON tx.* TO 'ethgas'@'localhost';
 FLUSH PRIVILEGES;
 
 
+ALTER TABLE speedo ADD COLUMN gasUsed INT;
+ALTER TABLE speedo ADD COLUMN miner TEXT;
+ALTER TABLE speedo ADD COLUMN uncle BOOLEAN;
+ALTER TABLE speedo ADD COLUMN numUncs INT;
+ALTER TABLE speedo ADD COLUMN blockHash TEXT;
 
 
 
