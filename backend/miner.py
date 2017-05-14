@@ -66,7 +66,7 @@ minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum'
 minerBlocks = minerBlocks.join(minerUncleBlocks)
 
 
-minerBlocks['uncsPerMain'] = minerBlocks[]
+#minerBlocks['uncsPerMain'] = minerBlocks[]
 
 print (minerBlocks)
 
