@@ -328,7 +328,7 @@ function writeSpeedo (block)
         blockNum: block.number,
         gasUsed: block.gasUsed,
         gasLimit: block.gasLimit,
-        blockHash: block.transactionsRoot,
+        blockHash: block.hash,
         miner: block.miner,
         numTx: totalTx,
         uncle: false,
@@ -348,7 +348,7 @@ function writeSpeedo (block)
                 {
                     var post = 
                     {
-                    blockHash: uncleBlock.transactionsRoot,
+                    blockHash: uncleBlock.hash,
                     includedBlockNum: block.number,
                     blockNum: uncleBlock.number,
                     miner: uncleBlock.miner,
