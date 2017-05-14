@@ -26,9 +26,6 @@ print (minerData)
 mainBlocks = minerData.loc[minerData['uncle']==0]
 
 minerBlocks = mainBlocks.groupby('miner').sum()
-
-print (minerBlocks)
-
 minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'uncle'], axis=1)
 
 # generates following aggregates by miner:  total mainblocks, total gasUsed in mainBlocks, total uncleInlcusions, 
