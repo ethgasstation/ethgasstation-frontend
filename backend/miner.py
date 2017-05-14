@@ -74,7 +74,7 @@ print(minerData)
 print(minerData)
 model = sm.OLS(minerData['gasUsed'], minerData['const'])
 results = model.fit()
-print (results.summary)
+print (results.summary())
 
 
 
