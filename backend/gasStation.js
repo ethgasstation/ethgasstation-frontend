@@ -334,36 +334,28 @@ function writeSpeedo (block)
         numUncs: numUncs
 
     }
+    writeData (post3, 'speedo');
     if (block.uncles.length > 0)
     {
-        recordUncles(block);
-    }
-
-    writeData (post3, 'speedo');
-}
-
-function recordUncles (block)
-{
-    var mainBlock = block.number;
-    for (pos in block.uncles)
-    {
-        web3.eth.getUncle(block.number, pos, function (err, uncleBlock)
+        for (pos in block.uncles)
         {
-            if (uncleBlock !=null)
+            web3.eth.getUncle(block.number, pos, function (err, uncleBlock)
             {
-                var post = 
+                if (uncleBlock !=null)
                 {
+                    var post = 
+                    {
                     blockHash: uncleBlock.transactionsRoot,
                     uncleBlockNum: uncleBlock.number,
-                    mainBlockNum: mainBlock,
+                    mainBlockNum: block.number,
                     miner: uncleBlock.miner,
                     gasUsed: uncleBlock.gasUsed,
                     uncle: true
-
+                    }
+                writeData(post, 'speedo');
                 }
-                writeData(post, 'uncles');
-            }
-            
-        })
+
+            })
+        }
     }
 }
