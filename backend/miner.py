@@ -23,7 +23,7 @@ cursor.close()
 minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
 minerData['keep'] = True
 
-print (minerData.loc[minerData['duplicates']==true])
+print (minerData.loc[minerData['duplicates']==True])
 
 def resolveDup(blockHash):
     match = minerData.loc[(minerData['blockHash'] == blockHash) & (minerData['uncle'] == True)]
