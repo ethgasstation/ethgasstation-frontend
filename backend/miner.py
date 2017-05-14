@@ -52,6 +52,10 @@ for index, row in mainBlocks.iterrows():
 
 print (mainBlocks.loc[mainBlocks['duplicates']==True])
 
+mainBlocks= mainBlocks[mainBlocks['keep']==True]
+
+print (mainBlocks.loc[mainBlocks['duplicates']==True])
+
 minerBlocks = mainBlocks.groupby('miner').sum()
 minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'uncle'], axis=1)
 
