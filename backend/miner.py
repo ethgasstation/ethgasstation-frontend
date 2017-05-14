@@ -63,6 +63,9 @@ minerBlocks = minerBlocks.join(minerUncleBlocks)
 
 minerBlocks['totalBlocks'] = minerBlocks['main'] + minerBlocks['uncle']
 
+minerBlocks['pctUncs'] = minerBlocks['uncle'] / minerBlocks['totalBlocks']
+
+minerBlocks = minerBlocks.sort_values('pctUncs')
 print (minerBlocks)
 
 
