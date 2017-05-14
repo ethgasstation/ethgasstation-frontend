@@ -25,6 +25,8 @@ print (minerData)
 
 mainBlocks = minerData.loc[minerData['uncle']==0]
 
+print(mainBlocks.duplicated(subset='blockNum'))
+
 minerBlocks = mainBlocks.groupby('miner').sum()
 minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'uncle'], axis=1)
 
