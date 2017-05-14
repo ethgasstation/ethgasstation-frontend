@@ -70,7 +70,7 @@ print (minerBlocks)
 
 minerData['const'] = 1
 print(minerData)
-print(minerData.loc[minerData['gasUsed'].isnull())
+print(minerData.loc[:, minerData['gasUsed']].isnull())
 print(minerData)
 model = sm.OLS(minerData['gasUsed'], minerData['const'])
 results = model.fit()
