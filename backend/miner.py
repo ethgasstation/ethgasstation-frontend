@@ -42,7 +42,7 @@ minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'numUncs
 
 minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
 
-minerBlocks.join(minerUncleBlocks, on='miner')
+minerBlocks.join(minerUncleBlocks)
 
 print (minerBlocks)
 
