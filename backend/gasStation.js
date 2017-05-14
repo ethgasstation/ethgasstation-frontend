@@ -321,7 +321,7 @@ function validateTx (tx, blockNum, last)
 function writeSpeedo (block)
 {
     speed = block.gasUsed/block.gasLimit;
-    numUncs = block.uncles.length;
+    uncsReported = block.uncles.length;
     totalTx = block.transactions.length;
     var post3 = 
     {
@@ -334,7 +334,7 @@ function writeSpeedo (block)
         uncle: false,
         main: true,
         speed: speed,
-        numUncs: numUncs
+        uncsReported: uncsReported
 
     }
     writeData (post3, 'speedo');
