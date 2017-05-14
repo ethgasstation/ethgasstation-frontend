@@ -28,7 +28,6 @@ print (minerData.loc[(minerData['duplicates']==True) & (minerData['keep']==False
 def resolveDup(blockHash):
     match = minerData.loc[(minerData['blockHash'] == blockHash) & (minerData['uncle'] == True)]
     if len(match) > 0:
-        print('hi')
         return False
     else:
         return True 
@@ -39,9 +38,11 @@ for index, row in minerData.iterrows():
         minerData.loc[index, 'keep'] = resolveDup(row['blockHash'])
 
 #drop the duplicate row from mainBlocks- it is actually an uncle
-minerData= minerData[minerData['keep'] == True]
+
 
 print (minerData.loc[(minerData['duplicates']==True) & (minerData['keep']==False)])
+
+minerData= minerData[minerData['keep'] == True]
 
 # Create uncle dataframe to summarize uncle stats
 uncleBlocks = pd.DataFrame(minerData.loc[minerData['uncle'] == 1]) 
