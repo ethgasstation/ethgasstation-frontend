@@ -20,7 +20,7 @@ minerData.columns = head
 cursor.close()
 
 
-# Find Uncle Stats
+# Create uncle dataframe to summarize uncle stats
 uncleBlocks = pd.DataFrame(minerData.loc[minerData['uncle'] == 1]) 
 uncleBlocks['incDelay']= uncleBlocks['includedBlockNum'] - uncleBlocks['blockNum']
 uncleBlocks['uncleAwards'] = uncleBlocks['incDelay']/8 * 5
@@ -30,8 +30,7 @@ minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
 
 
 
-# Find Block Totals Excluding Uncles
-
+# Create mainchain dataframe to summarize mined blocks
 mainBlocks = pd.DataFrame(minerData.loc[minerData['uncle']==0])
 
 
@@ -45,33 +44,22 @@ def resolveDup(blockHash):
     else:
         return True 
 
-
 for index, row in mainBlocks.iterrows():
     if row['duplicates'] == True:
         mainBlocks.loc[index, 'keep'] = resolveDup(row['blockHash'])
 
-print (mainBlocks.loc[mainBlocks['duplicates']==True])
+#drop the duplicate row from mainBlocks- it is actually an uncle
+mainBlocks= mainBlocks[mainBlocks['keep'] == True]
 
-mainBlocks= mainBlocks[mainBlocks['keep']==True]
-
-print (mainBlocks.loc[mainBlocks['duplicates']==True])
-
+#create summary table
 minerBlocks = mainBlocks.groupby('miner').sum()
 minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'uncle'], axis=1)
 
-# generates following aggregates by miner:  total mainblocks, total gasUsed in mainBlocks, total uncleInlcusions, 
-
-print (minerBlocks)
-
-
-
-
-
+# Merge the two tables on miner
 minerBlocks = minerBlocks.join(minerUncleBlocks)
 
 print (minerBlocks)
 
-# now we have following uncle aggregates by miner:  total uncles, total gasUsed in uncleBlocks, uncleAwards
 
 
 
