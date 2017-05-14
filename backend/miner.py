@@ -7,7 +7,7 @@ cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1
 cursor = cnx.cursor()
 
 # First Query to Determine Block TIme, and Estimate Miner Policies
-query = ("SELECT * FROM speedo LEFT JOIN uncles blockNum.speedo = uncleBlockNum.uncles")
+query = ("SELECT * FROM speedo LEFT JOIN uncles ON speedo.blockNum = uncles.uncleBlockNum")
 
 cursor.execute(query)
 head = cursor.column_names
