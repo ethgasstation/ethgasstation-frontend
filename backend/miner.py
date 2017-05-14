@@ -21,7 +21,7 @@ cursor.close()
 
 # Clean blocks first reported as mainchain that later become uncles
 minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
-minderData['keep'] = True
+minerData['keep'] = True
 
 print (minerData)
 def resolveDup(blockHash):
