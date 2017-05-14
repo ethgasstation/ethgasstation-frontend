@@ -337,7 +337,6 @@ function writeSpeedo (block)
         numUncs: numUncs
 
     }
-    console.log(post3);
     writeData (post3, 'speedo');
     if (block.uncles.length > 0)
     {
