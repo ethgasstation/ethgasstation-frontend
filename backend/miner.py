@@ -19,14 +19,37 @@ minerData = pd.DataFrame(cursor.fetchall())
 minerData.columns = head
 cursor.close()
 
+
+# Find Uncle Stats
+uncleBlocks = pd.DataFrame(minerData.loc[minerData['uncle'] == 1]) 
+uncleBlocks['incDelay']= uncleBlocks['includedBlockNum'] - uncleBlocks['blockNum']
+uncleBlocks['uncleAwards'] = uncleBlocks['incDelay']/8 * 5
+minerUncleBlocks = uncleBlocks.groupby('miner').sum()
+minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'numUncs', 'numTx', 'main', 'includedBlockNum', 'incDelay'], axis=1)
+minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
+
+
+
 # Find Block Totals Excluding Uncles
 
 mainBlocks = pd.DataFrame(minerData.loc[minerData['uncle']==0])
 
+
 # Clean blocks first reported as mainchain that later become uncles
 mainBlocks['duplicates'] = mainBlocks.duplicated(subset='blockNum', keep = False)
 
-print(mainBlocks.loc[mainBlocks['duplicates']==True])
+def resolveDup(blockHash):
+    if len(uncleBlocks['blockHash']==blockHash) > 0:
+        return False
+    else:
+        return True 
+
+
+for index, row in mainBlocks.iterrows():
+    if row['duplicates'] == True:
+        mainBlocks.loc[index, 'keep'] = resolveDup(row['blockHash'])
+
+
 
 minerBlocks = mainBlocks.groupby('miner').sum()
 minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'uncle'], axis=1)
@@ -35,16 +58,9 @@ minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum'
 
 print (minerBlocks)
 
-# Find Uncle Stats
 
-uncleBlocks = pd.DataFrame(minerData.loc[minerData['uncle'] == 1]) 
-print(uncleBlocks)
-uncleBlocks['incDelay']= uncleBlocks['includedBlockNum'] - uncleBlocks['blockNum']
-uncleBlocks['uncleAwards'] = uncleBlocks['incDelay']/8 * 5
-minerUncleBlocks = uncleBlocks.groupby('miner').sum()
-minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'numUncs', 'numTx', 'main', 'includedBlockNum', 'incDelay'], axis=1)
 
-minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
+
 
 minerBlocks = minerBlocks.join(minerUncleBlocks)
 
