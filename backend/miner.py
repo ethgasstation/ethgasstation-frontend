@@ -39,7 +39,10 @@ mainBlocks = pd.DataFrame(minerData.loc[minerData['uncle']==0])
 mainBlocks['duplicates'] = mainBlocks.duplicated(subset='blockNum', keep = False)
 
 def resolveDup(blockHash):
-    if len(uncleBlocks['blockHash']==blockHash) > 0:
+    match = uncleBlocks['blockHash'] == blockHash
+    print (match)
+    print (len(match))
+    if len(match) > 0:
         return False
     else:
         return True 
