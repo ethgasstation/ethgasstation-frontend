@@ -24,6 +24,7 @@ minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
 minerData['keep'] = True
 
 print (minerData)
+
 def resolveDup(blockHash):
     match = (minerData.loc[(minerData['blockHash'] == blockHash) & (minerData['uncle']==True)]).sum()
     if match > 0:
@@ -37,7 +38,7 @@ for index, row in minerData.iterrows():
         minerData.loc[index, 'keep'] = resolveDup(row['blockHash'])
 
 #drop the duplicate row from mainBlocks- it is actually an uncle
-minderData= minderData[minderData['keep'] == True]
+minerData= minerData[minerData['keep'] == True]
 
 print(minerData)
 
