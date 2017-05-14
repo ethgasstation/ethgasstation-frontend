@@ -70,7 +70,7 @@ print (minerBlocks)
 # Regression model for gas
 minerData['const'] = 1
 minerData['gasUsedPerM'] = minerData['gasUsed']/1e6
-model = sm.OLS(minerData['main'], minerData[['const','gasUsedPerM']])
+model = sm.OLS(minerData['uncle'], minerData[['const','gasUsedPerM']])
 results = model.fit()
 print (results.summary())
 
