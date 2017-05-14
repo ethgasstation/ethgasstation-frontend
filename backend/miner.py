@@ -17,3 +17,13 @@ minerData.columns = head
 cursor.close()
 
 print (minerData)
+
+# Find Block Totals Excluding Uncles
+
+mainBlocks = minerData.loc[minerData['uncle']==1]
+
+minerBlocks = mainBlocks.groupby('miner').sum()
+
+print (minerBlocks)
+
+
