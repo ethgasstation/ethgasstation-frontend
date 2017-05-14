@@ -68,6 +68,11 @@ minerBlocks['pctUncs'] = minerBlocks['uncle'] / minerBlocks['totalBlocks']
 minerBlocks = minerBlocks.sort_values('pctUncs')
 print (minerBlocks)
 
+minerData['const'] = 1
+
+model = sm.OLS(minerData['gasUsed'], [minerData['main'], minerData['const']])
+results = model.fit()
+print (results.summary)
 
 
 
