@@ -349,7 +349,7 @@ function recordUncles (block)
     {
         web3.eth.getUncle(block.number, pos, function (err, uncleBlock)
         {
-            if (receipt !=null)
+            if (uncleBlock !=null)
             {
                 var post = 
                 {
