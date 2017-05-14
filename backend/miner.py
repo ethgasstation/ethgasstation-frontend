@@ -32,7 +32,7 @@ def resolveDup(blockHash):
         return True 
 
 
-for index, row in minderData.iterrows():
+for index, row in minerData.iterrows():
     if ((row['duplicates'] == True) & (row['main'] == True)):
         minerData.loc[index, 'keep'] = resolveDup(row['blockHash'])
 
