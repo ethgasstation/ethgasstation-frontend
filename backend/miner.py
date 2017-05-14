@@ -25,7 +25,7 @@ uncleBlocks = pd.DataFrame(minerData.loc[minerData['uncle'] == 1])
 uncleBlocks['incDelay']= uncleBlocks['includedBlockNum'] - uncleBlocks['blockNum']
 uncleBlocks['uncleAwards'] = uncleBlocks['incDelay']/8 * 5
 minerUncleBlocks = uncleBlocks.groupby('miner').sum()
-minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'numUncs', 'numTx', 'main', 'includedBlockNum', 'incDelay'], axis=1)
+minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'uncsIncluded', 'numTx', 'main', 'includedBlockNum', 'incDelay'], axis=1)
 minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
 
 
