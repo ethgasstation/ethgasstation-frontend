@@ -40,7 +40,7 @@ uncleBlocks['uncleAwards'] = uncleBlocks['incDelay']/8 * 5
 minerUncleBlocks = uncleBlocks.groupby('miner').sum()
 minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'numUncs', 'numTx', 'main', 'includedBlockNum', 'incDelay'], axis=1)
 
-minerUncleBlocks = minerUncleBlocks.rename(columns({'gasUsed': 'uncleGasUsed'}))
+minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
 
 print (minerUncleBlocks)
 
