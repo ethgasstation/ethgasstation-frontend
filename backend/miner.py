@@ -69,7 +69,8 @@ minerBlocks = minerBlocks.sort_values('pctUncs')
 print (minerBlocks)
 
 minerData['const'] = 1
-minerData = minerData.loc[['gasUsed','main']].dropna()
+print(minerData)
+minerData = minerData.loc[:,['gasUsed','main']].dropna()
 model = sm.OLS(minerData['gasUsed'], [minerData['main'], minerData['const']])
 results = model.fit()
 print (results.summary)
