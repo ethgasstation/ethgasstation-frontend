@@ -19,17 +19,16 @@ minerData = pd.DataFrame(cursor.fetchall())
 minerData.columns = head
 cursor.close()
 
-print (minerData)
-
 # Find Block Totals Excluding Uncles
 
 mainBlocks = minerData.loc[minerData['uncle']==0]
 
-mainBlocks['duplicates'] = mainBlocks.duplicated(subset='blockNum', keep = 'first')
+# Clean blocks first reported as mainchain that later become uncles
+mainBlocks['duplicates'] = mainBlocks.duplicated(subset='blockNum', keep = False)
+
+
 
 print(mainBlocks.loc[mainBlocks['duplicates']==True])
-
-print(duplicates.sum())
 
 minerBlocks = mainBlocks.groupby('miner').sum()
 minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'uncle'], axis=1)
