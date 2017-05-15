@@ -47,6 +47,25 @@ for index, row in minerData.iterrows():
 
 minerData= minerData[minerData['keep'] == True]
 
+#find total reward per block
+minerData['incDelay'] = minerData['includedBlockNum'] - minerData['blockNum']
+
+def getReward (main, uncsReported, uncleDelay):
+    var reward = 0
+    if main == True:
+        reward = reward + 5
+    if uncsReported = 2:
+        reward = reward + .3125
+    elif uncsReported = 1:
+        reward = reward + .15625
+    if uncle == True:
+        reward = 5 * (uncleDelay/8)
+    return reward
+
+for index,row in minerData.iterrows():
+    row['totRewardminusTxFees'] = getReward(row['main'], row['uncsReported'], row['incDelay'])
+
+
 # Create uncle dataframe to summarize uncle stats
 uncleBlocks = pd.DataFrame(minerData.loc[minerData['uncle'] == 1]) 
 uncleBlocks['incDelay']= uncleBlocks['includedBlockNum'] - uncleBlocks['blockNum']
@@ -68,20 +87,19 @@ minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum'
 # Merge the two tables on miner
 minerBlocks = minerBlocks.join(minerUncleBlocks)
 
-#find txFees by Miner
+#find txFees by Miner and merge
 
 txData['fee'] = txData['gasused'] * txData['minedGasPrice']/1e9
 txData = txData.groupby('miner').sum()
-
 minerBlocks = minerBlocks.join(txData['fee'])
-print(minerBlocks)
 
+minerBlocks['totReward'] = minerBlocks['fee'] + minerBlocks['totRewardminusTxFees']
 
-
+#calc Total Return
 minerBlocks['totalBlocks'] = minerBlocks['main'] + minerBlocks['uncle']
-minerBlocks['pctUncs'] = minerBlocks['uncle'] / minerBlocks['totalBlocks']
-minerBlocks = minerBlocks.sort_values('pctUncs')
-print (minerBlocks)
+minerBlocks['avgReward'] = minerBlocks['totReward'] / minerBlocks['totalBlocks']
+minerBlocks = minerBlocks.sort_values('totReward')
+
 
 
 # Regression model for gas
