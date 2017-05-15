@@ -48,22 +48,15 @@ for index, row in minerData.iterrows():
 minerData= minerData[minerData['keep'] == True]
 
 #find total reward per block
-minerData['incDelay'] = minerData['includedBlockNum'] - minerData['blockNum']
 
-def getReward (main, uncsReported, uncleDelay):
-    reward = 0
-    if main == True:
-        reward = reward + 5
+def getRewardMain (main, uncsReported):
+    reward = 5
     if uncsReported == 2:
         reward = reward + .3125
     elif uncsReported == 1:
         reward = reward + .15625
-    if not main:
-        reward = 5 * (uncleDelay/8)
     return reward
 
-for index,row in minerData.iterrows():
-    row['totRewardminusTxFees'] = getReward(row['main'], row['uncsReported'], row['incDelay'])
 
 
 # Create uncle dataframe to summarize uncle stats
@@ -78,6 +71,9 @@ minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
 
 # Create mainchain dataframe to summarize mined blocks
 mainBlocks = pd.DataFrame(minerData.loc[minerData['uncle']==0])
+
+for index,row in mainBlocks.iterrows():
+    row['totRewardminusTxFees'] = getRewardMain(row['main'], row['uncsReported'])
 
 #create summary table
 minerBlocks = mainBlocks.groupby('miner').sum()
