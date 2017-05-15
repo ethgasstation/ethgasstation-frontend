@@ -75,6 +75,7 @@ mainBlocks = pd.DataFrame(minerData.loc[minerData['uncle']==0])
 for index,row in mainBlocks.iterrows():
     row['totRewardminusTxFees'] = getRewardMain(row['main'], row['uncsReported'])
 
+print (mainBlocks)
 #create summary table
 minerBlocks = mainBlocks.groupby('miner').sum()
 minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'duplicates', 'keep', 'uncle'], axis=1)
