@@ -18,7 +18,7 @@ head = cursor.column_names
 minerData = pd.DataFrame(cursor.fetchall())
 minerData.columns = head
 
-query = ("SELECT * from minedtransactions where minedblock >= %s and blockNum < %s")
+query = ("SELECT * from minedtransactions where minedBlock >= %s and minedBlock < %s")
 
 cursor.execute(query, (startBlock, endBlock))
 head = cursor.column_names
