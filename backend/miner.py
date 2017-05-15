@@ -71,8 +71,6 @@ minerUncleBlocks = uncleBlocks.groupby('miner').sum()
 minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'uncsReported', 'numTx', 'main', 'duplicates', 'keep', 'includedBlockNum', 'incDelay'], axis=1)
 minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
 
-
-
 # Create mainchain dataframe to summarize mined blocks
 mainBlocks = pd.DataFrame(minerData.loc[minerData['uncle']==0])
 
@@ -120,6 +118,11 @@ print(minerBlocks)
 minerData['const'] = 1
 minerData['gasUsedPerM'] = minerData['gasUsed']/1e6
 model = sm.OLS(minerData['uncle'], minerData[['const','gasUsedPerM']])
+results = model.fit()
+print (results.summary())
+
+miner1data = minerData.loc[minerData['miner'] == '0xea674fdde714fd979de3edf0f56aa9716b898ec8']
+model = sm.OLS(miner1Data['uncle'], minerData[['const','gasUsedPerM']])
 results = model.fit()
 print (results.summary())
 
