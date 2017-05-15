@@ -58,7 +58,7 @@ def getReward (main, uncsReported, uncleDelay):
         reward = reward + .3125
     elif uncsReported == 1:
         reward = reward + .15625
-    if uncle == True:
+    if not main:
         reward = 5 * (uncleDelay/8)
     return reward
 
