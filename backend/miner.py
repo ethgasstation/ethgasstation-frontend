@@ -49,9 +49,9 @@ minerData= minerData[minerData['keep'] == True]
 
 # find empty block uncle rate
 
-totemptyBlocks = minerData.loc[minerData['gasUsed']==0].sum()
-emptyUncles = minerData.loc[(minerData['gasUsed']==0) & (minerData['uncle']==True)].sum()
-emptyMains =  minerData.loc[(minerData['gasUsed']==0) & (minerData['main']==True)].sum()
+totemptyBlocks = (minerData.loc[minerData['gasUsed']==0]).count()
+emptyUncles = (minerData.loc[(minerData['gasUsed']==0) & (minerData['uncle']==True)]).count()
+emptyMains =  (minerData.loc[(minerData['gasUsed']==0) & (minerData['main']==True)]).count()
 
 print ([totemptyBlocks, emptyUncles, emptyMains])
 # Create uncle dataframe to summarize uncle stats
