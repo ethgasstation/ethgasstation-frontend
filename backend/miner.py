@@ -61,7 +61,7 @@ emptyUnclePct = emptyUncles/totemptyBlocks
 
 print (totemptyBlocks, emptyUncles, emptyMains)
 print (totTxBlocks, txUncles, txMains)
-print (emptyUnclePct)
+print ("%.3f" % (emptyUnclePct))
 
 # Create uncle dataframe to summarize uncle stats
 uncleBlocks = pd.DataFrame(minerData.loc[minerData['uncle'] == 1]) 
