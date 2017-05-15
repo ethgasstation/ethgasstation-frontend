@@ -73,7 +73,7 @@ def getRewardMain (uncsReported):
 
 for index,row in mainBlocks.iterrows():
     row['totRewardminusTxFees'] = getRewardMain(row['uncsReported'])
-    print (row['totRewardminusTxFess'])
+    print (row['totRewardminusTxFees'])
 
 print (mainBlocks)
 #create summary table
