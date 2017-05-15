@@ -81,6 +81,7 @@ minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum'
 print(minerBlocks)
 # Merge the two tables on miner
 minerBlocks = minerBlocks.join(minerUncleBlocks)
+minerBlocks = minerBlocks.loc[minerBlocks['uncleAwards'].isnull(), 'uncleAwards'] = 0
 
 #find txFees by Miner and merge
 
