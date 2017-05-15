@@ -47,7 +47,13 @@ for index, row in minerData.iterrows():
 
 minerData= minerData[minerData['keep'] == True]
 
+# find empty block uncle rate
 
+totemptyBlocks = minerData.loc[minerData['gasUsed']==0].sum()
+emptyUncles = minerData.loc[(minerData['gasUsed']==0) & (minerData['uncle']==True)].sum()
+emptyMains =  minerData.loc[(minerData['gasUsed']==0) & (minerData['main']==True)].sum()
+
+print ([totemptyBlocks, emptyUncles, emptyMains])
 # Create uncle dataframe to summarize uncle stats
 uncleBlocks = pd.DataFrame(minerData.loc[minerData['uncle'] == 1]) 
 uncleBlocks['incDelay']= uncleBlocks['includedBlockNum'] - uncleBlocks['blockNum']
