@@ -47,17 +47,6 @@ for index, row in minerData.iterrows():
 
 minerData= minerData[minerData['keep'] == True]
 
-#find total reward per block
-
-def getRewardMain (main, uncsReported):
-    reward = 5
-    if uncsReported == 2:
-        reward = reward + .3125
-    elif uncsReported == 1:
-        reward = reward + .15625
-    return reward
-
-
 
 # Create uncle dataframe to summarize uncle stats
 uncleBlocks = pd.DataFrame(minerData.loc[minerData['uncle'] == 1]) 
@@ -72,8 +61,19 @@ minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
 # Create mainchain dataframe to summarize mined blocks
 mainBlocks = pd.DataFrame(minerData.loc[minerData['uncle']==0])
 
+#find total reward per block
+
+def getRewardMain (uncsReported):
+    reward = 5
+    if uncsReported == 2:
+        reward = reward + .3125
+    elif uncsReported == 1:
+        reward = reward + .15625
+    return reward
+
 for index,row in mainBlocks.iterrows():
-    row['totRewardminusTxFees'] = getRewardMain(row['main'], row['uncsReported'])
+    row['totRewardminusTxFees'] = getRewardMain(row['uncsReported'])
+    print (row['totRewardminusTxFess'])
 
 print (mainBlocks)
 #create summary table
