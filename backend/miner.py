@@ -122,7 +122,7 @@ results = model.fit()
 print (results.summary())
 
 miner1data = minerData.loc[minerData['miner'] == '0xea674fdde714fd979de3edf0f56aa9716b898ec8']
-model = sm.OLS(miner1Data['uncle'], minerData[['const','gasUsedPerM']])
+model = sm.OLS(miner1Data['uncle'], miner1Data[['const','gasUsedPerM']])
 results = model.fit()
 print (results.summary())
 
