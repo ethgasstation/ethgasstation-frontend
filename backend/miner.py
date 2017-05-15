@@ -96,6 +96,7 @@ minerBlocks['totReward'] = minerBlocks['fee'] + minerBlocks['totRewardminusTxFee
 #calc Total Return
 minerBlocks['totalBlocks'] = minerBlocks['main'] + minerBlocks['uncle']
 minerBlocks['avgReward'] = minerBlocks['totReward'] / minerBlocks['totalBlocks']
+minerBlocks['uncRatio'] = minerBlocks['uncle'] / minerBlocks['totalBlocks']
 minerBlocks = minerBlocks.sort_values('avgReward')
 
 print(minerBlocks)
@@ -106,5 +107,6 @@ minerData['gasUsedPerM'] = minerData['gasUsed']/1e6
 model = sm.OLS(minerData['uncle'], minerData[['const','gasUsedPerM']])
 results = model.fit()
 print (results.summary())
+
 
 
