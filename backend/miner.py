@@ -81,8 +81,9 @@ minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum'
 print(minerBlocks)
 # Merge the two tables on miner
 minerBlocks = minerBlocks.join(minerUncleBlocks)
-minerBlocks = minerBlocks['uncleAwards'].fillna(0, inplace=True)
+minerBlocks = minerBlocks['uncleAwards'].fillna(0)
 
+print(minerBlocks)
 #find txFees by Miner and merge
 
 txData['fee'] = txData['gasused'] * txData['minedGasPrice']/1e9
