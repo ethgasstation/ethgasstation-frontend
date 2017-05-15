@@ -72,8 +72,7 @@ def getRewardMain (uncsReported):
     return reward
 
 for index,row in mainBlocks.iterrows():
-    row['totRewardminusTxFees'] = getRewardMain(row['uncsReported'])
-    print (row['totRewardminusTxFees'])
+    mainBlocks.loc[index, 'totRewardminusTxFees'] = getRewardMain(row['uncsReported'])
 
 print (mainBlocks)
 #create summary table
@@ -90,7 +89,7 @@ txData['fee'] = txData['gasused'] * txData['minedGasPrice']/1e9
 txData = txData.groupby('miner').sum()
 minerBlocks = minerBlocks.join(txData['fee'])
 
-minerBlocks['totReward'] = minerBlocks['fee'] + minerBlocks['totRewardminusTxFees']
+minerBlocks['totReward'] = minerBlocks['fee'] + minerBlocks['totRewardminusTxFees'] + minerBlocks['uncleAwards']
 
 #calc Total Return
 minerBlocks['totalBlocks'] = minerBlocks['main'] + minerBlocks['uncle']
