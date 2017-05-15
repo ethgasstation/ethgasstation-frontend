@@ -53,7 +53,15 @@ totemptyBlocks = len(minerData.loc[minerData['gasUsed']==0])
 emptyUncles = len(minerData.loc[(minerData['gasUsed']==0) & (minerData['uncle']==True)])
 emptyMains =  len(minerData.loc[(minerData['gasUsed']==0) & (minerData['main']==True)])
 
-print ([totemptyBlocks, emptyUncles, emptyMains])
+totTxBlocks = len(minerData.loc[minerData['gasUsed'] > 0])
+txUncles = len(minerData.loc[(minerData['gasUsed'] > 0) & (minerData['uncle']==True)])
+txMains =  len(minerData.loc[(minerData['gasUsed'] > 0) & (minerData['main']==True)])
+
+emptyUnclePct = emptyUncles/totemptyBlocks
+
+print (totemptyBlocks, emptyUncles, emptyMains)
+print (totTxBlocks, txUncles, txMains)
+
 # Create uncle dataframe to summarize uncle stats
 uncleBlocks = pd.DataFrame(minerData.loc[minerData['uncle'] == 1]) 
 uncleBlocks['incDelay']= uncleBlocks['includedBlockNum'] - uncleBlocks['blockNum']
