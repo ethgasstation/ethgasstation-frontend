@@ -61,6 +61,7 @@ emptyUnclePct = emptyUncles/totemptyBlocks
 
 print (totemptyBlocks, emptyUncles, emptyMains)
 print (totTxBlocks, txUncles, txMains)
+print (emptyUnclePct)
 
 # Create uncle dataframe to summarize uncle stats
 uncleBlocks = pd.DataFrame(minerData.loc[minerData['uncle'] == 1]) 
@@ -92,13 +93,13 @@ for index,row in mainBlocks.iterrows():
 minerBlocks = mainBlocks.groupby('miner').sum()
 minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'duplicates', 'keep', 'uncle'], axis=1)
 
-print(minerBlocks)
+
 # Merge the two tables on miner
 minerBlocks = minerBlocks.join(minerUncleBlocks)
 minerBlocks['uncleAwards'].fillna(0, inplace = True)
 minerBlocks['uncle'].fillna(0, inplace = True)
 
-print(minerBlocks)
+
 #find txFees by Miner and merge
 
 txData['fee'] = txData['gasused'] * txData['minedGasPrice']/1e9
