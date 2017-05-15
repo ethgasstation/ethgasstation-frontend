@@ -82,6 +82,7 @@ print(minerBlocks)
 # Merge the two tables on miner
 minerBlocks = minerBlocks.join(minerUncleBlocks)
 minerBlocks['uncleAwards'].fillna(0, inplace = True)
+minerBlocks['uncle'].fillna(0, inplace = True)
 
 print(minerBlocks)
 #find txFees by Miner and merge
