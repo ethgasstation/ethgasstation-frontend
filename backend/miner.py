@@ -74,7 +74,6 @@ def getRewardMain (uncsReported):
 for index,row in mainBlocks.iterrows():
     mainBlocks.loc[index, 'totRewardminusTxFees'] = getRewardMain(row['uncsReported'])
 
-print (mainBlocks)
 #create summary table
 minerBlocks = mainBlocks.groupby('miner').sum()
 minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'duplicates', 'keep', 'uncle'], axis=1)
@@ -94,9 +93,9 @@ minerBlocks['totReward'] = minerBlocks['fee'] + minerBlocks['totRewardminusTxFee
 #calc Total Return
 minerBlocks['totalBlocks'] = minerBlocks['main'] + minerBlocks['uncle']
 minerBlocks['avgReward'] = minerBlocks['totReward'] / minerBlocks['totalBlocks']
-minerBlocks = minerBlocks.sort_values('totReward')
+minerBlocks = minerBlocks.sort_values('avgReward')
 
-
+print(minerBlocks)
 
 # Regression model for gas
 minerData['const'] = 1
