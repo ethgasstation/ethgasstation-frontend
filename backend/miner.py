@@ -17,6 +17,14 @@ head = cursor.column_names
 
 minerData = pd.DataFrame(cursor.fetchall())
 minerData.columns = head
+
+query = ("SELECT * from minedtransactions where minedblock >= %s and blockNum < %s")
+
+cursor.execute(query, (startBlock, endBlock))
+head = cursor.column_names
+
+txData = pd.DataFrame(cursor.fetchall())
+txData.columns = head
 cursor.close()
 
 # Clean blocks first reported as mainchain that later become uncles
@@ -74,5 +82,10 @@ model = sm.OLS(minerData['uncle'], minerData[['const','gasUsedPerM']])
 results = model.fit()
 print (results.summary())
 
+#find txFees by Miner
 
+txData['fee'] = txData['gasused'] * txData['minedGasPrice']/1e9
+txData = txData.groupby('miner').sum()
+
+print(txData)
 
