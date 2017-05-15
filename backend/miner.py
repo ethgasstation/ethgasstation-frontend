@@ -68,6 +68,15 @@ minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum'
 # Merge the two tables on miner
 minerBlocks = minerBlocks.join(minerUncleBlocks)
 
+#find txFees by Miner
+
+txData['fee'] = txData['gasused'] * txData['minedGasPrice']/1e9
+txData = txData.groupby('miner').sum()
+
+minerBlocks = minerBlocks.join(txData['fee'])
+print(minerBlocks)
+
+
 
 minerBlocks['totalBlocks'] = minerBlocks['main'] + minerBlocks['uncle']
 minerBlocks['pctUncs'] = minerBlocks['uncle'] / minerBlocks['totalBlocks']
@@ -82,10 +91,4 @@ model = sm.OLS(minerData['uncle'], minerData[['const','gasUsedPerM']])
 results = model.fit()
 print (results.summary())
 
-#find txFees by Miner
-
-txData['fee'] = txData['gasused'] * txData['minedGasPrice']/1e9
-txData = txData.groupby('miner').sum()
-
-print(txData)
 
