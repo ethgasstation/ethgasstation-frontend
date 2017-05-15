@@ -51,7 +51,7 @@ minerData= minerData[minerData['keep'] == True]
 minerData['incDelay'] = minerData['includedBlockNum'] - minerData['blockNum']
 
 def getReward (main, uncsReported, uncleDelay):
-    var reward = 0
+    reward = 0
     if main == True:
         reward = reward + 5
     if uncsReported = 2:
