@@ -181,7 +181,8 @@ CREATE TABLE speedo (
     avgWait INT, 
     speed DECIMAL(3,3), 
     numTx INT,
-    uncleBlockNum INT, 
+    uncleBlockNum INT,
+    uncsReported INT, 
     PRIMARY KEY (id));
 
 CREATE USER 'ethgas'@'localhost' IDENTIFIED BY 'station';

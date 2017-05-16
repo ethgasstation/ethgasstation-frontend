@@ -151,5 +151,9 @@ results = model.fit()
 print (results.summary())
 print(miner5Data.describe())
 
-
+miner6Data = minerData.loc[minerData['miner'] == '0x2a65aca4d5fc5b5c859090a6c34d164135398226', :]
+model = sm.OLS(miner6Data['uncle'], miner6Data[['const','gasUsedPerM']])
+results = model.fit()
+print (results.summary())
+print(miner6Data.describe())
 
