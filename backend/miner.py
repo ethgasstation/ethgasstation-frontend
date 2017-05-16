@@ -137,12 +137,12 @@ miner3Data = minerData.loc[minerData['miner'] == '0xb2930b35844a230f00e51431acae
 model = sm.OLS(miner3Data['uncle'], miner3Data[['const','gasUsedPerM']])
 results = model.fit()
 print (results.summary())
-print(miner2Data.describe())
+print(miner3Data.describe())
 
 miner4Data = minerData.loc[minerData['miner'] == '0x1e9939daaad6924ad004c2560e90804164900341', :]
 model = sm.OLS(miner4Data['uncle'], miner4Data[['const','gasUsedPerM']])
 results = model.fit()
 print (results.summary())
-print(miner2Data.describe())
+print(miner4Data.describe())
 
 
