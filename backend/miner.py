@@ -145,7 +145,7 @@ results = model.fit()
 print (results.summary())
 print(miner4Data.describe())
 
-miner5Data = minerData.loc[minerData['miner'] == ['0x1e9939daaad6924ad004c2560e90804164900341','0xea674fdde714fd979de3edf0f56aa9716b898ec8','0x61c808d82a3ac53231750dadc13c777b59310bd9'],  :]
+miner5Data = minerData.loc[(minerData['miner'] == '0x1e9939daaad6924ad004c2560e90804164900341') |(minerData['miner']== '0xea674fdde714fd979de3edf0f56aa9716b898ec8') | (minerData['miner']=='0x61c808d82a3ac53231750dadc13c777b59310bd9'),  :]
 model = sm.OLS(miner5Data['uncle'], miner5Data[['const','gasUsedPerM']])
 results = model.fit()
 print (results.summary())
