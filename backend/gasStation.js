@@ -117,6 +117,7 @@ filter.watch(function(err,blockHash)
                                     }
                             
                                     writeData(post, 'minedtransactions');
+                                    
                                 }
                                 
                             });
@@ -231,14 +232,6 @@ function writeData (post, table)
 }
             
 
-// Data for the speedometer- written every block        
-function writeSpeedo (blockObj)
-{
-    post3 = {};
-    post3['blockNum']= blockObj.number;
-    post3['speed'] = blockObj.gasUsed / blockObj.gasLimit;
-    writeData (post3, 'speedo');
-}
     
 function getGasPriceCat (gasPrice)
 {   
@@ -321,4 +314,53 @@ function validateTx (tx, blockNum, last)
         }       
     })
 
+}
+
+
+// Data for the speedometer- written every block        
+function writeSpeedo (block)
+{
+    speed = block.gasUsed/block.gasLimit;
+    uncsReported = block.uncles.length;
+    totalTx = block.transactions.length;
+    var post3 = 
+    {
+        blockNum: block.number,
+        gasUsed: block.gasUsed,
+        gasLimit: block.gasLimit,
+        blockHash: block.hash,
+        miner: block.miner,
+        numTx: totalTx,
+        uncle: false,
+        main: true,
+        speed: speed,
+        uncsReported: uncsReported
+
+    }
+    writeData (post3, 'speedo');
+    if (block.uncles.length > 0)
+    {
+        for (pos in block.uncles)
+        {
+            web3.eth.getUncle(block.number, pos, function (err, uncleBlock)
+            {
+                if (uncleBlock !=null)
+                {
+                    var post = 
+                    {
+                    blockHash: uncleBlock.hash,
+                    includedBlockNum: block.number,
+                    blockNum: uncleBlock.number,
+                    miner: uncleBlock.miner,
+                    gasUsed: uncleBlock.gasUsed,
+                    gasLimit: uncleBlock.gasLimit,
+                    uncle: true,
+                    main: false
+                    }
+                writeData(post, 'speedo');
+                }
+
+            })
+        }
+    }
 }
