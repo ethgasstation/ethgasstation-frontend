@@ -131,6 +131,6 @@ miner2Data = minerData.loc[minerData['miner'] == '0x61c808d82a3ac53231750dadc13c
 model = sm.OLS(miner2Data['uncle'], miner2Data[['const','gasUsedPerM']])
 results = model.fit()
 print (results.summary())
-print(miner2dData.describe())
+print(miner2Data.describe())
 
 
