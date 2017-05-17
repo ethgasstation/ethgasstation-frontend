@@ -25,6 +25,7 @@ connection.connect(function(err) {
 validationStatus = {};
 watchedTx = [];
 blockFees = {};
+blockFeeArray = [];
 
 try {
     fs.readFileSync(path.join(__dirname, '..', '/json/validated.json'), 'utf8')
@@ -120,8 +121,7 @@ filter.watch(function(err,blockHash)
                             
                                     writeData(post, 'minedtransactions');
                                     fee = receipt.gasUsed * gasPrice;
-                                    txPos = block.transactions.indexOf(receipt.transactionHash);
-                                    blockFee(txPos, block.transactions.length, block.hash,fee);
+                                    blockFee(block.hash,fee);
                                     
                                 }
                                 
@@ -370,20 +370,30 @@ function writeSpeedo (block)
     }
 }
 
-function blockFee (x, tot, blockHash, fee)
+function blockFee (blockHash, fee)
 {
-    console.log(x + " " + tot + " "+ fee);
+    if (!(blockhash in blockFees))
+    {
+        blockFees[blockHash] = 0;
+        blockFeeArray.push(blockHash);
+    }
     blockFees[blockHash] += fee;
     console.log(blockFees[blockHash]);
-    if (x===tot)
+    console.log(blockHash);
+    if (blockFeeArray.length>10)
     {
+        bhash = blockFeeArray.shift();
         console.log(blockFees[blockHash]);
-        connection.query('INSERT INTO speedo SET blockFee = ? WHERE blockHash = ?', [blockFees[blockHash], blockHash], function(err, result)
+        console.log(bhash);
+        console.log(blockFeeArray.length);
+        connection.query('INSERT INTO speedo SET blockFee = ? WHERE blockHash = ?', [blockFees[bhash], bhash], function(err, result)
         {
             if (err)
             {
                 console.error(err.stack);
             }
+            delete blockFees[bhash];
+
     })
     }
 }
