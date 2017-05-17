@@ -24,6 +24,8 @@ connection.connect(function(err) {
 
 validationStatus = {};
 watchedTx = [];
+blockFees = {};
+
 try {
     fs.readFileSync(path.join(__dirname, '..', '/json/validated.json'), 'utf8')
         validationStatus = JSON.parse(data);
@@ -117,6 +119,7 @@ filter.watch(function(err,blockHash)
                                     }
                             
                                     writeData(post, 'minedtransactions');
+                                    blockFee(x , block.transactions.length, block.hash, gasused*minedGasPrice)
                                     
                                 }
                                 
@@ -362,5 +365,20 @@ function writeSpeedo (block)
 
             })
         }
+    }
+}
+
+function blockFee (x, tot, blockHash, fee)
+{
+    blockFees[blockHash] += fee;
+    if (x==tot)
+    {
+        connection.query('INSERT INTO speedo SET blockFee = ? WHERE blockHash = ??', [blockFees[blockHash], blockHash], function(err, result)
+        {
+            if (err)
+            {
+                console.error(err.stack);
+            }
+    })
     }
 }
