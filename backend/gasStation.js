@@ -77,6 +77,7 @@ filter.watch(function(err,blockHash)
                     emptyBlock: true
                 }
                 writeData(post, 'minedtransactions');
+                blockFee(block.hash, 0);
 
             }
             else
