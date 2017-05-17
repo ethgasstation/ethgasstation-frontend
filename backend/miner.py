@@ -67,6 +67,7 @@ print ("%.3f" % (emptyUnclePct))
 uncleBlocks = pd.DataFrame(minerData.loc[minerData['uncle'] == 1]) 
 uncleBlocks['incDelay']= uncleBlocks['includedBlockNum'] - uncleBlocks['blockNum']
 uncleBlocks['uncleAwards'] = uncleBlocks['incDelay']/8 * 5
+print (uncleBlocks)
 minerUncleBlocks = uncleBlocks.groupby('miner').sum()
 minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'uncsReported', 'numTx', 'main', 'duplicates', 'keep', 'includedBlockNum', 'incDelay'], axis=1)
 minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
@@ -125,6 +126,9 @@ print (results.summary())
 
 dictResults = dict(results.params)
 print (dictResults)
+
+print(minerBlocks['avgUncleAward'].mean())
+print(minerBlocks['mainAwardwoFee'].mean())
 
 mainUncleDiff = minerBlocks['avgUncleAward'].mean() - minerBlocks['mainAwardwoFee'].mean()
 breakeven = dictResults['gasUsedPerM']/1e6 * mainUncleDiff * 1e9
