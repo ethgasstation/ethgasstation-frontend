@@ -374,6 +374,7 @@ function blockFee (x, tot, blockHash, fee)
     blockFees[blockHash] += fee;
     if (x==tot)
     {
+        console.log(blockFees[blockHash]);
         connection.query('INSERT INTO speedo SET blockFee = ? WHERE blockHash = ?', [blockFees[blockHash], blockHash], function(err, result)
         {
             if (err)
