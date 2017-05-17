@@ -386,7 +386,7 @@ function blockFee (blockHash, fee)
         console.log(blockFees[blockHash]);
         console.log(bhash);
         console.log(blockFeeArray.length);
-        connection.query('INSERT INTO speedo SET blockFee = ? WHERE blockHash = ?', [blockFees[bhash], bhash], function(err, result)
+        connection.query('UPDATE speedo SET blockFee = ? WHERE blockHash = ?', [blockFees[bhash], bhash], function(err, result)
         {
             if (err)
             {
