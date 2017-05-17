@@ -111,7 +111,7 @@ minerBlocks['totalBlocks'] = minerBlocks['main'] + minerBlocks['uncle']
 minerBlocks['avgReward'] = minerBlocks['totReward'] / minerBlocks['totalBlocks']
 minerBlocks['uncRatio'] = minerBlocks['uncle'] / minerBlocks['totalBlocks']
 minerBlocks['avgUncleAward'] = minerBlocks['uncleAwards'] / minerBlocks['uncle']
-minerBlocks['mainAwardwoFee'] =  minerBlocks['totRewardminusTxFees'] / minerBlocks['totalBlocks']
+minerBlocks['mainAwardwoFee'] =  minerBlocks['totRewardminusTxFees'] / minerBlocks['main']
 minerBlocks = minerBlocks.sort_values('avgReward')
 
 print(minerBlocks)
@@ -125,6 +125,10 @@ print (results.summary())
 
 dictResults = dict(results.params)
 print (dictResults)
+
+mainUncleDiff = minerBlocks['avgUncleAward'] - minerBlocks['mainAwardwoFee'].avg()
+breakeven = dictResults['gasUsedPerM']/1e6 * mainUncleDiff * 1e9
+print(breakeven)
 
 miner1Data = minerData.loc[minerData['miner'] == '0xea674fdde714fd979de3edf0f56aa9716b898ec8', :]
 model = sm.OLS(miner1Data['uncle'], miner1Data[['const','gasUsedPerM']])
