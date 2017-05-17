@@ -378,14 +378,9 @@ function blockFee (blockHash, fee)
         blockFeeArray.push(blockHash);
     }
     blockFees[blockHash] += fee;
-    console.log(blockFees[blockHash]);
-    console.log(blockHash);
     if (blockFeeArray.length>10)
     {
         bhash = blockFeeArray.shift();
-        console.log(blockFees[blockHash]);
-        console.log(bhash);
-        console.log(blockFeeArray.length);
         connection.query('UPDATE speedo SET blockFee = ? WHERE blockHash = ?', [blockFees[bhash], bhash], function(err, result)
         {
             if (err)
