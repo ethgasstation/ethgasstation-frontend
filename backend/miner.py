@@ -126,7 +126,7 @@ print (results.summary())
 dictResults = dict(results.params)
 print (dictResults)
 
-mainUncleDiff = minerBlocks['avgUncleAward'] - minerBlocks['mainAwardwoFee'].avg()
+mainUncleDiff = minerBlocks['avgUncleAward'].mean() - minerBlocks['mainAwardwoFee'].mean()
 breakeven = dictResults['gasUsedPerM']/1e6 * mainUncleDiff * 1e9
 print(breakeven)
 
