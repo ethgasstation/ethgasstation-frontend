@@ -120,7 +120,7 @@ filter.watch(function(err,blockHash)
                             
                                     writeData(post, 'minedtransactions');
                                     fee = receipt.gasUsed * gasPrice;
-                                    txPos = block.transactions.indexof(receipt.transactionHash);
+                                    txPos = block.transactions.indexOf(receipt.transactionHash);
                                     blockFee(txPos, block.transactions.length, block.hash,fee);
                                     
                                 }
