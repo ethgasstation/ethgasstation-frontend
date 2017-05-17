@@ -372,7 +372,7 @@ function writeSpeedo (block)
 
 function blockFee (blockHash, fee)
 {
-    if (!(blockhash in blockFees))
+    if (!(blockHash in blockFees))
     {
         blockFees[blockHash] = 0;
         blockFeeArray.push(blockHash);

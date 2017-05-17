@@ -34,12 +34,13 @@ post2['startSelect']=start2;
 //keep database from getting too large
 
 var pruneBlock = toBlock - 30000;
+var pBlock2 = toBlock - 3000000;
 
 if (toBlock % 5000 === 0)
 {
     databasePrune('transactions', 'postedBlock', pruneBlock);
     databasePrune('minedtransactions', 'minedBlock', pruneBlock);
-    databasePrune('speedo', 'blockNum', pruneBlock);    
+    databasePrune('speedo', 'blockNum', pBlock2);    
     databasePrune('txDataLast10k', 'latestblockNum', pruneBlock);
     databasePrune('txDataLast100b', 'latestblockNum', pruneBlock);
 }  
