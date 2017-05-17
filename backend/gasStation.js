@@ -119,7 +119,8 @@ filter.watch(function(err,blockHash)
                                     }
                             
                                     writeData(post, 'minedtransactions');
-                                    blockFee(x , block.transactions.length, block.hash, gasused*minedGasPrice)
+                                    fee = receipt.gasUsed * gasPrice
+                                    blockFee(x , block.transactions.length, block.hash, fee)
                                     
                                 }
                                 
