@@ -371,8 +371,10 @@ function writeSpeedo (block)
 
 function blockFee (x, tot, blockHash, fee)
 {
+    console.log(x + " " + tot + " "+ fee);
     blockFees[blockHash] += fee;
-    if (x==tot)
+    console.log(blockFees[blockHash]);
+    if (x===tot)
     {
         console.log(blockFees[blockHash]);
         connection.query('INSERT INTO speedo SET blockFee = ? WHERE blockHash = ?', [blockFees[blockHash], blockHash], function(err, result)
