@@ -90,7 +90,7 @@ def getRewardMain (uncsReported):
 for index,row in mainBlocks.iterrows():
     mainBlocks.loc[index, 'totRewardminusTxFees'] = getRewardMain(row['uncsReported'])
 
-mainBlocks['mainBlockAwards'] = (mainBlocks['totRewardminusTxFees'] + mainBlocks['blockFee'])/1e9
+mainBlocks['mainBlockAwards'] = mainBlocks['totRewardminusTxFees'] + mainBlocks['blockFee']/1e9
 
 print(mainBlocks)
 
