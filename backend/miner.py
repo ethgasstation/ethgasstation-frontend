@@ -17,7 +17,9 @@ head = cursor.column_names
 
 minerData = pd.DataFrame(cursor.fetchall())
 minerData.columns = head
-
+cursor.close()
+cnx.close()
+'''
 query = ("SELECT miner, gasused, minedGasPrice from minedtransactions where minedBlock >= %s and minedBlock < %s")
 
 cursor.execute(query, (startBlock, endBlock))
@@ -26,6 +28,7 @@ head = cursor.column_names
 txData = pd.DataFrame(cursor.fetchall())
 txData.columns = head
 cursor.close()
+'''
 
 # Clean blocks first reported as mainchain that later become uncles
 minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
@@ -87,6 +90,8 @@ def getRewardMain (uncsReported):
 for index,row in mainBlocks.iterrows():
     mainBlocks.loc[index, 'totRewardminusTxFees'] = getRewardMain(row['uncsReported'])
 
+mainBlocks['mainBlockAwards'] = mainBlocks['totRewardminusTxFees'] + mainBlocks['blockFee']
+
 #create summary table
 minerBlocks = mainBlocks.groupby('miner').sum()
 minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'duplicates', 'keep', 'uncle'], axis=1)
@@ -99,12 +104,13 @@ minerBlocks['uncle'].fillna(0, inplace = True)
 
 
 #find txFees by Miner and merge
-
+'''
 txData['fee'] = txData['gasused'] * txData['minedGasPrice']/1e9
 txData = txData.groupby('miner').sum()
 minerBlocks = minerBlocks.join(txData['fee'])
+'''
 
-minerBlocks['totReward'] = minerBlocks['fee'] + minerBlocks['totRewardminusTxFees'] + minerBlocks['uncleAwards']
+minerBlocks['totReward'] = minerBlocks['mainBlockAwards'] + minerBlocks['uncleAwards']
 
 #calc Total Return
 minerBlocks['totalBlocks'] = minerBlocks['main'] + minerBlocks['uncle']
