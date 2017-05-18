@@ -90,7 +90,9 @@ def getRewardMain (uncsReported):
 for index,row in mainBlocks.iterrows():
     mainBlocks.loc[index, 'totRewardminusTxFees'] = getRewardMain(row['uncsReported'])
 
-mainBlocks['mainBlockAwards'] = mainBlocks['totRewardminusTxFees'] + mainBlocks['blockFee']
+mainBlocks['mainBlockAwards'] = (mainBlocks['totRewardminusTxFees'] + mainBlocks['blockFee'])/1e9
+
+print(mainBlocks)
 
 #create summary table
 minerBlocks = mainBlocks.groupby('miner').sum()
