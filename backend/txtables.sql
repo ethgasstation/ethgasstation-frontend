@@ -162,7 +162,7 @@ CREATE TABLE txDataLast100b (
 CREATE TABLE uncles (
     blockHash VARCHAR(75) NOT NULL,
     uncleBlockNum INT,
-    mainBlockNum INT,
+    includedBlockNum INT,
     miner TEXT,
     gasUsed INT,
     PRIMARY KEY (blockHash)
@@ -179,6 +179,7 @@ CREATE TABLE speedo (
     gasLimit INT,
     blockHash TEXT,
     avgWait INT, 
+    includedBlockNum INT,
     speed DECIMAL(3,3),
     blockFee INT, 
     numTx INT,
@@ -191,15 +192,6 @@ CREATE USER 'ethgas'@'localhost' IDENTIFIED BY 'station';
 GRANT ALL PRIVILEGES ON tx.* TO 'ethgas'@'localhost';
 
 FLUSH PRIVILEGES;
-
-
-ALTER TABLE speedo ADD COLUMN gasUsed INT;
-ALTER TABLE speedo ADD COLUMN miner TEXT;
-ALTER TABLE speedo ADD COLUMN uncle BOOLEAN;
-ALTER TABLE speedo ADD COLUMN main BOOLEAN;
-ALTER TABLE speedo ADD COLUMN numUncs INT;
-ALTER TABLE speedo ADD COLUMN blockHash TEXT;
-ALTER TABLE speedo ADD COLUMN uncleBlockNum INT;
 
 
 
