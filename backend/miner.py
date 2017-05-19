@@ -159,6 +159,7 @@ emptyBlockTotal = (totalMainBlocks*avgMainRewardwoFee*(1-dictResults['const'])) 
 
 actualBlockTotal = (totalMainBlocks*avgMainReward*mainBlockRatio) + (totalUncleBlocks*avgUncleAward*uncBlockRatio)
 
+print(avgMainReward, avgMainRewardwoFee, avgUncleAward)
 print (allBlocks, mainBlockRatio, uncBlockRatio)
 print (emptyBlockTotal/float(allBlocks))
 print (actualBlockTotal/float(allBlocks))  
