@@ -60,9 +60,9 @@ minerData['uncsReported'] = minerData['uncsReported'].astype(int)
 minerData['includeFee'] = 0
 
 minerData['blockFee'] = minerData['blockFee']/1e9
-minerData = minerData.loc[minerData['uncsReported']==1, 'includeFee' ] = .15625
-minerData = minerData.loc[minerData['uncsReported']==2, 'includeFee'] = .3125
-minerData = minerData.loc[minerData['uncsReported']==0, 'includeFee'] = 0
+minerData.loc[minerData['uncsReported']==1, 'includeFee' ] = .15625
+minerData.loc[minerData['uncsReported']==2, 'includeFee'] = .3125
+minerData.loc[minerData['uncsReported']==0, 'includeFee'] = 0
 minerData['blockAward'] = 5 + minerData['includeFee'] + minerData['blockFee']
 
 print (minerData)
