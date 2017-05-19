@@ -52,7 +52,7 @@ minerData= minerData[minerData['keep'] == True]
 
 #clean data
 
-minerData = minerData['uncsReported'].fillna(value=0, inplace=True)
+minerData['uncsReported'].fillna(value=0, inplace=True)
 print(minerData['uncsReported'])
 
 minerData['uncsReported'] = minerData['uncsReported'].astype(int)
