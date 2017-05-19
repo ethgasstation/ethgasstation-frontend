@@ -51,9 +51,9 @@ for index, row in minerData.iterrows():
 minerData= minerData[minerData['keep'] == True]
 
 minerData['blockFee'] = minerData['blockFee']/1e9
-minerData['includeFee'] = minerData.loc[minerData['uncsReported']==1] = .15625
-minerData['includeFee'] = minerData.loc[minerData['uncsReported']==2] = .3125
-minerData['includeFee'] = minerData.loc[minerData['uncsReported']==0] = 0
+minerData = minerData.loc[minerData['uncsReported']==1, 'includeFee' ] = .15625
+minerData = minerData.loc[minerData['uncsReported']==2, 'includeFee'] = .3125
+minerData = minerData.loc[minerData['uncsReported']==0, 'includeFee'] = 0
 minerData['blockAward'] = 5 + minerData['includeFee'] + minerData['blockFee']
 
 print (minerData)
