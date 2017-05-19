@@ -50,6 +50,8 @@ for index, row in minerData.iterrows():
 
 minerData= minerData[minerData['keep'] == True]
 
+minerData['blockFee'] = float(minerData['blockFee'])/1e9
+
 # find empty block uncle rate
 
 totemptyBlocks = len(minerData.loc[minerData['gasUsed']==0])
@@ -90,9 +92,7 @@ def getRewardMain (uncsReported):
 for index,row in mainBlocks.iterrows():
     mainBlocks.loc[index, 'totRewardminusTxFees'] = getRewardMain(row['uncsReported'])
 
-mainBlocks['mainBlockAwards'] = mainBlocks['totRewardminusTxFees'] + mainBlocks['blockFee']/1e9
-
-print(mainBlocks)
+mainBlocks['mainBlockAwards'] = mainBlocks['totRewardminusTxFees'] + mainBlocks['blockFee']
 
 #create summary table
 minerBlocks = mainBlocks.groupby('miner').sum()
@@ -127,6 +127,8 @@ print(minerBlocks)
 # Regression model for gas
 minerData['const'] = 1
 minerData['gasUsedPerM'] = minerData['gasUsed']/1e6
+
+
 model = sm.OLS(minerData['uncle'], minerData[['const','gasUsedPerM']])
 results = model.fit()
 print (results.summary())
@@ -141,12 +143,35 @@ mainUncleDiff = minerBlocks['avgUncleAward'].mean() - minerBlocks['mainAwardwoFe
 breakeven = dictResults['gasUsedPerM']/1e6 * mainUncleDiff * 1e9
 print(breakeven)
 
+#find Profit
+
+#Awards without tx Fees
+avgMainRewardwoFee = mainBlocks['totRewardminusTxFees'].mean()
+avgMainReward = mainBlocks['blockFee'].mean()
+avgUncleAward = uncleBlocks['uncleAwards'].mean()
+totalMainBlocks = mainBlocks['main'].sum()
+totalUncleBlocks = uncleBlocks['uncle'].sum()
+allBlocks = len(minerData)
+mainBlockRatio = len(mainBlocks)/allBlocks
+uncBlockRatio = len(uncleBlocks)/allBlocks
+
+emptyBlockTotal = (totalMainBlocks*avgMainRewardwoFee*(1-dictResults['const'])) + (totalUncleBlocks*avgUncleAward*dictResults['const'])
+
+actualBlockTotal = (totalMainBlocks*avgMainReward*mainBlockRatio) + (totalUncleBlocks*avgUncleAward*uncBlockRatio)
+
+print (allBlocks, mainBlockRatio, uncBlockRatio)
+print (emptyBlockTotal/float(allBlocks))
+print (actualBlockTotal/float(allBlocks))  
+
 miner1Data = minerData.loc[minerData['miner'] == '0xea674fdde714fd979de3edf0f56aa9716b898ec8', :]
 model = sm.OLS(miner1Data['uncle'], miner1Data[['const','gasUsedPerM']])
 results = model.fit()
 print (results.summary())
 print(miner1Data.describe())
 
+
+
+'''
 miner2Data = minerData.loc[minerData['miner'] == '0x61c808d82a3ac53231750dadc13c777b59310bd9', :]
 model = sm.OLS(miner2Data['uncle'], miner2Data[['const','gasUsedPerM']])
 results = model.fit()
@@ -176,4 +201,4 @@ model = sm.OLS(miner6Data['uncle'], miner6Data[['const','gasUsedPerM']])
 results = model.fit()
 print (results.summary())
 print(miner6Data.describe())
-
+'''
