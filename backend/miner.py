@@ -49,6 +49,7 @@ for index, row in minerData.iterrows():
 #drop the duplicate row from mainBlocks- it is actually an uncle
 
 minerData= minerData[minerData['keep'] == True]
+minerData['uncsReported'] = minerData['uncsReported'].astype(int)
 
 minerData['blockFee'] = minerData['blockFee']/1e9
 minerData = minerData.loc[minerData['uncsReported']==1, 'includeFee' ] = .15625
