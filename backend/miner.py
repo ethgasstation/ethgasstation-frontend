@@ -53,11 +53,6 @@ minerData= minerData[minerData['keep'] == True]
 #clean data
 
 minerData['uncsReported'].fillna(value=0, inplace=True)
-print(minerData['uncsReported'])
-
-minerData['uncsReported'] = minerData['uncsReported'].astype(int)
-
-minerData['includeFee'] = 0
 
 minerData['blockFee'] = minerData['blockFee']/1e9
 minerData.loc[minerData['uncsReported']==1, 'includeFee' ] = .15625
