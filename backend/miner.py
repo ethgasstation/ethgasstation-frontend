@@ -52,6 +52,7 @@ minerData= minerData[minerData['keep'] == True]
 
 minerData['blockFee'] = minerData['blockFee']/1e9
 
+print (minerData)
 # find empty block uncle rate
 
 totemptyBlocks = len(minerData.loc[minerData['gasUsed']==0])
@@ -116,6 +117,7 @@ minerBlocks['totReward'] = minerBlocks['mainBlockAwards'] + minerBlocks['uncleAw
 
 #calc Total Return
 minerBlocks['totalBlocks'] = minerBlocks['main'] + minerBlocks['uncle']
+minerBlocks['mainAwardwFee'] = minerBlocks['mainBlockAwards']/minerBlocks['main']
 minerBlocks['avgReward'] = minerBlocks['totReward'] / minerBlocks['totalBlocks']
 minerBlocks['uncRatio'] = minerBlocks['uncle'] / minerBlocks['totalBlocks']
 minerBlocks['avgUncleAward'] = minerBlocks['uncleAwards'] / minerBlocks['uncle']
@@ -147,7 +149,7 @@ print(breakeven)
 
 #Awards without tx Fees
 avgMainRewardwoFee = minerBlocks['mainAwardwoFee'].mean()
-avgMainReward = minerBlocks['mainBlockAwards'].mean()
+avgMainReward = minerBlocks['avgReward'].mean()
 avgUncleAward = minerBlocks['avgUncleAward'].mean()
 totalMainBlocks = len(mainBlocks)
 totalUncleBlocks = len(uncleBlocks)
