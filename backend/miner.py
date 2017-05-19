@@ -50,7 +50,7 @@ for index, row in minerData.iterrows():
 
 minerData= minerData[minerData['keep'] == True]
 
-minerData['blockFee'] = float(minerData['blockFee'])/1e9
+minerData['blockFee'] = minerData['blockFee']/1e9
 
 # find empty block uncle rate
 
