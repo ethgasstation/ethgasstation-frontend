@@ -52,6 +52,8 @@ minerData= minerData[minerData['keep'] == True]
 
 #clean data
 minerData['uncsReported'] = minerData['uncsReported'].fillna(0, inplace=True)
+print(minerData['uncsReported'])
+
 minerData['uncsReported'] = minerData['uncsReported'].astype(int)
 
 minerData['blockFee'] = minerData['blockFee']/1e9
