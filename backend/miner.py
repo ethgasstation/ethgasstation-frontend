@@ -57,7 +57,7 @@ print(minerData['uncsReported'])
 
 minerData['uncsReported'] = minerData['uncsReported'].astype(int)
 
-print(minerData['uncsReported'])
+minerData['includeFee'] = 0
 
 minerData['blockFee'] = minerData['blockFee']/1e9
 minerData = minerData.loc[minerData['uncsReported']==1, 'includeFee' ] = .15625
