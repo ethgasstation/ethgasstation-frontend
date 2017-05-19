@@ -148,7 +148,7 @@ print(breakeven)
 #Awards without tx Fees
 avgMainRewardwoFee = minerBlocks['mainAwardwoFee'].mean()
 avgMainReward = minerBlocks['mainBlockAwards'].mean()
-avgUncleAward = minerBlocks['avgUncleAward'].mean())
+avgUncleAward = minerBlocks['avgUncleAward'].mean()
 totalMainBlocks = len(mainBlocks)
 totalUncleBlocks = len(uncleBlocks)
 allBlocks = len(minerData)
