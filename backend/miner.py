@@ -51,7 +51,7 @@ for index, row in minerData.iterrows():
 minerData= minerData[minerData['keep'] == True]
 
 #clean data
-minerData['uncsReported'] = minerData['uncsReported'].fillna(0, inplace=True)
+minerData['uncsReported'] = minerData['uncsReported'].fillna(value=0, inplace=True)
 print(minerData['uncsReported'])
 
 minerData['uncsReported'] = minerData['uncsReported'].astype(int)
