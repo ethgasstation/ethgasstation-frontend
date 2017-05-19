@@ -152,8 +152,8 @@ avgUncleAward = uncleBlocks['uncleAwards'].mean()
 totalMainBlocks = mainBlocks['main'].sum()
 totalUncleBlocks = uncleBlocks['uncle'].sum()
 allBlocks = len(minerData)
-mainBlockRatio = len(mainBlocks)/allBlocks
-uncBlockRatio = len(uncleBlocks)/allBlocks
+mainBlockRatio = len(mainBlocks)/float(allBlocks)
+uncBlockRatio = len(uncleBlocks)/foat(allBlocks)
 
 emptyBlockTotal = (totalMainBlocks*avgMainRewardwoFee*(1-dictResults['const'])) + (totalUncleBlocks*avgUncleAward*dictResults['const'])
 
