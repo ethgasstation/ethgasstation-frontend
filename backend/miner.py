@@ -46,7 +46,7 @@ minerData= minerData[minerData['keep'] == True]
 
 
 minerData['duplicates2']= minerData.duplicated(subset='blockHash')
-minerData = minerData[minerData['duplicates2'] == True]
+minerData = minerData[minerData['duplicates2'] == False]
 
 print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
