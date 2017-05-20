@@ -37,7 +37,7 @@ def resolveDup(blockHash):
 for index, row in minerData.iterrows():
     if ((row['duplicates'] == True) & (row['main'] == True)):
         minerData.loc[index, 'keep'] = resolveDup(row['blockHash'])
-        if row['uncsReported']>0 & row['keep'] == False:
+        if (row['uncsReported']>0 & row['keep'] == False):
             print(row)
 
 #drop the duplicate row from mainBlocks- it is actually an uncle
