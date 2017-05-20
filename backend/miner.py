@@ -42,6 +42,7 @@ minerData= minerData[minerData['keep'] == True]
 
 #clean data
 
+totalBlocks = len(minerData)
 minerData['uncsReported'].fillna(value=0, inplace=True)
 minerData.loc[minerData['uncle']==1, 'blockFee'] = 0
 minerData = minerData.dropna(subset=['blockFee'])
