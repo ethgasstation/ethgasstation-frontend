@@ -56,7 +56,7 @@ minerData['uncsReported'].fillna(value=0, inplace=True)
 print(minerData)
 minerData.loc[minerData['uncle']==1, 'blockFee'] = 0
 print(minerData)
-minerData.dropna(subset = 'blockFee')
+minerData = minerData.dropna(subset = 'blockFee')
 print(minerData)
 
 
