@@ -20,7 +20,7 @@ minerData.columns = head
 cursor.close()
 cnx.close()
 
-with minerData.option_context('display.max_rows', None):
+with pd.option_context('display.max_rows', None):
     print(minerData)
 
 # Clean blocks first reported as mainchain that later become uncles
