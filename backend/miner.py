@@ -20,15 +20,13 @@ minerData.columns = head
 cursor.close()
 cnx.close()
 
-with pd.option_context('display.max_rows', None):
-    print(minerData.loc[:,['blockNum', 'includedBlockNum', 'uncle', 'uncsReported']])
 
 # Clean blocks first reported as mainchain that later become uncles
 minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
 minerData['keep'] = True
 
 with pd.option_context('display.max_rows', None):
-    print(minerData.loc[:,['blockNum', 'includedBlockNum', 'uncle', 'uncsReported', 'duplicates']])
+    print(minerData.loc[:,['blockHash', 'blockNum', 'includedBlockNum', 'uncle', 'uncsReported', 'duplicates']])
     
 def resolveDup(blockHash):
     match = minerData.loc[(minerData['blockHash'] == blockHash) & (minerData['uncle'] == True)]
@@ -48,6 +46,9 @@ for index, row in minerData.iterrows():
 
 minerData= minerData[minerData['keep'] == True]
 
+with pd.option_context('display.max_rows', None):
+    print(minerData.loc[:,['blockHash', 'blockNum', 'includedBlockNum', 'uncle', 'uncsReported', 'duplicates']])
+
 print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
 
@@ -59,8 +60,7 @@ print(minerData.loc[4001:5000, ['uncle', 'uncsReported']].sum())
 print(minerData.loc[5001:6000, ['uncle', 'uncsReported']].sum())
 print(minerData.loc[6001:7000, ['uncle', 'uncsReported']].sum())
 
-with pd.option_context('display.max_rows', None):
-    print(minerData.loc[:,['blockNum', 'includedBlockNum', 'uncle', 'uncsReported']])
+
 
 #clean data
 
