@@ -45,8 +45,8 @@ for index, row in minerData.iterrows():
 minerData= minerData[minerData['keep'] == True]
 
 
-minerData= minerData.duplicated(subset='blockHash')
-
+minerData['duplicates2']= minerData.duplicated(subset='blockHash')
+minerData = minerData[minerData['duplicates2'] == True]
 
 print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
@@ -106,7 +106,7 @@ totalUncles = len(uncleBlocks)
 minerUncleBlocks = uncleBlocks.groupby('miner').sum()
 
 #clean
-minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'uncsReported', 'numTx', 'main', 'duplicates', 'keep', 'includedBlockNum', 'incDelay', 'blockFee', 'includeFee', 'blockAward', 'blockAwardwoFee'], axis=1)
+minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'uncsReported', 'numTx', 'main', 'duplicates', 'keep', 'includedBlockNum', 'incDelay', 'blockFee', 'includeFee', 'blockAward', 'blockAwardwoFee', 'duplicates2'], axis=1)
 minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
 
 # Create mainchain dataframe to summarize mined blocks
