@@ -139,13 +139,13 @@ print(breakeven)
 
 #Awards without tx Fees
 
-emptyBlockTotal = (totalMainBlocks*avgMainRewardwoFee*(1-dictResults['const'])) + (totalUncles*avgUncleAward*dictResults['const'])
+emptyBlockTotal = (avgMainRewardwoFee*(1-dictResults['const'])) + (avgUncleAward*dictResults['const'])
 
 predictedUncle = dictResults['const'] + (dictResults['gasUsedPerM'] * totAvgGasUsed/1e6)
 print (predictedUncle)
 print (totalUncles/float(totalBlocks))
 
-actualBlockTotal = totalMainBlocks*avgMainRewardwFee*(1-predictedUncle) + (totalUncles*avgUncleAward*predictedUncle)
+actualBlockTotal = (avgMainRewardwFee*(1-predictedUncle)) + (avgUncleAward*predictedUncle)
 
 print(emptyBlockTotal)
 print(actualBlockTotal)
