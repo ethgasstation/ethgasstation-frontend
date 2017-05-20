@@ -47,9 +47,10 @@ minerData= minerData[minerData['keep'] == True]
 print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
 
-print(minerData.loc[1:1000, ['uncle', 'uncsReported']].sum())
-print(minerData.loc[1000:2000, ['uncle', 'uncsReported']].sum())
-
+print(minerData.loc[0:1000, ['uncle', 'uncsReported']].sum())
+print(minerData.loc[1001:2000, ['uncle', 'uncsReported']].sum())
+print(minerData.loc[2001:3000, ['uncle', 'uncsReported']].sum())
+print(minerData.loc[3001:4000, ['uncle', 'uncsReported']].sum())
 
 #with pd.option_context('display.max_rows', None):
  #   print(minerData)
