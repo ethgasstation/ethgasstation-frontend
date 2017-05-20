@@ -44,6 +44,9 @@ for index, row in minerData.iterrows():
 
 minerData= minerData[minerData['keep'] == True]
 
+with pd.option_context('display.max_rows', None):
+    print(minerData)
+
 #clean data
 
 totalBlocks = len(minerData)
