@@ -53,6 +53,10 @@ minerData= minerData[minerData['keep'] == True]
 #clean data
 
 minerData['uncsReported'].fillna(value=0, inplace=True)
+print(minerData)
+minerData = (minerData.loc[minerData['main']==1).dropna(subset['blockFee'])
+print(minerData)
+
 
 minerData['blockFee'] = minerData['blockFee']/1e9
 minerData.loc[minerData['uncsReported']==1, 'includeFee' ] = .15625
@@ -60,7 +64,8 @@ minerData.loc[minerData['uncsReported']==2, 'includeFee'] = .3125
 minerData.loc[minerData['uncsReported']==0, 'includeFee'] = 0
 minerData['blockAward'] = 5 + minerData['includeFee'] + minerData['blockFee']
 
-print (minerData)
+
+
 # find empty block uncle rate
 
 totemptyBlocks = len(minerData.loc[minerData['gasUsed']==0])
