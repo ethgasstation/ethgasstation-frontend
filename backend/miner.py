@@ -105,7 +105,7 @@ minerBlocks['totalBlocks'] = minerBlocks['main'] + minerBlocks['uncle']
 minerBlocks['mainAwardwFee'] = minerBlocks['blockAward']/minerBlocks['main']
 minerBlocks['mainAwardwoFee'] =  minerBlocks['blockAwardwoFee'] / minerBlocks['main']
 minerBlocks['uncRatio'] = minerBlocks['uncle'] / minerBlocks['totalBlocks']
-minerBlocks['avgUncleAward'] = minerBlocks['uncleAwards'] / minerBlocks['uncle']
+minerBlocks['avgUncleAward'] = minerBlocks['uncleAward'] / minerBlocks['uncle']
 mierBlocks['avgGasUsed'] = (minerBlocks['gasused'] + minerBlocks['uncleGasUsed'])/totalBlocks
 
 minerBlocks['avgReward'] = minerBlocks['totReward'] / minerBlocks['totalBlocks']
