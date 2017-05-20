@@ -320,6 +320,8 @@ dep['cons'] = 1
 
 indep = txData['delay']
 
+print (indep)
+print (dep)
 model = sm.Poisson(indep, dep.loc[:,['priceCat1', 'priceCat3', 'priceCat4', 'gasCat2', 'gasCat3', 'gasCat4', 'cons']])
 
 results = model.fit(disp=0)
