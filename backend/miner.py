@@ -19,16 +19,6 @@ minerData = pd.DataFrame(cursor.fetchall())
 minerData.columns = head
 cursor.close()
 cnx.close()
-'''
-query = ("SELECT miner, gasused, minedGasPrice from minedtransactions where minedBlock >= %s and minedBlock < %s")
-
-cursor.execute(query, (startBlock, endBlock))
-head = cursor.column_names
-
-txData = pd.DataFrame(cursor.fetchall())
-txData.columns = head
-cursor.close()
-'''
 
 # Clean blocks first reported as mainchain that later become uncles
 minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
@@ -53,19 +43,21 @@ minerData= minerData[minerData['keep'] == True]
 #clean data
 
 minerData['uncsReported'].fillna(value=0, inplace=True)
-print(minerData)
 minerData.loc[minerData['uncle']==1, 'blockFee'] = 0
-print(minerData)
 minerData = minerData.dropna(subset=['blockFee'])
-print(minerData)
+
 
 
 minerData['blockFee'] = minerData['blockFee']/1e9
+
 minerData.loc[minerData['uncsReported']==1, 'includeFee' ] = .15625
 minerData.loc[minerData['uncsReported']==2, 'includeFee'] = .3125
 minerData.loc[minerData['uncsReported']==0, 'includeFee'] = 0
-minerData['blockAward'] = 5 + minerData['includeFee'] + minerData['blockFee']
 
+minerData['blockAward'] = 5 + minerData['includeFee'] + minerData['blockFee']
+minerData['blockAwardwoFee'] = 5 + minerData['includeFee']
+
+#find average gas mined per block for each miner
 
 
 # find empty block uncle rate
@@ -73,42 +65,27 @@ minerData['blockAward'] = 5 + minerData['includeFee'] + minerData['blockFee']
 totemptyBlocks = len(minerData.loc[minerData['gasUsed']==0])
 emptyUncles = len(minerData.loc[(minerData['gasUsed']==0) & (minerData['uncle']==True)])
 emptyMains =  len(minerData.loc[(minerData['gasUsed']==0) & (minerData['main']==True)])
-
-totTxBlocks = len(minerData.loc[minerData['gasUsed'] > 0])
-txUncles = len(minerData.loc[(minerData['gasUsed'] > 0) & (minerData['uncle']==True)])
-txMains =  len(minerData.loc[(minerData['gasUsed'] > 0) & (minerData['main']==True)])
-
 emptyUnclePct = emptyUncles/float(totemptyBlocks)
 
 print (totemptyBlocks, emptyUncles, emptyMains)
-print (totTxBlocks, txUncles, txMains)
 print ("%.3f" % (emptyUnclePct))
 
 # Create uncle dataframe to summarize uncle stats
 uncleBlocks = pd.DataFrame(minerData.loc[minerData['uncle'] == 1]) 
 uncleBlocks['incDelay']= uncleBlocks['includedBlockNum'] - uncleBlocks['blockNum']
-uncleBlocks['uncleAwards'] = (8-uncleBlocks['incDelay'])/8 * 5
+uncleBlocks['uncleAward'] = (8-uncleBlocks['incDelay'])/8 * 5
+avgUncleAward = uncleBlocks['uncleAward'].mean()
+
 minerUncleBlocks = uncleBlocks.groupby('miner').sum()
+
+#clean
 minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'uncsReported', 'numTx', 'main', 'duplicates', 'keep', 'includedBlockNum', 'incDelay', 'blockFee', 'includeFee', 'blockAward'], axis=1)
 minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
 
 # Create mainchain dataframe to summarize mined blocks
 mainBlocks = pd.DataFrame(minerData.loc[minerData['uncle']==0])
-
-#find total reward per block
-
-def getRewardMain (uncsReported):
-    reward = 5
-    if uncsReported == 2:
-        reward = reward + .3125
-    elif uncsReported == 1:
-        reward = reward + .15625
-    return reward
-
-for index,row in mainBlocks.iterrows():
-    mainBlocks.loc[index, 'totRewardminusTxFees'] = getRewardMain(row['uncsReported'])
-
-mainBlocks['mainBlockAwards'] = mainBlocks['totRewardminusTxFees'] + mainBlocks['blockFee']
+avgMainRewardwoFee = mainBlocks['blockAwardwoFee'].mean()
+avgMainRewardwFee = mainBlocks['blockAward'].mean()
 
 #create summary table
 minerBlocks = mainBlocks.groupby('miner').sum()
@@ -117,26 +94,21 @@ minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum'
 
 # Merge the two tables on miner
 minerBlocks = minerBlocks.join(minerUncleBlocks)
-minerBlocks['uncleAwards'].fillna(0, inplace = True)
+minerBlocks['uncleAward'].fillna(0, inplace = True)
 minerBlocks['uncle'].fillna(0, inplace = True)
 
 
-#find txFees by Miner and merge
-'''
-txData['fee'] = txData['gasused'] * txData['minedGasPrice']/1e9
-txData = txData.groupby('miner').sum()
-minerBlocks = minerBlocks.join(txData['fee'])
-'''
-
-minerBlocks['totReward'] = minerBlocks['mainBlockAwards'] + minerBlocks['uncleAwards']
+minerBlocks['totReward'] = minerBlocks['blockAward'] + minerBlocks['uncleAward']
 
 #calc Total Return
 minerBlocks['totalBlocks'] = minerBlocks['main'] + minerBlocks['uncle']
-minerBlocks['mainAwardwFee'] = minerBlocks['mainBlockAwards']/minerBlocks['main']
-minerBlocks['avgReward'] = minerBlocks['totReward'] / minerBlocks['totalBlocks']
+minerBlocks['mainAwardwFee'] = minerBlocks['blockAward']/minerBlocks['main']
+minerBlocks['mainAwardwoFee'] =  minerBlocks['blockAwardwoFee'] / minerBlocks['main']
 minerBlocks['uncRatio'] = minerBlocks['uncle'] / minerBlocks['totalBlocks']
 minerBlocks['avgUncleAward'] = minerBlocks['uncleAwards'] / minerBlocks['uncle']
-minerBlocks['mainAwardwoFee'] =  minerBlocks['totRewardminusTxFees'] / minerBlocks['main']
+mierBlocks['avgGasUsed'] = (minerBlocks['gasused'] + minerBlocks['uncleGasUsed'])/totalBlocks
+
+minerBlocks['avgReward'] = minerBlocks['totReward'] / minerBlocks['totalBlocks']
 minerBlocks = minerBlocks.sort_values('avgReward')
 
 print(minerBlocks)
@@ -153,11 +125,9 @@ print (results.summary())
 dictResults = dict(results.params)
 print (dictResults)
 
-print(minerBlocks['avgUncleAward'].mean())
-print(minerBlocks['mainAwardwoFee'].mean())
 
-mainUncleDiff = minerBlocks['avgUncleAward'].mean() - minerBlocks['mainAwardwoFee'].mean()
-breakeven = dictResults['gasUsedPerM']/1e6 * mainUncleDiff * 1e9
+mainUncleDiff = avgUncleAward - avgMainRewardwoFee
+breakeven = -1*dictResults['gasUsedPerM']/1e6 * mainUncleDiff * 1e9
 print(breakeven)
 
 #find Profit

@@ -360,6 +360,7 @@ function writeSpeedo (block)
                     miner: uncleBlock.miner,
                     gasUsed: uncleBlock.gasUsed,
                     gasLimit: uncleBlock.gasLimit,
+                    blockFee: 0,
                     uncle: true,
                     main: false
                     }
