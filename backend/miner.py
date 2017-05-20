@@ -44,9 +44,11 @@ for index, row in minerData.iterrows():
 
 minerData= minerData[minerData['keep'] == True]
 
+
 minerData['duplicates2'] = minerData.duplicated(subset='blockNum', keep = False)
 
-print (minerData.loc[minerData['duplicates2']==True, ['blockNum', 'uncle']])
+with pd.option_context('display.max_rows', None):
+    print (minerData.loc[minerData['duplicates2']==True, ['blockNum', 'uncle']])
 
 print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
