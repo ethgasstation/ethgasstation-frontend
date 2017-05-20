@@ -43,6 +43,7 @@ minerData= minerData[minerData['keep'] == True]
 #clean data
 
 totalBlocks = len(minerData)
+totalUncsReported = minerData['uncsReported'].sum()
 totAvgGasUsed = minerData['gasUsed'].mean()
 
 minerData['uncsReported'].fillna(value=0, inplace=True)
@@ -56,6 +57,7 @@ minerData['blockFee'] = minerData['blockFee']/1e9
 minerData.loc[minerData['uncsReported']==1, 'includeFee' ] = .15625
 minerData.loc[minerData['uncsReported']==2, 'includeFee'] = .3125
 minerData.loc[minerData['uncsReported']==0, 'includeFee'] = 0
+totalIncludeFee = minerData['includeFee'].sum()
 
 minerData['blockAward'] = 5 + minerData['includeFee'] + minerData['blockFee']
 minerData['blockAwardwoFee'] = 5 + minerData['includeFee']
@@ -139,16 +141,20 @@ print(breakeven)
 
 #Awards without tx Fees
 
-emptyBlockTotal = (avgMainRewardwoFee*(1-dictResults['const'])) + (avgUncleAward*dictResults['const'])
+expectedEmptyAward = (avgMainRewardwoFee*(1-dictResults['const'])) + (avgUncleAward*dictResults['const'])
 
 predictedUncle = dictResults['const'] + (dictResults['gasUsedPerM'] * totAvgGasUsed/1e6)
 print (predictedUncle)
 print (totalUncles/float(totalBlocks))
 
-actualBlockTotal = (avgMainRewardwFee*(1-predictedUncle)) + (avgUncleAward*predictedUncle)
+expectedTxAward = (avgMainRewardwFee*(1-predictedUncle)) + (avgUncleAward*predictedUncle)
 
-print(emptyBlockTotal)
-print(actualBlockTotal)
+print(expectedEmptyAward)
+print(expectedTxAward)
+
+print(totalUncles)
+print(totalUncsReported)
+print(totalIncludeFee)
 
 miner1Data = minerData.loc[minerData['miner'] == '0xea674fdde714fd979de3edf0f56aa9716b898ec8', :]
 model = sm.OLS(miner1Data['uncle'], miner1Data[['const','gasUsedPerM']])
