@@ -20,8 +20,7 @@ minerData.columns = head
 cursor.close()
 cnx.close()
 
-with pd.option_context('display.max_rows', None):
-    print(minerData)
+
 
 # Clean blocks first reported as mainchain that later become uncles
 minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
@@ -38,6 +37,8 @@ def resolveDup(blockHash):
 for index, row in minerData.iterrows():
     if ((row['duplicates'] == True) & (row['main'] == True)):
         minerData.loc[index, 'keep'] = resolveDup(row['blockHash'])
+        if row('uncsReported')>0:
+            print(row)
 
 #drop the duplicate row from mainBlocks- it is actually an uncle
 
