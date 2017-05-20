@@ -54,7 +54,7 @@ minerData= minerData[minerData['keep'] == True]
 
 minerData['uncsReported'].fillna(value=0, inplace=True)
 print(minerData)
-minerData = (minerData.loc[minerData['main']==1, :]).dropna(axis=1, subset='blockFee')
+minerData = minerData.dropna(subset=['blockFee'])
 print(minerData)
 
 
