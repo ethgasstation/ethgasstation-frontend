@@ -145,6 +145,11 @@ predictedUncle = dictResults['const'] + (dictResults['gasUsedPerM'] * totAvgGasU
 print (predictedUncle)
 print (totalUncles/float(totalBlocks))
 
+actualBlockTotal = totalMainBlocks*avgMainRewardwFee*(1-predictedUncle) + (totalUncles*avgUncleAward*predictedUncle)
+
+print(emptyBlockTotal)
+print(actualBlockTotal)
+
 miner1Data = minerData.loc[minerData['miner'] == '0xea674fdde714fd979de3edf0f56aa9716b898ec8', :]
 model = sm.OLS(miner1Data['uncle'], miner1Data[['const','gasUsedPerM']])
 results = model.fit()
