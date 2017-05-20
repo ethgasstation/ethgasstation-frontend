@@ -56,7 +56,7 @@ print(minerData.loc[5001:6000, ['uncle', 'uncsReported']].sum())
 print(minerData.loc[6001:7000, ['uncle', 'uncsReported']].sum())
 
 with pd.option_context('display.max_rows', None):
-    print(minerData['uncle', 'uncsReported'])
+    print(minerData[:,['uncle', 'uncsReported']])
 
 #clean data
 
