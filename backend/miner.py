@@ -20,6 +20,9 @@ minerData.columns = head
 cursor.close()
 cnx.close()
 
+with minerData.option_context('display.max_rows', None):
+    print(minerData)
+
 # Clean blocks first reported as mainchain that later become uncles
 minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
 minerData['keep'] = True
