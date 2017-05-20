@@ -44,8 +44,10 @@ for index, row in minerData.iterrows():
 
 minerData= minerData[minerData['keep'] == True]
 
-with pd.option_context('display.max_rows', None):
-    print(minerData)
+print(minerData['uncle'].sum())
+print(minerData['uncsReported'].sum())
+#with pd.option_context('display.max_rows', None):
+ #   print(minerData)
 
 #clean data
 
