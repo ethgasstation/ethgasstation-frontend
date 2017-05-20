@@ -25,8 +25,8 @@ cnx.close()
 minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
 minerData['keep'] = True
 
-with pd.option_context('display.max_rows', None):
-    print(minerData.loc[:,['blockNum', 'includedBlockNum', 'uncle', 'uncsReported', 'duplicates']])
+#with pd.option_context('display.max_rows', None):
+ #   print(minerData.loc[:,['blockNum', 'includedBlockNum', 'uncle', 'uncsReported', 'duplicates']])
     
 def resolveDup(blockHash):
     match = minerData.loc[(minerData['blockHash'] == blockHash) & (minerData['uncle'] == True)]
@@ -39,15 +39,14 @@ def resolveDup(blockHash):
 for index, row in minerData.iterrows():
     if ((row['duplicates'] == True) & (row['main'] == True)):
         minerData.loc[index, 'keep'] = resolveDup(row['blockHash'])
-        if (row['uncsReported']>0 & row['keep'] is False):
-            print(row)
 
 #drop the duplicate row from mainBlocks- it is actually an uncle
 
 minerData= minerData[minerData['keep'] == True]
 
-with pd.option_context('display.max_rows', None):
-    print(minerData.loc[:,['blockNum', 'includedBlockNum', 'uncle', 'uncsReported', 'duplicates']])
+minerData['duplicates2'] = minerData.duplicated(subset='blockNum', keep = False)
+
+print (minerData.loc[minerData['duplicates2']==True, ['blockNum', 'uncle'])
 
 print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
