@@ -166,8 +166,8 @@ print(avgBlockFee)
 
 topMiners = minerBlocks.head(n=5)
 for index, row in topMiners.iterrows(): 
-    md = minerData.loc[minerData['miner']==index
-    model = sm.OLS(md['uncle'], md['const', 'mgasUsed'])
+    md = minerData.loc[minerData['miner']==index, :]
+    model = sm.OLS(md['uncle'], md[['const', 'mgasUsed']])
     results = model.fit()
     print (results.summary())
 
