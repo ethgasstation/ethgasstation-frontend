@@ -43,22 +43,11 @@ for index, row in minerData.iterrows():
 #drop the duplicate row from mainBlocks- it is actually an uncle
 
 minerData= minerData[minerData['keep'] == True]
-
-
 minerData['duplicates2']= minerData.duplicated(subset='blockHash')
 minerData = minerData[minerData['duplicates2'] == False]
 
 print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
-
-print(minerData.loc[0:1000, ['uncle', 'uncsReported']].sum())
-print(minerData.loc[1001:2000, ['uncle', 'uncsReported']].sum())
-print(minerData.loc[2001:3000, ['uncle', 'uncsReported']].sum())
-print(minerData.loc[3001:4000, ['uncle', 'uncsReported']].sum())
-print(minerData.loc[4001:5000, ['uncle', 'uncsReported']].sum())
-print(minerData.loc[5001:6000, ['uncle', 'uncsReported']].sum())
-print(minerData.loc[6001:7000, ['uncle', 'uncsReported']].sum())
-
 
 
 #clean data
@@ -70,7 +59,6 @@ totAvgGasUsed = minerData['gasUsed'].mean()
 minerData['uncsReported'].fillna(value=0, inplace=True)
 minerData.loc[minerData['uncle']==1, 'blockFee'] = 0
 minerData = minerData.dropna(subset=['blockFee'])
-
 
 
 minerData['blockFee'] = minerData['blockFee']/1e9
@@ -113,6 +101,7 @@ minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
 mainBlocks = pd.DataFrame(minerData.loc[minerData['uncle']==0])
 avgMainRewardwoFee = mainBlocks['blockAwardwoFee'].mean()
 avgMainRewardwFee = mainBlocks['blockAward'].mean()
+avgBlockFee = mainBlocks['blockFee'].mean()
 totalMainBlocks = len(mainBlocks)
 
 #create summary table
@@ -151,8 +140,6 @@ results = model.fit()
 print (results.summary())
 
 dictResults = dict(results.params)
-print (dictResults)
-
 
 mainUncleDiff = avgUncleAward - avgMainRewardwoFee
 breakeven = -1*dictResults['gasUsedPerM']/1e6 * mainUncleDiff * 1e9
@@ -163,19 +150,19 @@ print(breakeven)
 #Awards without tx Fees
 
 expectedEmptyAward = (avgMainRewardwoFee*(1-dictResults['const'])) + (avgUncleAward*dictResults['const'])
-
 predictedUncle = dictResults['const'] + (dictResults['gasUsedPerM'] * totAvgGasUsed/1e6)
-print (predictedUncle)
-print (totalUncles/float(totalBlocks))
-
 expectedTxAward = (avgMainRewardwFee*(1-predictedUncle)) + (avgUncleAward*predictedUncle)
 
+
+print (predictedUncle)
+print (totalUncles/float(totalBlocks))
 print(expectedEmptyAward)
 print(expectedTxAward)
 
 print(totalUncles)
 print(totalUncsReported)
 print(totalIncludeFee)
+print(avgBlockFee)
 
 miner1Data = minerData.loc[minerData['miner'] == '0xea674fdde714fd979de3edf0f56aa9716b898ec8', :]
 model = sm.OLS(miner1Data['uncle'], miner1Data[['const','gasUsedPerM']])
