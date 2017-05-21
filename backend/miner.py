@@ -204,7 +204,8 @@ resultTable = {
 resultSummary = pd.DataFrame.from_dict(resultTable)
 resultSummary = resultSummary[['miner', 'totalBlocks', 'uncles', 'uncRate', 'avgmGas','zeroUncRate', 'actualZeroUncRate','avgUncleReward', 'avgMainRewardwoFee', 'avgTxFees', 'predictEmpAward', 'predictTxAward', 'actualTxAward', 'breakeven', 'profit', 'profitPct', 'profitPctBlock']]
 
-
+miningpoolgas = minerData.loc[minerData['miner']=='0xb2930b35844a230f00e51431acae96fe543a0347', 'avgGasUsed']
+miningpoolfee = minerData.loc[minerData['miner']=='0xb2930b35844a230f00e51431acae96fe543a0347', 'mainAwardwFee']
 
 topMiners = minerBlocks.head(n=5)
 x = 1
@@ -214,6 +215,8 @@ for index, row in topMiners.iterrows():
     results = model.fit()
     dictResults = dict(results.params)
     predictedUncle = dictResults['const'] + (dictResults['mgasUsed'] * row['avgGasUsed']/1e6)
+    mpoolUncle = dictResults['const'] + (dictResults['mgasUsed'] * miningpoolgas/1e6)
+    mpoolAward = (miningpoolfee*(1-dictResults['const'])) + (row['avgUncleAward']*mpoolUncle)
     expectedEmptyAward = (row['mainAwardwoFee']*(1-dictResults['const'])) + (row['avgUncleAward']*dictResults['const'])
     expectedTxAward = (row['mainAwardwFee']*(1-dictResults['const'])) + (row['avgUncleAward']*predictedUncle)
     mainUncleDiff = row['avgUncleAward'] - row['mainAwardwoFee']
@@ -234,6 +237,8 @@ for index, row in topMiners.iterrows():
     resultSummary.loc[x, 'profitPct'] = (row['avgReward'] - expectedEmptyAward)/ row['avgBlockFee']
     resultSummary.loc[x, 'profitPctBlock'] = (row['avgReward'] - expectedEmptyAward) / row['mainAwardwFee']
     resultSummary.loc[x, 'breakeven'] = breakeven
+    resultSummary.loc[x, 'potentialAward'] = mpoolAward
+    resultSummary.loc[x, 'potentialProfit'] = mpoolAward - expectedEmptyAward
     print (results.summary())
     x=x+1
 
