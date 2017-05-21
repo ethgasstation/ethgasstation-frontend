@@ -207,17 +207,17 @@ for index, row in topMiners.iterrows():
     predictedUncle = dictResults['const'] + (dictResults['mgasUsed'] * row['avgGasUsed']/1e6)
     expectedEmptyAward = (row['mainAwardwoFee']*(1-dictResults['const'])) + (row['avgUncleAward']*dictResults['const'])
     expectedTxAward = (row['mainAwardwFee']*(1-dictResults['const'])) + (row['avgUncleAward']*predictedUncle)
-    resultSummary[x, 'miner'] = index
-    resultSummary[x, 'avgmGas'] = row['avgGasUsed']
-    resultSummary[x, 'uncRate'] = row['uncRatio'] 
-    resultSummary[x, 'zeroUncRate'] = dictResults['const']
-    resultSummary[x, 'avgUncleReward'] = row['avgUncleAward']
-    resultSummary[x, 'avgMainRewardwoFee'] = row['mainAwardwoFee']
-    resultSummary[x, 'avgTxFees'] = row['avgBlockFee']
-    resultSummary[x, 'predictEmpAward'] = expectedEmptyAward
-    resultSummary[x, 'predictTxAward'] = expectedTxAward
-    resultSummary[x, 'actualTxAward'] = row['avgReward']
-    resultSummary[x, 'profit'] = expectedTxAward - expectedEmptyAward
+    resultSummary.loc[x, 'miner'] = index
+    resultSummary.loc[x, 'avgmGas'] = row['avgGasUsed']
+    resultSummary.loc[x, 'uncRate'] = row['uncRatio'] 
+    resultSummary.loc[x, 'zeroUncRate'] = dictResults['const']
+    resultSummary.loc[x, 'avgUncleReward'] = row['avgUncleAward']
+    resultSummary.loc[x, 'avgMainRewardwoFee'] = row['mainAwardwoFee']
+    resultSummary.loc[x, 'avgTxFees'] = row['avgBlockFee']
+    resultSummary.loc[x, 'predictEmpAward'] = expectedEmptyAward
+    resultSummary.loc[x, 'predictTxAward'] = expectedTxAward
+    resultSummary.loc[x, 'actualTxAward'] = row['avgReward']
+    resultSummary.loc[x, 'profit'] = expectedTxAward - expectedEmptyAward
     print (results.summary())
     x=x+1
 
