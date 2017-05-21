@@ -193,7 +193,7 @@ resultTable = {
     'profit': [profit]}
 
 resultSummary = pd.DataFrame.from_dict(resultTable)
-resultSummary = resultSummary[['miner', 'avgmGas', 'uncRate', 'zeroUncRate', 'actualZeroUncRate','avgUncleReward', 'avgMainReward', 'avgTxFees', 'predictEmpAward', 'predictTxAward', 'actualTxAward', 'profit']]
+resultSummary = resultSummary[['miner', 'avgmGas', 'uncRate', 'zeroUncRate', 'actualZeroUncRate','avgUncleReward', 'avgMainRewardwoFee', 'avgTxFees', 'predictEmpAward', 'predictTxAward', 'actualTxAward', 'profit']]
 
 
 
