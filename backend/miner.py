@@ -141,7 +141,7 @@ minerBlocks['avgBlockFee'] = minerBlocks['blockFee']/minerBlocks['main']
 minerBlocks['mainAwardwoFee'] =  minerBlocks['blockAwardwoFee'] / minerBlocks['main']
 minerBlocks['uncRatio'] = minerBlocks['uncle'] / minerBlocks['totalBlocks']
 minerBlocks['avgUncleAward'] = minerBlocks['uncleAward'] / minerBlocks['uncle']
-minerBlocks['avgGasUsed'] = (minerBlocks['gasUsed'] + minerBlocks['uncleGasUsed'])/totalBlocks
+minerBlocks['avgGasUsed'] = (minerBlocks['gasUsed'] + minerBlocks['uncleGasUsed'])/minerBlocks['totalBlocks']
 
 minerBlocks['avgReward'] = minerBlocks['totReward'] / minerBlocks['totalBlocks']
 minerBlocks = minerBlocks.sort_values('totalBlocks', ascending = False)
@@ -184,6 +184,8 @@ profitpctBlock = profit/avgMainRewardwFee
 
 resultTable = {
     'miner': ['all'],
+    'totalBlocks': [totalBlocks],
+    'uncles': [totalUncles],
     'avgmGas': [avgMgasUsed],
     'uncRate': [uncleRate],
     'zeroUncRate': [dictResults['const']],
@@ -200,7 +202,7 @@ resultTable = {
     'profitPctBlock': [profitpctBlock]}
 
 resultSummary = pd.DataFrame.from_dict(resultTable)
-resultSummary = resultSummary[['miner', 'avgmGas', 'uncRate', 'zeroUncRate', 'actualZeroUncRate','avgUncleReward', 'avgMainRewardwoFee', 'avgTxFees', 'predictEmpAward', 'predictTxAward', 'actualTxAward', 'breakeven', 'profit', 'profitPct', 'profitPctBlock']]
+resultSummary = resultSummary[['miner', 'totalBlocks', 'uncles', 'uncRate', 'avgmGas','zeroUncRate', 'actualZeroUncRate','avgUncleReward', 'avgMainRewardwoFee', 'avgTxFees', 'predictEmpAward', 'predictTxAward', 'actualTxAward', 'breakeven', 'profit', 'profitPct', 'profitPctBlock']]
 
 
 
@@ -217,6 +219,8 @@ for index, row in topMiners.iterrows():
     mainUncleDiff = row['avgUncleAward'] - row['mainAwardwoFee']
     breakeven = -1*dictResults['mgasUsed']/1e6 * mainUncleDiff * 1e9
     resultSummary.loc[x, 'miner'] = index
+    resultSummary.loc[x, 'totalBlocks'] = row['totalBlocks']
+    resultSummary.loc[x, 'uncles'] = row['uncle']
     resultSummary.loc[x, 'avgmGas'] = row['avgGasUsed']/1e6
     resultSummary.loc[x, 'uncRate'] = row['uncRatio'] 
     resultSummary.loc[x, 'zeroUncRate'] = dictResults['const']
