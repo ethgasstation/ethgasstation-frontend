@@ -180,7 +180,7 @@ profit = expectedTxAward - expectedEmptyAward
 
 resultTable = {
     'miner': ['all'],
-    'avgmGas': totAvgGasUsed/1e6
+    'avgmGas': totAvgGasUsed/1e6,
     'uncRate': [uncleRate],
     'zeroUncRate': [dictResults['const']],
     'actualZeroUncRate': [emptyUnclePct],
