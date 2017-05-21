@@ -175,7 +175,9 @@ expectedTxAward = (avgMainRewardwFee*(1-predictedUncle)) + (avgUncleAward*predic
 profit = expectedTxAward - expectedEmptyAward
 #create Dataframe
 
-resultsTable = {
+ 
+
+resultSummary = pd.DataFrame.from_dict(data={
     'miner': 'all',
     'uncRate': uncleRate,
     'zeroUncRate': dictResults['const'],
@@ -188,8 +190,7 @@ resultsTable = {
     'actualTxAward':avgBlockAward,
     'profit': profit
 }
-
-resultSummary = pd.DataFrame.from_dict(data=resultsTable, orient='columns')
+    , orient='columns')
 print(resultSummary)
 
 
