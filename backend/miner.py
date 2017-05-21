@@ -69,13 +69,18 @@ minerData.loc[minerData['uncsReported']==2, 'includeFee'] = .3125
 minerData.loc[minerData['uncsReported']==0, 'includeFee'] = 0
 totalIncludeFee = minerData['includeFee'].sum()
 
-minerData['blockAward'] = 5 + minerData['includeFee'] + minerData['blockFee']
-minerData['blockAwardwoFee'] = 5 + minerData['includeFee']
 minerData['incDelay'] = minerData['includedBlockNum'] - minerData['blockNum']
 
 for index, rows in minerData.iterrows():
-    if row['uncle']==1:
-        incDelay = minerData.loc[index, 'incDelay']
+    includeFee = minerData.loc[index, 'includeFee']
+    incDelay = minerData.loc[index, 'incDelay']
+    blockFee = minerData.loc[index, 'blockFee']
+
+    if row['main']==1:
+        minerData.loc[index, 'blockAward'] = 5 + includeFee + blockFee
+        minerData.loc[index, 'blockAwardwoFee'] = 5+ includeFee
+    elif row['uncle']==1:    
+        print(incDelay)
         minerData.loc[index, 'blockAward'] = (8-incDelay)/8 * 5
         minerData.loc[index, 'blockAwardwoFee'] = (8-uncleBlocks['incDelay'])/8 * 5
 
