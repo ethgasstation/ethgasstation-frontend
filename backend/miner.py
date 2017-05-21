@@ -205,8 +205,8 @@ for index, row in topMiners.iterrows():
     results = model.fit()
     dictResults = dict(results.params)
     predictedUncle = dictResults['const'] + (dictResults['mgasUsed'] * row['avgGasUsed']/1e6)
-    expectedEmptyAward = (row['mainRewardwoFee']*(1-dictResults['const'])) + (row['avgUncleAward']*dictResults['const'])
-    expectedTxAward = (row['mainRewardwFee']*(1-dictResults['const'])) + (row['avgUncleAward']*predictedUncle)
+    expectedEmptyAward = (row['mainAwardwoFee']*(1-dictResults['const'])) + (row['avgUncleAward']*dictResults['const'])
+    expectedTxAward = (row['mainAwardwFee']*(1-dictResults['const'])) + (row['avgUncleAward']*predictedUncle)
     resultSummary[x, 'miner'] = row['miner']
     resultSummary[x, 'avgmGas'] = row['avgGasUsed']
     resultSummary[x, 'uncRate'] = row['uncRatio'] 
