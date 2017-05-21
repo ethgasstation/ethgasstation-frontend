@@ -205,14 +205,14 @@ for index, row in topMiners.iterrows():
     results = model.fit()
     dictResults = dict(results.params)
     predictedUncle = dictResults['const'] + (dictResults['mgasUsed'] * row['avgGasUsed']/1e6)
-    expectedEmptyAward = (row['avgMainRewardwoFee']*(1-dictResults['const'])) + (row['avgUncleAward']*dictResults['const'])
-    expectedTxAward = (row['avgMainRewardwFee']*(1-dictResults['const'])) + (row['avgUncleAward']*predictedUncle)
+    expectedEmptyAward = (row['mainRewardwoFee']*(1-dictResults['const'])) + (row['avgUncleAward']*dictResults['const'])
+    expectedTxAward = (row['mainRewardwFee']*(1-dictResults['const'])) + (row['avgUncleAward']*predictedUncle)
     resultSummary[x, 'miner'] = row['miner']
     resultSummary[x, 'avgmGas'] = row['avgGasUsed']
     resultSummary[x, 'uncRate'] = row['uncRatio'] 
     resultSummary[x, 'zeroUncRate'] = dictResults['const']
     resultSummary[x, 'avgUncleReward'] = row['avgUncleAward']
-    resultSummary[x, 'avgMainRewardwoFee'] = row['avgMainAwardwoFee']
+    resultSummary[x, 'avgMainRewardwoFee'] = row['mainAwardwoFee']
     resultSummary[x, 'avgTxFees'] = row['avgBlockFee']
     resultSummary[x, 'predictEmpAward'] = expectedEmptyAward
     resultSummary[x, 'predictTxAward'] = expectedTxAward
