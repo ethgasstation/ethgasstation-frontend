@@ -217,7 +217,7 @@ for index, row in topMiners.iterrows():
     resultSummary.loc[x, 'predictEmpAward'] = expectedEmptyAward
     resultSummary.loc[x, 'predictTxAward'] = expectedTxAward
     resultSummary.loc[x, 'actualTxAward'] = row['avgReward']
-    resultSummary.loc[x, 'profit'] = actualTxAward - expectedEmptyAward
+    resultSummary.loc[x, 'profit'] = row['avgReward'] - expectedEmptyAward
     print (results.summary())
     x=x+1
 
