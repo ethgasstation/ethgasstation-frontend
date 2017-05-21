@@ -142,7 +142,7 @@ print (results.summary())
 dictResults = dict(results.params)
 
 mainUncleDiff = avgUncleAward - avgMainRewardwoFee
-breakeven = -1*dictResults['gasUsedPerM']/1e6 * mainUncleDiff * 1e9
+breakeven = -1*dictResults['mgasUsed']/1e6 * mainUncleDiff * 1e9
 print(breakeven)
 
 #find Profit
