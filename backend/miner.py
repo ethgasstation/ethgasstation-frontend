@@ -176,7 +176,7 @@ profit = expectedTxAward - expectedEmptyAward
 #create Dataframe
 
 
-resultTable = [{
+resultTable = {
     'miner': ['all'],
     'uncRate': [uncleRate],
     'zeroUncRate': [dictResults['const']],
@@ -187,9 +187,9 @@ resultTable = [{
     'predictEmpAward': [expectedEmptyAward],
     'predictTxAward': [expectedTxAward],
     'actualTxAward':[avgBlockAward],
-    'profit': [profit]}]
+    'profit': [profit]}
 
-resultSummary = pd.DataFrame(resultTable)
+resultSummary = pd.DataFrame.from_dict(resultTable)
 print(resultSummary)
 
 
