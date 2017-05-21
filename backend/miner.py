@@ -189,7 +189,7 @@ resultsTable = {
     'profit': profit
 }
 
-resultSummary = pd.DataFrame.from_dict(resultsTable, orient='columns')
+resultSummary = pd.DataFrame.from_dict(data=resultsTable, orient='columns')
 print(resultSummary)
 
 
