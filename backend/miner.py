@@ -172,7 +172,7 @@ expectedEmptyAward = (avgMainRewardwoFee*(1-dictResults['const'])) + (avgUncleAw
 predictedUncle = dictResults['const'] + (dictResults['mgasUsed'] * totAvgGasUsed/1e6)
 expectedTxAward = (avgMainRewardwFee*(1-predictedUncle)) + (avgUncleAward*predictedUncle)
 
-
+profit = expectedTxAward - expectedEmptyAward
 #create Dataframe
 
 data = {
@@ -186,18 +186,12 @@ data = {
     'predictEmpAward': expectedEmptyAward,
     'predictTxAward': expectedTxAward,
     'actualTxAward':avgBlockAward
+    'profit': profit
 }
 
+resultSummary = pd.DataFrame.from_dict(data, orient='columns')
+print(resultSummary)
 
-print (predictedUncle)
-print (totalUncles/float(totalBlocks))
-print(expectedEmptyAward)
-print(expectedTxAward)
-
-print(totalUncles)
-print(totalUncsReported)
-print(totalIncludeFee)
-print(avgBlockFee)
 
 topMiners = minerBlocks.head(n=5)
 for index, row in topMiners.iterrows(): 
