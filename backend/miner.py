@@ -214,7 +214,7 @@ for index, row in topMiners.iterrows():
     predictedUncle = dictResults['const'] + (dictResults['mgasUsed'] * row['avgGasUsed']/1e6)
     expectedEmptyAward = (row['mainAwardwoFee']*(1-dictResults['const'])) + (row['avgUncleAward']*dictResults['const'])
     expectedTxAward = (row['mainAwardwFee']*(1-dictResults['const'])) + (row['avgUncleAward']*predictedUncle)
-    mainUncleDiff = row['avgUncleReward'] - row['mainRewardwoFee']
+    mainUncleDiff = row['avgUncleAward'] - row['mainAwardwoFee']
     breakeven = -1*dictResults['mgasUsed']/1e6 * mainUncleDiff * 1e9
     resultSummary.loc[x, 'miner'] = index
     resultSummary.loc[x, 'avgmGas'] = row['avgGasUsed']/1e6
