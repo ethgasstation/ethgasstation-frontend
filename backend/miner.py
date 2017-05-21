@@ -78,7 +78,7 @@ for index, rows in minerData.iterrows():
         minerData.loc[index, 'blockAward'] = (8-uncleBlocks['incDelay'])/8 * 5
         minerData.loc[index, 'blockAwardwoFee'] = (8-uncleBlocks['incDelay'])/8 * 5
 
-avgBlockAward = minerData[blockAward].mean()
+avgBlockAward = minerData['blockAward'].mean()
 
 print (minerData)
 
