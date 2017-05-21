@@ -176,7 +176,6 @@ expectedTxAward = (avgMainRewardwFee*(1-predictedUncle)) + (avgUncleAward*predic
 
 profit = expectedTxAward - expectedEmptyAward
 profitpct = profit/avgBlockFee
-print(profitpct, avgBlockFee)
 profitpctBlock = profit/avgMainRewardwFee
 #create Dataframe
 
@@ -198,7 +197,7 @@ resultTable = {
     'profitPctBlock': [profitpctBlock]}
 
 resultSummary = pd.DataFrame.from_dict(resultTable)
-resultSummary = resultSummary[['miner', 'avgmGas', 'uncRate', 'zeroUncRate', 'actualZeroUncRate','avgUncleReward', 'avgMainRewardwoFee', 'avgTxFees', 'predictEmpAward', 'predictTxAward', 'actualTxAward', 'profit']]
+resultSummary = resultSummary[['miner', 'avgmGas', 'uncRate', 'zeroUncRate', 'actualZeroUncRate','avgUncleReward', 'avgMainRewardwoFee', 'avgTxFees', 'predictEmpAward', 'predictTxAward', 'actualTxAward', 'profit', 'profitPct', 'profitPctBlock']]
 
 
 
