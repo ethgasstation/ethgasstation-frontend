@@ -204,7 +204,7 @@ for index, row in topMiners.iterrows():
     model = sm.OLS(md['uncle'], md[['const', 'mgasUsed']])
     results = model.fit()
     dictResults = dict(results.params)
-    predictedUncle = dictResults['const'] + (dictResults['mgasUsed'] * row['AvgGasUsed']/1e6)
+    predictedUncle = dictResults['const'] + (dictResults['mgasUsed'] * row['avgGasUsed']/1e6)
     expectedEmptyAward = (row['avgMainRewardwoFee']*(1-dictResults['const'])) + (row['avgUncleAward']*dictResults['const'])
     expectedTxAward = (row['avgMainRewardwFee']*(1-dictResults['const'])) + (row['avgUncleAward']*predictedUncle)
     resultSummary[x, 'miner'] = row['miner']
