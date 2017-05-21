@@ -184,7 +184,7 @@ data = {
     'avgTxFees': avgBlockFee,
     'predictEmpAward': expectedEmptyAward,
     'predictTxAward': expectedTxAward,
-    'actualTxAward':
+    'actualTxAward':avgBlockAward
 }
 
 
