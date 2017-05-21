@@ -126,7 +126,7 @@ minerBlocks['avgUncleAward'] = minerBlocks['uncleAward'] / minerBlocks['uncle']
 minerBlocks['avgGasUsed'] = (minerBlocks['gasUsed'] + minerBlocks['uncleGasUsed'])/totalBlocks
 
 minerBlocks['avgReward'] = minerBlocks['totReward'] / minerBlocks['totalBlocks']
-minerBlocks = minerBlocks.sort_values('totalBlocks')
+minerBlocks = minerBlocks.sort_values('totalBlocks', ascending = False)
 
 print(minerBlocks)
 
