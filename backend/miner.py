@@ -77,7 +77,7 @@ for index, row in minerData.iterrows():
     incDelay = minerData.loc[index, 'incDelay']
     if row['uncle'] == 1:    
         minerData.loc[index, 'blockAward'] = (8-incDelay)/8 * 5
-        minerData.loc[index, 'blockAwardwoFee'] = (8-incDelay])/8 * 5
+        minerData.loc[index, 'blockAwardwoFee'] = (8-incDelay)/8 * 5
 
 avgBlockAward = minerData['blockAward'].mean()
 
