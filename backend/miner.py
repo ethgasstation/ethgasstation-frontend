@@ -204,8 +204,8 @@ resultTable = {
 resultSummary = pd.DataFrame.from_dict(resultTable)
 resultSummary = resultSummary[['miner', 'totalBlocks', 'uncles', 'uncRate', 'avgmGas','zeroUncRate', 'actualZeroUncRate','avgUncleReward', 'avgMainRewardwoFee', 'avgTxFees', 'predictEmpAward', 'predictTxAward', 'actualTxAward', 'breakeven', 'profit', 'profitPct', 'profitPctBlock']]
 
-miningpoolgas = minerData.loc[minerData['miner']=='0xb2930b35844a230f00e51431acae96fe543a0347', 'avgGasUsed']
-miningpoolfee = minerData.loc[minerData['miner']=='0xb2930b35844a230f00e51431acae96fe543a0347', 'mainAwardwFee']
+miningpoolgas = minerBlocks.loc[minerBlocks['miner']=='0xb2930b35844a230f00e51431acae96fe543a0347', 'avgGasUsed']
+miningpoolfee = minerBlocks.loc[minerBlocks['miner']=='0xb2930b35844a230f00e51431acae96fe543a0347', 'mainAwardwFee']
 
 topMiners = minerBlocks.head(n=5)
 x = 1
