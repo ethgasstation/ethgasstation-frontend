@@ -198,7 +198,7 @@ resultSummary = resultSummary[['miner', 'avgmGas', 'uncRate', 'zeroUncRate', 'ac
 
 
 topMiners = minerBlocks.head(n=5)
-var x = 1
+x = 1
 for index, row in topMiners.iterrows(): 
     md = minerData.loc[minerData['miner']==index, :]
     model = sm.OLS(md['uncle'], md[['const', 'mgasUsed']])
@@ -218,8 +218,8 @@ for index, row in topMiners.iterrows():
     resultSummary[x, 'predictTxAward'] = expectedTxAward
     resultSummary[x, 'actualTxAward'] = row['avgReward']
     resultSummary[x, 'profit'] = expectedTxAward - expectedEmptyAward
-
     print (results.summary())
+    x=x+1
 
 print(resultSummary)
 
