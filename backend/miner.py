@@ -142,6 +142,7 @@ minerBlocks['mainAwardwoFee'] =  minerBlocks['blockAwardwoFee'] / minerBlocks['m
 minerBlocks['uncRatio'] = minerBlocks['uncle'] / minerBlocks['totalBlocks']
 minerBlocks['avgUncleAward'] = minerBlocks['uncleAward'] / minerBlocks['uncle']
 minerBlocks['avgGasUsed'] = (minerBlocks['gasUsed'] + minerBlocks['uncleGasUsed'])/minerBlocks['totalBlocks']
+minerBlocks['avgTxFee'] = minerBlocks['avgBlockFee']/minerBlocks['avgGasUsed']*1e9
 
 minerBlocks['avgReward'] = minerBlocks['totReward'] / minerBlocks['totalBlocks']
 minerBlocks = minerBlocks.sort_values('totalBlocks', ascending = False)
@@ -239,6 +240,7 @@ for index, row in topMiners.iterrows():
     resultSummary.loc[x, 'breakeven'] = breakeven
     resultSummary.loc[x, 'potentialAward'] = mpoolAward
     resultSummary.loc[x, 'potentialProfit'] = mpoolAward - expectedEmptyAward
+    resultSummary.loc[x, 'avgTxFee'] = row['avgTxFee']
     print (results.summary())
     x=x+1
 
