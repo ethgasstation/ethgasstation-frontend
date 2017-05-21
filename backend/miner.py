@@ -229,55 +229,6 @@ for index, row in topMiners.iterrows():
 
 print(resultSummary)
 
-'''
-miner1Data = minerData.loc[minerData['miner'] == '0xea674fdde714fd979de3edf0f56aa9716b898ec8', :]
-model = sm.OLS(miner1Data['uncle'], miner1Data[['const','gasUsedPerM']])
-results = model.fit()
-print (results.summary())
-print(miner1Data.describe())
-
-
-
-expectedEmptyAward = (avgMainRewardwoFee*(1-dictResults['const'])) + (avgUncleAward*dictResults['const'])
-predictedUncle = dictResults['const'] + (dictResults['gasUsedPerM'] * totAvgGasUsed/1e6)
-expectedTxAward = (avgMainRewardwFee*(1-predictedUncle)) + (avgUncleAward*predictedUncle)
-
-
-print (predictedUncle)
-print (totalUncles/float(totalBlocks))
-print(expectedEmptyAward)
-print(expectedTxAward)
-
-'''
-
-'''
-miner2Data = minerData.loc[minerData['miner'] == '0x61c808d82a3ac53231750dadc13c777b59310bd9', :]
-model = sm.OLS(miner2Data['uncle'], miner2Data[['const','gasUsedPerM']])
-results = model.fit()
-print (results.summary())
-print(miner2Data.describe())
-
-miner3Data = minerData.loc[minerData['miner'] == '0xb2930b35844a230f00e51431acae96fe543a0347', :]
-model = sm.OLS(miner3Data['uncle'], miner3Data[['const','gasUsedPerM']])
-results = model.fit()
-print (results.summary())
-print(miner3Data.describe())
-
-miner4Data = minerData.loc[minerData['miner'] == '0x1e9939daaad6924ad004c2560e90804164900341', :]
-model = sm.OLS(miner4Data['uncle'], miner4Data[['const','gasUsedPerM']])
-results = model.fit()
-print (results.summary())
-print(miner4Data.describe())
-
-miner5Data = minerData.loc[(minerData['miner']== '0xea674fdde714fd979de3edf0f56aa9716b898ec8') | (minerData['miner']=='0x61c808d82a3ac53231750dadc13c777b59310bd9') | (minerData['miner'] == '0xb2930b35844a230f00e51431acae96fe543a0347'),  :]
-model = sm.OLS(miner5Data['uncle'], miner5Data[['const','gasUsedPerM']])
-results = model.fit()
-print (results.summary())
-print(miner5Data.describe())
-
-miner6Data = minerData.loc[minerData['miner'] == '0x2a65aca4d5fc5b5c859090a6c34d164135398226', :]
-model = sm.OLS(miner6Data['uncle'], miner6Data[['const','gasUsedPerM']])
-results = model.fit()
-print (results.summary())
-print(miner6Data.describe())
-'''
+for index, row in topMiners.iterrows():
+    avg = minerData.loc[minerData['miner']==index, 'blockAward'].mean()
+    print(index, avg)
