@@ -190,6 +190,7 @@ resultTable = {
     'profit': [profit]}
 
 resultSummary = pd.DataFrame.from_dict(resultTable)
+resultSummary = resultSummary[['miner', 'uncRate', 'zeroUncRate', 'actualZeroUncRate','avgUncleReward', 'avgMainReward', 'avgTxFees', 'predictEmpAward', 'predictTxAward', 'actualTxAward', 'profit']]
 print(resultSummary)
 
 
