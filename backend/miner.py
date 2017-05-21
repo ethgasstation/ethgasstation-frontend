@@ -194,7 +194,7 @@ resultTable = {
     'predictEmpAward': [expectedEmptyAward],
     'predictTxAward': [expectedTxAward],
     'actualTxAward':[avgBlockAward],
-    'breakeven':[breakeven]
+    'breakeven':[breakeven],
     'profit': [profit],
     'profitPct': [profitpct],
     'profitPctBlock': [profitpctBlock]}
