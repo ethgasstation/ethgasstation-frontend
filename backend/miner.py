@@ -49,17 +49,18 @@ minerData = minerData[minerData['duplicates2'] == False]
 print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
 
-
 #clean data
-
-totalBlocks = len(minerData)
-totalUncsReported = minerData['uncsReported'].sum()
-totAvgGasUsed = minerData['gasUsed'].mean()
 
 minerData['uncsReported'].fillna(value=0, inplace=True)
 minerData.loc[minerData['uncle']==1, 'blockFee'] = 0
 minerData = minerData.dropna(subset=['blockFee'])
 
+#define constants for all blocks
+
+totalBlocks = len(minerData)
+totalUncsReported = minerData['uncsReported'].sum()
+totAvgGasUsed = minerData['gasUsed'].mean()
+uncleRate = totalUncsReported/float(totalBlocks)
 
 minerData['blockFee'] = minerData['blockFee']/1e9
 
@@ -70,6 +71,17 @@ totalIncludeFee = minerData['includeFee'].sum()
 
 minerData['blockAward'] = 5 + minerData['includeFee'] + minerData['blockFee']
 minerData['blockAwardwoFee'] = 5 + minerData['includeFee']
+minerData['incDelay'] = minerData['includedBlockNum'] - minerData['blockNum']
+
+for index, rows in minerData.iterrows():
+    if row['uncle']==1:
+        minerData.loc[index, 'blockAward'] = (8-uncleBlocks['incDelay'])/8 * 5
+        minerData.loc[index, 'blockAwardwoFee'] = (8-uncleBlocks['incDelay'])/8 * 5
+
+avgBlockAward = minerData[blockAward].mean()
+
+print (minerData)
+
 
 
 #find average gas mined per block for each miner
@@ -81,6 +93,7 @@ totemptyBlocks = len(minerData.loc[minerData['gasUsed']==0])
 emptyUncles = len(minerData.loc[(minerData['gasUsed']==0) & (minerData['uncle']==True)])
 emptyMains =  len(minerData.loc[(minerData['gasUsed']==0) & (minerData['main']==True)])
 emptyUnclePct = emptyUncles/float(totemptyBlocks)
+
 
 print (totemptyBlocks, emptyUncles, emptyMains)
 print ("%.3f" % (emptyUnclePct))
@@ -130,6 +143,11 @@ minerBlocks = minerBlocks.sort_values('totalBlocks', ascending = False)
 
 print(minerBlocks)
 
+
+
+
+
+
 # Regression model for gas
 minerData['const'] = 1
 minerData['mgasUsed'] = minerData['gasUsed']/1e6
@@ -152,6 +170,22 @@ print(breakeven)
 expectedEmptyAward = (avgMainRewardwoFee*(1-dictResults['const'])) + (avgUncleAward*dictResults['const'])
 predictedUncle = dictResults['const'] + (dictResults['mgasUsed'] * totAvgGasUsed/1e6)
 expectedTxAward = (avgMainRewardwFee*(1-predictedUncle)) + (avgUncleAward*predictedUncle)
+
+
+#create Dataframe
+
+data = {
+    'miner': 'all',
+    'uncRate': uncleRate,
+    'zeroUncRate': dictResults['const'],
+    'actualZeroUncRate': emptyUnclePct,
+    'avgUncleReward': avgUncleAward,
+    'avgMainReward': avgMainRewardwFee,
+    'avgTxFees': avgBlockFee,
+    'predictEmpAward': expectedEmptyAward,
+    'predictTxAward': expectedTxAward,
+    'actualTxAward':
+}
 
 
 print (predictedUncle)
