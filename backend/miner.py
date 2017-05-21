@@ -175,6 +175,8 @@ predictedUncle = dictResults['const'] + (dictResults['mgasUsed'] * totAvgGasUsed
 expectedTxAward = (avgMainRewardwFee*(1-predictedUncle)) + (avgUncleAward*predictedUncle)
 
 profit = expectedTxAward - expectedEmptyAward
+profitpct = profit/avgBlockFee
+profitpctBlock = profit/avgMainRewardwFee
 #create Dataframe
 
 
@@ -190,7 +192,9 @@ resultTable = {
     'predictEmpAward': [expectedEmptyAward],
     'predictTxAward': [expectedTxAward],
     'actualTxAward':[avgBlockAward],
-    'profit': [profit]}
+    'profit': [profit],
+    'profitPct': [profitpct],
+    'profitPctBlock': [profitpctBlock]}
 
 resultSummary = pd.DataFrame.from_dict(resultTable)
 resultSummary = resultSummary[['miner', 'avgmGas', 'uncRate', 'zeroUncRate', 'actualZeroUncRate','avgUncleReward', 'avgMainRewardwoFee', 'avgTxFees', 'predictEmpAward', 'predictTxAward', 'actualTxAward', 'profit']]
@@ -218,6 +222,8 @@ for index, row in topMiners.iterrows():
     resultSummary.loc[x, 'predictTxAward'] = expectedTxAward
     resultSummary.loc[x, 'actualTxAward'] = row['avgReward']
     resultSummary.loc[x, 'profit'] = row['avgReward'] - expectedEmptyAward
+    resultSummary.loc[x, 'profitPct'] = profit/ row['avgBlockFee']
+    resultSummary.loc[x, 'predictPctBlock'] = profit / row['mainAwardwFee']
     print (results.summary())
     x=x+1
 
