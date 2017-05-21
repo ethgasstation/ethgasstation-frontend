@@ -74,6 +74,8 @@ minerData['blockAwardwoFee'] = 5 + minerData['includeFee']
 minerData['incDelay'] = minerData['includedBlockNum'] - minerData['blockNum']
 minerData['mgasUsed'] = minerData['gasUsed']/1e6
 
+avgMgasUsed = minerData['mgasUsed'].mean()
+
 for index, row in minerData.iterrows():
     incDelay = minerData.loc[index, 'incDelay']
     if row['uncle'] == 1:    
@@ -182,7 +184,7 @@ profitpctBlock = profit/avgMainRewardwFee
 
 resultTable = {
     'miner': ['all'],
-    'avgmGas': totAvgGasUsed/1e6,
+    'avgmGas': [avgMgasUsed],
     'uncRate': [uncleRate],
     'zeroUncRate': [dictResults['const']],
     'actualZeroUncRate': [emptyUnclePct],
@@ -192,12 +194,13 @@ resultTable = {
     'predictEmpAward': [expectedEmptyAward],
     'predictTxAward': [expectedTxAward],
     'actualTxAward':[avgBlockAward],
+    'breakeven':[breakeven]
     'profit': [profit],
     'profitPct': [profitpct],
     'profitPctBlock': [profitpctBlock]}
 
 resultSummary = pd.DataFrame.from_dict(resultTable)
-resultSummary = resultSummary[['miner', 'avgmGas', 'uncRate', 'zeroUncRate', 'actualZeroUncRate','avgUncleReward', 'avgMainRewardwoFee', 'avgTxFees', 'predictEmpAward', 'predictTxAward', 'actualTxAward', 'profit', 'profitPct', 'profitPctBlock']]
+resultSummary = resultSummary[['miner', 'avgmGas', 'uncRate', 'zeroUncRate', 'actualZeroUncRate','avgUncleReward', 'avgMainRewardwoFee', 'avgTxFees', 'predictEmpAward', 'predictTxAward', 'actualTxAward', 'breakeven', 'profit', 'profitPct', 'profitPctBlock']]
 
 
 
@@ -211,6 +214,8 @@ for index, row in topMiners.iterrows():
     predictedUncle = dictResults['const'] + (dictResults['mgasUsed'] * row['avgGasUsed']/1e6)
     expectedEmptyAward = (row['mainAwardwoFee']*(1-dictResults['const'])) + (row['avgUncleAward']*dictResults['const'])
     expectedTxAward = (row['mainAwardwFee']*(1-dictResults['const'])) + (row['avgUncleAward']*predictedUncle)
+    mainUncleDiff = row['avgUncleReward'] - row['mainRewardwoFee']
+    breakeven = -1*dictResults['mgasUsed']/1e6 * mainUncleDiff * 1e9
     resultSummary.loc[x, 'miner'] = index
     resultSummary.loc[x, 'avgmGas'] = row['avgGasUsed']/1e6
     resultSummary.loc[x, 'uncRate'] = row['uncRatio'] 
@@ -224,6 +229,7 @@ for index, row in topMiners.iterrows():
     resultSummary.loc[x, 'profit'] = row['avgReward'] - expectedEmptyAward
     resultSummary.loc[x, 'profitPct'] = (row['avgReward'] - expectedEmptyAward)/ row['avgBlockFee']
     resultSummary.loc[x, 'profitPctBlock'] = (row['avgReward'] - expectedEmptyAward) / row['mainAwardwFee']
+    resultSummary.loc[x, 'breakeven'] = breakeven
     print (results.summary())
     x=x+1
 
