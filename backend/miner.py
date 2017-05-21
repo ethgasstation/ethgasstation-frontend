@@ -207,7 +207,7 @@ for index, row in topMiners.iterrows():
     predictedUncle = dictResults['const'] + (dictResults['mgasUsed'] * row['avgGasUsed']/1e6)
     expectedEmptyAward = (row['mainAwardwoFee']*(1-dictResults['const'])) + (row['avgUncleAward']*dictResults['const'])
     expectedTxAward = (row['mainAwardwFee']*(1-dictResults['const'])) + (row['avgUncleAward']*predictedUncle)
-    resultSummary[x, 'miner'] = row['miner']
+    resultSummary[x, 'miner'] = index
     resultSummary[x, 'avgmGas'] = row['avgGasUsed']
     resultSummary[x, 'uncRate'] = row['uncRatio'] 
     resultSummary[x, 'zeroUncRate'] = dictResults['const']
