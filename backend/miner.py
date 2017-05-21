@@ -72,6 +72,7 @@ totalIncludeFee = minerData['includeFee'].sum()
 minerData['blockAward'] = 5 + minerData['includeFee'] + minerData['blockFee']
 minerData['blockAwardwoFee'] = 5 + minerData['includeFee']
 minerData['incDelay'] = minerData['includedBlockNum'] - minerData['blockNum']
+minerData['mgasUsed'] = minerData['gasUsed']/1e6
 
 for index, row in minerData.iterrows():
     incDelay = minerData.loc[index, 'incDelay']
@@ -108,7 +109,7 @@ totalUncles = len(uncleBlocks)
 minerUncleBlocks = uncleBlocks.groupby('miner').sum()
 
 #clean
-minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'uncsReported', 'numTx', 'main', 'duplicates', 'keep', 'includedBlockNum', 'incDelay', 'blockFee', 'includeFee', 'blockAward', 'blockAwardwoFee', 'duplicates2'], axis=1)
+minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'uncsReported', 'numTx', 'main', 'duplicates', 'keep', 'includedBlockNum', 'incDelay', 'blockFee', 'includeFee', 'blockAward', 'blockAwardwoFee', 'duplicates2', 'mgasUsed'], axis=1)
 minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
 
 # Create mainchain dataframe to summarize mined blocks
@@ -134,6 +135,7 @@ minerBlocks['totReward'] = minerBlocks['blockAward'] + minerBlocks['uncleAward']
 #calc Total Return
 minerBlocks['totalBlocks'] = minerBlocks['main'] + minerBlocks['uncle']
 minerBlocks['mainAwardwFee'] = minerBlocks['blockAward']/minerBlocks['main']
+minerBlocks['avgBlockFee'] = minerBlocks['blockAward']/minerBlocks['main']
 minerBlocks['mainAwardwoFee'] =  minerBlocks['blockAwardwoFee'] / minerBlocks['main']
 minerBlocks['uncRatio'] = minerBlocks['uncle'] / minerBlocks['totalBlocks']
 minerBlocks['avgUncleAward'] = minerBlocks['uncleAward'] / minerBlocks['uncle']
@@ -151,7 +153,7 @@ print(minerBlocks)
 
 # Regression model for gas
 minerData['const'] = 1
-minerData['mgasUsed'] = minerData['gasUsed']/1e6
+
 
 
 model = sm.OLS(minerData['uncle'], minerData[['const','mgasUsed']])
@@ -178,11 +180,12 @@ profit = expectedTxAward - expectedEmptyAward
 
 resultTable = {
     'miner': ['all'],
+    'avgmGas': totAvgGasUsed/1e6
     'uncRate': [uncleRate],
     'zeroUncRate': [dictResults['const']],
     'actualZeroUncRate': [emptyUnclePct],
     'avgUncleReward': [avgUncleAward],
-    'avgMainReward': [avgMainRewardwFee],
+    'avgMainRewardwoFee': [avgMainRewardwoFee],
     'avgTxFees': [avgBlockFee],
     'predictEmpAward': [expectedEmptyAward],
     'predictTxAward': [expectedTxAward],
@@ -190,16 +193,35 @@ resultTable = {
     'profit': [profit]}
 
 resultSummary = pd.DataFrame.from_dict(resultTable)
-resultSummary = resultSummary[['miner', 'uncRate', 'zeroUncRate', 'actualZeroUncRate','avgUncleReward', 'avgMainReward', 'avgTxFees', 'predictEmpAward', 'predictTxAward', 'actualTxAward', 'profit']]
-print(resultSummary)
+resultSummary = resultSummary[['miner', 'avgmGas', 'uncRate', 'zeroUncRate', 'actualZeroUncRate','avgUncleReward', 'avgMainReward', 'avgTxFees', 'predictEmpAward', 'predictTxAward', 'actualTxAward', 'profit']]
+
 
 
 topMiners = minerBlocks.head(n=5)
+var x = 1
 for index, row in topMiners.iterrows(): 
     md = minerData.loc[minerData['miner']==index, :]
     model = sm.OLS(md['uncle'], md[['const', 'mgasUsed']])
     results = model.fit()
+    dictResults = dict(results.params)
+    predictedUncle = dictResults['const'] + (dictResults['mgasUsed'] * row['AvgGasUsed']/1e6)
+    expectedEmptyAward = (row['avgMainRewardwoFee']*(1-dictResults['const'])) + (row['avgUncleAward']*dictResults['const'])
+    expectedTxAward = (row['avgMainRewardwFee']*(1-dictResults['const'])) + (row['avgUncleAward']*predictedUncle)
+    resultSummary[x, 'miner'] = row['miner']
+    resultSummary[x, 'avgmGas'] = row['avgGasUsed']
+    resultSummary[x, 'uncRate'] = row['uncRatio'] 
+    resultSummary[x, 'zeroUncRate'] = dictResults['const']
+    resultSummary[x, 'avgUncleReward'] = row['avgUncleAward']
+    resultSummary[x, 'avgMainRewardwoFee'] = row['avgMainAwardwoFee']
+    resultSummary[x, 'avgTxFees'] = row['avgBlockFee']
+    resultSummary[x, 'predictEmpAward'] = expectedEmptyAward
+    resultSummary[x, 'predictTxAward'] = expectedTxAward
+    resultSummary[x, 'actualTxAward'] = row['avgReward']
+    resultSummary[x, 'profit'] = expectedTxAward - expectedEmptyAward
+
     print (results.summary())
+
+print(resultSummary)
 
 '''
 miner1Data = minerData.loc[minerData['miner'] == '0xea674fdde714fd979de3edf0f56aa9716b898ec8', :]
