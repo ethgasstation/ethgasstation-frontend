@@ -176,6 +176,7 @@ expectedTxAward = (avgMainRewardwFee*(1-predictedUncle)) + (avgUncleAward*predic
 
 profit = expectedTxAward - expectedEmptyAward
 profitpct = profit/avgBlockFee
+print(profitpct, avgBlockFee)
 profitpctBlock = profit/avgMainRewardwFee
 #create Dataframe
 
