@@ -112,7 +112,7 @@ totalUncles = len(uncleBlocks)
 minerUncleBlocks = uncleBlocks.groupby('miner').sum()
 
 #clean
-minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'uncsReported', 'numTx', 'main', 'duplicates', 'keep', 'includedBlockNum', 'incDelay', 'blockFee', 'includeFee', 'blockAward', 'blockAwardwoFee', 'duplicates2', 'mgasUsed', 'emptyUncle', 'emptyBlock'], axis=1)
+minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'uncsReported', 'numTx', 'main', 'duplicates', 'keep', 'includedBlockNum', 'incDelay', 'blockFee', 'includeFee', 'blockAward', 'blockAwardwoFee', 'duplicates2', 'mgasUsed', 'emptyBlock'], axis=1)
 minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
 
 # Create mainchain dataframe to summarize mined blocks
@@ -124,7 +124,7 @@ totalMainBlocks = len(mainBlocks)
 
 #create summary table
 minerBlocks = mainBlocks.groupby('miner').sum()
-minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'duplicates', 'keep', 'uncle'], axis=1)
+minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'duplicates', 'keep', 'uncle', 'emptyUncle'], axis=1)
 
 print(minerBlocks)
 # Merge the two tables on miner
