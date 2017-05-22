@@ -77,10 +77,8 @@ minMgasUsed = minerData['mgasUsed'].min()
 maxMgasUsed = minerData['mgasUsed'].max()
 minerData.loc[(minerData['gasUsed']==0) & (minerData['uncle']==True), 'emptyUncle'] = 1
 minerData.loc[(minerData['gasUsed']==0) & (minerData['main']==True), 'emptyBlock'] = 1
-minerData.loc[minerData['gasUsed']==0, 'anyEmpty'] = 1
 minerData['emptyUncle'].fillna(0, inplace=True)
 minerData['emptyBlock'].fillna(0, inplace=True)
-minerData['anyEmpty'].fillna(0, inplace=True)
 emptyUncles = minerData['emptyUncle'].sum()
 
 
