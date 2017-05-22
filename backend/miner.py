@@ -76,6 +76,9 @@ avgMgasUsed = minerData['mgasUsed'].mean()
 minMgasUsed = minerData['mgasUsed'].min()
 maxMgasUsed = minerData['mgasUsed'].max()
 minerData.loc[(minerData['gasUsed']==0) & (minerData['uncle']==True), 'emptyUncle'] = 1
+minerData.loc[(minerData['gasUsed']==0) & (minerData['main']==True), 'emptyBlock'] = 1
+minerData['emptyUncle'].fillna(inplace=True)
+minerData['emptyBlock'].fillna(inplace=True)
 emptyUncles = minerData['emptyUncle'].sum()
 
 
@@ -130,12 +133,13 @@ minerBlocks['uncleAward'].fillna(0, inplace = True)
 minerBlocks['uncle'].fillna(0, inplace = True)
 minerBlocks['totReward'] = minerBlocks['blockAward'] + minerBlocks['uncleAward']
 
-#calc Total Return
+#calc miner totals
 minerBlocks['totalBlocks'] = minerBlocks['main'] + minerBlocks['uncle']
 minerBlocks['mainAwardwFee'] = minerBlocks['blockAward']/minerBlocks['main']
 minerBlocks['avgBlockFee'] = minerBlocks['blockFee']/minerBlocks['main']
 minerBlocks['mainAwardwoFee'] =  minerBlocks['blockAwardwoFee'] / minerBlocks['main']
 minerBlocks['uncRatio'] = minerBlocks['uncle'] / minerBlocks['totalBlocks']
+minerBlocks['emptyUncRatio'] = minerBlocks['emptyUncle']/(minerBlocks['emptyUncle']+ minerBlocks['emptyBlock'])
 minerBlocks['avgUncleAward'] = minerBlocks['uncleAward'] / minerBlocks['uncle']
 minerBlocks['avgGasUsed'] = (minerBlocks['gasUsed'] + minerBlocks['uncleGasUsed'])/minerBlocks['totalBlocks']
 minerBlocks['avgTxFee'] = minerBlocks['avgBlockFee']/minerBlocks['avgGasUsed']*1e9
@@ -176,6 +180,7 @@ resultTable = {
     'miner': ['all'],
     'totalBlocks': [totalBlocks],
     'uncles': [totalUncles],
+    'emptyUncles':[emptyUncles],
     'avgmGas': [avgMgasUsed],
     'uncRate': [uncleRate],
     'predictedUncRate': [predictedUncle],
@@ -193,7 +198,7 @@ resultTable = {
     'profitPctBlock': [profitpctBlock]}
 
 resultSummary = pd.DataFrame.from_dict(resultTable)
-resultSummary = resultSummary[['miner', 'totalBlocks', 'uncles', 'uncRate', 'predictedUncRate', 'avgmGas','zeroUncRate', 'actualZeroUncRate','avgUncleReward', 'avgMainRewardwoFee', 'avgTxFees', 'predictEmpAward', 'predictTxAward', 'actualTxAward', 'breakeven', 'profit', 'profitPct', 'profitPctBlock']]
+resultSummary = resultSummary[['miner', 'totalBlocks', 'uncles', 'emptyUncles', 'uncRate', 'predictedUncRate', 'avgmGas','zeroUncRate', 'actualZeroUncRate','avgUncleReward', 'avgMainRewardwoFee', 'avgTxFees', 'predictEmpAward', 'predictTxAward', 'actualTxAward', 'breakeven', 'profit', 'profitPct', 'profitPctBlock']]
 
 miningpoolgas = minerBlocks.loc['0xb2930b35844a230f00e51431acae96fe543a0347', 'avgGasUsed']
 miningpoolfee = minerBlocks.loc['0xb2930b35844a230f00e51431acae96fe543a0347', 'mainAwardwFee']
@@ -219,6 +224,7 @@ for index, row in topMiners.iterrows():
     resultSummary.loc[x, 'uncRate'] = row['uncRatio']
     resultSummary.loc[x, 'predictedUncRate'] = predictedUncle
     resultSummary.loc[x, 'zeroUncRate'] = dictResults['const']
+    resultSummary.loc[x, 'acutalZeroUncRate'] = row['emptyUncRatio']
     resultSummary.loc[x, 'avgUncleReward'] = row['avgUncleAward']
     resultSummary.loc[x, 'avgMainRewardwoFee'] = row['mainAwardwoFee']
     resultSummary.loc[x, 'avgTxFees'] = row['avgBlockFee']
