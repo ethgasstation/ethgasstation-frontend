@@ -220,11 +220,12 @@ for index, row in topMiners.iterrows():
     resultSummary.loc[x, 'miner'] = index
     resultSummary.loc[x, 'totalBlocks'] = row['totalBlocks']
     resultSummary.loc[x, 'uncles'] = row['uncle']
+    resultSummary.loc[x, 'emptyUncles'] = row['emptyUncle']
     resultSummary.loc[x, 'avgmGas'] = row['avgGasUsed']/1e6
     resultSummary.loc[x, 'uncRate'] = row['uncRatio']
     resultSummary.loc[x, 'predictedUncRate'] = predictedUncle
     resultSummary.loc[x, 'zeroUncRate'] = dictResults['const']
-    resultSummary.loc[x, 'acutalZeroUncRate'] = row['emptyUncRatio']
+    resultSummary.loc[x, 'actualZeroUncRate'] = row['emptyUncRatio']
     resultSummary.loc[x, 'avgUncleReward'] = row['avgUncleAward']
     resultSummary.loc[x, 'avgMainRewardwoFee'] = row['mainAwardwoFee']
     resultSummary.loc[x, 'avgTxFees'] = row['avgBlockFee']
