@@ -76,6 +76,8 @@ avgMgasUsed = minerData['mgasUsed'].mean()
 minMgasUsed = minerData['mgasUsed'].min()
 maxMgasUsed = minerData['mgasUsed'].max()
 minerData.loc[(minerData['gasUsed']==0) & (minerData['uncle']==True), 'emptyUncle'] = 1
+emptyUncles2 = minerData['emptyUncle'].sum()
+
 
 #define reward for uncleBlocks
 for index, row in minerData.iterrows():
@@ -84,14 +86,17 @@ for index, row in minerData.iterrows():
         minerData.loc[index, 'blockAward'] = (8-incDelay)/8 * 5
         minerData.loc[index, 'blockAwardwoFee'] = (8-incDelay)/8 * 5
 avgBlockAward = minerData['blockAward'].mean()
+avgUncleAward2 = minerData.loc[minerData['uncle']==1, 'blockAward'].mean()
+totalUncles2 = minerData.loc[minerData['uncle']==1, 'uncle'].sum()
 
 print (minerData)
+print (avgUncleAward2, totalUncles2)
 
 # find empty block uncle rate
 
 totemptyBlocks = len(minerData.loc[minerData['gasUsed']==0])
 emptyUncles = len(minerData.loc[(minerData['gasUsed']==0) & (minerData['uncle']==True)])
-emptyUncles2 - minerData['emptyUncle'].sum()
+
 emptyMains =  len(minerData.loc[(minerData['gasUsed']==0) & (minerData['main']==True)])
 emptyUnclePct = emptyUncles/float(totemptyBlocks)
 print (totemptyBlocks, emptyUncles, emptyUncles2, emptyMains)
