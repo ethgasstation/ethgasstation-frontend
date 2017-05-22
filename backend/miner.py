@@ -76,7 +76,7 @@ avgMgasUsed = minerData['mgasUsed'].mean()
 minMgasUsed = minerData['mgasUsed'].min()
 maxMgasUsed = minerData['mgasUsed'].max()
 minerData.loc[(minerData['gasUsed']==0) & (minerData['uncle']==True), 'emptyUncle'] = 1
-emptyUncles2 = minerData['emptyUncle'].sum()
+emptyUncles = minerData['emptyUncle'].sum()
 
 
 #define reward for uncleBlocks
@@ -86,8 +86,8 @@ for index, row in minerData.iterrows():
         minerData.loc[index, 'blockAward'] = (8-incDelay)/8 * 5
         minerData.loc[index, 'blockAwardwoFee'] = (8-incDelay)/8 * 5
 avgBlockAward = minerData['blockAward'].mean()
-avgUncleAward2 = minerData.loc[minerData['uncle']==1, 'blockAward'].mean()
-totalUncles2 = minerData.loc[minerData['uncle']==1, 'uncle'].sum()
+avgUncleAward = minerData.loc[minerData['uncle']==1, 'blockAward'].mean()
+totalUncles = minerData.loc[minerData['uncle']==1, 'uncle'].sum()
 
 print (minerData)
 print (avgUncleAward2, totalUncles2)
@@ -95,11 +95,9 @@ print (avgUncleAward2, totalUncles2)
 # find empty block uncle rate
 
 totemptyBlocks = len(minerData.loc[minerData['gasUsed']==0])
-emptyUncles = len(minerData.loc[(minerData['gasUsed']==0) & (minerData['uncle']==True)])
-
 emptyMains =  len(minerData.loc[(minerData['gasUsed']==0) & (minerData['main']==True)])
 emptyUnclePct = emptyUncles/float(totemptyBlocks)
-print (totemptyBlocks, emptyUncles, emptyUncles2, emptyMains)
+print (totemptyBlocks, emptyUncles, emptyMains)
 print ("%.3f" % (emptyUnclePct))
 
 # Create uncle dataframe to summarize uncle stats
@@ -111,7 +109,7 @@ totalUncles = len(uncleBlocks)
 minerUncleBlocks = uncleBlocks.groupby('miner').sum()
 
 #clean
-minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'uncsReported', 'numTx', 'main', 'duplicates', 'keep', 'includedBlockNum', 'incDelay', 'blockFee', 'includeFee', 'blockAward', 'blockAwardwoFee', 'duplicates2', 'mgasUsed'], axis=1)
+minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'uncsReported', 'numTx', 'main', 'duplicates', 'keep', 'includedBlockNum', 'incDelay', 'blockFee', 'includeFee', 'blockAward', 'blockAwardwoFee', 'duplicates2', 'mgasUsed', 'emptyUncle'], axis=1)
 minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
 
 # Create mainchain dataframe to summarize mined blocks
