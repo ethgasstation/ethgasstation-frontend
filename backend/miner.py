@@ -126,7 +126,7 @@ totalMainBlocks = len(mainBlocks)
 minerBlocks = mainBlocks.groupby('miner').sum()
 minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'duplicates', 'keep', 'uncle'], axis=1)
 
-
+print(minerBlocks)
 # Merge the two tables on miner
 minerBlocks = minerBlocks.join(minerUncleBlocks)
 minerBlocks['uncleAward'].fillna(0, inplace = True)
