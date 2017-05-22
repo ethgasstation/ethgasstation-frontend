@@ -250,3 +250,17 @@ for index, row in topMiners.iterrows():
     max = minerData.loc[minerData['miner']==index, 'mgasUsed'].max()
     med = minerData.loc[minerData['miner']==index, 'mgasUsed'].quantile(.5)
     print(index, avg, min, max, med)
+
+minerData.loc[minerData['miner']== '0x61c808d82a3ac53231750dadc13c777b59310bd9', 'f2pool'] = 1
+minerData.loc[minerData['miner']!= '0x61c808d82a3ac53231750dadc13c777b59310bd9', 'f2pool'] = 0
+minerData.loc[minerData['miner']== '0xb2930b35844a230f00e51431acae96fe543a0347', 'mpoolhub'] = 1
+minerData.loc[minerData['miner']!= '0xb2930b35844a230f00e51431acae96fe543a0347', 'mpoolhub'] = 0
+minerData.loc[~minerData['miner'].isin(['0xb2930b35844a230f00e51431acae96fe543a0347', '0x61c808d82a3ac53231750dadc13c777b59310bd9']), 'others'] = 1
+minerData.loc[minerData['miner'].isin(['0xb2930b35844a230f00e51431acae96fe543a0347', '0x61c808d82a3ac53231750dadc13c777b59310bd9']), 'others'] = 0
+
+minerData['f2poolgas'] = minerData['mgasUsed'] * minerData['f2pool']
+minerData['mpoolgas'] = minerData['mgasUsed'] * minerData['mpoolhub']
+
+model = sm.OLS(minerData['uncle'], minerData[['const','mgasUsed', 'f2pool', 'mpoolhub', 'f2poolgas', 'mpoolgas']])
+results = model.fit()
+print (results.summary())

@@ -37,10 +37,10 @@ CREATE TABLE txDataLast10k (
     avgContractGas INT,
     min50 INT,
 
-    ETHpriceUSD DECIMAL(5,3),
-    ETHpriceEUR DECIMAl(5,3),
-    ETHpriceGBP DECIMAL(5,3),
-    ETHpriceCNY DECIMAL(5,3),
+    ETHpriceUSD DECIMAL(10,3),
+    ETHpriceEUR DECIMAl(10,3),
+    ETHpriceGBP DECIMAL(10,3),
+    ETHpriceCNY DECIMAL(10,3),
     
     cat1gasTotTx INT,
     cat1gasMeanDelay DECIMAL(8,3),
