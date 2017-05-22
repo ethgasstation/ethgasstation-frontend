@@ -75,6 +75,7 @@ minerData['mgasUsed'] = minerData['gasUsed']/1e6
 avgMgasUsed = minerData['mgasUsed'].mean()
 minMgasUsed = minerData['mgasUsed'].min()
 maxMgasUsed = minerData['mgasUsed'].max()
+minerData['emptyUncle']= minerData.loc[(minerData['gasUsed']==0) & (minerData['uncle']==True)]
 
 #define reward for uncleBlocks
 for index, row in minerData.iterrows():
@@ -90,9 +91,10 @@ print (minerData)
 
 totemptyBlocks = len(minerData.loc[minerData['gasUsed']==0])
 emptyUncles = len(minerData.loc[(minerData['gasUsed']==0) & (minerData['uncle']==True)])
+emptyUncles2 - minerData['emptyUncle'].sum()
 emptyMains =  len(minerData.loc[(minerData['gasUsed']==0) & (minerData['main']==True)])
 emptyUnclePct = emptyUncles/float(totemptyBlocks)
-print (totemptyBlocks, emptyUncles, emptyMains)
+print (totemptyBlocks, emptyUncles, emptyUncles2, emptyMains)
 print ("%.3f" % (emptyUnclePct))
 
 # Create uncle dataframe to summarize uncle stats
@@ -236,5 +238,5 @@ for index, row in topMiners.iterrows():
     avg = minerData.loc[minerData['miner']==index, 'blockAward'].mean()
     min = minerData.loc[minerData['miner']==index, 'mgasUsed'].min()
     max = minerData.loc[minerData['miner']==index, 'mgasUsed'].max()
-    med = minerData.loc[minerData['miner']==index, 'mgasUsed'].quantiles(.5)
+    med = minerData.loc[minerData['miner']==index, 'mgasUsed'].quantile(.5)
     print(index, avg, min, max, med)
