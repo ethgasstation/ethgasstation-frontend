@@ -75,7 +75,7 @@ minerData['mgasUsed'] = minerData['gasUsed']/1e6
 avgMgasUsed = minerData['mgasUsed'].mean()
 minMgasUsed = minerData['mgasUsed'].min()
 maxMgasUsed = minerData['mgasUsed'].max()
-minerData['emptyUncle']= minerData[(minerData['gasUsed']==0) & (minerData['uncle']==True)]
+minerData['emptyUncle']= minerData[(minerData['gasUsed']==0) & (minerData['uncle']==True), 'uncle']
 
 #define reward for uncleBlocks
 for index, row in minerData.iterrows():
