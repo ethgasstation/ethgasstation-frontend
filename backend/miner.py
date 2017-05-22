@@ -85,7 +85,6 @@ for index, row in minerData.iterrows():
     if row['uncle'] == 1:    
         minerData.loc[index, 'blockAward'] = (8-incDelay)/8 * 5
         minerData.loc[index, 'blockAwardwoFee'] = (8-incDelay)/8 * 5
-        minerData.loc[index, 'uncleAward'] = (8-incDelay)/8 * 5
 avgBlockAward = minerData['blockAward'].mean()
 avgUncleAward = minerData.loc[minerData['uncle']==1, 'blockAward'].mean()
 totalUncles = minerData.loc[minerData['uncle']==1, 'uncle'].sum()
@@ -100,7 +99,7 @@ emptyUnclePct = emptyUncles/float(totemptyBlocks)
 print (totemptyBlocks, emptyUncles, emptyMains)
 print ("%.3f" % (emptyUnclePct))
 
-'''
+
 # Create uncle dataframe to summarize uncle stats
 uncleBlocks = pd.DataFrame(minerData.loc[minerData['uncle'] == 1]) 
 uncleBlocks['incDelay']= uncleBlocks['includedBlockNum'] - uncleBlocks['blockNum']
@@ -112,7 +111,7 @@ minerUncleBlocks = uncleBlocks.groupby('miner').sum()
 #clean
 minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'uncsReported', 'numTx', 'main', 'duplicates', 'keep', 'includedBlockNum', 'incDelay', 'blockFee', 'includeFee', 'blockAward', 'blockAwardwoFee', 'duplicates2', 'mgasUsed', 'emptyUncle'], axis=1)
 minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
-'''
+
 # Create mainchain dataframe to summarize mined blocks
 mainBlocks = pd.DataFrame(minerData.loc[minerData['uncle']==0])
 avgMainRewardwoFee = mainBlocks['blockAwardwoFee'].mean()
@@ -124,7 +123,6 @@ totalMainBlocks = len(mainBlocks)
 minerBlocks = mainBlocks.groupby('miner').sum()
 minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'duplicates', 'keep', 'uncle'], axis=1)
 
-print(minerBlocks)
 
 # Merge the two tables on miner
 minerBlocks = minerBlocks.join(minerUncleBlocks)
