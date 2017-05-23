@@ -53,9 +53,7 @@ minerData['duplicates'] = minerData.duplicated(subset='blockHash', keep = False)
 dups = pd.DataFrame(minerData.loc[minerData['duplicates']==1])
 print (dups)
 blockhash = dups.loc[12, 'blockHash']
-string = 'node checkBlock.js '+ blockhash
-print(string)
-out = subprocess.check_output(string)
+out = subprocess.check_output(['node checkBlock.js', blockHash])
 print(out)
 
 print(minerData['uncle'].sum())
