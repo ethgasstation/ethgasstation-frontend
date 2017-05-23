@@ -5,6 +5,6 @@ var hash = process.argv[2];
 
 var receipt = web3.eth.getBlock(hash);
 console.log(receipt);
-
+/*
 var receipt = web3.eth.getUncle(hash);
-console.log(receipt);
+console.log(receipt);*/
