@@ -214,7 +214,7 @@ for index, row in topMiners.iterrows():
     mpoolUncle = dictResults['const'] + (dictResults['mgasUsed'] * miningpoolgas/1e6)
     mpoolAward = (miningpoolfee*(1-dictResults['const'])) + (row['avgUncleAward']*mpoolUncle)
     expectedEmptyAward = (row['mainAwardwoFee']*(1-dictResults['const'])) + (row['avgUncleAward']*dictResults['const'])
-    expectedTxAward = (row['mainAwardwFee']*(1-dictResults['const'])) + (row['avgUncleAward']*predictedUncle)
+    expectedTxAward = (row['mainAwardwFee']*(1-predictedUncle)) + (row['avgUncleAward']*predictedUncle)
     mainUncleDiff = row['avgUncleAward'] - row['mainAwardwoFee']
     breakeven = -1*dictResults['mgasUsed']/1e6 * mainUncleDiff * 1e9
     resultSummary.loc[x, 'miner'] = index
@@ -251,6 +251,9 @@ for index, row in topMiners.iterrows():
     med = minerData.loc[minerData['miner']==index, 'mgasUsed'].quantile(.5)
     print(index, avg, min, max, med)
 
+
+
+'''
 minerData.loc[minerData['miner']== '0x61c808d82a3ac53231750dadc13c777b59310bd9', 'f2pool'] = 1
 minerData.loc[minerData['miner']!= '0x61c808d82a3ac53231750dadc13c777b59310bd9', 'f2pool'] = 0
 minerData.loc[minerData['miner']== '0xb2930b35844a230f00e51431acae96fe543a0347', 'mpoolhub'] = 1
@@ -264,3 +267,4 @@ minerData['mpoolgas'] = minerData['mgasUsed'] * minerData['mpoolhub']
 model = sm.OLS(minerData['uncle'], minerData[['const','mgasUsed', 'f2pool', 'mpoolhub', 'f2poolgas', 'mpoolgas']])
 results = model.fit()
 print (results.summary())
+'''
