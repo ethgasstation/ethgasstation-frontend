@@ -22,7 +22,7 @@ minerData.columns = head
 cursor.close()
 cnx.close()
 
-'''
+
 # Clean blocks first reported as mainchain that later become uncles
 minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
 minerData['keep'] = True
@@ -49,6 +49,7 @@ for index, row in minerData.iterrows():
 minerData= minerData[minerData['keep'] == True]
 minerData['duplicates2']= minerData.duplicated(subset='blockHash')
 minerData = minerData[minerData['duplicates2'] == False]
+
 '''
 minerData['duplicates'] = minerData.duplicated(subset='blockHash', keep = False)
 dups = pd.DataFrame(minerData.loc[minerData['duplicates']==1])
@@ -62,6 +63,7 @@ print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
 
 sdss
+'''
 #clean data
 
 minerData['uncsReported'].fillna(value=0, inplace=True)
