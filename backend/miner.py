@@ -48,8 +48,8 @@ minerData= minerData[minerData['keep'] == True]
 minerData['duplicates2']= minerData.duplicated(subset='blockHash')
 minerData = minerData[minerData['duplicates2'] == False]
 '''
-minerData['duplicates'] = minerData.duplicated(subset='blockHash', keep = False)
-print(minerData.loc[minerData['duplicates']==1])
+dups = pd.DataFrame(minerData.duplicated(subset='blockHash', keep = False))
+print(dups)
 
 print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
