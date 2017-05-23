@@ -54,6 +54,7 @@ dups = pd.DataFrame(minerData.loc[minerData['duplicates']==1])
 print (dups)
 blockhash = dups.loc[12, 'blockHash']
 string = 'node checkBlock.js '+ blockhash
+print(string)
 out = subprocess.check_output(string)
 print(out)
 
