@@ -212,7 +212,7 @@ for index, row in topMiners.iterrows():
     dictResults = dict(results.params)
     predictedUncle = dictResults['const'] + (dictResults['mgasUsed'] * row['avgGasUsed']/1e6)
     mpoolUncle = dictResults['const'] + (dictResults['mgasUsed'] * miningpoolgas/1e6)
-    mpoolAward = (miningpoolfee*(1-dictResults['const'])) + (row['avgUncleAward']*mpoolUncle)
+    mpoolAward = (miningpoolfee*(1-mpoolUncle)) + (row['avgUncleAward']*mpoolUncle)
     expectedEmptyAward = (row['mainAwardwoFee']*(1-dictResults['const'])) + (row['avgUncleAward']*dictResults['const'])
     expectedTxAward = (row['mainAwardwFee']*(1-predictedUncle)) + (row['avgUncleAward']*predictedUncle)
     mainUncleDiff = row['avgUncleAward'] - row['mainAwardwoFee']
