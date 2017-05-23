@@ -2,6 +2,7 @@ import mysql.connector, sys
 import pandas as pd
 import numpy as np
 import statsmodels.api as sm
+import subprocess
 
 startBlock = sys.argv[1]
 endBlock = sys.argv[2]
@@ -48,8 +49,12 @@ minerData= minerData[minerData['keep'] == True]
 minerData['duplicates2']= minerData.duplicated(subset='blockHash')
 minerData = minerData[minerData['duplicates2'] == False]
 '''
-dups = pd.DataFrame(minerData.duplicated(subset='blockHash', keep = False))
-print(dups)
+minerData['duplicates'] = minerData.duplicated(subset='blockHash', keep = False)
+dups = pd.DataFrame(minerData.loc[minerData['duplicates']==1])
+blockhash = dups.loc[0, 'blockHash']
+string = 'node checkBock.js '+ blockhash;
+out = subprocess.check_output(string,stderr=STDOUT)
+print(out)
 
 print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
