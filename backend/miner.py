@@ -52,7 +52,7 @@ minerData = minerData[minerData['duplicates2'] == False]
 minerData['duplicates'] = minerData.duplicated(subset='blockHash', keep = False)
 dups = pd.DataFrame(minerData.loc[minerData['duplicates']==1])
 print (dups)
-blockhash = dups.loc[0, 'blockHash']
+blockhash = dups.loc[12, 'blockHash']
 string = 'node checkBock.js '+ blockhash;
 out = subprocess.check_output(string,stderr=STDOUT)
 print(out)
