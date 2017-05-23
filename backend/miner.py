@@ -22,7 +22,7 @@ minerData.columns = head
 cursor.close()
 cnx.close()
 
-
+'''
 # Clean blocks first reported as mainchain that later become uncles
 minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
 minerData['keep'] = True
@@ -49,11 +49,12 @@ for index, row in minerData.iterrows():
 minerData= minerData[minerData['keep'] == True]
 minerData['duplicates2']= minerData.duplicated(subset='blockHash')
 minerData = minerData[minerData['duplicates2'] == False]
-
 '''
+
 minerData['duplicates'] = minerData.duplicated(subset='blockHash', keep = False)
-dups = pd.DataFrame(minerData.loc[minerData['duplicates']==1])
-print (dups)
+duplist = minerData.loc[minerData['duplicates']==1, 'blockHash'].tolist()
+print (duplist)
+
 blockHash = dups.loc[12, 'blockHash']
 out = subprocess.check_output(['node', 'checkBlock.js', blockHash])
 json = json.loads(out)
@@ -63,7 +64,7 @@ print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
 
 sdss
-'''
+
 #clean data
 
 minerData['uncsReported'].fillna(value=0, inplace=True)
@@ -107,7 +108,7 @@ avgBlockAward = minerData['blockAward'].mean()
 avgUncleAward = minerData.loc[minerData['uncle']==1, 'blockAward'].mean()
 totalUncles = minerData.loc[minerData['uncle']==1, 'uncle'].sum()
 
-print (minerData)
+
 
 # find empty block uncle rate
 
@@ -141,7 +142,7 @@ totalMainBlocks = len(mainBlocks)
 minerBlocks = mainBlocks.groupby('miner').sum()
 minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'duplicates', 'keep', 'uncle', 'emptyUncle'], axis=1)
 
-print(minerBlocks)
+
 # Merge the two tables on miner
 minerBlocks = minerBlocks.join(minerUncleBlocks)
 minerBlocks['uncleAward'].fillna(0, inplace = True)
@@ -162,7 +163,7 @@ minerBlocks['avgTxFee'] = minerBlocks['avgBlockFee']/minerBlocks['avgGasUsed']*1
 minerBlocks['avgReward'] = minerBlocks['totReward'] / minerBlocks['totalBlocks']
 minerBlocks = minerBlocks.sort_values('totalBlocks', ascending = False)
 
-print(minerBlocks)
+
 
 
 
