@@ -237,7 +237,7 @@ for index, row in topMiners.iterrows():
     resultSummary.loc[x, 'profitPctBlock'] = (row['avgReward'] - expectedEmptyAward) / row['mainAwardwFee']
     resultSummary.loc[x, 'breakeven'] = breakeven
     resultSummary.loc[x, 'potentialAward'] = mpoolAward
-    resultSummary.loc[x, 'potentialProfit'] = mpoolAward - expectedEmptyAward
+    resultSummary.loc[x, 'potentialProfit'] = mpoolAward - row['avgReward']
     resultSummary.loc[x, 'avgTxFee'] = row['avgTxFee']
     print (results.summary())
     x=x+1
