@@ -53,12 +53,12 @@ minerData = minerData[minerData['duplicates2'] == False]
 
 minerData['duplicates'] = minerData.duplicated(subset='blockHash', keep = False)
 duplist = minerData.loc[minerData['duplicates']==1, 'blockHash'].tolist()
-print (duplist)
 
-blockHash = dups.loc[12, 'blockHash']
-out = subprocess.check_output(['node', 'checkBlock.js', blockHash])
-json = json.loads(out)
-print(json)
+for hash in duplist:
+    out = subprocess.check_output(['node', 'checkBlock.js', hash])
+    json = json.loads(out)
+    print(json)
+    break
 
 print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
