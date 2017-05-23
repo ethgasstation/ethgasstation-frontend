@@ -54,7 +54,7 @@ dups = pd.DataFrame(minerData.loc[minerData['duplicates']==1])
 print (dups)
 blockhash = dups.loc[12, 'blockHash']
 string = 'node checkBock.js '+ blockhash;
-out = subprocess.check_output(string,stderr=STDOUT)
+out = subprocess.check_output(string)
 print(out)
 
 print(minerData['uncle'].sum())
