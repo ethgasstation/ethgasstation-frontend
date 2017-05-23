@@ -2,7 +2,8 @@ import mysql.connector, sys
 import pandas as pd
 import numpy as np
 import statsmodels.api as sm
-import subprocess
+import subprocess, json
+
 
 startBlock = sys.argv[1]
 endBlock = sys.argv[2]
@@ -54,7 +55,8 @@ dups = pd.DataFrame(minerData.loc[minerData['duplicates']==1])
 print (dups)
 blockHash = dups.loc[12, 'blockHash']
 out = subprocess.check_output(['node', 'checkBlock.js', blockHash])
-print(out)
+json = json.loads(out)
+print(json)
 
 print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
