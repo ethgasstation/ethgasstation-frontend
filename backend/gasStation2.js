@@ -132,14 +132,10 @@ filter.watch(function(err,blockHash)
                     });
                 }
             }
-            var len = blockStore.push(block.number);
-            var x = block.number -5
-            if (len>3)
-            {
-                process = blockStore.shift();
-                oldBlock = web3.eth.getBlock(x);
-                writeSpeedo(oldBlock);
-            }
+            var x = block.number -5;
+            oldBlock = web3.eth.getBlock(x);
+            console.log (oldBlock);
+            writeSpeedo(oldBlock);
             blockCounter++;
             console.log(block.number);
             currentBlock = block.number;
