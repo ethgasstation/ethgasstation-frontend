@@ -154,7 +154,7 @@ totalMainBlocks = len(mainBlocks)
 
 #create summary table
 minerBlocks = mainBlocks.groupby('miner').sum()
-minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'duplicates', 'keep', 'uncle', 'emptyUncle'], axis=1)
+minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'duplicates','mainIdents', 'uncle', 'emptyUncle'], axis=1)
 
 
 # Merge the two tables on miner
