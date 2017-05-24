@@ -67,7 +67,7 @@ for block in mainlist:
     print(type(hash))
     print (bnum)
     print (hash)
-    query = ("DELETE FROM speedo WHERE blockNum = %s AND main = 1 AND hash != %s")
+    query = ("DELETE FROM speedo WHERE blockNum = %s AND main = 1 AND blockHash != %s")
     for result in cursor.execute(query, (bnum, hash), multi=True):
         print (result.statement)
     
