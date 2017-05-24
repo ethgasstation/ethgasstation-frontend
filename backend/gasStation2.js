@@ -132,14 +132,12 @@ filter.watch(function(err,blockHash)
                     });
                 }
             }
-            var len = blockStore.push(block);
-            x = block.number - 5;
-            test = web3.eth.getBlock(x);
-            console.log(test);
+            var len = blockStore.push(block.number);
             if (len>3)
             {
                 process = blockStore.shift();
-                writeSpeedo(process);
+                oldBlock = web3.eth.getBlock(process.number);
+                writeSpeedo(oldBlock);
             }
             blockCounter++;
             console.log(block.number);
@@ -335,60 +333,54 @@ function validateTx (tx, blockNum, last)
 // Data for the speedometer- written every block
 
 
-function writeSpeedo (oldBlock)
+function writeSpeedo (block)
 {
-    console.log(oldBlock.number);
-    var block = web3.eth.getBlock(oldBlock.number);
-    console.log(block);
 
-        if (block != null)
+    speed = block.gasUsed/block.gasLimit;
+    uncsReported = block.uncles.length;
+    totalTx = block.transactions.length;
+    var post3 = 
         {
-            speed = block.gasUsed/block.gasLimit;
-            uncsReported = block.uncles.length;
-            totalTx = block.transactions.length;
-            var post3 = 
+            blockNum: block.number,
+            gasUsed: block.gasUsed,
+            gasLimit: block.gasLimit,
+            blockHash: block.hash,
+            miner: block.miner,
+            numTx: totalTx,
+            uncle: false,
+            main: true,
+            speed: speed,
+            uncsReported: uncsReported
+        }
+    writeData (post3, 'speedo');
+    if (block.uncles.length > 0)
+        {
+            for (pos in block.uncles)
             {
-                blockNum: block.number,
-                gasUsed: block.gasUsed,
-                gasLimit: block.gasLimit,
-                blockHash: block.hash,
-                miner: block.miner,
-                numTx: totalTx,
-                uncle: false,
-                main: true,
-                speed: speed,
-                uncsReported: uncsReported
-            }
-            writeData (post3, 'speedo');
-            if (block.uncles.length > 0)
-            {
-                for (pos in block.uncles)
+                web3.eth.getUncle(block.number, pos, function (err, uncleBlock)
                 {
-                    web3.eth.getUncle(block.number, pos, function (err, uncleBlock)
+                    if (uncleBlock !=null)
                     {
-                        if (uncleBlock !=null)
+                        var post = 
                         {
-                            var post = 
-                            {
-                                blockHash: uncleBlock.hash,
-                                includedBlockNum: block.number,
-                                blockNum: uncleBlock.number,
-                                miner: uncleBlock.miner,
-                                gasUsed: uncleBlock.gasUsed,
-                                gasLimit: uncleBlock.gasLimit,
-                                blockFee: 0,
-                                uncle: true,
-                                main: false
-                            }
-                            writeData(post, 'speedo');
+                            blockHash: uncleBlock.hash,
+                            includedBlockNum: block.number,
+                            blockNum: uncleBlock.number,
+                            miner: uncleBlock.miner,
+                            gasUsed: uncleBlock.gasUsed,
+                            gasLimit: uncleBlock.gasLimit,
+                            blockFee: 0,
+                            uncle: true,
+                            main: false
                         }
+                        writeData(post, 'speedo');
+                    }
 
                     })
-                }
             }
         }
-   
 }
+   
 
 function blockFee (blockHash, fee)
 {
