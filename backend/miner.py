@@ -52,7 +52,7 @@ minerData = minerData[minerData['duplicates2'] == False]
 '''
 minerData['mainIdents'] = minerData.duplicated(subset=['blockNum', 'main'])
 
-print (minerData['mainIdents']==False)
+print (minerData[minerData['mainIdents']==False])
 
 
 
