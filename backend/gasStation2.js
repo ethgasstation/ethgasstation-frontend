@@ -133,6 +133,9 @@ filter.watch(function(err,blockHash)
                 }
             }
             var len = blockStore.push(block);
+            x = block.number - 5;
+            test = web3.eth.getBlock(x);
+            console.log(test);
             if (len>3)
             {
                 process = blockStore.shift();
