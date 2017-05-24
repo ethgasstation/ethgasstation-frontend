@@ -133,10 +133,11 @@ filter.watch(function(err,blockHash)
                 }
             }
             var len = blockStore.push(block.number);
+            var x = block.number -5
             if (len>3)
             {
                 process = blockStore.shift();
-                oldBlock = web3.eth.getBlock(process);
+                oldBlock = web3.eth.getBlock(x);
                 writeSpeedo(oldBlock);
             }
             blockCounter++;
