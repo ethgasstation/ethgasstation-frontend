@@ -68,10 +68,6 @@ for block in mainlist:
     print (cursor.statement, cursor.rowcount)
     z=z+1
     print(z)
-    
-    break
-
-
 
 print len(minerData)
 print(minerData['uncle'].sum())
