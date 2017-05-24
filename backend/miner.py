@@ -62,7 +62,7 @@ for block in mainlist:
     block = json.loads(out)
     print(block)
     print len(minerData)
-    minerData = minerData.loc[(minerData['blockNum'] == block['blockNum']) & (minerData['main'] == 1) & (minerData['blockHash'] != block['hash'])].drop()
+    minerData = minerData.drop(minerData[(minerData['blockNum'] == block['blockNum']) & (minerData['main'] == 1) & (minerData['blockHash'] != block['hash'])], axis=0)
     print len(minerData)
     z=z+1
     if z ==10:
