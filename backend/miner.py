@@ -52,9 +52,9 @@ minerData = minerData[minerData['duplicates2'] == False]
 '''
 minerData['mainIdents'] = minerData.duplicated(subset=['blockNum', 'main'])
 
-print (minerData[minerData['mainIdents']==False])
+minerData = minerData[minerData['mainIdents']==True])
 
-
+print(minerData)
 
 minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
 mainDups = minerData.groupby('blockNum').sum()
