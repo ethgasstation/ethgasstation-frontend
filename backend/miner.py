@@ -51,7 +51,8 @@ minerData = minerData[minerData['duplicates2'] == False]
 
 '''
 minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
-mainlist = minerData.loc[(minerData['duplicates']==1) & (minerData['main']==1), 'blockNum'].tolist()
+blockDups = minerData.groupby('block').sum()
+mainlist = blockDups.loc[(minerData['main']==2), 'blockNum'].tolist()
 
 
 z=0
