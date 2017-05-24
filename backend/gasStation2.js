@@ -332,7 +332,9 @@ function storeSpeedo (block)
     if (len>5)
     {
         process = blockStore.shift();
-        writeSpeedo(block);
+        console.log(block.number);
+        console.log(process.number);
+        writeSpeedo(process);
     }
 }
 
