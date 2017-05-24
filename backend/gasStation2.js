@@ -136,7 +136,7 @@ filter.watch(function(err,blockHash)
             if (len>3)
             {
                 process = blockStore.shift();
-                oldBlock = web3.eth.getBlock(process.number);
+                oldBlock = web3.eth.getBlock(process);
                 writeSpeedo(oldBlock);
             }
             blockCounter++;
