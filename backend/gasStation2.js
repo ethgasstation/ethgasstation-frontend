@@ -339,6 +339,7 @@ function storeSpeedo (block)
 
 function writeSpeedo (oldBlock)
 {
+    console.log(oldBlock.number);
     web3.eth.getBlock(oldBlock.number, function (err, block){
 
         if (err)
