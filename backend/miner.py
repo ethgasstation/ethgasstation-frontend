@@ -50,10 +50,17 @@ minerData['duplicates2']= minerData.duplicated(subset='blockHash')
 minerData = minerData[minerData['duplicates2'] == False]
 
 '''
+minerData['mainIdents'] = minerData.duplicated(subset=['blockNum', 'main'])
+
+print (minerData['mainIdents'==False])
+
+
+
 minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
 mainDups = minerData.groupby('blockNum').sum()
-mainlist = mainDups.loc[mainDups['main']==2].index.tolist()
+mainlist = mainDups.loc[mainDups['main']>1].index.tolist()
 
+#
 z=0
 print len(minerData)
 print len(mainlist)
