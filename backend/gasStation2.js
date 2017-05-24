@@ -329,7 +329,7 @@ function validateTx (tx, blockNum, last)
 function storeSpeedo (block)
 {
     var len = blockStore.push(block);
-    if (len>5)
+    if (len>3)
     {
         process = blockStore.shift();
         console.log(block.number);
@@ -342,7 +342,7 @@ function storeSpeedo (block)
 function writeSpeedo (oldBlock)
 {
     console.log(oldBlock.number);
-    web3.eth.getBlock(oldBlock.number, function (err, block){
+    web3.eth.getBlock(1000, function (err, block){
 
         if (err)
         {
