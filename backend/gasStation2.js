@@ -342,12 +342,9 @@ function storeSpeedo (block)
 function writeSpeedo (oldBlock)
 {
     console.log(oldBlock.number);
-    web3.eth.getBlock(1000, function (err, block){
+    var block = web3.eth.getBlock(oldBlock.number);
+    console.log(block);
 
-        if (err)
-        {
-            console.log(err)
-        }
         if (block != null)
         {
             speed = block.gasUsed/block.gasLimit;
@@ -394,7 +391,7 @@ function writeSpeedo (oldBlock)
                 }
             }
         }
-    })
+   
 }
 
 function blockFee (blockHash, fee)
