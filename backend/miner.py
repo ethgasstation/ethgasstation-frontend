@@ -50,8 +50,7 @@ minerData['duplicates2']= minerData.duplicated(subset='blockHash')
 minerData = minerData[minerData['duplicates2'] == False]
 
 '''
-minerData['mainIdents'] = minerData.duplicated(subset=['blockNum', 'main'])
-
+minerData['mainIdents'] = minerData.duplicated(subset=['blockNum', 'main', 'uncsReported'])
 minerData = minerData[minerData['mainIdents']==False]
 
 print(minerData)
