@@ -132,9 +132,8 @@ filter.watch(function(err,blockHash)
                     });
                 }
             }
-            var x = block.number -5;
+            var x = block.number - 5;
             oldBlock = web3.eth.getBlock(x);
-            console.log (oldBlock);
             writeSpeedo(oldBlock);
             blockCounter++;
             console.log(block.number);
