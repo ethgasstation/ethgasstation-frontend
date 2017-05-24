@@ -12,7 +12,7 @@ web3.eth.getBlock(hash, function(err, result){
         var uncsReported = result.uncles.length;
         result2.main = 1;
         result2.uncle = 0;
-        result2.blockNum = result.block;
+        result2.blockNum = result.number;
         result2.hash = result.hash;
         result2.miner = result.miner;
         result2.gasUsed = result.gasUsed;
