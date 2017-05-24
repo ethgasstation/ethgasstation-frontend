@@ -58,8 +58,8 @@ z=0
 for hash in duplist:
     out = subprocess.check_output(['node', 'checkBlock.js', hash])
     print(out)
-    json = json.loads(out)
-    print(json)
+    block = json.loads(out)
+    print(block)
     z = z+1
     if z ==5:
         break
