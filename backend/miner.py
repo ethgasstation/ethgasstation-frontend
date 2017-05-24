@@ -60,8 +60,9 @@ for hash in duplist:
     print(out)
     block = json.loads(out)
     print(block)
+    print (z)
     z = z+1
-    if z ==5:
+    if z ==10:
         break
 
 print(minerData['uncle'].sum())
