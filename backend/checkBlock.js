@@ -12,22 +12,9 @@ web3.eth.getBlock(hash, function(err, result){
         result.uncle = 0;
         delete result.logsBloom;
         delete result.transactionsRoot;
-        delete results.transactions;
+        delete result.transactions;
 
         var json = JSON.stringify(result);
         console.log(json);
-    }
-    if (!result){
-        web3.getUncle(hash, function(err, result2){
-            if (err){
-                console.log(err);
-            }
-            if (result2){
-                result2.uncle = 1;
-                result2.main = 0;
-                var json2= JSON.stringify(result2);
-                console.log(json2);
-            }
-        })
     }
 });
