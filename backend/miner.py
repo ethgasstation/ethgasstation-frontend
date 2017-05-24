@@ -56,11 +56,18 @@ mainlist = minerData.loc[(minerData['duplicates']==1) & (minerData['main']==1), 
 
 z=0
 print len(minerData)
+print len(mainList)
 for block in mainlist:
     block = str(block)
     out = subprocess.check_output(['node', 'checkBlock.js', block])
-    block = json.loads(out)
-    minerData = minerData.drop(minerData[(minerData['blockNum'] == block['blockNum']) & (minerData['main'] == 1) & (minerData['blockHash'] != block['hash'])].index)
+    blockData = json.loads(out)
+    bnum = str(blockData['blockNum'])
+    hash = blockData['blockHash']
+    print (bnum)
+    prin (hash)
+
+    query = ("DELETE FROM speedo2 WHERE blockNum = %s AND main = 1 AND hash is not %s")
+    break
     
 
 
