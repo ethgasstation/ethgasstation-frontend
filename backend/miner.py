@@ -55,6 +55,7 @@ mainlist = minerData.loc[(minerData['duplicates']==1) & (minerData['main']==1), 
 
 
 z=0
+print len(minerData)
 for block in mainlist:
     block = str(block)
     print(block)
@@ -63,11 +64,10 @@ for block in mainlist:
     print(block)
     print len(minerData)
     minerData = minerData.drop(minerData[(minerData['blockNum'] == block['blockNum']) & (minerData['main'] == 1) & (minerData['blockHash'] != block['hash'])].index)
-    print len(minerData)
-    z=z+1
-    if z ==10:
-        break
-print (list)
+    
+
+
+print len(minerData)
 print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
 
