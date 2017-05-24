@@ -62,7 +62,7 @@ for block in mainlist:
     out = subprocess.check_output(['node', 'checkBlock.js', block])
     blockData = json.loads(out)
     bnum = str(blockData['blockNum'])
-    hash = blockData['hash']
+    hash = str(blockData['hash'])
     print(type(bnum))
     print(type(hash))
     print (bnum)
