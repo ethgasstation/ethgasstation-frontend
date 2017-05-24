@@ -59,7 +59,7 @@ for block in mainlist:
     print(block)
     out = subprocess.check_output(['node', 'checkBlock.js', block])
     block = json.loads(out)
-    print(block)
+    print(block.number)
     print (z)
     z = z+1
     if z ==10:
