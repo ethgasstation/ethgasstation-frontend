@@ -61,6 +61,9 @@ for block in mainlist:
     out = subprocess.check_output(['node', 'checkBlock.js', block])
     block = json.loads(out)
     print(block)
+    print len(minerData)
+    minerData = minerData.loc[(minerData['blockNum'] == block.number) & (minerData['main'] == 1) & (minerData['blockHash'] != block.hash)].drop()
+    print len(minerData)
     z=z+1
     if z ==10:
         break
