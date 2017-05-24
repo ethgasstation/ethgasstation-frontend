@@ -57,6 +57,7 @@ duplist = minerData.loc[minerData['duplicates']==1, 'blockHash'].tolist()
 z=0
 for hash in duplist:
     out = subprocess.check_output(['node', 'checkBlock.js', hash])
+    print(out)
     json = json.loads(out)
     print(json)
     z = z+1
