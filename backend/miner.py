@@ -19,8 +19,8 @@ head = cursor.column_names
 
 minerData = pd.DataFrame(cursor.fetchall())
 minerData.columns = head
-cursor.close()
-cnx.close()
+# cursor.close()
+# cnx.close()
 '''
 # Clean blocks first reported as mainchain that later become uncles
 minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
@@ -63,10 +63,12 @@ for block in mainlist:
     blockData = json.loads(out)
     bnum = str(blockData['blockNum'])
     hash = blockData['hash']
+    print(type(bnum))
+    print(type(hash))
     print (bnum)
-    prin (hash)
-
+    print (hash)
     query = ("DELETE FROM speedo2 WHERE blockNum = %s AND main = 1 AND hash is not %s")
+    cursor.execute(query, (bnum, hash))
     break
 
 
