@@ -58,11 +58,8 @@ z=0
 print len(minerData)
 for block in mainlist:
     block = str(block)
-    print(block)
     out = subprocess.check_output(['node', 'checkBlock.js', block])
     block = json.loads(out)
-    print(block)
-    print len(minerData)
     minerData = minerData.drop(minerData[(minerData['blockNum'] == block['blockNum']) & (minerData['main'] == 1) & (minerData['blockHash'] != block['hash'])].index)
     
 
