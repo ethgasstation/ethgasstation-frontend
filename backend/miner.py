@@ -65,6 +65,7 @@ for block in mainlist:
     hash = str(blockData['hash'])
     query = ("DELETE FROM speedo WHERE blockNum = %s AND main = 1 AND blockHash != %s")
     cursor.execute(query, (bnum, hash))
+    cnx.commit()
     print (cursor.statement, cursor.rowcount)
     z=z+1
     print(z)
