@@ -53,12 +53,11 @@ minerData = minerData[minerData['duplicates2'] == False]
 minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
 mainlist = minerData.loc[(minerData['duplicates']==1) & (minerData['main']==1), 'blockNum'].tolist()
 
-print (minerData)
-print (mainlist)
 
 z=0
 for block in mainlist:
     block = str(block)
+    print(block)
     out = subprocess.check_output(['node', 'checkBlock.js', block])
     block = json.loads(out)
     print(block)
