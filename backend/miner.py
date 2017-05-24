@@ -53,8 +53,6 @@ minerData = minerData[minerData['duplicates2'] == False]
 minerData['mainIdents'] = minerData.duplicated(subset=['blockNum', 'main', 'uncsReported'])
 minerData = minerData[minerData['mainIdents']==False]
 
-print(minerData)
-
 minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
 mainDups = minerData.groupby('blockNum').sum()
 mainlist = mainDups.loc[mainDups['main']>1].index.tolist()
@@ -80,7 +78,6 @@ print len(minerData)
 print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
 
-sdss
 
 #clean data
 
