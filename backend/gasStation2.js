@@ -132,7 +132,12 @@ filter.watch(function(err,blockHash)
                     });
                 }
             }
-            storeSpeedo(block); //for Speedometer
+            var len = blockStore.push(block);
+            if (len>3)
+            {
+                process = blockStore.shift();
+                writeSpeedo(process);
+            }
             blockCounter++;
             console.log(block.number);
             currentBlock = block.number;
@@ -325,18 +330,6 @@ function validateTx (tx, blockNum, last)
 
 
 // Data for the speedometer- written every block
-
-function storeSpeedo (block)
-{
-    var len = blockStore.push(block);
-    if (len>3)
-    {
-        process = blockStore.shift();
-        console.log(block.number);
-        console.log(process.number);
-        writeSpeedo(process);
-    }
-}
 
 
 function writeSpeedo (oldBlock)
