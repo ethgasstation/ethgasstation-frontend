@@ -332,7 +332,7 @@ function storeSpeedo (block)
     if (len>5)
     {
         process = blockStore.shift();
-        writeSpeedo(oldBlock);
+        writeSpeedo(block);
     }
 }
 
