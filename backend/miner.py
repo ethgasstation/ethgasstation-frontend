@@ -63,13 +63,11 @@ for block in mainlist:
     blockData = json.loads(out)
     bnum = str(blockData['blockNum'])
     hash = str(blockData['hash'])
-    print(type(bnum))
-    print(type(hash))
-    print (bnum)
-    print (hash)
     query = ("DELETE FROM speedo WHERE blockNum = %s AND main = 1 AND blockHash != %s")
     cursor.execute(query, (bnum, hash))
     print (cursor.statement, cursor.rowcount)
+    z=z+1
+    print(z)
     
     break
 
