@@ -289,50 +289,50 @@ oMinerNames = otherMiners.index.tolist()
 print(oMinerNames)
 minerData.loc[minerData['miner'].isin(oMinerNames), 'other'] = 1
 
-oAvgGasUsed = minerData[minerData['other']==1, 'mgasUsed'].mean()
-print(oAvgGasUsed)
+oAvgGasUsed = minerData.loc[minerData['other']==1, 'gasUsed'].mean()
+oAvgAward = minerData.loc[minerData['other']==1, 'blockAward'].mean()
+oMainAwardwoFee = minerData.loc[(minerData['other']==1) & (minerData['main']==1), 'blockAwardwoFee'].mean()
+oMainAwardwFee = minerData.loc[(minerData['other']==1) & (minerData['main']==1), 'blockAward'].mean()
+oAvgUncleAward = minerData.loc[(minerData['other']==1) & (minerData['main']==0), 'blockAward'].mean()
+oAvgBlockFee = minerData.loc[(minerData['other']==1) & (minerData['main']==1), 'blockFee'].mean()
+oTotalBlocks = len(minerData[minerData['other']==1])
+oUncle = len(minerData[(minerData['other']==1) & (minerData['uncle']==1)])
+oUncleRatio = oUncle/oTotalBlocks
+oMiner = 'Other'
+oAvgTxFee = oAvgBlockFee/oAvgGasUsed/*1e9
 
 md = minerData.loc[minerData['other']==1, :]
 model = sm.OLS(md['uncle'], md[['const', 'mgasUsed']])
 results = model.fit()
 dictResults = dict(results.params)
-predictedUncle = dictResults['const'] + (dictResults['mgasUsed'] * row['avgGasUsed']/1e6)
+predictedUncle = dictResults['const'] + (dictResults['mgasUsed'] * oAvgGasUsed']/1e6)
 mpoolUncle = dictResults['const'] + (dictResults['mgasUsed'] * miningpoolgas/1e6)
-mpoolAward = ((row['mainAwardwoFee']+miningpoolfee)*(1-mpoolUncle)) + (row['avgUncleAward']*mpoolUncle)
-expectedEmptyAward = (row['mainAwardwoFee']*(1-dictResults['const'])) + (row['avgUncleAward']*dictResults['const'])
-expectedTxAward = (row['mainAwardwFee']*(1-predictedUncle)) + (row['avgUncleAward']*predictedUncle)
-mainUncleDiff = row['avgUncleAward'] - row['mainAwardwoFee']
+mpoolAward = ((oMainAwardwoFee+miningpoolfee)*(1-mpoolUncle)) + (oAvgUncleAward*mpoolUncle)
+expectedEmptyAward = (oMainAwardwoFee*(1-dictResults['const'])) + (oAvgUncleAward*dictResults['const'])
+expectedTxAward = (oMainAwardwFee*(1-predictedUncle)) + (oAvgUncleAward*predictedUncle)
+mainUncleDiff = oAvgUncleAward - oMainAwardwoFee
 breakeven = -1*dictResults['mgasUsed']/1e6 * mainUncleDiff * 1e9
-resultSummary.loc[x, 'miner'] = index
-resultSummary.loc[x, 'totalBlocks'] = row['totalBlocks']
-resultSummary.loc[x, 'uncles'] = row['uncle']
-resultSummary.loc[x, 'emptyUncles'] = row['emptyUncle']
-resultSummary.loc[x, 'avgmGas'] = row['avgGasUsed']/1e6
-resultSummary.loc[x, 'uncRate'] = row['uncRatio']
-resultSummary.loc[x, 'predictedUncRate'] = predictedUncle
-resultSummary.loc[x, 'zeroUncRate'] = dictResults['const']
-resultSummary.loc[x, 'actualZeroUncRate'] = row['emptyUncRatio']
-resultSummary.loc[x, 'avgUncleReward'] = row['avgUncleAward']
-resultSummary.loc[x, 'avgMainRewardwoFee'] = row['mainAwardwoFee']
-resultSummary.loc[x, 'avgTxFees'] = row['avgBlockFee']
-resultSummary.loc[x, 'predictEmpAward'] = expectedEmptyAward
-resultSummary.loc[x, 'predictTxAward'] = expectedTxAward
-resultSummary.loc[x, 'actualTxAward'] = row['avgReward']
-resultSummary.loc[x, 'profit'] = row['avgReward'] - expectedEmptyAward
-resultSummary.loc[x, 'profitPct'] = (row['avgReward'] - expectedEmptyAward)/ row['avgBlockFee']
-resultSummary.loc[x, 'profitPctBlock'] = (row['avgReward'] - expectedEmptyAward) / row['mainAwardwFee']
-resultSummary.loc[x, 'breakeven'] = breakeven
-resultSummary.loc[x, 'potentialAward'] = mpoolAward
-resultSummary.loc[x, 'potentialProfit'] = mpoolAward - row['avgReward']
-resultSummary.loc[x, 'avgTxFee'] = row['avgTxFee']
+resultSummary.loc[7, 'miner'] = oMiner
+resultSummary.loc[7, 'totalBlocks'] = oTotalBlocks
+resultSummary.loc[7, 'uncles'] = oUncle
+resultSummary.loc[7, 'avgmGas'] = oAvgGasUsed/1e6
+resultSummary.loc[7, 'uncRate'] = oUncleRatio
+resultSummary.loc[7, 'predictedUncRate'] = predictedUncle
+resultSummary.loc[7, 'zeroUncRate'] = dictResults['const']
+resultSummary.loc[7, 'avgUncleReward'] = oAvgUncleAward
+resultSummary.loc[7, 'avgMainRewardwoFee'] = oMainAwardwoFee
+resultSummary.loc[7, 'avgTxFees'] = oAvgBlockFee
+resultSummary.loc[7, 'predictEmpAward'] = expectedEmptyAward
+resultSummary.loc[7, 'predictTxAward'] = expectedTxAward
+resultSummary.loc[7, 'actualTxAward'] = oAvgAward
+resultSummary.loc[7, 'profit'] = oAvgAward - expectedEmptyAward
+resultSummary.loc[7, 'profitPct'] = (oAvgAward - expectedEmptyAward)/ oAvgBlockFee
+resultSummary.loc[7, 'profitPctBlock'] = (oAvgAward - expectedEmptyAward) / oMainAwardwFee
+resultSummary.loc[7, 'breakeven'] = breakeven
+resultSummary.loc[7, 'potentialAward'] = mpoolAward
+resultSummary.loc[7, 'potentialProfit'] = mpoolAward - oAvgAward
+resultSummary.loc[7, 'avgTxFee'] = row['avgTxFee']
 print (results.summary())
-
-
-
-
-
-
-
 
 
 
