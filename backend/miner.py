@@ -78,7 +78,7 @@ for block in mainlist:
 
 print len(minerData)
 with pd.option_context('display.max_rows', None):
-    print(minerData)
+    print(minerData[['blockNum', 'uncle', 'uncsReported']])
 
 
 
