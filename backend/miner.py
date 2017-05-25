@@ -258,10 +258,11 @@ dictMiners = {
 }
 
 
-topMiners = minerBlocks.index.isin(keyMiners)
-print(topMiners)
+minerBlocks['key'] = minerBlocks.index.isin(keyMiners)
+topMiners = minerBlocks.loc[minerBlocks['key']==True, :]
+
 x = 1
-'''
+
 for index, row in topMiners.iterrows(): 
     md = minerData.loc[minerData['miner']==index, :]
     model = sm.OLS(md['uncle'], md[['const', 'mgasUsed']])
@@ -367,7 +368,7 @@ for index, row in topMiners.iterrows():
     minerBlocks.loc[index, 'medGas'] = med
 
 print(minerBlocks)
-'''
+
 
 
 
