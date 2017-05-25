@@ -305,7 +305,7 @@ md = minerData.loc[minerData['other']==1, :]
 model = sm.OLS(md['uncle'], md[['const', 'mgasUsed']])
 results = model.fit()
 dictResults = dict(results.params)
-predictedUncle = dictResults['const'] + (dictResults['mgasUsed'] * oAvgGasUsed']/1e6)
+predictedUncle = dictResults['const'] + (dictResults['mgasUsed'] * oAvgGasUsed/1e6)
 mpoolUncle = dictResults['const'] + (dictResults['mgasUsed'] * miningpoolgas/1e6)
 mpoolAward = ((oMainAwardwoFee+miningpoolfee)*(1-mpoolUncle)) + (oAvgUncleAward*mpoolUncle)
 expectedEmptyAward = (oMainAwardwoFee*(1-dictResults['const'])) + (oAvgUncleAward*dictResults['const'])
