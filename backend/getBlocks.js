@@ -14,6 +14,7 @@ result2.hash = result.hash;
 result2.miner = result.miner;
 result2.gasUsed = result.gasUsed;
 result2.uncsReported = uncsReported;
+result2.gasLimit = result.gasLimit
 for (x=0; x<result.transactions.length; x++)
 {   
     var gasPrice = result.transactions[x].gasPrice.toString(10);
