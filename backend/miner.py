@@ -79,19 +79,16 @@ for block in mainlist:
 
 print len(minerData)
 
-minerData['uncleIdents'] = minerData.duplicated(subset=['blockHash'], keep=False)
-print (minerData[minerData['uncleIdents']==True])
 
-
+#duplicated Uncles
+minerData['uncleIdents'] = minerData.duplicated(subset=['blockHash'])
+minerData = minerData[minerData['uncleIdents']==False]
 
 print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
 
 #Find duplicate Uncles:
 
-
-
-sdfsdfs
 #clean data
 
 minerData['uncsReported'].fillna(value=0, inplace=True)
@@ -155,7 +152,7 @@ totalUncles = len(uncleBlocks)
 minerUncleBlocks = uncleBlocks.groupby('miner').sum()
 
 #clean
-minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'uncsReported', 'numTx', 'main', 'duplicates', 'mainIdents', 'includedBlockNum', 'incDelay', 'blockFee', 'includeFee', 'blockAward', 'blockAwardwoFee', 'mgasUsed', 'emptyBlock'], axis=1)
+minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'uncsReported', 'numTx', 'main', 'duplicates', 'mainIdents', 'uncleIdents', 'includedBlockNum', 'incDelay', 'blockFee', 'includeFee', 'blockAward', 'blockAwardwoFee', 'mgasUsed', 'emptyBlock'], axis=1)
 minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
 
 # Create mainchain dataframe to summarize mined blocks
