@@ -300,9 +300,7 @@ for index, row in topMiners.iterrows():
     print (results.summary())
     x=x+1
 
-numMiners = len(minerBlocks)
-oth = numMiners-5
-otherMiners = ~minerBlocks.isin(keyMiners)
+otherMiners = minerBlocks.loc[minerBlocks['key']==True, :]
 oMinerNames = otherMiners.index.tolist()
 print(oMinerNames)
 minerData.loc[minerData['miner'].isin(oMinerNames), 'other'] = 1
