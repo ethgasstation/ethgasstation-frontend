@@ -297,7 +297,7 @@ oAvgUncleAward = minerData.loc[(minerData['other']==1) & (minerData['main']==0),
 oAvgBlockFee = minerData.loc[(minerData['other']==1) & (minerData['main']==1), 'blockFee'].mean()
 oTotalBlocks = len(minerData[minerData['other']==1])
 oUncle = len(minerData[(minerData['other']==1) & (minerData['uncle']==1)])
-oUncleRatio = oUncle/oTotalBlocks
+oUncleRatio = oUncle/float(oTotalBlocks)
 oMiner = 'Other'
 oAvgTxFee = oAvgBlockFee/oAvgGasUsed*1e9
 
@@ -349,7 +349,7 @@ for index, row in topMiners.iterrows():
     minerBlocks.loc[index, 'maxGas'] = max
     minerBlocks.loc[index, 'medGas'] = med
 
-print(minerData)
+print(minerBlocks)
 
 
 
