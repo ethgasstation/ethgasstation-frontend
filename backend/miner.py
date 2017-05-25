@@ -78,6 +78,7 @@ print len(minerData)
 print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
 
+print (minerData.loc[(minerData['uncle']==1) | (minerData['uncsReported']>0)])
 
 #clean data
 
