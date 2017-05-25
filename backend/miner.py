@@ -259,7 +259,7 @@ dictMiners = {
 
 
 topMiners = minerBlocks.index.isin(keyMiners)
-print(topMiners.index.tolist())
+print(topMiners)
 x = 1
 '''
 for index, row in topMiners.iterrows(): 
