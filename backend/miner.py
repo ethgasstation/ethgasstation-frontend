@@ -83,7 +83,14 @@ print(minerData['uncsReported'].sum())
 #Find duplicate Uncles:
 minerData['uncleIdents'] = minerData.duplicated(subset=['blockHash', 'uncle'])
 
-print (minerData[minerData['uncleIdents']==True])
+for index, row in minerData:
+    if row['uncsIncluded']>0:
+        watch = 1
+    if row['uncle']==0 & x > 5 & watch==1:
+        print (index, row)
+    if row['uncle']==1 & watch <=5:
+        watch = 0 
+    x = x + 1
 
 
 sdfsdfs
