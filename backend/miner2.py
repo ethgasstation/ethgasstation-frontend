@@ -12,60 +12,21 @@ cursor = cnx.cursor()
 startBlock = int(sys.argv[1])
 endBlock = int(sys.argv[2])
 
-addBlock = ("INSERT INTO speedo2 "
-            "(blockNum, miner, blockHash, blockFee, gasUsed, uncsReported, main, uncle) "
-            "VALUES (%(blockNum)s, %(miner)s, %(hash)s, %(blockFee)s, %(gasUsed)s, %(uncsReported)s, %(main)s, %(uncle)s)")
-#write Main Blocks
-for block in range (startBlock, endBlock):
-    block = str(block)
-    print (block)
-    out = subprocess.check_output(['node', 'getBlocks.js', block])
-    blockData = json.loads(out)
-    print(blockData)
-    print(blockData['blockNum'])
-    cursor.execute(addBlock, blockData)
-    print(cursor.statement)
 
-    cnx.commit()
+# First Query to Determine Block TIme, and Estimate Miner Policies
+query = ("SELECT * FROM speedo2 where blockNum>= %s and blockNum < %s")
+cursor.execute(query, (startBlock, endBlock))
+head = cursor.column_names
 
-
-
-fgddgfgfdgfd
-
-
-
-
-
+minerData = pd.DataFrame(cursor.fetchall())
+minerData.columns = head
+cursor.close()
+cnx.close()
 
 # Find Identical Main Blocks - Keep 1
 minerData['mainIdents'] = minerData.duplicated(subset=['blockNum', 'main', 'uncsReported'])
 minerData.loc[(minerData['mainIdents']==True) & (minerData['main']==0), 'mainIdents'] = False
 minerData = minerData[minerData['mainIdents']==False]
-
-# Find main blocks that are probably uncles
-minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
-mainDups = minerData.groupby('blockNum').sum()
-mainlist = mainDups.loc[mainDups['main']>1].index.tolist()
-
-#
-z=0
-print len(minerData)
-print len(mainlist)
-for block in mainlist:
-    block = str(block)
-    out = subprocess.check_output(['node', 'checkBlock.js', block])
-    blockData = json.loads(out)
-    bnum = str(blockData['blockNum'])
-    hash = str(blockData['hash'])
-    query = ("DELETE FROM speedo WHERE blockNum = %s AND main = 1 AND blockHash != %s")
-    cursor.execute(query, (bnum, hash))
-    cnx.commit()
-    print (cursor.statement, cursor.rowcount)
-    z=z+1
-    print(z)
-
-print len(minerData)
-
 
 #duplicated Uncles
 minerData['uncleIdents'] = minerData.duplicated(subset=['blockHash'])
@@ -73,8 +34,6 @@ minerData = minerData[minerData['uncleIdents']==False]
 
 print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
-
-#Find duplicate Uncles:
 
 #clean data
 
@@ -139,7 +98,8 @@ totalUncles = len(uncleBlocks)
 minerUncleBlocks = uncleBlocks.groupby('miner').sum()
 
 #clean
-minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'uncsReported', 'numTx', 'main', 'duplicates', 'mainIdents', 'uncleIdents', 'includedBlockNum', 'incDelay', 'blockFee', 'includeFee', 'blockAward', 'blockAwardwoFee', 'mgasUsed', 'emptyBlock'], axis=1)
+minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'uncsReported', 'main', 'mainIdents', 'uncleIdents', 'includedBlockNum', 'incDelay', 'blockFee', 'includeFee', 'blockAward', 'blockAwardwoFee', 'mgasUsed', 'emptyBlock'], axis=1)
+
 minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
 
 # Create mainchain dataframe to summarize mined blocks
@@ -170,15 +130,8 @@ minerBlocks['emptyUncRatio'] = minerBlocks['emptyUncle']/(minerBlocks['emptyUncl
 minerBlocks['avgUncleAward'] = minerBlocks['uncleAward'] / minerBlocks['uncle']
 minerBlocks['avgGasUsed'] = (minerBlocks['gasUsed'] + minerBlocks['uncleGasUsed'])/minerBlocks['totalBlocks']
 minerBlocks['avgTxFee'] = minerBlocks['avgBlockFee']/minerBlocks['avgGasUsed']*1e9
-
 minerBlocks['avgReward'] = minerBlocks['totReward'] / minerBlocks['totalBlocks']
 minerBlocks = minerBlocks.sort_values('totalBlocks', ascending = False)
-
-
-
-
-
-
 
 
 # Regression model for gas
@@ -229,8 +182,8 @@ resultSummary = resultSummary[['miner', 'totalBlocks', 'uncles', 'emptyUncles', 
 
 miningpoolgas = minerBlocks.loc['0xb2930b35844a230f00e51431acae96fe543a0347', 'avgGasUsed']
 miningpoolfee = minerBlocks.loc['0xb2930b35844a230f00e51431acae96fe543a0347', 'avgBlockFee']
-
 topMiners = minerBlocks.head(n=5)
+
 x = 1
 for index, row in topMiners.iterrows(): 
     md = minerData.loc[minerData['miner']==index, :]
@@ -279,19 +232,3 @@ for index, row in topMiners.iterrows():
     print(index, avg, min, max, med)
 
 
-
-'''
-minerData.loc[minerData['miner']== '0x61c808d82a3ac53231750dadc13c777b59310bd9', 'f2pool'] = 1
-minerData.loc[minerData['miner']!= '0x61c808d82a3ac53231750dadc13c777b59310bd9', 'f2pool'] = 0
-minerData.loc[minerData['miner']== '0xb2930b35844a230f00e51431acae96fe543a0347', 'mpoolhub'] = 1
-minerData.loc[minerData['miner']!= '0xb2930b35844a230f00e51431acae96fe543a0347', 'mpoolhub'] = 0
-minerData.loc[~minerData['miner'].isin(['0xb2930b35844a230f00e51431acae96fe543a0347', '0x61c808d82a3ac53231750dadc13c777b59310bd9']), 'others'] = 1
-minerData.loc[minerData['miner'].isin(['0xb2930b35844a230f00e51431acae96fe543a0347', '0x61c808d82a3ac53231750dadc13c777b59310bd9']), 'others'] = 0
-
-minerData['f2poolgas'] = minerData['mgasUsed'] * minerData['f2pool']
-minerData['mpoolgas'] = minerData['mgasUsed'] * minerData['mpoolhub']
-
-model = sm.OLS(minerData['uncle'], minerData[['const','mgasUsed', 'f2pool', 'mpoolhub', 'f2poolgas', 'mpoolgas']])
-results = model.fit()
-print (results.summary())
-'''

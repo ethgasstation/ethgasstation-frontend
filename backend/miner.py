@@ -244,6 +244,12 @@ miningpoolgas = minerBlocks.loc['0xb2930b35844a230f00e51431acae96fe543a0347', 'a
 miningpoolfee = minerBlocks.loc['0xb2930b35844a230f00e51431acae96fe543a0347', 'avgBlockFee']
 
 topMiners = minerBlocks.head(n=5)
+numMiners = len(minerBlocks)
+oth = numMiners-5
+otherMiners = minerBlocks.tail(n=oth)
+print(otherMiners)
+
+
 x = 1
 for index, row in topMiners.iterrows(): 
     md = minerData.loc[minerData['miner']==index, :]
