@@ -50,9 +50,11 @@ minerData['duplicates2']= minerData.duplicated(subset='blockHash')
 minerData = minerData[minerData['duplicates2'] == False]
 
 '''
+# Find Identical Main Blocks - Keep 1
 minerData['mainIdents'] = minerData.duplicated(subset=['blockNum', 'main', 'uncsReported'])
 minerData = minerData[minerData['mainIdents']==False]
 
+# Find main blocks that are probably uncles
 minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
 mainDups = minerData.groupby('blockNum').sum()
 mainlist = mainDups.loc[mainDups['main']>1].index.tolist()
@@ -78,8 +80,13 @@ print len(minerData)
 print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
 
-print (minerData.loc[(minerData['uncle']==1) | (minerData['uncsReported']>0)])
+#Find duplicate Uncles:
+minerData['uncleIdents'] = minerData.duplicated(subset=['blockHash', 'uncle'])
 
+print (minerData[minerData['uncleIdents']==True])
+
+
+sdfsdfs
 #clean data
 
 minerData['uncsReported'].fillna(value=0, inplace=True)
