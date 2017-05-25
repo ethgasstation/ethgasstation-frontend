@@ -77,6 +77,7 @@ for block in mainlist:
     print(z)
 
 print len(minerData)
+print minerData
 print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
 
