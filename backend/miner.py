@@ -78,8 +78,9 @@ for block in mainlist:
     print(z)
 
 print len(minerData)
-with pd.option_context('display.max_rows', None):
-    print(minerData[['blockNum', 'uncle', 'uncsReported', 'blockHash']])
+
+minerData['uncleIdents'] = minerData.duplicated(subset=['blockHash'])
+print (minerData[minerData['uncleIdents']==True])
 
 
 
@@ -87,18 +88,7 @@ print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
 
 #Find duplicate Uncles:
-minerData['uncleIdents'] = minerData.duplicated(subset=['blockHash', 'uncle'])
 
-x=0
-watch=0
-for index, row in minerData.iterrows():
-    if (row['uncsReported'] > 0):
-        watch = 1
-    if row['uncle']==0 & x > 3 & watch==1:
-        print (index, row)
-    if row['uncle']==1 & watch <=5:
-        watch = 0 
-    x = x + 1
 
 
 sdfsdfs
