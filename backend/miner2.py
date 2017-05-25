@@ -183,6 +183,10 @@ resultSummary = resultSummary[['miner', 'totalBlocks', 'uncles', 'emptyUncles', 
 miningpoolgas = minerBlocks.loc['0xb2930b35844a230f00e51431acae96fe543a0347', 'avgGasUsed']
 miningpoolfee = minerBlocks.loc['0xb2930b35844a230f00e51431acae96fe543a0347', 'avgBlockFee']
 topMiners = minerBlocks.head(n=5)
+numMiners = len(minerBlocks)
+oth = numMiners-5
+otherMiners = minerBlocks.tail(n=oth)
+print(otherMiners)
 
 x = 1
 for index, row in topMiners.iterrows(): 
@@ -229,6 +233,10 @@ for index, row in topMiners.iterrows():
     min = minerData.loc[minerData['miner']==index, 'mgasUsed'].min()
     max = minerData.loc[minerData['miner']==index, 'mgasUsed'].max()
     med = minerData.loc[minerData['miner']==index, 'mgasUsed'].quantile(.5)
-    print(index, avg, min, max, med)
+    minerBlocks.loc[index, 'minGas'] = min
+    minerBlocks.loc[index, 'maxGas'] = max
+    minerBlocks.loc[index, 'medGas'] = med
+
+print(minerData)
 
 

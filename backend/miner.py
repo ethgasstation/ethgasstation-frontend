@@ -247,7 +247,10 @@ topMiners = minerBlocks.head(n=5)
 numMiners = len(minerBlocks)
 oth = numMiners-5
 otherMiners = minerBlocks.tail(n=oth)
-print(otherMiners)
+oMinerNames = otherMiners.index.tolist()
+print(oMinerNames)
+
+othGas = otherMiners['']
 
 
 x = 1
@@ -295,7 +298,12 @@ for index, row in topMiners.iterrows():
     min = minerData.loc[minerData['miner']==index, 'mgasUsed'].min()
     max = minerData.loc[minerData['miner']==index, 'mgasUsed'].max()
     med = minerData.loc[minerData['miner']==index, 'mgasUsed'].quantile(.5)
-    print(index, avg, min, max, med)
+    minerBlocks.loc[index, 'minGas'] = min
+    minerBlocks.loc[index, 'maxGas'] = max
+    minerBlocks.loc[index, 'medGas'] = med
+
+print(minerData)
+
 
 
 
