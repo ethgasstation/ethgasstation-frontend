@@ -1,10 +1,10 @@
 var Web3 = require('web3');
 var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 
-var hash = process.argv[2];
+var blockNumber = process.argv[2];
 var result2 = {};
 var blockFee = 0;
-result = web3.eth.getBlock(hash, true)
+result = web3.eth.getBlock(blockNumber, true)
 
 var uncsReported = result.uncles.length;
 result2.main = 1;
@@ -19,6 +19,7 @@ for (x=0; x<result.transactions.length; x++)
 {   
     var gasPrice = result.transactions[x].gasPrice.toString(10);
     gasPrice = gasPrice/1e9; //convert to Gwei
+    hash = result.transactions[x].hash;
     var tx = web3.eth.getTransactionReceipt(hash);
     fee = tx.gasUsed * gasPrice;
     blockFee = blockFee+fee;
