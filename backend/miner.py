@@ -259,7 +259,7 @@ dictMiners = {
 
 
 topMiners = minerBlocks.isin(keyMiners)
-
+print(topMiners['miner'])
 x = 1
 for index, row in topMiners.iterrows(): 
     md = minerData.loc[minerData['miner']==index, :]
