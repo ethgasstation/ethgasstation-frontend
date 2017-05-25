@@ -250,7 +250,8 @@ otherMiners = minerBlocks.tail(n=oth)
 oMinerNames = otherMiners.index.tolist()
 print(oMinerNames)
 
-othGas = otherMiners['']
+minerData['other'] = minerData[minerData['miner'].isin(oMinerName)]
+print(minerData)
 
 
 x = 1
