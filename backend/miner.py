@@ -258,7 +258,8 @@ dictMiners = {
 }
 
 
-topMiners = minerBlocks.loc[minerBlocks['miner'].isin(keyMiners), :]
+topMiners = minerBlocks.isin(keyMiners)
+
 x = 1
 for index, row in topMiners.iterrows(): 
     md = minerData.loc[minerData['miner']==index, :]
@@ -299,7 +300,7 @@ for index, row in topMiners.iterrows():
 
 numMiners = len(minerBlocks)
 oth = numMiners-5
-otherMiners = minerBlocks.loc[~minerBlocks['miner'].isin(keyMiners), :]
+otherMiners = ~minerBlocks.isin(keyMiners)
 oMinerNames = otherMiners.index.tolist()
 print(oMinerNames)
 minerData.loc[minerData['miner'].isin(oMinerNames), 'other'] = 1
