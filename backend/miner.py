@@ -52,7 +52,7 @@ minerData = minerData[minerData['duplicates2'] == False]
 '''
 # Find Identical Main Blocks - Keep 1
 minerData['mainIdents'] = minerData.duplicated(subset=['blockNum', 'main', 'uncsReported'])
-minerData.loc[(minerData['mainIdents']==False) & (minerData['main']==0), 'mainIdents'] = True
+minerData.loc[(minerData['mainIdents']==True) & (minerData['main']==0), 'mainIdents'] = False
 minerData = minerData[minerData['mainIdents']==False]
 
 # Find main blocks that are probably uncles
