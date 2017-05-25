@@ -88,7 +88,7 @@ watch=0
 for index, row in minerData.iterrows():
     if (row['uncsReported'] > 0):
         watch = 1
-    if row['uncle']==0 & x > 5 & watch==1:
+    if row['uncle']==0 & x > 3 & watch==1:
         print (index, row)
     if row['uncle']==1 & watch <=5:
         watch = 0 
