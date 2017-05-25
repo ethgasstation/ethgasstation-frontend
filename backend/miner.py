@@ -244,16 +244,6 @@ miningpoolgas = minerBlocks.loc['0xb2930b35844a230f00e51431acae96fe543a0347', 'a
 miningpoolfee = minerBlocks.loc['0xb2930b35844a230f00e51431acae96fe543a0347', 'avgBlockFee']
 
 topMiners = minerBlocks.head(n=5)
-numMiners = len(minerBlocks)
-oth = numMiners-5
-otherMiners = minerBlocks.tail(n=oth)
-oMinerNames = otherMiners.index.tolist()
-print(oMinerNames)
-
-minerData.loc[minerData['miner'].isin(oMinerNames), 'other'] = 1
-print(minerData)
-
-
 x = 1
 for index, row in topMiners.iterrows(): 
     md = minerData.loc[minerData['miner']==index, :]
@@ -292,7 +282,63 @@ for index, row in topMiners.iterrows():
     print (results.summary())
     x=x+1
 
+numMiners = len(minerBlocks)
+oth = numMiners-5
+otherMiners = minerBlocks.tail(n=oth)
+oMinerNames = otherMiners.index.tolist()
+print(oMinerNames)
+minerData.loc[minerData['miner'].isin(oMinerNames), 'other'] = 1
+
+oAvgGasUsed = minerData[minerData['other']==1, 'mgasUsed'].mean()
+print(oAvgGasUsed)
+
+md = minerData.loc[minerData['other']==1, :]
+model = sm.OLS(md['uncle'], md[['const', 'mgasUsed']])
+results = model.fit()
+dictResults = dict(results.params)
+predictedUncle = dictResults['const'] + (dictResults['mgasUsed'] * row['avgGasUsed']/1e6)
+mpoolUncle = dictResults['const'] + (dictResults['mgasUsed'] * miningpoolgas/1e6)
+mpoolAward = ((row['mainAwardwoFee']+miningpoolfee)*(1-mpoolUncle)) + (row['avgUncleAward']*mpoolUncle)
+expectedEmptyAward = (row['mainAwardwoFee']*(1-dictResults['const'])) + (row['avgUncleAward']*dictResults['const'])
+expectedTxAward = (row['mainAwardwFee']*(1-predictedUncle)) + (row['avgUncleAward']*predictedUncle)
+mainUncleDiff = row['avgUncleAward'] - row['mainAwardwoFee']
+breakeven = -1*dictResults['mgasUsed']/1e6 * mainUncleDiff * 1e9
+resultSummary.loc[x, 'miner'] = index
+resultSummary.loc[x, 'totalBlocks'] = row['totalBlocks']
+resultSummary.loc[x, 'uncles'] = row['uncle']
+resultSummary.loc[x, 'emptyUncles'] = row['emptyUncle']
+resultSummary.loc[x, 'avgmGas'] = row['avgGasUsed']/1e6
+resultSummary.loc[x, 'uncRate'] = row['uncRatio']
+resultSummary.loc[x, 'predictedUncRate'] = predictedUncle
+resultSummary.loc[x, 'zeroUncRate'] = dictResults['const']
+resultSummary.loc[x, 'actualZeroUncRate'] = row['emptyUncRatio']
+resultSummary.loc[x, 'avgUncleReward'] = row['avgUncleAward']
+resultSummary.loc[x, 'avgMainRewardwoFee'] = row['mainAwardwoFee']
+resultSummary.loc[x, 'avgTxFees'] = row['avgBlockFee']
+resultSummary.loc[x, 'predictEmpAward'] = expectedEmptyAward
+resultSummary.loc[x, 'predictTxAward'] = expectedTxAward
+resultSummary.loc[x, 'actualTxAward'] = row['avgReward']
+resultSummary.loc[x, 'profit'] = row['avgReward'] - expectedEmptyAward
+resultSummary.loc[x, 'profitPct'] = (row['avgReward'] - expectedEmptyAward)/ row['avgBlockFee']
+resultSummary.loc[x, 'profitPctBlock'] = (row['avgReward'] - expectedEmptyAward) / row['mainAwardwFee']
+resultSummary.loc[x, 'breakeven'] = breakeven
+resultSummary.loc[x, 'potentialAward'] = mpoolAward
+resultSummary.loc[x, 'potentialProfit'] = mpoolAward - row['avgReward']
+resultSummary.loc[x, 'avgTxFee'] = row['avgTxFee']
+print (results.summary())
+
+
+
+
+
+
+
+
+
+
 print(resultSummary)
+
+
 
 for index, row in topMiners.iterrows():
     avg = minerData.loc[minerData['miner']==index, 'blockAward'].mean()
