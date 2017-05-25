@@ -258,7 +258,7 @@ dictMiners = {
 }
 
 
-topMiners = minerBlocks.isin(keyMiners)
+topMiners = minerBlocks.index.isin(keyMiners)
 print(topMiners.index.tolist())
 x = 1
 '''
