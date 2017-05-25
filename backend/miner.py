@@ -243,7 +243,22 @@ resultSummary = resultSummary[['miner', 'totalBlocks', 'uncles', 'emptyUncles', 
 miningpoolgas = minerBlocks.loc['0xb2930b35844a230f00e51431acae96fe543a0347', 'avgGasUsed']
 miningpoolfee = minerBlocks.loc['0xb2930b35844a230f00e51431acae96fe543a0347', 'avgBlockFee']
 
-topMiners = minerBlocks.head(n=5)
+keyMiners = ['0xea674fdde714fd979de3edf0f56aa9716b898ec8', '0x1e9939daaad6924ad004c2560e90804164900341', '0xb2930b35844a230f00e51431acae96fe543a0347', '0x2a65aca4d5fc5b5c859090a6c34d164135398226', '0x61c808d82a3ac53231750dadc13c777b59310bd9', '0x4bb96091ee9d802ed039c4d1a5f6216f90f81b01']
+
+dictMiners = {
+    '0xea674fdde714fd979de3edf0f56aa9716b898ec8':'Ethermine',
+    '0x1e9939daaad6924ad004c2560e90804164900341':'ethfans',
+    '0xb2930b35844a230f00e51431acae96fe543a0347':'miningpoolhub',
+    '0x4bb96091ee9d802ed039c4d1a5f6216f90f81b01':'Ethpool',
+    '0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5':'Nanopool',
+    '0x2a65aca4d5fc5b5c859090a6c34d164135398226':'Dwarfpool',
+    '0x61c808d82a3ac53231750dadc13c777b59310bd9':'f2pool',
+    '0xa42af2c70d316684e57aefcc6e393fecb1c7e84e':'Coinotron',
+    '0x6c7f03ddfdd8a37ca267c88630a4fee958591de0':'alpereum'
+}
+
+
+topMiners = minerBlocks.loc[minerBlocks['miner'].isin(keyMiners), :]
 x = 1
 for index, row in topMiners.iterrows(): 
     md = minerData.loc[minerData['miner']==index, :]
@@ -257,7 +272,7 @@ for index, row in topMiners.iterrows():
     expectedTxAward = (row['mainAwardwFee']*(1-predictedUncle)) + (row['avgUncleAward']*predictedUncle)
     mainUncleDiff = row['avgUncleAward'] - row['mainAwardwoFee']
     breakeven = -1*dictResults['mgasUsed']/1e6 * mainUncleDiff * 1e9
-    resultSummary.loc[x, 'miner'] = index
+    resultSummary.loc[x, 'miner'] = dictMiners[index]
     resultSummary.loc[x, 'totalBlocks'] = row['totalBlocks']
     resultSummary.loc[x, 'uncles'] = row['uncle']
     resultSummary.loc[x, 'emptyUncles'] = row['emptyUncle']
@@ -284,7 +299,7 @@ for index, row in topMiners.iterrows():
 
 numMiners = len(minerBlocks)
 oth = numMiners-5
-otherMiners = minerBlocks.tail(n=oth)
+otherMiners = minerBlocks.loc[~minerBlocks['miner'].isin(keyMiners), :]
 oMinerNames = otherMiners.index.tolist()
 print(oMinerNames)
 minerData.loc[minerData['miner'].isin(oMinerNames), 'other'] = 1
