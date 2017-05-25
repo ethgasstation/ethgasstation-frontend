@@ -299,7 +299,7 @@ oTotalBlocks = len(minerData[minerData['other']==1])
 oUncle = len(minerData[(minerData['other']==1) & (minerData['uncle']==1)])
 oUncleRatio = oUncle/oTotalBlocks
 oMiner = 'Other'
-oAvgTxFee = oAvgBlockFee/oAvgGasUsed/*1e9
+oAvgTxFee = oAvgBlockFee/oAvgGasUsed*1e9
 
 md = minerData.loc[minerData['other']==1, :]
 model = sm.OLS(md['uncle'], md[['const', 'mgasUsed']])
