@@ -79,7 +79,7 @@ for block in mainlist:
 
 print len(minerData)
 
-minerData['uncleIdents'] = minerData.duplicated(subset=['blockHash'])
+minerData['uncleIdents'] = minerData.duplicated(subset=['blockHash'], keep=False)
 print (minerData[minerData['uncleIdents']==True])
 
 
