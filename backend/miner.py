@@ -84,6 +84,7 @@ print(minerData['uncsReported'].sum())
 minerData['uncleIdents'] = minerData.duplicated(subset=['blockHash', 'uncle'])
 
 x=0
+watch=0
 for index, row in minerData.iterrows():
     if (row['uncsReported'] > 0):
         watch = 1
