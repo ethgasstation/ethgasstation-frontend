@@ -250,7 +250,7 @@ otherMiners = minerBlocks.tail(n=oth)
 oMinerNames = otherMiners.index.tolist()
 print(oMinerNames)
 
-minerData['other'] = minerData[minerData['miner'].isin(oMinerNames)]
+minerData.loc[minerData['miner'].isin(oMinerNames), 'other'] = 1
 print(minerData)
 
 
