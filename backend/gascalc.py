@@ -328,7 +328,7 @@ results = model.fit(disp=0)
 dictResults = dict(results.params)
 dep['predict'] = results.predict()
 
-
+print(dictResults)
 #check to see if really fastest
 predictAverage = dep.loc[(dep['priceCat1']==2) & (dep['gasCat1']==1), 'predict'].mean()
 predictFastest = dep.loc[(dep['priceCat1']==4) & (dep['gasCat1']==1), 'predict'].mean()
