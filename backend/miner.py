@@ -100,6 +100,26 @@ minerData.loc[minerData['uncsReported']==1, 'includeFee' ] = .15625
 minerData.loc[minerData['uncsReported']==2, 'includeFee'] = .3125
 minerData.loc[minerData['uncsReported']==0, 'includeFee'] = 0
 
+# Define Miners of Interest
+
+keyMiners = ['0xea674fdde714fd979de3edf0f56aa9716b898ec8', '0x1e9939daaad6924ad004c2560e90804164900341', '0xb2930b35844a230f00e51431acae96fe543a0347', '0x2a65aca4d5fc5b5c859090a6c34d164135398226', '0x61c808d82a3ac53231750dadc13c777b59310bd9', '0x4bb96091ee9d802ed039c4d1a5f6216f90f81b01']
+
+dictMiners = {
+    '0xea674fdde714fd979de3edf0f56aa9716b898ec8':'Ethermine',
+    '0x1e9939daaad6924ad004c2560e90804164900341':'ethfans',
+    '0xb2930b35844a230f00e51431acae96fe543a0347':'miningpoolhub',
+    '0x4bb96091ee9d802ed039c4d1a5f6216f90f81b01':'Ethpool',
+    '0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5':'Nanopool',
+    '0x2a65aca4d5fc5b5c859090a6c34d164135398226':'Dwarfpool',
+    '0x61c808d82a3ac53231750dadc13c777b59310bd9':'f2pool',
+    '0xa42af2c70d316684e57aefcc6e393fecb1c7e84e':'Coinotron',
+    '0x6c7f03ddfdd8a37ca267c88630a4fee958591de0':'alpereum',
+    'Other':'Other'
+}
+
+minerData.loc[~minerData['miner'].isin(keyMiners), ['miner']] = 'Other'
+
+
 #define constants for all blocks
 
 totalBlocks = len(minerData)
@@ -183,15 +203,8 @@ minerBlocks['emptyUncRatio'] = minerBlocks['emptyUncle']/(minerBlocks['emptyUncl
 minerBlocks['avgUncleAward'] = minerBlocks['uncleAward'] / minerBlocks['uncle']
 minerBlocks['avgGasUsed'] = (minerBlocks['gasUsed'] + minerBlocks['uncleGasUsed'])/minerBlocks['totalBlocks']
 minerBlocks['avgTxFee'] = minerBlocks['avgBlockFee']/minerBlocks['avgGasUsed']*1e9
-
 minerBlocks['avgReward'] = minerBlocks['totReward'] / minerBlocks['totalBlocks']
 minerBlocks = minerBlocks.sort_values('totalBlocks', ascending = False)
-
-
-
-
-
-
 
 
 # Regression model for gas
@@ -243,27 +256,10 @@ resultSummary = resultSummary[['miner', 'totalBlocks', 'uncles', 'emptyUncles', 
 miningpoolgas = minerBlocks.loc['0xb2930b35844a230f00e51431acae96fe543a0347', 'avgGasUsed']
 miningpoolfee = minerBlocks.loc['0xb2930b35844a230f00e51431acae96fe543a0347', 'avgBlockFee']
 
-keyMiners = ['0xea674fdde714fd979de3edf0f56aa9716b898ec8', '0x1e9939daaad6924ad004c2560e90804164900341', '0xb2930b35844a230f00e51431acae96fe543a0347', '0x2a65aca4d5fc5b5c859090a6c34d164135398226', '0x61c808d82a3ac53231750dadc13c777b59310bd9', '0x4bb96091ee9d802ed039c4d1a5f6216f90f81b01']
 
-dictMiners = {
-    '0xea674fdde714fd979de3edf0f56aa9716b898ec8':'Ethermine',
-    '0x1e9939daaad6924ad004c2560e90804164900341':'ethfans',
-    '0xb2930b35844a230f00e51431acae96fe543a0347':'miningpoolhub',
-    '0x4bb96091ee9d802ed039c4d1a5f6216f90f81b01':'Ethpool',
-    '0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5':'Nanopool',
-    '0x2a65aca4d5fc5b5c859090a6c34d164135398226':'Dwarfpool',
-    '0x61c808d82a3ac53231750dadc13c777b59310bd9':'f2pool',
-    '0xa42af2c70d316684e57aefcc6e393fecb1c7e84e':'Coinotron',
-    '0x6c7f03ddfdd8a37ca267c88630a4fee958591de0':'alpereum'
-}
-
-
-minerBlocks['key'] = minerBlocks.index.isin(keyMiners)
-topMiners = minerBlocks.loc[minerBlocks['key']==True, :]
 
 x = 1
-
-for index, row in topMiners.iterrows(): 
+for index, row in minerBlocks.iterrows(): 
     md = minerData.loc[minerData['miner']==index, :]
     model = sm.OLS(md['uncle'], md[['const', 'mgasUsed']])
     results = model.fit()
@@ -300,60 +296,8 @@ for index, row in topMiners.iterrows():
     print (results.summary())
     x=x+1
 
-otherMiners = minerBlocks.loc[minerBlocks['key']==False, :]
-oMinerNames = otherMiners.index.tolist()
-print(oMinerNames)
-minerData.loc[minerData['miner'].isin(oMinerNames), 'other'] = 1
-
-oAvgGasUsed = minerData.loc[minerData['other']==1, 'gasUsed'].mean()
-oAvgAward = minerData.loc[minerData['other']==1, 'blockAward'].mean()
-oMainAwardwoFee = minerData.loc[(minerData['other']==1) & (minerData['main']==1), 'blockAwardwoFee'].mean()
-oMainAwardwFee = minerData.loc[(minerData['other']==1) & (minerData['main']==1), 'blockAward'].mean()
-oAvgUncleAward = minerData.loc[(minerData['other']==1) & (minerData['main']==0), 'blockAward'].mean()
-oAvgBlockFee = minerData.loc[(minerData['other']==1) & (minerData['main']==1), 'blockFee'].mean()
-oTotalBlocks = len(minerData[minerData['other']==1])
-oUncle = len(minerData[(minerData['other']==1) & (minerData['uncle']==1)])
-oUncleRatio = oUncle/float(oTotalBlocks)
-oMiner = 'Other'
-oAvgTxFee = oAvgBlockFee/oAvgGasUsed*1e9
-
-md = minerData.loc[minerData['other']==1, :]
-model = sm.OLS(md['uncle'], md[['const', 'mgasUsed']])
-results = model.fit()
-dictResults = dict(results.params)
-predictedUncle = dictResults['const'] + (dictResults['mgasUsed'] * oAvgGasUsed/1e6)
-mpoolUncle = dictResults['const'] + (dictResults['mgasUsed'] * miningpoolgas/1e6)
-mpoolAward = ((oMainAwardwoFee+miningpoolfee)*(1-mpoolUncle)) + (oAvgUncleAward*mpoolUncle)
-expectedEmptyAward = (oMainAwardwoFee*(1-dictResults['const'])) + (oAvgUncleAward*dictResults['const'])
-expectedTxAward = (oMainAwardwFee*(1-predictedUncle)) + (oAvgUncleAward*predictedUncle)
-mainUncleDiff = oAvgUncleAward - oMainAwardwoFee
-breakeven = -1*dictResults['mgasUsed']/1e6 * mainUncleDiff * 1e9
-resultSummary.loc[7, 'miner'] = oMiner
-resultSummary.loc[7, 'totalBlocks'] = oTotalBlocks
-resultSummary.loc[7, 'uncles'] = oUncle
-resultSummary.loc[7, 'avgmGas'] = oAvgGasUsed/1e6
-resultSummary.loc[7, 'uncRate'] = oUncleRatio
-resultSummary.loc[7, 'predictedUncRate'] = predictedUncle
-resultSummary.loc[7, 'zeroUncRate'] = dictResults['const']
-resultSummary.loc[7, 'avgUncleReward'] = oAvgUncleAward
-resultSummary.loc[7, 'avgMainRewardwoFee'] = oMainAwardwoFee
-resultSummary.loc[7, 'avgTxFees'] = oAvgBlockFee
-resultSummary.loc[7, 'predictEmpAward'] = expectedEmptyAward
-resultSummary.loc[7, 'predictTxAward'] = expectedTxAward
-resultSummary.loc[7, 'actualTxAward'] = oAvgAward
-resultSummary.loc[7, 'profit'] = oAvgAward - expectedEmptyAward
-resultSummary.loc[7, 'profitPct'] = (oAvgAward - expectedEmptyAward)/ oAvgBlockFee
-resultSummary.loc[7, 'profitPctBlock'] = (oAvgAward - expectedEmptyAward) / oMainAwardwFee
-resultSummary.loc[7, 'breakeven'] = breakeven
-resultSummary.loc[7, 'potentialAward'] = mpoolAward
-resultSummary.loc[7, 'potentialProfit'] = mpoolAward - oAvgAward
-resultSummary.loc[7, 'avgTxFee'] = row['avgTxFee']
-print (results.summary())
-
-
 
 print(resultSummary)
-
 
 
 for index, row in topMiners.iterrows():
@@ -367,7 +311,14 @@ for index, row in topMiners.iterrows():
 
 print(minerBlocks)
 
+minerProfits = resultSummary.to_json(orient = 'records')
+parentdir = os.path.dirname(os.getcwd())
+if not os.path.exists(parentdir + '/json'):
+    os.mkdir(parentdir + '/json')
+filepath_profit = parentdir + '/json/profit.json'
 
+with open(filepath_profit, 'w') as outfile:
+    outfile.write(minerProfits)
 
 
 '''
