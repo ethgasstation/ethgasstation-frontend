@@ -146,8 +146,6 @@ for index,row in txDataMiner.iterrows():
 
 txDataMiner  = txDataMiner.sort_values(['adjustedMinP','totBlocks'], ascending = [True, False])
 
-print(txDataMiner)
-print(txDataTx)
 
 topMiners = txDataMiner.sort_values('totBlocks', ascending=False)
 
@@ -155,8 +153,6 @@ topMiners = txDataMiner.sort_values('totBlocks', ascending=False)
 
 topMiners = topMiners.loc[:,['miner','adjustedMinP','pctEmp', 'pctTot']].head(10)
 topMiners = topMiners.sort_values(['adjustedMinP','pctEmp'], ascending = [True, True]).reset_index(drop=True)
-
-print(topMiners)
 
 
 #Make Table with Key Miner Stats
@@ -236,8 +232,6 @@ except:
 
 #findLowest validated status
 
-
-print (validationTable)
 validationTable.sort_index()
 validationTable= validationTable.reset_index()
 print(validationTable)
@@ -264,8 +258,6 @@ if not (rejected.empty):
         latestGp= int(round(latestGp['gasPrice'].min()))
     else:
         latestGp = None
-    
-    print (acceptGp, latestGp)
     if ((acceptGp is not None) & (latestGp is not None)):
         acceptGp = int(acceptGp)
         latestGp = int(latestGp)
@@ -320,8 +312,6 @@ dep['cons'] = 1
 
 indep = txData['delay']
 
-print (indep)
-print (dep)
 model = sm.Poisson(indep, dep.loc[:,['priceCat1', 'priceCat3', 'priceCat4', 'gasCat2', 'gasCat3', 'gasCat4', 'cons']])
 
 results = model.fit(disp=0)
