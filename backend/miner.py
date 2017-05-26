@@ -300,7 +300,7 @@ for index, row in minerBlocks.iterrows():
 print(resultSummary)
 
 
-for index, row in topMiners.iterrows():
+for index, row in minerBlocks.iterrows():
     avg = minerData.loc[minerData['miner']==index, 'blockAward'].mean()
     min = minerData.loc[minerData['miner']==index, 'mgasUsed'].min()
     max = minerData.loc[minerData['miner']==index, 'mgasUsed'].max()

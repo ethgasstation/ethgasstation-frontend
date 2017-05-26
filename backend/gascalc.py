@@ -330,10 +330,10 @@ dep['predict'] = results.predict()
 
 print(dictResults)
 #check to see if really fastest
-predictAverage = dep.loc[(dep['priceCat1']==2) & (dep['gasCat1']==1), 'predict'].mean()
-predictFastest = dep.loc[(dep['priceCat1']==4) & (dep['gasCat1']==1), 'predict'].mean()
+predictAverage = dictResults['cons']
+predictFastest = dictResults['cons'] + dictResults['priceCat4']
 
-if (predictFastest > predictAverage):
+if (predictFastest >= predictAverage):
     gpRecs['Fastest'] = gpRecs['Average']
 
 #safeLow cannot be zero and must have 50 transactions mined at or below price over last 10,000 blocks
