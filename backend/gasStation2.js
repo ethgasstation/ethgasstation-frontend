@@ -98,6 +98,8 @@ filter.watch(function(err,blockHash)
                             var gasPrice = tx.gasPrice.toString(10);
                             gasPrice = gasPrice/1e9; //convert to Gwei
                             var gasPriceCat = getGasPriceCat(gasPrice);
+                            var to = tx.to
+                            var from = tx.to
                             
                             web3.eth.getTransactionReceipt(tx.hash, function (err, receipt)
                             {
@@ -110,8 +112,8 @@ filter.watch(function(err,blockHash)
                                     var post = {
                                         txHash: receipt.transactionHash,
                                         minedBlock: receipt.blockNumber,
-                                        toAddress:receipt.to,
-                                        fromAddress:receipt.from,
+                                        toAddress:to,
+                                        fromAddress:from,
                                         gasused: receipt.gasUsed,
                                         miner: block.miner,
                                         blockGasUsed: block.gasUsed,
