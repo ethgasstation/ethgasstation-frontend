@@ -19,12 +19,13 @@
                   <li><a href="minerTable.php"><i class ="fa fa-cubes"></i>Miner Stats</a></li>
                   <li><a href="hashPowerTable.php"><i class ="fa fa-cubes"></i>Hash Power by Gas Price</a></li>
                   <li><a href="validatedTable.php"><i class ="fa fa-cubes"></i>Low Gas Price Watch List</a></li>
+                  <li><a href="gasused.php"><i class ="fa fa-car"></i>Gas Guzzlers</a></li>
                   <li><a><i class="fa fa-bookmark-o"></i>FAQ<span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="about.html">What Is This Site?</a></li>
-                      <li><a href="FAQcalc.html">Calculator</a></li>
-                      <li><a href="gasrecs.html">Gas Price Recommendations</a></li>
-                      <li><a href="FAQpage.html">Other FAQ</a></li>
+                      <li><a href="about.php">What Is This Site?</a></li>
+                      <li><a href="FAQcalc.php">Calculator</a></li>
+                      <li><a href="gasrecs.php">Gas Price Recommendations</a></li>
+                      <li><a href="FAQpage.php">Other FAQ</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-link"></i> External Links <span class="fa fa-chevron-down"></span></a>

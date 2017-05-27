@@ -50,6 +50,8 @@ elseif ($currency == 'gbp'){
 try{
     $profitRaw = file_get_contents("http://localhost/json/profit.json");
     $profitTable = json_decode($profitRaw, true);
+    $gasGuzzRaw = file_get_contents("http://localhost/json/gasguzz.json");
+    $gasGuzzTable = json_decode($gasGuzzRaw, true);
 
 } catch (Exception $e) {
     echo 'waith for tables to be populated';

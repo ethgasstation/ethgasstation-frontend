@@ -16,7 +16,7 @@ cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1
 cursor = cnx.cursor()
 
 # First Query to Determine Block TIme, and Estimate Miner Policies
-query = ("SELECT minedGasPrice, toAddress, miner, tsMined, minedBlock, emptyBlock, minedGasPriceCat FROM minedtransactions WHERE minedBlock > %s AND minedBlock < %s ")
+query = ("SELECT minedGasPrice, toAddress, gasused, miner, tsMined, minedBlock, emptyBlock, minedGasPriceCat FROM minedtransactions WHERE minedBlock > %s AND minedBlock < %s ")
 
 cursor.execute(query, (startBlock, endBlock))
 head = cursor.column_names
@@ -273,6 +273,33 @@ if not (rejected.empty):
 
 print (gpRecs)
 
+#gas guzzler table
+
+gasGuzz = txData.groupby('toAddress').sum()
+gasGuzz = gasGuzz.sort_values('gasused', ascending = False)
+totgas = gasGuzz['gasused'].sum()
+gasGuzz['pcttot'] = gasGuzz['gasused']/totgas
+
+gasGuzz = gasGuzz.head(n=10)
+gg = {
+    u'0x6090a6e47849629b7245dfa1ca21d94cd15878ef': 'ENS registrar',
+    u'0xcd111aa492a9c77a367c36e6d6af8e6f212e0c8e': 'Acronis',
+    u'0x209c4784ab1e8183cf58ca33cb740efbf3fc18ef': 'Poloniex',
+    u'0xece701c76bd00d1c3f96410a0c69ea8dfcf5f34e': 'Oraclize',
+    u'0xa74476443119a942de498590fe1f2454d7d4ac0d': 'Golem',
+    u'0xedce883162179d4ed5eb9bb2e7dccf494d75b3a0': 'Bittrex',
+    u'0x70faa28a6b8d6829a4b1e649d26ec9a2a39ba413': 'Shapeshift',
+
+}
+for index, row in gasGuzz.iterrows():
+    if index in gg.keys():
+        gasGuzz.loc[index, 'ID'] = gg[index]
+    else:
+        gasGuzz.loc[index, 'ID'] = ''
+
+gasGuzz = gasGuzz.reset_index()
+print(gasGuzz)
+
 
 #Poisson Regression
 
@@ -335,11 +362,7 @@ if (gpRecs['safeLow'] < minLow):
 if (gpRecs['safeLow'] == 0):
     gpRecs['safeLow'] = 1
 
-#gas guzzler table
 
-gasGuzz = txData.groupby['toAddress'].sum()
-gasGuzz = gasGuzz.head(n=10)
-print(gasGuzz)
 
 quantiles = quantiles.reset_index(drop=True)
 quantiles.rename({0: '50pct', 1: '75pct', 2: '90pct', 3: 'max'}, inplace=True)
@@ -350,6 +373,7 @@ dictResults.update(blockTime)
 priceTable = priceTable.to_json(orient = 'records')
 miningTable = txDataMiner.to_json(orient = 'records')
 topMinerTable = topMiners.to_json(orient = 'records')
+gasGuzzTable = gasGuzz.to_json(orient = 'records')
 
 parentdir = os.path.dirname(os.getcwd())
 if not os.path.exists(parentdir + '/json'):
@@ -358,6 +382,7 @@ filepath_calc = parentdir + '/json/calc.json'
 filepath_recs = parentdir + '/json/ethgasAPI.json'
 filepath_pricetable = parentdir + '/json/price.json'
 filepath_miners = parentdir + '/json/miners.json'
+filepath_gasguzz = parentdir + '/json/gasguzz.json'
 filepath_topMiners = parentdir + '/json/topMiners.json'
 
 with open(filepath_calc, 'w') as outfile:
@@ -371,6 +396,9 @@ with open(filepath_pricetable, 'w') as outfile:
 
 with open(filepath_miners, 'w') as outfile:
     outfile.write(miningTable)
+
+with open(filepath_gasguzz, 'w') as outfile:
+    outfile.write(gasGuzzTable)
 
 with open(filepath_topMiners, 'w') as outfile:
     outfile.write(topMinerTable)
