@@ -107,6 +107,7 @@ filter.watch(function(err,blockHash)
                                 {
                                     console.error(err.stack);
                                 }
+                                console.log(to);
                                 if (receipt != null){ 
                                     var post = {
                                         txHash: receipt.transactionHash,
