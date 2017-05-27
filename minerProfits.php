@@ -81,6 +81,53 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel tile fixed_height_420">
                   <div class="x_title">
+                    <h4>Miner Block Gas Stats <small>(gas stats in millions)</h4>
+                    <div class="clearfix"></div>
+                  </div>
+                  <div class="x_content">
+                  <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Miner</th>
+                          <th>Total Blocks</th>
+                          <th>Total Uncles</th>
+                          <th>Uncle Rate</th>
+                          <th>Avg Gas</th>
+                          <th>Median Gas</th>
+                          <th>Low Gas</th>
+                          <th>High Gas</th>
+                          <th>Avg Gas Main Block</th>
+                          <th>Avg Gas Uncle</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                      <?php
+                      foreach ($profitTable as $row){
+                        echo('<tr>');
+                        echo("<td>". $row['miner']. "</td>");
+                        echo("<td>". $row['totalBlocks']). "</td>";
+                        echo("<td>". $row['uncles']). "</td>";
+                        echo("<td>". number_format($row['uncRate'],3). "</td>");
+                        echo("<td>". number_format($row['avgmGas'],3). "</td>");
+                        echo("<td>". number_format($row['medGas'],3). "</td>");
+                        echo("<td>". number_format($row['minGas'],3). "</td>");
+                        echo("<td>". number_format($row['maxGas'],3). "</td>");
+                        echo("<td>". number_format($row['avgMainGas'],3). "</td>");
+                        echo("<td>". number_format($row['avgUncleGas'],3). "</td>");
+                        echo('</tr>');
+
+                      }
+                      ?>
+                      </tbody>
+                    </table>
+
+                 </div>
+        </div>
+
+            <div class="row">
+              <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel tile fixed_height_420">
+                  <div class="x_title">
                     <h4>Miner Profits from Transactions</h4>
                     <div class="clearfix"></div>
                   </div>
@@ -108,22 +155,24 @@
                         echo('<tr>');
                         echo("<td>". $row['miner']. "</td>");
                         echo("<td>". $row['totalBlocks']). "</td>";
-                        echo("<td>". round($row['uncRate'],2). "</td>");
-                        echo("<td>". round($row['avgUncleReward'],2). "</td>");
-                        echo("<td>". round($row['avgmGas'],3). "</td>");
-                        echo("<td>". round($row['avgMainRewardwoFee'],2). "</td>");
-                        echo("<td>". round($row['avgTxFees'],3). "</td>");
+                        echo("<td>". number_format($row['uncRate'],3). "</td>");
+                        echo("<td>". number_format($row['avgUncleReward'],2). "</td>");
+                        echo("<td>". number_format($row['avgmGas'],3). "</td>");
+                        echo("<td>". number_format($row['avgMainRewardwoFee'],3). "</td>");
+                        echo("<td>". number_format($row['avgTxFees'],3). "</td>");
+                        if($row['breakeven']<0){
+                          $row['breakeven']=0;}
                         echo("<td>". round($row['breakeven']). "</td>");
-                        echo("<td>". round($row['predictEmpAward'],2). "</td>");
-                        echo("<td>". round($row['actualTxAward'],2). "</td>");
-                        echo("<td>". round($row['profit'],3). "</td>");
+                        echo("<td>". number_format($row['predictEmpAward'],2). "</td>");
+                        echo("<td>". number_format($row['actualTxAward'],2). "</td>");
+                        echo("<td>". number_format($row['profit'],3). "</td>");
                         $profitFiat = $row['profit']*$exchangeRate;
-                        echo("<td>". round($profitFiat,3). "</td>");
+                        echo("<td>". number_format($profitFiat,3). "</td>");
                         echo('</tr>');
 
                       }
                       ?>
-                        </tbody>
+                      </tbody>
                     </table>
 
                  </div>

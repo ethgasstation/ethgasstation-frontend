@@ -19,37 +19,7 @@ head = cursor.column_names
 
 minerData = pd.DataFrame(cursor.fetchall())
 minerData.columns = head
-# cursor.close()
-# cnx.close()
-'''
-# Clean blocks first reported as mainchain that later become uncles
-minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
-minerData['keep'] = True
 
-#with pd.option_context('display.max_rows', None):
- #   print(minerData.loc[:,['blockNum', 'includedBlockNum', 'uncle', 'uncsReported', 'duplicates']])
-    
-def resolveDup(blockHash):
-    match = minerData.loc[(minerData['blockHash'] == blockHash) & (minerData['uncle'] == True)]
-    if len(match) > 0:
-        return False
-    else:
-        return True 
-
-
-
-
-for index, row in minerData.iterrows():
-    if ((row['duplicates'] == True) & (row['main'] == True)):
-        minerData.loc[index, 'keep'] = resolveDup(row['blockHash'])
-
-#drop the duplicate row from mainBlocks- it is actually an uncle
-
-minerData= minerData[minerData['keep'] == True]
-minerData['duplicates2']= minerData.duplicated(subset='blockHash')
-minerData = minerData[minerData['duplicates2'] == False]
-
-'''
 # Find Identical Main Blocks - Keep 1
 minerData['mainIdents'] = minerData.duplicated(subset=['blockNum', 'main', 'uncsReported'])
 minerData.loc[(minerData['mainIdents']==True) & (minerData['main']==0), 'mainIdents'] = False
@@ -59,8 +29,6 @@ minerData = minerData[minerData['mainIdents']==False]
 minerData['duplicates'] = minerData.duplicated(subset='blockNum', keep = False)
 mainDups = minerData.groupby('blockNum').sum()
 mainlist = mainDups.loc[mainDups['main']>1].index.tolist()
-
-#
 z=0
 print len(minerData)
 print len(mainlist)
@@ -78,7 +46,8 @@ for block in mainlist:
     print(z)
 
 print len(minerData)
-
+cursor.close()
+cnx.close()
 
 #duplicated Uncles
 minerData['uncleIdents'] = minerData.duplicated(subset=['blockHash'])
@@ -86,8 +55,6 @@ minerData = minerData[minerData['uncleIdents']==False]
 
 print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
-
-#Find duplicate Uncles:
 
 #clean data
 
@@ -106,18 +73,18 @@ keyMiners = ['0xea674fdde714fd979de3edf0f56aa9716b898ec8', '0x1e9939daaad6924ad0
 
 dictMiners = {
     '0xea674fdde714fd979de3edf0f56aa9716b898ec8':'Ethermine',
-    '0x1e9939daaad6924ad004c2560e90804164900341':'ethfans',
-    '0xb2930b35844a230f00e51431acae96fe543a0347':'miningpoolhub',
+    '0x1e9939daaad6924ad004c2560e90804164900341':'Ethfans',
+    '0xb2930b35844a230f00e51431acae96fe543a0347':'Miningpoolhub',
     '0x4bb96091ee9d802ed039c4d1a5f6216f90f81b01':'Ethpool',
     '0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5':'Nanopool',
     '0x2a65aca4d5fc5b5c859090a6c34d164135398226':'Dwarfpool',
-    '0x61c808d82a3ac53231750dadc13c777b59310bd9':'f2pool',
+    '0x61c808d82a3ac53231750dadc13c777b59310bd9':'F2pool',
     '0xa42af2c70d316684e57aefcc6e393fecb1c7e84e':'Coinotron',
-    '0x6c7f03ddfdd8a37ca267c88630a4fee958591de0':'alpereum',
-    'Other':'Other'
+    '0x6c7f03ddfdd8a37ca267c88630a4fee958591de0':'Alpereum',
+    'All Others':'All Others'
 }
 
-minerData.loc[~minerData['miner'].isin(keyMiners), ['miner']] = 'Other'
+minerData.loc[~minerData['miner'].isin(keyMiners), ['miner']] = 'All Others'
 
 
 #define constants for all blocks
@@ -132,9 +99,15 @@ minerData['blockAward'] = 5 + minerData['includeFee'] + minerData['blockFee']
 minerData['blockAwardwoFee'] = 5 + minerData['includeFee']
 minerData['incDelay'] = minerData['includedBlockNum'] - minerData['blockNum']
 minerData['mgasUsed'] = minerData['gasUsed']/1e6
+minerData['mainGasUsed'] = minerData.loc[minerData['main']==1, 'gasUsed']
+minerData['uncleGasUsed'] = minerData.loc[minerData['uncle']==1, 'gasUsed']
 avgMgasUsed = minerData['mgasUsed'].mean()
 minMgasUsed = minerData['mgasUsed'].min()
 maxMgasUsed = minerData['mgasUsed'].max()
+medMgasUsed = minerData['mgasUsed'].quantile(.5)
+avgUncleGas = minerData.loc[minerData['uncle']==1, 'gasUsed'].mean()
+avgMainGas = minerData.loc[minerData['main']==1, 'gasUsed'].mean()
+
 minerData.loc[(minerData['gasUsed']==0) & (minerData['uncle']==True), 'emptyUncle'] = 1
 minerData.loc[(minerData['gasUsed']==0) & (minerData['main']==True), 'emptyBlock'] = 1
 minerData['emptyUncle'].fillna(0, inplace=True)
@@ -172,7 +145,7 @@ totalUncles = len(uncleBlocks)
 minerUncleBlocks = uncleBlocks.groupby('miner').sum()
 
 #clean
-minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'uncsReported', 'numTx', 'main', 'duplicates', 'mainIdents', 'uncleIdents', 'includedBlockNum', 'incDelay', 'blockFee', 'includeFee', 'blockAward', 'blockAwardwoFee', 'mgasUsed', 'emptyBlock'], axis=1)
+minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'uncsReported', 'numTx', 'main', 'duplicates', 'mainIdents', 'uncleIdents', 'includedBlockNum', 'incDelay', 'blockFee', 'includeFee', 'blockAward', 'blockAwardwoFee', 'mgasUsed', 'emptyBlock', 'mainGasUsed', 'uncleGasUsed'], axis=1)
 minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
 
 # Create mainchain dataframe to summarize mined blocks
@@ -184,7 +157,7 @@ totalMainBlocks = len(mainBlocks)
 
 #create summary table
 minerBlocks = mainBlocks.groupby('miner').sum()
-minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'duplicates','mainIdents', 'uncle', 'emptyUncle'], axis=1)
+minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'duplicates','mainIdents', 'uncle', 'emptyUncle', 'uncleGasUsed'], axis=1)
 
 
 # Merge the two tables on miner
@@ -202,8 +175,19 @@ minerBlocks['uncRatio'] = minerBlocks['uncle'] / minerBlocks['totalBlocks']
 minerBlocks['emptyUncRatio'] = minerBlocks['emptyUncle']/(minerBlocks['emptyUncle']+ minerBlocks['emptyBlock'])
 minerBlocks['avgUncleAward'] = minerBlocks['uncleAward'] / minerBlocks['uncle']
 minerBlocks['avgGasUsed'] = (minerBlocks['gasUsed'] + minerBlocks['uncleGasUsed'])/minerBlocks['totalBlocks']
+minerBlocks['avgUncleGas'] = minerBlocks['uncleGasUsed']/minerBlocks['uncle']
+minerBlocks['avgMainGas'] = minerBlocks['mainGasUsed']/minerBlocks['main']
 minerBlocks['avgTxFee'] = minerBlocks['avgBlockFee']/minerBlocks['avgGasUsed']*1e9
 minerBlocks['avgReward'] = minerBlocks['totReward'] / minerBlocks['totalBlocks']
+for index, row in minerBlocks.iterrows():
+    avg = minerData.loc[minerData['miner']==index, 'blockAward'].mean()
+    min = minerData.loc[minerData['miner']==index, 'mgasUsed'].min()
+    max = minerData.loc[minerData['miner']==index, 'mgasUsed'].max()
+    med = minerData.loc[minerData['miner']==index, 'mgasUsed'].quantile(.5)
+    minerBlocks.loc[index, 'minGas'] = min
+    minerBlocks.loc[index, 'maxGas'] = max
+    minerBlocks.loc[index, 'medGas'] = med
+
 minerBlocks = minerBlocks.sort_values('totalBlocks', ascending = False)
 
 
@@ -228,13 +212,18 @@ profitpct = profit/avgBlockFee
 profitpctBlock = profit/avgMainRewardwFee
 #create Dataframe
 
-
+print(minMgasUsed, maxMgasUsed, medMgasUsed)
 resultTable = {
-    'miner': ['all'],
+    'miner': ['Total'],
     'totalBlocks': [totalBlocks],
     'uncles': [totalUncles],
     'emptyUncles':[emptyUncles],
     'avgmGas': [avgMgasUsed],
+    'minGas':[minMgasUsed],
+    'maxGas':[maxMgasUsed],
+    'medGas':[medMgasUsed],
+    'avgUncleGas':[avgUncleGas],
+    'avgMainGas':[avgMainGas],
     'uncRate': [uncleRate],
     'predictedUncRate': [predictedUncle],
     'zeroUncRate': [dictResults['const']],
@@ -276,6 +265,11 @@ for index, row in minerBlocks.iterrows():
     resultSummary.loc[x, 'uncles'] = row['uncle']
     resultSummary.loc[x, 'emptyUncles'] = row['emptyUncle']
     resultSummary.loc[x, 'avgmGas'] = row['avgGasUsed']/1e6
+    resultSummary.loc[x, 'avgUncleGas'] = row['avgUncleGas']/1e6
+    resultSummary.loc[x, 'avgMainGas'] = row['avgMainGas']/1e6
+    resultSummary.loc[x, 'minGas'] = row['minGas']
+    resultSummary.loc[x, 'maxGas'] = row['maxGas']
+    resultSummary.loc[x, 'medGas'] = row['medGas']
     resultSummary.loc[x, 'uncRate'] = row['uncRatio']
     resultSummary.loc[x, 'predictedUncRate'] = predictedUncle
     resultSummary.loc[x, 'zeroUncRate'] = dictResults['const']
@@ -297,17 +291,11 @@ for index, row in minerBlocks.iterrows():
     x=x+1
 
 
+resultSummary = resultSummary.reindex([0, 2, 3, 4, 5, 6, 7, 1])
 print(resultSummary)
 
 
-for index, row in minerBlocks.iterrows():
-    avg = minerData.loc[minerData['miner']==index, 'blockAward'].mean()
-    min = minerData.loc[minerData['miner']==index, 'mgasUsed'].min()
-    max = minerData.loc[minerData['miner']==index, 'mgasUsed'].max()
-    med = minerData.loc[minerData['miner']==index, 'mgasUsed'].quantile(.5)
-    minerBlocks.loc[index, 'minGas'] = min
-    minerBlocks.loc[index, 'maxGas'] = max
-    minerBlocks.loc[index, 'medGas'] = med
+
 
 print(minerBlocks)
 
