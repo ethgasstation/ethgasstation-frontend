@@ -108,7 +108,6 @@ filter.watch(function(err,blockHash)
                                     console.error(err.stack);
                                 }
                                 if (receipt != null){ 
-                                    console.log(receipt);
                                     var post = {
                                         txHash: receipt.transactionHash,
                                         minedBlock: receipt.blockNumber,
