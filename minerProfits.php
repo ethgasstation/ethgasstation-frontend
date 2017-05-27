@@ -45,7 +45,7 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.css" rel="stylesheet">
-    <?php include 'build/php/profitTable.php'; ?>
+    <?php include 'build/php/profits.php'; ?>
 
    
 
