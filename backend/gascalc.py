@@ -16,7 +16,7 @@ cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1
 cursor = cnx.cursor()
 
 # First Query to Determine Block TIme, and Estimate Miner Policies
-query = ("SELECT minedGasPrice, miner, tsMined, minedBlock, emptyBlock, minedGasPriceCat FROM minedtransactions WHERE minedBlock > %s AND minedBlock < %s ")
+query = ("SELECT minedGasPrice, toAddress, miner, tsMined, minedBlock, emptyBlock, minedGasPriceCat FROM minedtransactions WHERE minedBlock > %s AND minedBlock < %s ")
 
 cursor.execute(query, (startBlock, endBlock))
 head = cursor.column_names
@@ -319,6 +319,7 @@ dictResults = dict(results.params)
 dep['predict'] = results.predict()
 
 print(dictResults)
+
 #check to see if really fastest
 predictAverage = dictResults['cons']
 predictFastest = dictResults['cons'] + dictResults['priceCat4']
@@ -333,6 +334,12 @@ if (gpRecs['safeLow'] < minLow):
 
 if (gpRecs['safeLow'] == 0):
     gpRecs['safeLow'] = 1
+
+#gas guzzler table
+
+gasGuzz = txData.groupby['toAddress'].sum()
+gasGuzz = gasGuzz.head(n=10)
+print(gasGuzz)
 
 quantiles = quantiles.reset_index(drop=True)
 quantiles.rename({0: '50pct', 1: '75pct', 2: '90pct', 3: 'max'}, inplace=True)

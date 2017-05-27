@@ -105,8 +105,8 @@ avgMgasUsed = minerData['mgasUsed'].mean()
 minMgasUsed = minerData['mgasUsed'].min()
 maxMgasUsed = minerData['mgasUsed'].max()
 medMgasUsed = minerData['mgasUsed'].quantile(.5)
-avgUncleGas = minerData.loc[minerData['uncle']==1, 'gasUsed'].mean()
-avgMainGas = minerData.loc[minerData['main']==1, 'gasUsed'].mean()
+avgUncleGas = minerData.loc[minerData['uncle']==1, 'mgasUsed'].mean()
+avgMainGas = minerData.loc[minerData['main']==1, 'mgasUsed'].mean()
 
 minerData.loc[(minerData['gasUsed']==0) & (minerData['uncle']==True), 'emptyUncle'] = 1
 minerData.loc[(minerData['gasUsed']==0) & (minerData['main']==True), 'emptyBlock'] = 1
@@ -212,7 +212,6 @@ profitpct = profit/avgBlockFee
 profitpctBlock = profit/avgMainRewardwFee
 #create Dataframe
 
-print(minMgasUsed, maxMgasUsed, medMgasUsed)
 resultTable = {
     'miner': ['Total'],
     'totalBlocks': [totalBlocks],
@@ -240,7 +239,7 @@ resultTable = {
     'profitPctBlock': [profitpctBlock]}
 
 resultSummary = pd.DataFrame.from_dict(resultTable)
-resultSummary = resultSummary[['miner', 'totalBlocks', 'uncles', 'emptyUncles', 'uncRate', 'predictedUncRate', 'avgmGas','zeroUncRate', 'actualZeroUncRate','avgUncleReward', 'avgMainRewardwoFee', 'avgTxFees', 'predictEmpAward', 'predictTxAward', 'actualTxAward', 'breakeven', 'profit', 'profitPct', 'profitPctBlock']]
+resultSummary = resultSummary[['miner', 'totalBlocks', 'uncles', 'emptyUncles', 'uncRate', 'predictedUncRate', 'avgmGas','zeroUncRate', 'actualZeroUncRate','avgUncleReward', 'avgMainRewardwoFee', 'avgTxFees', 'predictEmpAward', 'predictTxAward', 'actualTxAward', 'breakeven', 'profit', 'profitPct', 'profitPctBlock', 'minGas', 'maxGas','medGas', 'avgUncleGas', 'avgMainGas']]
 
 miningpoolgas = minerBlocks.loc['0xb2930b35844a230f00e51431acae96fe543a0347', 'avgGasUsed']
 miningpoolfee = minerBlocks.loc['0xb2930b35844a230f00e51431acae96fe543a0347', 'avgBlockFee']
