@@ -24,7 +24,7 @@ for (x=0; x<result.transactions.length; x++)
     fee = tx.gasUsed * gasPrice;
     blockFee = blockFee+fee;
 }
-result2.blockFee = blockFee;
+result2.blockFee = blockFee/1e4;
 var json = JSON.stringify(result2);
 console.log(json);
 
