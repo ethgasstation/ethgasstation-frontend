@@ -108,8 +108,8 @@
                         echo('<tr>');
                         echo("<td>". $row['miner']. "</td>");
                         echo("<td>". $row['totalBlocks']). "</td>";
-                        echo("<td>". round($row['uncleRate'],2). "</td>");
-                        echo("<td>". round($row['avgUncleAward'],2). "</td>");
+                        echo("<td>". round($row['uncRate'],2). "</td>");
+                        echo("<td>". round($row['avgUncleReward'],2). "</td>");
                         echo("<td>". round($row['avgmGas'],3). "</td>");
                         echo("<td>". round($row['avgMainRewardwoFee'],2). "</td>");
                         echo("<td>". round($row['avgTxFees'],3). "</td>");
