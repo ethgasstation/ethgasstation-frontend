@@ -199,7 +199,7 @@ for x in range(len(priceTable)):
         gpRecs['Average'] = priceTable.loc[x, 'adjustedMinP']
         break
 for x in range(len(priceTable)):
-    if (priceTable.loc[x, 'cumPctTxBlocks']) >= 99:
+    if (priceTable.loc[x, 'cumPctTxBlocks']) >= 98.5:
         gpRecs['Fastest'] = priceTable.loc[x, 'adjustedMinP']
         break
 
