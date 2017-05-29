@@ -15,7 +15,6 @@ endBlock = sys.argv[2]
 query = ("SELECT * FROM speedo2 where blockNum>= %s and blockNum < %s")
 cursor.execute(query, (startBlock, endBlock))
 head = cursor.column_names
-print(head)
 blockData = pd.DataFrame(cursor.fetchall())
 blockData.columns = head
 
@@ -26,13 +25,13 @@ addUnc = ("INSERT INTO speedo2 "
 for index, row in blockData.iterrows():
     if row['uncsReported'] > 0 :
         block = str(row['blockNum'])
-        numUncs = str(row['uncsReported'])
-        out = subprocess.check_output(['node', 'getUncs.js', block, numUncs])
-        uncData = json.loads(out)
-        print(uncData)
-        cursor.execute(addUnc, uncData)
-        print(cursor.statement)
-        cnx.commit()
+        for x in range(0, row['uncsReported']):
+                uncNum = str(x)
+                out = subprocess.check_output(['node', 'getUncs.js', block, uncNum])
+                uncData = json.loads(out)
+                cursor.execute(addUnc, uncData)
+                print(cursor.statement)
+                cnx.commit()
 
 
 

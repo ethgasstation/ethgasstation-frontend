@@ -194,10 +194,10 @@ for x in range(len(priceTable)):
     if (priceTable.loc[x, 'cumPctTxBlocks']) >= 5:
         gpRecs['safeLow'] = priceTable.loc[x, 'adjustedMinP']
         break
-for x in range(len(priceTable)):
-    if (priceTable.loc[x, 'cumPctTxBlocks']) >= 50:
-        gpRecs['Average'] = priceTable.loc[x, 'adjustedMinP']
-        break
+
+medianGasPrice = txData['minedGasPrice'].quantile(.5)
+gpRecs['Average'] = medianGasPrice
+
 for x in range(len(priceTable)):
     if (priceTable.loc[x, 'cumPctTxBlocks']) >= 98.5:
         gpRecs['Fastest'] = priceTable.loc[x, 'adjustedMinP']
@@ -282,13 +282,14 @@ gasGuzz['pcttot'] = gasGuzz['gasused']/totgas
 
 gasGuzz = gasGuzz.head(n=10)
 gg = {
-    u'0x6090a6e47849629b7245dfa1ca21d94cd15878ef': 'ENS registrar',
-    u'0xcd111aa492a9c77a367c36e6d6af8e6f212e0c8e': 'Acronis',
-    u'0x209c4784ab1e8183cf58ca33cb740efbf3fc18ef': 'Poloniex',
-    u'0xece701c76bd00d1c3f96410a0c69ea8dfcf5f34e': 'Oraclize',
-    u'0xa74476443119a942de498590fe1f2454d7d4ac0d': 'Golem',
-    u'0xedce883162179d4ed5eb9bb2e7dccf494d75b3a0': 'Bittrex',
-    u'0x70faa28a6b8d6829a4b1e649d26ec9a2a39ba413': 'Shapeshift',
+    '0x6090a6e47849629b7245dfa1ca21d94cd15878ef': 'ENS registrar',
+    '0xcd111aa492a9c77a367c36e6d6af8e6f212e0c8e': 'Acronis',
+    '0x209c4784ab1e8183cf58ca33cb740efbf3fc18ef': 'Poloniex',
+    '0xece701c76bd00d1c3f96410a0c69ea8dfcf5f34e': 'Oraclize',
+    '0xa74476443119a942de498590fe1f2454d7d4ac0d': 'Golem',
+    '0xedce883162179d4ed5eb9bb2e7dccf494d75b3a0': 'Bittrex',
+    '0x70faa28a6b8d6829a4b1e649d26ec9a2a39ba413': 'Shapeshift',
+    '0xff1f9c77a0f1fd8f48cfeee58b714ca03420ddac': 'e4row'
 
 }
 for index, row in gasGuzz.iterrows():
@@ -321,7 +322,7 @@ txData = txData.dropna()
 
 dep = pd.DataFrame()
 dep['priceCat1'] = (txData['minedGasPrice'] < gpRecs['Average']).astype(int)
-dep['priceCat2'] = (txData['minedGasPrice'] == gpRecs['Average']).astype(int)
+#dep['priceCat2'] = (txData['minedGasPrice'] == gpRecs['Average']).astype(int)
 dep['priceCat3'] = ((txData['minedGasPrice'] > gpRecs['Average']) & (txData['minedGasPrice'] < gpRecs['Fastest'])).astype(int)
 dep['priceCat4'] = (txData['minedGasPrice'] > gpRecs['Fastest']).astype(int)
 
@@ -338,6 +339,10 @@ dep['gasCat4'] = (txData['gasused']> quantiles[.9]).astype(int)
 dep['cons'] = 1
 
 indep = txData['delay']
+with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+    print(indep)
+with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+    print(dep)
 
 model = sm.Poisson(indep, dep.loc[:,['priceCat1', 'priceCat3', 'priceCat4', 'gasCat2', 'gasCat3', 'gasCat4', 'cons']])
 

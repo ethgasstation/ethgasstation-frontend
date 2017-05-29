@@ -107,7 +107,6 @@ filter.watch(function(err,blockHash)
                                 {
                                     console.error(err.stack);
                                 }
-                                console.log(to);
                                 if (receipt != null){ 
                                     var post = {
                                         txHash: receipt.transactionHash,
@@ -150,6 +149,11 @@ filter.watch(function(err,blockHash)
                 launchProcess (commandString2); 
             
              }
+            if (block.number % 1000 === 0 )
+            {
+                profitBlock = currentBlock - 100000;
+                commandString = 'python miner.py ' + profitBlock + ' ' + currentBlock;
+            }
             if (block.number % 50 === 0 )
             {
 
@@ -351,7 +355,7 @@ function writeSpeedo (block)
             speed: speed,
             uncsReported: uncsReported
         }
-    writeData (post3, 'speedo');
+    writeData (post3, 'speedo2');
     if (block.uncles.length > 0)
         {
             for (pos in block.uncles)
@@ -372,7 +376,7 @@ function writeSpeedo (block)
                             uncle: true,
                             main: false
                         }
-                        writeData(post, 'speedo');
+                        writeData(post, 'speedo2');
                     }
 
                     })

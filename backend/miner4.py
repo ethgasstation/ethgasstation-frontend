@@ -31,6 +31,25 @@ minerData = minerData[minerData['idents']==False]
 print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
 
+# Find Gaps
+
+minerData = minerData.sort_values(by=['main', 'blockNum'])
+minerData = minerData.reindex()
+minerData['check'] = minerData.loc[minerData['main']==1, 'blockNum']
+minerData['check'] = minerData['check'].shift(-1)
+minerData['diff'] = minerData['check'] - minerData['blockNum']
+
+gaps = pd.DataFrame (minerData.loc[minerData['diff']>1, ['blockNum', 'check', 'diff']])
+for index, row in gaps.iterrows():
+    print('filling gaps') 
+    print(row['blockNum'])
+    print(row['check'])
+    fromBlock = str(int(row['blockNum']))
+    toBlock = str(int(row['check']))
+    out = subprocess.check_output(['python', 'loadBlocks.py', fromBlock, toBlock])
+    print('getting uncles')
+    out = subprocess.check_output(['node', 'loadUncs.py', fromBlock, toBlock])
+    print('Gaps Filled')
 
 #clean data
 
@@ -73,7 +92,9 @@ uncleRate = totalUncsReported/float(totalBlocks)
 minerData['blockFee'] = minerData['blockFee']/1e5
 totalIncludeFee = minerData['includeFee'].sum()
 minerData['blockAward'] = 5 + minerData['includeFee'] + minerData['blockFee']
-minerData['blockAwardwoFee'] = 5 + minerData['includeFee']
+minerData['mainAwardwoFee'] = 5 + minerData['includeFee']
+minerData['mainAwardwFee'] = minerData['blockAward']
+minerData.loc[minerData['uncle']==1, ['mainAwardwoFee', 'mainAwardwFee']] = np.nan
 minerData['incDelay'] = minerData['includedBlockNum'] - minerData['blockNum']
 minerData['mgasUsed'] = minerData['gasUsed']/1e6
 minerData['mainGasUsed'] = minerData.loc[minerData['main']==1, 'gasUsed']
@@ -91,18 +112,21 @@ minerData['emptyUncle'].fillna(0, inplace=True)
 minerData['emptyBlock'].fillna(0, inplace=True)
 emptyUncles = minerData['emptyUncle'].sum()
 
+avgMainRewardwFee = minerData['mainAwardwFee'].mean()
+avgMainRewardwoFee = minerData['mainAwardwoFee'].mean()
+avgBlockFee = minerData['blockFee'].mean()
+avgTxPrice = avgBlockFee/float(totAvgGasUsed)*1e9
 
 #define reward for uncleBlocks
-for index, row in minerData.iterrows():
-    incDelay = minerData.loc[index, 'incDelay']
-    if row['uncle'] == 1:    
-        minerData.loc[index, 'blockAward'] = (8-incDelay)/8 * 5
-        minerData.loc[index, 'blockAwardwoFee'] = (8-incDelay)/8 * 5
+
+minerData['uncleAward'] = (8-minerData['incDelay'])/8 * 5
+avgUncleAward = minerData['uncleAward'].mean()
+minerData.loc[minerData['uncle']==1, 'blockAward'] = minerData.loc[minerData['uncle']==1, 'uncleAward']
+
 avgBlockAward = minerData['blockAward'].mean()
-avgUncleAward = minerData.loc[minerData['uncle']==1, 'blockAward'].mean()
+avgUncleAward = minerData['uncleAward'].mean()
 totalUncles = minerData.loc[minerData['uncle']==1, 'uncle'].sum()
-
-
+totalMains = minerData.loc[minerData['main']==1, 'main'].sum()
 
 # find empty block uncle rate
 
@@ -113,49 +137,25 @@ print (totemptyBlocks, emptyUncles, emptyMains)
 print ("%.3f" % (emptyUnclePct))
 
 
-# Create uncle dataframe to summarize uncle stats
-uncleBlocks = pd.DataFrame(minerData.loc[minerData['uncle'] == 1]) 
-uncleBlocks['incDelay']= uncleBlocks['includedBlockNum'] - uncleBlocks['blockNum']
-uncleBlocks['uncleAward'] = (8-uncleBlocks['incDelay'])/8 * 5
-avgUncleAward = uncleBlocks['uncleAward'].mean()
-totalUncles = len(uncleBlocks)
-minerUncleBlocks = uncleBlocks.groupby('miner').sum()
-
-#clean
-minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'uncsReported', 'main', 'idents','includedBlockNum', 'incDelay', 'blockFee', 'includeFee', 'blockAward', 'blockAwardwoFee', 'mgasUsed', 'emptyBlock', 'mainGasUsed', 'uncleGasUsed'], axis=1)
-minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
-
-# Create mainchain dataframe to summarize mined blocks
-mainBlocks = pd.DataFrame(minerData.loc[minerData['uncle']==0])
-avgMainRewardwoFee = mainBlocks['blockAwardwoFee'].mean()
-avgMainRewardwFee = mainBlocks['blockAward'].mean()
-avgBlockFee = mainBlocks['blockFee'].mean()
-totalMainBlocks = len(mainBlocks)
+print minerData
 
 #create summary table
-minerBlocks = mainBlocks.groupby('miner').sum()
-minerBlocks = minerBlocks.drop(['id', 'blockNum', 'includedBlockNum', 'idents', 'uncle', 'emptyUncle', 'uncleGasUsed'], axis=1)
-
-
-# Merge the two tables on miner
-minerBlocks = minerBlocks.join(minerUncleBlocks)
-minerBlocks['uncleAward'].fillna(0, inplace = True)
-minerBlocks['uncle'].fillna(0, inplace = True)
-minerBlocks['totReward'] = minerBlocks['blockAward'] + minerBlocks['uncleAward']
+minerBlocks = minerData.groupby('miner').sum()
+minerBlocks = minerBlocks.drop(['id', 'blockNum', 'includedBlockNum', 'idents', 'incDelay'], axis=1)
 
 #calc miner totals
 minerBlocks['totalBlocks'] = minerBlocks['main'] + minerBlocks['uncle']
-minerBlocks['mainAwardwFee'] = minerBlocks['blockAward']/minerBlocks['main']
+minerBlocks['avgMainAwardwFee'] = minerBlocks['mainAwardwFee']/minerBlocks['main']
 minerBlocks['avgBlockFee'] = minerBlocks['blockFee']/minerBlocks['main']
-minerBlocks['mainAwardwoFee'] =  minerBlocks['blockAwardwoFee'] / minerBlocks['main']
+minerBlocks['avgMainAwardwoFee'] =  minerBlocks['mainAwardwoFee'] / minerBlocks['main']
 minerBlocks['uncRatio'] = minerBlocks['uncle'] / minerBlocks['totalBlocks']
 minerBlocks['emptyUncRatio'] = minerBlocks['emptyUncle']/(minerBlocks['emptyUncle']+ minerBlocks['emptyBlock'])
 minerBlocks['avgUncleAward'] = minerBlocks['uncleAward'] / minerBlocks['uncle']
-minerBlocks['avgGasUsed'] = (minerBlocks['gasUsed'] + minerBlocks['uncleGasUsed'])/minerBlocks['totalBlocks']
+minerBlocks['avgGasUsed'] = minerBlocks['gasUsed']/minerBlocks['totalBlocks']
 minerBlocks['avgUncleGas'] = minerBlocks['uncleGasUsed']/minerBlocks['uncle']
 minerBlocks['avgMainGas'] = minerBlocks['mainGasUsed']/minerBlocks['main']
-minerBlocks['avgTxFee'] = minerBlocks['avgBlockFee']/minerBlocks['avgGasUsed']*1e9
-minerBlocks['avgReward'] = minerBlocks['totReward'] / minerBlocks['totalBlocks']
+minerBlocks['avgTxPrice'] = minerBlocks['avgBlockFee']/minerBlocks['avgGasUsed']*1e9
+minerBlocks['avgReward'] = minerBlocks['blockAward'] / minerBlocks['totalBlocks']
 for index, row in minerBlocks.iterrows():
     avg = minerData.loc[minerData['miner']==index, 'blockAward'].mean()
     min = minerData.loc[minerData['miner']==index, 'mgasUsed'].min()
@@ -167,6 +167,7 @@ for index, row in minerBlocks.iterrows():
 
 minerBlocks = minerBlocks.sort_values('totalBlocks', ascending = False)
 
+print(minerBlocks)
 
 # Regression model for gas
 minerData['const'] = 1
@@ -231,10 +232,10 @@ for index, row in minerBlocks.iterrows():
     dictResults = dict(results.params)
     predictedUncle = dictResults['const'] + (dictResults['mgasUsed'] * row['avgGasUsed']/1e6)
     mpoolUncle = dictResults['const'] + (dictResults['mgasUsed'] * miningpoolgas/1e6)
-    mpoolAward = ((row['mainAwardwoFee']+miningpoolfee)*(1-mpoolUncle)) + (row['avgUncleAward']*mpoolUncle)
-    expectedEmptyAward = (row['mainAwardwoFee']*(1-dictResults['const'])) + (row['avgUncleAward']*dictResults['const'])
-    expectedTxAward = (row['mainAwardwFee']*(1-predictedUncle)) + (row['avgUncleAward']*predictedUncle)
-    mainUncleDiff = row['avgUncleAward'] - row['mainAwardwoFee']
+    mpoolAward = ((row['avgMainAwardwoFee']+(miningpoolgas * avgTxPrice/1e9))*(1-mpoolUncle)) + (row['avgUncleAward']*mpoolUncle)
+    expectedEmptyAward = (row['avgMainAwardwoFee']*(1-dictResults['const'])) + (row['avgUncleAward']*dictResults['const'])
+    expectedTxAward = (row['avgMainAwardwFee']*(1-predictedUncle)) + (row['avgUncleAward']*predictedUncle)
+    mainUncleDiff = row['avgUncleAward'] - row['avgMainAwardwoFee']
     breakeven = -1*dictResults['mgasUsed']/1e6 * mainUncleDiff * 1e9
     resultSummary.loc[x, 'miner'] = dictMiners[index]
     resultSummary.loc[x, 'totalBlocks'] = row['totalBlocks']
@@ -251,7 +252,7 @@ for index, row in minerBlocks.iterrows():
     resultSummary.loc[x, 'zeroUncRate'] = dictResults['const']
     resultSummary.loc[x, 'actualZeroUncRate'] = row['emptyUncRatio']
     resultSummary.loc[x, 'avgUncleReward'] = row['avgUncleAward']
-    resultSummary.loc[x, 'avgMainRewardwoFee'] = row['mainAwardwoFee']
+    resultSummary.loc[x, 'avgMainRewardwoFee'] = row['avgMainAwardwoFee']
     resultSummary.loc[x, 'avgTxFees'] = row['avgBlockFee']
     resultSummary.loc[x, 'predictEmpAward'] = expectedEmptyAward
     resultSummary.loc[x, 'predictTxAward'] = expectedTxAward
@@ -262,18 +263,18 @@ for index, row in minerBlocks.iterrows():
     resultSummary.loc[x, 'breakeven'] = breakeven
     resultSummary.loc[x, 'potentialAward'] = mpoolAward
     resultSummary.loc[x, 'potentialProfit'] = mpoolAward - row['avgReward']
-    resultSummary.loc[x, 'avgTxFee'] = row['avgTxFee']
+    resultSummary.loc[x, 'avgTxPrice'] = row['avgTxPrice']
     print (results.summary())
     x=x+1
 
 
 resultSummary = resultSummary.reindex([0, 2, 3, 4, 5, 6, 7, 1])
-print(resultSummary)
 
+with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+    print(resultSummary)
 
-
-
-print(minerBlocks)
+with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+    print(minerBlocks)
 
 minerProfits = resultSummary.to_json(orient = 'records')
 parentdir = os.path.dirname(os.getcwd())

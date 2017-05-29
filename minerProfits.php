@@ -65,8 +65,19 @@
               <div class="nav toggle">
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
-              <ul class="nav navbar-nav navbar-right">
-              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Stats over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
+               <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                  <a href="#" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-globe"></i><span style="color:#768399"> Change Currency</span>
+                    <span class=" fa fa-angle-down"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li id="usd"><a href="#"> USD<?php if($currency=='usd'){echo'<span class="pull-right"><i class="fa fa-check"></i></span>';}?></a></li>
+                    <li id="eur"><a href="#"> EUR<?php if($currency=='eur'){echo'<span class="pull-right"><i class="fa fa-check"></i></span>';}?></a></li>
+                    <li id="gbp"><a href="#"> GBP<?php if($currency=='gbp'){echo'<span class="pull-right"><i class="fa fa-check"></i></span>';}?></a></li>
+                    <li id="cny"><a href="#"> CNY<?php if($currency=='cny'){echo'<span class="pull-right"><i class="fa fa-check"></i></span>';}?></a></li>
+                  </ul>
+                </li>
+                <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php $latestblock = $latestblock - ($latestblock % 1000); echo "Estimates over last 100,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
               </p>
             </ul>
             </nav>
@@ -128,7 +139,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel tile fixed_height_420">
                   <div class="x_title">
-                    <h4>Miner Gas Profits</h4>
+                    <h4>Miner Gas Profits <small> Note: differences in miner break even price may be due to random chance</small></h4>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
@@ -138,12 +149,13 @@
                           <th>Miner</th>
                           <th>Uncle Award</th>
                           <th>Main Award w/o Gas Fees</th>
-                          <th>Predicted All Empty Award</th>
-                          <th>Block Award at Avg Gas Used</th>
-                          <th>Break Even Gas Price (Gwei)</th>
-                          <th>Gas Revenue (ETH)</th>
-                          <th>Gas Profit (ETH)</th>
+                          <th>Predicted All Empty Award<sup>1</sup></th>
+                          <th>Block Award at Avg Gas Used<sup>2</sup></th>
+                          <th>Break Even Gas Price (Gwei)<sup>3</sup></th>
+                          <th>Gas Revenue (ETH)<sup>4</sup></th>
+                          <th>Gas Profit (ETH)<sup>5</sup></th>
                           <th>Gas Profit (Fiat)</th>
+                          <th>Gas Profit % of Total<sup>6</sup></th>
                         </tr>
                       </thead>
                       <tbody>
@@ -153,27 +165,35 @@
                         echo("<td>". $row['miner']. "</td>");
                         echo("<td>". number_format($row['avgUncleReward'],2). "</td>");
                         echo("<td>". number_format($row['avgMainRewardwoFee'],3). "</td>");
-                        echo("<td>". number_format($row['predictEmpAward'],2). "</td>");
-                        echo("<td>". number_format($row['actualTxAward'],2). "</td>");
+                        echo("<td>". number_format($row['predictEmpAward'],3). "</td>");
+                        echo("<td>". number_format($row['actualTxAward'],3). "</td>");
                         if($row['breakeven']<0){
                           $row['breakeven']=0;}
                         echo("<td>". round($row['breakeven']). "</td>"); 
                         echo("<td>". number_format($row['avgTxFees'],3). "</td>");
                         echo("<td>". number_format($row['profit'],3). "</td>");
                         $profitFiat = $row['profit']*$exchangeRate;
-                        echo("<td>". number_format($profitFiat,3). "</td>");
+                        echo("<td>". $currSymbol.number_format($profitFiat,2). "</td>");
+                        echo("<td>". number_format($row['profitPct'],3). "</td>");
                         echo('</tr>');
 
                       }
                       ?>
                       </tbody>
                     </table>
+                    <p>Notes:</p>
+                    <p>1: The weighted average block award at the expected ratio of uncles/main blocks if mining all empty blocks</p>
+                    <p>2: The weigthed average block award at the miner's observed ratio of uncles/main blocks in the dataset</p>
+                    <p>3: The gas price in gwei above which all gas mined is expected to contribute to miner profit after adjusting for its effect on uncle risk</p>
+                    <p>4: The average gross revenue per block from transaction fees </p>
+                    <p>5: The profit per block from mining gas after adjusting for its impact on the miner's uncle rate</p>
+                    <p>6: The % of the miner's total block revenue coming from the uncle-adjusted profit of gas mining</p>
 
-                 </div>
+             </div>    
         </div>
     </div>
-                    
-
+  </div>             
+</div>
     <!-- /misc transactions -->
 
   </div>
@@ -202,7 +222,25 @@
     
 
 <!-- Custom Theme Scripts -->
+    <script>
 
+            $("#eur").click(function(){     
+                location = "http://ethgasstation.info/minerProfits.php?curr=eur";                              
+            });
+            
+            $("#usd").click(function(){
+                location = "http://ethgasstation.info/minerProfits.php?curr=usd";
+            });
+          
+            $("#cny").click(function(){
+                location = "http://ethgasstation.info/minerProfits.php?curr=cny";                                      
+            });
+
+            $("#gbp").click(function(){
+                location = "http://ethgasstation.info/minerProfits.php?curr=gbp";                       
+            });
+      
+      </script>
 
 
 

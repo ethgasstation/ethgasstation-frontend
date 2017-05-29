@@ -77,7 +77,6 @@ filter.watch(function(err,blockHash)
                     emptyBlock: true
                 }
                 writeData(post, 'minedtransactions');
-                blockFee(block.hash, 0);
 
             }
             else
@@ -121,8 +120,6 @@ filter.watch(function(err,blockHash)
                                     }
                             
                                     writeData(post, 'minedtransactions');
-                                    fee = receipt.gasUsed * gasPrice;
-                                    blockFee(block.hash,fee);
                                     
                                 }
                                 
@@ -131,13 +128,16 @@ filter.watch(function(err,blockHash)
                     });
                 }
             }
-            writeSpeedo(block); //for Speedometer
+            
             blockCounter++;
             console.log(block.number);
             currentBlock = block.number;
-            startQuery = currentBlock - 5760;
+            writeBlock = currentBlock - 5;
+            commandString = 'node writeBlocks.js ' + writeBlock;
+            launchProcess(commandString);
             if (block.number % 100 === 0 )
             {
+                startQuery = currentBlock - 5760;
                 commandString = 'node gasStationAnalyze.js ' + currentBlock;
                 commandString2 = 'python gascalc.py ' + startQuery + ' ' +  currentBlock;
                 launchProcess (commandString);
@@ -322,75 +322,3 @@ function validateTx (tx, blockNum, last)
 
 }
 
-
-// Data for the speedometer- written every block        
-function writeSpeedo (block)
-{
-    speed = block.gasUsed/block.gasLimit;
-    uncsReported = block.uncles.length;
-    totalTx = block.transactions.length;
-    var post3 = 
-    {
-        blockNum: block.number,
-        gasUsed: block.gasUsed,
-        gasLimit: block.gasLimit,
-        blockHash: block.hash,
-        miner: block.miner,
-        numTx: totalTx,
-        uncle: false,
-        main: true,
-        speed: speed,
-        uncsReported: uncsReported
-
-    }
-    writeData (post3, 'speedo');
-    if (block.uncles.length > 0)
-    {
-        for (pos in block.uncles)
-        {
-            web3.eth.getUncle(block.number, pos, function (err, uncleBlock)
-            {
-                if (uncleBlock !=null)
-                {
-                    var post = 
-                    {
-                    blockHash: uncleBlock.hash,
-                    includedBlockNum: block.number,
-                    blockNum: uncleBlock.number,
-                    miner: uncleBlock.miner,
-                    gasUsed: uncleBlock.gasUsed,
-                    gasLimit: uncleBlock.gasLimit,
-                    blockFee: 0,
-                    uncle: true,
-                    main: false
-                    }
-                writeData(post, 'speedo');
-                }
-
-            })
-        }
-    }
-}
-
-function blockFee (blockHash, fee)
-{
-    if (!(blockHash in blockFees))
-    {
-        blockFees[blockHash] = 0;
-        blockFeeArray.push(blockHash);
-    }
-    blockFees[blockHash] += fee;
-    if (blockFeeArray.length>5)
-    {
-        bhash = blockFeeArray.shift();
-        connection.query('UPDATE speedo SET blockFee = ? WHERE blockHash = ?', [blockFees[bhash], bhash], function(err, result)
-        {
-            if (err)
-            {
-                console.error(err.stack);
-            }
-            delete blockFees[bhash];
-
-    })
-    }
-}

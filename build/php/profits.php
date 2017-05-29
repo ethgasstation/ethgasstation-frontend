@@ -47,6 +47,23 @@ elseif ($currency == 'gbp'){
     $exchangeRate = $ethpriceGBP;
 }
 
+if ($currency == 'eur'){
+	$currSymbol = '€';
+}
+elseif ($currency == 'cny'){
+	$currSymbol = '¥'; 
+
+}
+elseif ($currency == 'gbp'){
+	$currSymbol = '£';
+}
+else {
+	$currSymbol = '$';
+}
+
+
+
+
 try{
     $profitRaw = file_get_contents("http://localhost/json/profit.json");
     $profitTable = json_decode($profitRaw, true);

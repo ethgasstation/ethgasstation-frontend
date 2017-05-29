@@ -23,14 +23,10 @@ minerData.columns = head
 cursor.close()
 cnx.close()
 
-# Find Identical Main Blocks - Keep 1
-minerData['mainIdents'] = minerData.duplicated(subset=['blockNum', 'main', 'uncsReported'])
-minerData.loc[(minerData['mainIdents']==True) & (minerData['main']==0), 'mainIdents'] = False
-minerData = minerData[minerData['mainIdents']==False]
-
-#duplicated Uncles
-minerData['uncleIdents'] = minerData.duplicated(subset=['blockHash'])
-minerData = minerData[minerData['uncleIdents']==False]
+# Find Identical Blocks
+minerData['idents'] = minerData.duplicated(subset=['blockHash'])
+print(minerData[minerData['idents']==True])
+minerData = minerData[minerData['idents']==False]
 
 print(minerData['uncle'].sum())
 print(minerData['uncsReported'].sum())
@@ -98,7 +94,7 @@ totalUncles = len(uncleBlocks)
 minerUncleBlocks = uncleBlocks.groupby('miner').sum()
 
 #clean
-minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'gasLimit', 'uncsReported', 'main', 'mainIdents', 'uncleIdents', 'includedBlockNum', 'incDelay', 'blockFee', 'includeFee', 'blockAward', 'blockAwardwoFee', 'mgasUsed', 'emptyBlock'], axis=1)
+minerUncleBlocks = minerUncleBlocks.drop(['id', 'blockNum', 'uncsReported', 'main', 'idents', 'includedBlockNum', 'incDelay', 'blockFee', 'includeFee', 'blockAward', 'blockAwardwoFee', 'mgasUsed', 'emptyBlock'], axis=1)
 
 minerUncleBlocks = minerUncleBlocks.rename(columns={'gasUsed': 'uncleGasUsed'})
 
@@ -111,7 +107,7 @@ totalMainBlocks = len(mainBlocks)
 
 #create summary table
 minerBlocks = mainBlocks.groupby('miner').sum()
-minerBlocks = minerBlocks.drop(['id', 'blockNum', 'gasLimit', 'includedBlockNum', 'duplicates','mainIdents', 'uncle', 'emptyUncle'], axis=1)
+minerBlocks = minerBlocks.drop(['id', 'blockNum', 'includedBlockNum','idents', 'uncle', 'emptyUncle'], axis=1)
 
 
 # Merge the two tables on miner
