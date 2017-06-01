@@ -355,7 +355,7 @@ function writeSpeedo (block)
             speed: speed,
             uncsReported: uncsReported
         }
-    writeData (post3, 'speedo2');
+    writeData (post3, 'speedo');
     if (block.uncles.length > 0)
         {
             for (pos in block.uncles)
@@ -376,7 +376,7 @@ function writeSpeedo (block)
                             uncle: true,
                             main: false
                         }
-                        writeData(post, 'speedo2');
+                        writeData(post, 'speedo');
                     }
 
                     })
