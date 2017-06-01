@@ -180,7 +180,7 @@ CREATE TABLE speedo (
     blockHash TEXT,
     avgWait INT, 
     includedBlockNum INT,
-    speed DECIMAL(3,3),
+    speed DECIMAL(4,3),
     blockFee INT, 
     numTx INT,
     uncleBlockNum INT,

@@ -46,9 +46,7 @@ for index, row in gaps.iterrows():
     print(row['check'])
     fromBlock = str(int(row['blockNum']))
     toBlock = str(int(row['check']))
-    out = subprocess.check_output(['python', 'loadBlocks.py', fromBlock, toBlock])
-    print('getting uncles')
-    out = subprocess.check_output(['node', 'loadUncs.py', fromBlock, toBlock])
+    out = subprocess.check_output(['node', 'writeBlocks.js', fromBlock, toBlock])
     print('Gaps Filled')
 
 #clean data

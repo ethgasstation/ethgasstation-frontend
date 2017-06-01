@@ -144,6 +144,11 @@ filter.watch(function(err,blockHash)
                 launchProcess (commandString2); 
             
              }
+             if (block.number % 1000 === 0 )
+            {
+                profitBlock = currentBlock - 100000;
+                commandString = 'python miner.py ' + profitBlock + ' ' + currentBlock;
+            }
             if (block.number % 50 === 0 )
             {
 
@@ -261,15 +266,7 @@ function launchProcess (commandString)
 {
     console.log(commandString);
     const exec = require('child_process').exec;
-    const child = exec(commandString, (error, stdout, stderr) => 
-    {
-        if (error)
-        {
-            throw error;
-        }
-        console.log(stdout);
-        console.log(stderr);
-    })
+    const child = exec(commandString);
 }     
 
 function validateTx (tx, blockNum, last)
