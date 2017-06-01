@@ -339,10 +339,10 @@ dep['gasCat4'] = (txData['gasused']> quantiles[.9]).astype(int)
 dep['cons'] = 1
 
 indep = txData['delay']
-with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-    print(indep)
-with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-    print(dep)
+#with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+#   print(indep)
+#with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+#    print(dep)
 
 model = sm.Poisson(indep, dep.loc[:,['priceCat1', 'priceCat3', 'priceCat4', 'gasCat2', 'gasCat3', 'gasCat4', 'cons']])
 
