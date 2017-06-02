@@ -24,8 +24,7 @@ connection.connect(function(err) {
 
 validationStatus = {};
 watchedTx = [];
-blockFees = {};
-blockFeeArray = [];
+blockTime = {};
 
 try {
     fs.readFileSync(path.join(__dirname, '..', '/json/validated.json'), 'utf8')
@@ -58,115 +57,59 @@ filter.watch(function(err,blockHash)
     if (err){
         console.error(err);
     }
+    var ts = Math.round(+new Date()/1000);
     web3.eth.getBlock(blockHash, function (err, block)
     {
-        if (err){
-            console.error(err.stack);
-            return;
-        }
-        if (block != null)
+        if (!(block.number in blockTime))
         {
-            var ts = Math.round(+new Date()/1000);
-            if (block.transactions.length === 0)
-            {
-                var post = {
-                    txHash: block.number,
-                    minedBlock: block.number,
-                    miner: block.miner,
-                    tsMined: ts,
-                    emptyBlock: true
-                }
-                writeData(post, 'minedtransactions');
-
-            }
-            else
-            {   
-                for(x=0; x <block.transactions.length; x++)
-                {
-                    web3.eth.getTransaction(block.transactions[x], function (err, tx)
-                    {
-                        if (err)
-                        {
-                            console.error(err.stack);
-                            return;
-                        }
-
-                        if (tx !=null)
-                        {
-                            var gasPrice = tx.gasPrice.toString(10);
-                            gasPrice = gasPrice/1e9; //convert to Gwei
-                            var gasPriceCat = getGasPriceCat(gasPrice);
-                            
-                            web3.eth.getTransactionReceipt(tx.hash, function (err, receipt)
-                            {
-                                if (err)
-                                {
-                                    console.error(err.stack);
-                                }
-                                if (receipt != null){ 
-                                    var post = {
-                                        txHash: receipt.transactionHash,
-                                        minedBlock: receipt.blockNumber,
-                                        toAddress:receipt.to,
-                                        fromAddress:receipt.from,
-                                        gasused: receipt.gasUsed,
-                                        miner: block.miner,
-                                        blockGasUsed: block.gasUsed,
-                                        blockGasLimit: block.gasLimit,
-                                        minedGasPrice:gasPrice,
-                                        minedGasPriceCat:gasPriceCat,
-                                        tsMined: ts,
-                                        emptyBlock:false
-                                    }
-                            
-                                    writeData(post, 'minedtransactions');
-                                    
-                                }
-                                
-                            });
-                        }
-                    });
-                }
-            }
-            
-            blockCounter++;
-            console.log(block.number);
-            currentBlock = block.number;
-            writeBlock = currentBlock - 5;
-            commandString = 'node writeBlocks.js ' + writeBlock;
-            launchProcess(commandString);
-            if (block.number % 100 === 0 )
-            {
-                startQuery = currentBlock - 5760;
-                commandString = 'node gasStationAnalyze.js ' + currentBlock;
-                commandString2 = 'python gascalc.py ' + startQuery + ' ' +  currentBlock;
-                launchProcess (commandString);
-                launchProcess (commandString2); 
-            
-             }
-             if (block.number % 1000 === 0 )
-            {
-                profitBlock = currentBlock - 100000;
-                commandString = 'python miner.py ' + profitBlock + ' ' + currentBlock;
-            }
-            if (block.number % 50 === 0 )
-            {
-
-                var y = watchedTx.length;
-                var last = false;
-                for (var x = 0; x < y; x++ )
-                {
-                    if (x === (y-1))
-                    {
-                        last = true;
-                    }
-                    tx = watchedTx.shift();
-                    validateTx(tx, block.number, last);
-                }               
-            }
+            blockTime[block.number]=ts;
         }
-    })
-})
+        writeBlock = block.number - 5;
+        deleteBlock = block.number - 25;
+        if (writeBlock in blockTime)
+        {
+            processBlock(writeBlock, blockTime[writeBlock]);
+
+        }  
+        if (deleteBlock in blockTime)
+        {
+            delete blockTime[deleteBlock];
+        }
+        blockCounter++;
+        console.log(block.number);
+        currentBlock = block.number;
+        if (block.number % 100 === 0 )
+        {
+            startQuery = currentBlock - 5760;
+            commandString = 'node gasStationAnalyze.js ' + currentBlock;
+            commandString2 = 'python gascalc.py ' + startQuery + ' ' +  currentBlock;
+            launchProcess (commandString);
+            launchProcess (commandString2); 
+            
+        }
+        if (block.number % 1000 === 0 )
+        {
+            profitBlock = currentBlock - 100000;
+            commandString = 'python miner.py ' + profitBlock + ' ' + currentBlock;
+        }
+        if (block.number % 50 === 0 )
+        {
+
+            var y = watchedTx.length;
+            var last = false;
+            for (var x = 0; x < y; x++ )
+            {
+                if (x === (y-1))
+                {
+                    last = true;
+                }
+                tx = watchedTx.shift();
+                validateTx(tx, block.number, last);
+            }               
+        }
+    });
+});
+
 
 
 filter2.watch(function(err, txHash)
@@ -319,3 +262,165 @@ function validateTx (tx, blockNum, last)
 
 }
 
+function processBlock(block, ts)
+{
+
+    function iterTxs(num, txFee)
+    {
+        
+        if (result2.numTx == 0)
+        {
+            var post = 
+            {
+                txHash: result.number,
+                minedBlock: result.number,
+                miner: result.miner,
+                emptyBlock: true,
+                tsMined: ts,
+                emptyBlock: true
+            }
+            connection.query('INSERT INTO minedtransactions SET ?', [post], function(err, out)
+            {
+                if (err)
+                {
+                    console.log(err);
+                }
+                iterUncs();
+
+            })
+            
+        }
+        else if (num < result2.numTx)
+        {
+            result2.blockFee = result2.blockFee + (txFee/1e4);
+            processTx(result.transactions[num], num, result2.blockFee);
+
+        }
+        else
+        {
+            result2.blockFee = result2.blockFee + (txFee/1e4);
+            console.log(result2.blockFee);
+            connection.query('INSERT INTO speedo2 SET ?', [result2], function(err, out)
+            {
+                iterUncs();
+
+            })
+            
+        }
+    }
+
+    function processTx(txObj, num)
+    {
+        console.log(num);
+        var gasPrice = txObj.gasPrice.toString(10);
+        gasPrice = gasPrice/1e9; //convert to Gwei
+        var gasPriceCat = getGasPriceCat(gasPrice);
+        var txReceipt = web3.eth.getTransactionReceipt(txObj.hash);
+        fee = txReceipt.gasUsed * gasPrice;
+        console.log(fee);
+        var post = 
+        {
+            txHash: txObj.hash,
+            minedBlock: txObj.blockNumber,
+            toAddress:txObj.to,
+            fromAddress:txObj.from,
+            gasused: txReceipt.gasUsed,
+            miner: result2.miner,
+            minedGasPrice:gasPrice,
+            minedGasPriceCat:gasPriceCat,
+            tsMined: ts,
+            emptyBlock:false
+        }
+        connection.query('INSERT INTO minedtransactions SET ?', [post], function(err, out)
+        {
+            if (err)
+            {
+                    console.log(err);
+            }
+            num++;
+            iterTxs(num, fee);
+        })
+    }
+
+    function iterUncs()
+    {
+        if (result2.uncsReported==0)
+        {
+            closeUp(result2.blockNum);
+        }
+        else if (result2.uncsReported==1)
+        {
+            processUncle(result2.blockNum, 0, closeUp)
+        }
+        else if (result2.uncsReported==2)
+        {
+            processUncle(result2.blockNum, 0, nextUncle)
+        }
+    }
+
+    function processUncle(block, pos, callBack)
+    {
+        var result4 = {};
+        var result3 = web3.eth.getUncle(block, pos);
+        result4.main = 0;
+        result4.uncle = 1;
+        result4.blockNum = result3.number;
+        result4.blockHash = result3.hash;
+        result4.miner = result3.miner;
+        result4.gasUsed = result3.gasUsed;
+        result4.gasLimit = result3.gasLimit;
+        result4.includedBlockNum = block;
+        console.log(result4);
+        connection.query('INSERT INTO speedo2 SET ?', [result4], function(err, result){
+        callBack(result4.includedBlockNum);
+        })
+    
+    }
+
+    function nextUncle(block)
+    {
+        processUncle(block, 1, closeUp);
+    }
+
+
+    var result2 = {};
+    result2.blockFee = 0;
+    var result = web3.eth.getBlock(block, true)
+    var uncsReported = result.uncles.length;
+    result2.main = 1;
+    result2.uncle = 0;
+    result2.speed = result.gasUsed/result.gasLimit;
+    result2.numTx = result.transactions.length;
+    result2.blockNum = result.number;
+    result2.blockHash = result.hash;
+    result2.miner = result.miner;
+    result2.gasUsed = result.gasUsed;
+    result2.uncsReported = uncsReported;
+    result2.gasLimit = result.gasLimit;
+    if (result2.numTx == 0)
+    {
+        result2.blockFee = 0;
+        connection.query('INSERT INTO speedo2 SET ?', [result2], function(err, out)
+        {
+            if (err)
+            {
+                console.log(err);
+            }
+            console.log(result2);
+            iterTxs(0, 0);    
+
+        })
+        
+    }
+    else
+    {
+        iterTxs(0, 0);
+    }
+    
+    
+}
+
+function closeUp (block)
+{
+    console.log('finished ' + block);
+}
