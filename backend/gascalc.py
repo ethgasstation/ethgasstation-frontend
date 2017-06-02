@@ -321,9 +321,9 @@ txData = txData.dropna()
 #define gas predictors
 
 dep = pd.DataFrame()
-dep['priceCat1'] = (txData['minedGasPrice'] < gpRecs['Average']).astype(int)
+dep['priceCat1'] = (txData['minedGasPrice'] < 20).astype(int)
 #dep['priceCat2'] = (txData['minedGasPrice'] == gpRecs['Average']).astype(int)
-dep['priceCat3'] = ((txData['minedGasPrice'] > gpRecs['Average']) & (txData['minedGasPrice'] < gpRecs['Fastest'])).astype(int)
+dep['priceCat3'] = ((txData['minedGasPrice'] > 20) & (txData['minedGasPrice'] < gpRecs['Fastest'])).astype(int)
 dep['priceCat4'] = (txData['minedGasPrice'] > gpRecs['Fastest']).astype(int)
 
 
