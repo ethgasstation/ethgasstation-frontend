@@ -151,9 +151,8 @@
                           <th>Main Award w/o Gas Fees</th>
                           <th>Predicted All Empty Award<sup>1</sup></th>
                           <th>Block Award at Avg Gas Used<sup>2</sup></th>
-                          <th>Break Even Gas Price (Gwei)<sup>3</sup></th>
-                          <th>Gas Revenue (ETH)<sup>4</sup></th>
-                          <th>Gas Profit (ETH)<sup>5</sup></th>
+                          <th>Gas Revenue (ETH)<sup>3</sup></th>
+                          <th>Gas Profit (ETH)<sup>3</sup></th>
                           <th>Gas Profit (Fiat)</th>
                           <th>Gas Profit % of Total<sup>6</sup></th>
                         </tr>
@@ -166,10 +165,7 @@
                         echo("<td>". number_format($row['avgUncleReward'],2). "</td>");
                         echo("<td>". number_format($row['avgMainRewardwoFee'],3). "</td>");
                         echo("<td>". number_format($row['predictEmpAward'],3). "</td>");
-                        echo("<td>". number_format($row['actualTxAward'],3). "</td>");
-                        if($row['breakeven']<0){
-                          $row['breakeven']=0;}
-                        echo("<td>". round($row['breakeven']). "</td>"); 
+                        echo("<td>". number_format($row['actualTxAward'],3). "</td>"); 
                         echo("<td>". number_format($row['avgTxFees'],3). "</td>");
                         echo("<td>". number_format($row['profit'],3). "</td>");
                         $profitFiat = $row['profit']*$exchangeRate;
@@ -184,10 +180,9 @@
                     <p>Notes:</p>
                     <p>1: The weighted average block award at the expected ratio of uncles/main blocks if mining all empty blocks</p>
                     <p>2: The weigthed average block award at the miner's observed ratio of uncles/main blocks in the dataset</p>
-                    <p>3: The gas price in gwei above which all gas mined is expected to contribute to miner profit after adjusting for its effect on uncle risk</p>
-                    <p>4: The average gross revenue per block from transaction fees </p>
-                    <p>5: The profit per block from mining gas after adjusting for its impact on the miner's uncle rate</p>
-                    <p>6: The % of the miner's total block revenue coming from the uncle-adjusted profit of gas mining</p>
+                    <p>3: The average gross revenue per block from transaction fees </p>
+                    <p>4: The profit per block from mining gas after adjusting for its impact on the miner's uncle rate</p>
+                    <p>5: The % of the miner's total block revenue coming from the uncle-adjusted profit of gas mining</p>
 
              </div>    
         </div>
