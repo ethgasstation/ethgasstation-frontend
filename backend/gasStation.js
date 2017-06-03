@@ -268,7 +268,7 @@ function processBlock(block, ts)
 
     function iterTxs(num, txFee)
     {
-        
+        console.log(result2);
         if (result2.numTx == 0)
         {
             var post = 
