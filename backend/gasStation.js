@@ -60,6 +60,8 @@ filter.watch(function(err,blockHash)
     var ts = Math.round(+new Date()/1000);
     web3.eth.getBlock(blockHash, function (err, block)
     {
+        console.log(block.number);
+        console.log(blockTime);
         if (!(block.number in blockTime))
         {
             blockTime[block.number]=ts;
@@ -76,7 +78,6 @@ filter.watch(function(err,blockHash)
             delete blockTime[deleteBlock];
         }
         blockCounter++;
-        console.log(block.number);
         currentBlock = block.number;
         if (block.number % 100 === 0 )
         {
