@@ -90,7 +90,7 @@ filter.watch(function(err,blockHash)
         if (block.number % 1000 === 0 )
         {
             profitBlock = currentBlock - 100000;
-            commandString = 'python miner.py ' + profitBlock + ' ' + currentBlock;
+            commandString = 'python miner4.py ' + profitBlock + ' ' + currentBlock;
         }
         if (block.number % 50 === 0 )
         {
@@ -299,7 +299,6 @@ function processBlock(block, ts)
         else
         {
             result2.blockFee = result2.blockFee + (txFee/1e4);
-            console.log(result2.blockFee);
             connection.query('INSERT INTO speedo2 SET ?', [result2], function(err, out)
             {
                 iterUncs();
@@ -311,13 +310,11 @@ function processBlock(block, ts)
 
     function processTx(txObj, num)
     {
-        console.log(num);
         var gasPrice = txObj.gasPrice.toString(10);
         gasPrice = gasPrice/1e9; //convert to Gwei
         var gasPriceCat = getGasPriceCat(gasPrice);
         var txReceipt = web3.eth.getTransactionReceipt(txObj.hash);
         fee = txReceipt.gasUsed * gasPrice;
-        console.log(fee);
         var post = 
         {
             txHash: txObj.hash,
@@ -406,7 +403,6 @@ function processBlock(block, ts)
             {
                 console.log(err);
             }
-            console.log(result2);
             iterTxs(0, 0);    
 
         })
