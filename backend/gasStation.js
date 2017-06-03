@@ -268,7 +268,6 @@ function processBlock(block, ts)
 
     function iterTxs(num, txFee)
     {
-        console.log(result2);
         if (result2.numTx == 0)
         {
             var post = 
@@ -294,12 +293,14 @@ function processBlock(block, ts)
         else if (num < result2.numTx)
         {
             result2.blockFee = result2.blockFee + (txFee/1e4);
-            processTx(result.transactions[num], num, result2.blockFee);
+            console.log(result2.blockNum+ ' '+result2.blockFee);
+            processTx(result.transactions[num], num);
 
         }
         else
         {
             result2.blockFee = result2.blockFee + (txFee/1e4);
+             console.log(result2.blockNum+ ' '+result2.blockFee);
             connection.query('INSERT INTO speedo2 SET ?', [result2], function(err, out)
             {
                 iterUncs();
