@@ -266,7 +266,7 @@ function validateTx (tx, blockNum, last)
 function processBlock(block, ts)
 {
 
-    function iterTxs(num, txFee)
+    function iterTxs(num, txFee, txHash)
     {
         if (result2.numTx == 0)
         {
@@ -293,14 +293,14 @@ function processBlock(block, ts)
         else if (num < result2.numTx)
         {
             result2.blockFee = result2.blockFee + (txFee/1e4);
-            console.log(result2.blockNum+ ' '+ num + ' '+result2.blockFee);
+            console.log(result2.blockNum+ ' '+ num + ' '+txFee+ ' '+txHash);
             processTx(result.transactions[num], num);
 
         }
         else
         {
             result2.blockFee = result2.blockFee + (txFee/1e4);
-             console.log(result2.blockNum+ ' '+num+' '+ result2.blockFee);
+             console.log(result2.blockNum+ ' '+num+' '+ txFee + ' '+ txHash+' '+ result2.blockFee);
             connection.query('INSERT INTO speedo2 SET ?', [result2], function(err, out)
             {
                 iterUncs();
@@ -337,7 +337,7 @@ function processBlock(block, ts)
                     console.log(err);
             }
             num++;
-            iterTxs(num, fee);
+            iterTxs(num, fee, txObj.hash);
         })
     }
 
