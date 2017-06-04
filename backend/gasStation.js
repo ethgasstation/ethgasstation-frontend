@@ -25,6 +25,7 @@ connection.connect(function(err) {
 validationStatus = {};
 watchedTx = [];
 blockTime = {};
+blockProcess = {};
 
 try {
     fs.readFileSync(path.join(__dirname, '..', '/json/validated.json'), 'utf8')
@@ -65,17 +66,20 @@ filter.watch(function(err,blockHash)
         if (!(block.number in blockTime))
         {
             blockTime[block.number]=ts;
+            blockProcess[block.number] = false;
         }
         writeBlock = block.number - 5;
         deleteBlock = block.number - 25;
-        if (writeBlock in blockTime)
+        if ((writeBlock in blockTime) && (blockProcess[writeBlock]===false))
         {
             processBlock(writeBlock, blockTime[writeBlock]);
+            blockProcess[block.number] = true; //only process a block once
 
         }  
         if (deleteBlock in blockTime)
         {
             delete blockTime[deleteBlock];
+            delete blockProcess[deleteBlock];
         }
         blockCounter++;
         currentBlock = block.number;
@@ -384,36 +388,38 @@ function processBlock(block, ts)
 
     var result2 = {};
     result2.blockFee = 0;
-    var result = web3.eth.getBlock(block, true)
-    var uncsReported = result.uncles.length;
-    result2.main = 1;
-    result2.uncle = 0;
-    result2.speed = result.gasUsed/result.gasLimit;
-    result2.numTx = result.transactions.length;
-    result2.blockNum = result.number;
-    result2.blockHash = result.hash;
-    result2.miner = result.miner;
-    result2.gasUsed = result.gasUsed;
-    result2.uncsReported = uncsReported;
-    result2.gasLimit = result.gasLimit;
-    if (result2.numTx == 0)
+    web3.eth.getBlock(block, true, function(err, result)
     {
-        result2.blockFee = 0;
-        connection.query('INSERT INTO speedo2 SET ?', [result2], function(err, out)
+        var uncsReported = result.uncles.length;
+        result2.main = 1;
+        result2.uncle = 0;
+        result2.speed = result.gasUsed/result.gasLimit;
+        result2.numTx = result.transactions.length;
+        result2.blockNum = result.number;
+        result2.blockHash = result.hash;
+        result2.miner = result.miner;
+        result2.gasUsed = result.gasUsed;
+        result2.uncsReported = uncsReported;
+        result2.gasLimit = result.gasLimit;
+        if (result2.numTx == 0)
         {
-            if (err)
+            result2.blockFee = 0;
+            connection.query('INSERT INTO speedo2 SET ?', [result2], function(err, out)
             {
-                console.log(err);
-            }
-            iterTxs(0, 0);    
+                if (err)
+                {
+                    console.log(err);
+                }
+                iterTxs(0, 0);    
 
-        })
+            })
         
-    }
-    else
-    {
-        iterTxs(0, 0);
-    }
+        }
+        else
+        {
+            iterTxs(0, 0);
+        }
+    });
     
     
 }
