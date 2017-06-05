@@ -71,7 +71,8 @@ filter.watch(function(err,blockHash)
         deleteBlock = block.number - 25;
         if ((writeBlock in blockTime) && (blockProcess[writeBlock]===false))
         {
-            processBlock(writeBlock, blockTime[writeBlock]);
+            commandString = 'node writeBlocks2.js '+ writeBlock + ' ' + blockTime[writeBlock];
+            launchProcess(commandString);
             blockProcess[writeBlock] = true; //only process a block once
 
         }  
@@ -81,6 +82,7 @@ filter.watch(function(err,blockHash)
             delete blockProcess[deleteBlock];
         }
         blockCounter++;
+        console.log(block.number);
         currentBlock = block.number;
         if (block.number % 100 === 0 )
         {
@@ -266,165 +268,3 @@ function validateTx (tx, blockNum, last)
 
 }
 
-function processBlock(block, ts)
-{
-
-    function iterTxs(num, txFee, txHash)
-    {
-        if (result2.numTx == 0)
-        {
-            var post = 
-            {
-                txHash: result1.number,
-                minedBlock: result1.number,
-                miner: result1.miner,
-                emptyBlock: true,
-                tsMined: ts,
-                emptyBlock: true
-            }
-            connection.query('INSERT INTO minedtransactions SET ?', [post], function(err, out)
-            {
-                if (err)
-                {
-                    console.log(err);
-                }
-                iterUncs();
-
-            })
-            
-        }
-        else if (num < result2.numTx)
-        {
-            result2.blockFee = result2.blockFee + (txFee/1e4);
-            processTx(result1.transactions[num], num);
-
-        }
-        else
-        {
-            result2.blockFee = result2.blockFee + (txFee/1e4);
-             console.log(result2.blockNum+ ' '+num+' '+ txFee + ' '+ txHash+' '+ result2.blockFee);
-            connection.query('INSERT INTO speedo2 SET ?', [result2], function(err, out)
-            {
-                iterUncs();
-
-            })
-            
-        }
-    }
-
-    function processTx(txObj, num)
-    {
-        var gasPrice = txObj.gasPrice.toString(10);
-        gasPrice = gasPrice/1e9; //convert to Gwei
-        var gasPriceCat = getGasPriceCat(gasPrice);
-        var txReceipt = web3.eth.getTransactionReceipt(txObj.hash);
-        fee = txReceipt.gasUsed * gasPrice;
-        var post = 
-        {
-            txHash: txObj.hash,
-            minedBlock: txObj.blockNumber,
-            toAddress:txObj.to,
-            fromAddress:txObj.from,
-            gasused: txReceipt.gasUsed,
-            miner: result2.miner,
-            minedGasPrice:gasPrice,
-            minedGasPriceCat:gasPriceCat,
-            tsMined: ts,
-            emptyBlock:false
-        }
-        connection.query('INSERT INTO minedtransactions SET ?', [post], function(err, out)
-        {
-            if (err)
-            {
-                    console.log(err);
-            }
-            num++;
-            iterTxs(num, fee, txObj.hash);
-        })
-    }
-
-    function iterUncs()
-    {
-        if (result2.uncsReported==0)
-        {
-            closeUp(result2.blockNum);
-        }
-        else if (result2.uncsReported==1)
-        {
-            processUncle(result2.blockNum, 0, closeUp)
-        }
-        else if (result2.uncsReported==2)
-        {
-            processUncle(result2.blockNum, 0, nextUncle)
-        }
-    }
-
-    function processUncle(block, pos, callBack)
-    {
-        var result4 = {};
-        var result3 = web3.eth.getUncle(block, pos);
-        result4.main = 0;
-        result4.uncle = 1;
-        result4.blockNum = result3.number;
-        result4.blockHash = result3.hash;
-        result4.miner = result3.miner;
-        result4.gasUsed = result3.gasUsed;
-        result4.gasLimit = result3.gasLimit;
-        result4.includedBlockNum = block;
-        console.log(result4);
-        connection.query('INSERT INTO speedo2 SET ?', [result4], function(err, result){
-        callBack(result4.includedBlockNum);
-        })
-    
-    }
-
-    function nextUncle(block)
-    {
-        processUncle(block, 1, closeUp);
-    }
-
-
-    var result2 = {};
-    var result1 = {};
-    result2.blockFee = 0;
-    web3.eth.getBlock(block, true, function(err, result)
-    {
-        result1 = result;
-        var uncsReported = result.uncles.length;
-        result2.main = 1;
-        result2.uncle = 0;
-        result2.speed = result.gasUsed/result.gasLimit;
-        result2.numTx = result.transactions.length;
-        result2.blockNum = result.number;
-        result2.blockHash = result.hash;
-        result2.miner = result.miner;
-        result2.gasUsed = result.gasUsed;
-        result2.uncsReported = uncsReported;
-        result2.gasLimit = result.gasLimit;
-        if (result2.numTx == 0)
-        {
-            result2.blockFee = 0;
-            connection.query('INSERT INTO speedo2 SET ?', [result2], function(err, out)
-            {
-                if (err)
-                {
-                    console.log(err);
-                }
-                iterTxs(0, 0);    
-
-            })
-        
-        }
-        else
-        {
-            iterTxs(0, 0);
-        }
-    });
-    
-    
-}
-
-function closeUp (block)
-{
-    console.log('finished ' + block);
-}

@@ -189,7 +189,7 @@ CREATE TABLE speedo (
 
 CREATE USER 'ethgas'@'localhost' IDENTIFIED BY 'station';
 
-GRANT ALL PRIVILEGES ON tx.* TO 'ethgas'@'localhost';
+GRANT ALL PRIVILEGES ON tx.* TO 'ethgas'@'localhost' identified by 'station';
 
 FLUSH PRIVILEGES;
 

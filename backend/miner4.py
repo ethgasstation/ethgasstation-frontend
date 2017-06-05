@@ -167,6 +167,7 @@ print(minerBlocks)
 minerData['const'] = 1
 model = sm.OLS(minerData['uncle'], minerData[['const','mgasUsed']])
 results = model.fit()
+print('all miners')
 print (results.summary())
 dictResults = dict(results.params)
 
@@ -258,6 +259,7 @@ for index, row in minerBlocks.iterrows():
     resultSummary.loc[x, 'potentialAward'] = mpoolAward
     resultSummary.loc[x, 'potentialProfit'] = mpoolAward - row['avgReward']
     resultSummary.loc[x, 'avgTxPrice'] = row['avgTxPrice']
+    print(dictMiners[index])
     print (results.summary())
     x=x+1
 
