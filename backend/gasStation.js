@@ -61,7 +61,9 @@ filter.watch(function(err,blockHash)
     var ts = Math.round(+new Date()/1000);
     web3.eth.getBlock(blockHash, function (err, block)
     {
-        
+        if (!('number' in block)){
+            return;
+        }
         if (!(block.number in blockTime))
         {
             blockTime[block.number]=ts;
