@@ -25,7 +25,8 @@ addUnc = ("INSERT INTO speedo2 "
 for index, row in blockData.iterrows():
     if row['uncsReported'] > 0 :
         block = str(row['blockNum'])
-        for x in range(0, row['uncsReported']):
+        print (row['uncsReported'])
+        for x in range(0, int(row['uncsReported'])):
                 uncNum = str(x)
                 out = subprocess.check_output(['node', 'getUncs.js', block, uncNum])
                 uncData = json.loads(out)

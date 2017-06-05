@@ -13,11 +13,11 @@ if(!$mysqli){
 	die("Connection failed: " . $mysqli->error);
 }
 
-$query = "SELECT AVG(speed) AS average FROM (SELECT speed FROM speedo2 ORDER BY blocknum DESC LIMIT 10) a";
+$query = "SELECT AVG(speed) AS average FROM (SELECT speed FROM speedo2 ORDER BY id DESC LIMIT 10) a";
 $result = $mysqli->query($query);
 $avgSpeed = $result->fetch_assoc();
 
-$query2 = "SELECT blockNum FROM speedo2 ORDER BY blocknum DESC LIMIT 1";
+$query2 = "SELECT blockNum FROM speedo2 ORDER BY id DESC LIMIT 1";
 $result2 = $mysqli->query($query2);
 $blockNum = $result2->fetch_assoc();
 

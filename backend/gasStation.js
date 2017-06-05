@@ -61,19 +61,18 @@ filter.watch(function(err,blockHash)
     var ts = Math.round(+new Date()/1000);
     web3.eth.getBlock(blockHash, function (err, block)
     {
-        console.log(block.number);
-        console.log(blockTime);
+        
         if (!(block.number in blockTime))
         {
             blockTime[block.number]=ts;
             blockProcess[block.number] = false;
         }
-        writeBlock = block.number - 5;
+        writeBlock = block.number - 3;
         deleteBlock = block.number - 25;
         if ((writeBlock in blockTime) && (blockProcess[writeBlock]===false))
         {
             processBlock(writeBlock, blockTime[writeBlock]);
-            blockProcess[block.number] = true; //only process a block once
+            blockProcess[writeBlock] = true; //only process a block once
 
         }  
         if (deleteBlock in blockTime)
@@ -276,9 +275,9 @@ function processBlock(block, ts)
         {
             var post = 
             {
-                txHash: result.number,
-                minedBlock: result.number,
-                miner: result.miner,
+                txHash: result1.number,
+                minedBlock: result1.number,
+                miner: result1.miner,
                 emptyBlock: true,
                 tsMined: ts,
                 emptyBlock: true
@@ -297,8 +296,7 @@ function processBlock(block, ts)
         else if (num < result2.numTx)
         {
             result2.blockFee = result2.blockFee + (txFee/1e4);
-            console.log(result2.blockNum+ ' '+ num + ' '+txFee+ ' '+txHash);
-            processTx(result.transactions[num], num);
+            processTx(result1.transactions[num], num);
 
         }
         else
@@ -387,9 +385,11 @@ function processBlock(block, ts)
 
 
     var result2 = {};
+    var result1 = {};
     result2.blockFee = 0;
     web3.eth.getBlock(block, true, function(err, result)
     {
+        result1 = result;
         var uncsReported = result.uncles.length;
         result2.main = 1;
         result2.uncle = 0;

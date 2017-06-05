@@ -107,8 +107,8 @@
                           <th>High Gas</th>
                           <th>Median Gas</th>
                           <th>Avg Gas</th>
-                          <th>Avg Gas<br>Main Block</th>
-                          <th>Avg Gas<br>Uncle</th>
+                          <th>Avg Gas in<br>Main Block</th>
+                          <th>Avg Gas in<br>Uncle</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -139,7 +139,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel tile fixed_height_420">
                   <div class="x_title">
-                    <h4>Miner Gas Profits <small> Note: differences in miner break even price may be due to random chance</small></h4>
+                    <h4>Miner Gas Profits <small> Note: differences in miner gas profits may be partly due to random chance</small></h4>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
@@ -152,7 +152,7 @@
                           <th>Predicted All Empty Award<sup>1</sup></th>
                           <th>Block Award at Avg Gas Used<sup>2</sup></th>
                           <th>Gas Revenue (ETH)<sup>3</sup></th>
-                          <th>Gas Profit (ETH)<sup>3</sup></th>
+                          <th>Gas Profit (ETH)<sup>4</sup></th>
                           <th>Gas Profit (Fiat)</th>
                           <th>Gas Profit % of Total<sup>6</sup></th>
                         </tr>
@@ -178,6 +178,7 @@
                       </tbody>
                     </table>
                     <p>Notes:</p>
+                    <p>These data are generated using the methodology described <a href="https://blog.ethereum.org/2016/10/31/uncle-rate-transaction-fee-analysis/"><em>here</em></a>.
                     <p>1: The weighted average block award at the expected ratio of uncles/main blocks if mining all empty blocks</p>
                     <p>2: The weigthed average block award at the miner's observed ratio of uncles/main blocks in the dataset</p>
                     <p>3: The average gross revenue per block from transaction fees </p>

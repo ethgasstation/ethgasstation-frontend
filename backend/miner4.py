@@ -41,13 +41,9 @@ minerData['diff'] = minerData['check'] - minerData['blockNum']
 
 gaps = pd.DataFrame (minerData.loc[minerData['diff']>1, ['blockNum', 'check', 'diff']])
 for index, row in gaps.iterrows():
-    print('filling gaps') 
+    print('gaps') 
     print(row['blockNum'])
     print(row['check'])
-    fromBlock = str(int(row['blockNum']))
-    toBlock = str(int(row['check']))
-    out = subprocess.check_output(['node', 'writeBlocks.js', fromBlock, toBlock])
-    print('Gaps Filled')
 
 #clean data
 
