@@ -349,7 +349,7 @@
                         </tr>
                         <tr>
                           <td>% Full Blocks</td>
-                          <td><?php echo "$percentFull";?></td>
+                          <td><?php echo ($percentFull);?></td>
                         </tr>
                       </tbody>
                     </table>

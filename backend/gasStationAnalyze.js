@@ -40,7 +40,7 @@ if (toBlock % 5000 === 0)
 {
     databasePrune('transactions', 'postedBlock', pruneBlock);
     databasePrune('minedtransactions', 'minedBlock', pruneBlock);
-    databasePrune('speedo', 'blockNum', pBlock2);    
+    databasePrune('speedo2', 'blockNum', pBlock2);    
     databasePrune('txDataLast10k', 'latestblockNum', pruneBlock);
     databasePrune('txDataLast100b', 'latestblockNum', pruneBlock);
 }  
@@ -722,14 +722,14 @@ function countEmpty (startSelect, toBlock){
     });
 }
 function countFull (startSelect, toBlock){
-    connection.query('SELECT speed FROM speedo WHERE blockNum > ? AND blockNum <? and speed >0.95', [startSelect , toBlock], function (err, result){
+    connection.query('SELECT COUNT(*) as cnt FROM speedo2 WHERE blockNum > ? AND blockNum <? and speed >0.95', [startSelect , toBlock], function (err, result){
         
         if (err){
             console.error(err.stack);
         }
-        if (result.length>1){
-            post['fullBlocks'] = result[0]['speed'];
-            console.log('28');}
+        console.log(result);
+        post['fullBlocks'] = result[0]['cnt'];
+        console.log('28');
         getETHprice();
     });
 }
@@ -1003,19 +1003,5 @@ connection.query('INSERT IGNORE INTO txDataLast100b SET ?', post2, function(err,
  });
 
 
-}
-
-function writeSpeedo (blockObj){
-    // Data for the speedometer- written every block
-
-    post3['blockNum']= blockObj.number;
-    post3['speed'] = blockObj.gasUsed / blockObj.gasLimit;
-
-    connection.query('INSERT IGNORE INTO speedo SET ?', post3, function(err, result){
-        if (err){
-            console.error(err.stack);}
-            post3={};
-
-        })
 }
 

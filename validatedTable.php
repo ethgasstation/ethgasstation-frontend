@@ -108,7 +108,9 @@
                         }
                         else{$row['mined']='True';}
                         echo("<td>". $row['mined']. "</td>");
-                        echo("<td>". $row['minedBlock']. "</td>");
+                        if (isset($row['minedBlock'])){
+                        echo("<td>". $row['minedBlock']. "</td>");}
+                        else{echo("<td></td>");}
                         echo('</tr>');
 
                       }

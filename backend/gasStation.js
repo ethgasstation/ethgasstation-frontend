@@ -242,7 +242,7 @@ function validateTx (tx, blockNum, last)
         }
         else
         {
-            if (txCheck.postedBlock >= currentBlock - 50)
+            if (txCheck.postedBlock >= currentBlock - 100)
             {
                 watchedTx.push(txCheck);
             }
