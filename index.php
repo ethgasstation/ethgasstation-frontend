@@ -471,15 +471,11 @@
 			  var mybarChart = new Chart(ctx, {
 				type: 'bar',
 				data: {
-				  labels: ["<10","10-20", "20", "20-30", ">30"],
+				  labels: [<?php echo($priceWaitLabels);?>],
 				  datasets: [{
-					label: 'Median- Time to Confirm',
+					label: 'Avg Time to Confirm',
 					backgroundColor: "#26B99A",
-					data: <?php echo '[' . $cat1TimeMedMin. ',' . $cat2TimeMedMin . ',' . $cat3TimeMedMin . ',' . $cat4TimeMedMin . ','. $cat5TimeMedMin .']'; ?>
-				  }, {
-					label: '95pctl- Time to Confirm',
-					backgroundColor: "#03586A",
-					data: <?php echo '[' . $cat1Time95Min. ',' . $cat2Time95Min . ',' . $cat3Time95Min . ',' . $cat4Time95Min . ','. $cat5Time95Min .']'; ?>
+					data: [<?php echo($priceWaitData); ?>]
 				  }]
 				},
 
@@ -500,7 +496,7 @@
 					xAxes:[{
 						scaleLabel:{
 							display:true,
-							labelString:"Gas price category"
+							labelString:"Gas price (gwei)"
 						}
 
 					}]

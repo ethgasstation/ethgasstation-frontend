@@ -236,8 +236,22 @@ try{
 
     $priceWaitString = file_get_contents("http://localhost/json/priceWait.json");
     $priceWait = json_decode($priceWaitString, true);
+    $priceWaitData = '';
+    $priceWaitLabels = '';
+    foreach($priceWait as $row)
+    {
+        if ($row['minedGasPrice']==0){
+            $row['minedGasPrice']= '<1';
+        }
+        if ($row['minedGasPrice']==40){
+            $row['minedGasPrice'] = '>40';
+        }
+        $priceWaitLabels = $priceWaitLabels. "'". $row['minedGasPrice']."'".',';
+        $priceWaitData = $priceWaitData. round($row['delay2'],1). ',';
+    }
+    $priceWaitData = rtrim($priceWaitData,',');
+    $priceWaitLabels = rtrim($priceWaitLabels, ',');
     
-
     $gpRecsString = file_get_contents("http://localhost/json/ethgasAPI.json");
     $gpRecs = json_decode($gpRecsString, true);
 

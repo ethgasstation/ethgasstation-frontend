@@ -305,7 +305,7 @@ print(gasGuzz)
 #Poisson Regression
 
 cursor = cnx.cursor()
-query = ("SELECT (minedtransactions.minedBlock - transactions.postedBlock) as delay, minedtransactions.gasused, transactions.gasOffered, minedtransactions.minedGasPrice FROM transactions INNER JOIN minedtransactions ON transactions.txHash = minedtransactions.txHash WHERE transactions.postedBlock IS NOT NULL AND transactions.postedBlock > %s AND transactions.postedBlock < %s ORDER BY minedBlock desc LIMIT 100000")
+query = ("SELECT (minedtransactions.minedBlock - transactions.postedBlock) as delay, (minedtransactions.tsMined - transactions.tsPosted) as delay2, minedtransactions.gasused, transactions.gasOffered, minedtransactions.minedGasPrice FROM transactions INNER JOIN minedtransactions ON transactions.txHash = minedtransactions.txHash WHERE transactions.postedBlock IS NOT NULL AND transactions.postedBlock > %s AND transactions.postedBlock < %s ORDER BY minedBlock desc LIMIT 100000")
 
 cursor.execute(query, (startBlock, endBlock))
 head = cursor.column_names
@@ -314,14 +314,17 @@ txData = pd.DataFrame(cursor.fetchall())
 txData.columns = head
 
 txData['delay'] = pd.to_numeric(txData['delay'], errors='coerce')
+txData['delay2'] = pd.to_numeric(txData['delay2'], errors='coerce')
+txData['delay2'] = txData['delay2']/float(60)
 txData[txData['delay']>1000] = np.nan
 txData = txData.dropna()
 #summary table
 
-priceWait = txData.loc[:, ['minedGasPrice', 'delay']]
+priceWait = txData.loc[:, ['minedGasPrice', 'delay2']]
 priceWait.loc[priceWait['minedGasPrice']>=40, 'minedGasPrice'] = 40
 priceWait = priceWait.groupby('minedGasPrice').mean().reset_index()
-print priceWait
+priceWait = priceWait.loc[(priceWait['minedGasPrice']<=10) | (priceWait['minedGasPrice']==20) | (priceWait['minedGasPrice'] == 40), ['minedGasPrice', 'delay2']]
+
 
 #define gas predictors
 
