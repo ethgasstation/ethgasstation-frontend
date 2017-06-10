@@ -72,7 +72,7 @@ dictMiners = {
     '0x6c7f03ddfdd8a37ca267c88630a4fee958591de0':'Alpereum',
     'All Others':'All Others'
 }
-
+minerData['miner2']=minerData['miner']
 minerData.loc[~minerData['miner'].isin(keyMiners), ['miner']] = 'All Others'
 
 
@@ -102,6 +102,9 @@ avgMainGas = minerData.loc[minerData['main']==1, 'mgasUsed'].mean()
 
 minerData.loc[(minerData['gasUsed']==0) & (minerData['uncle']==True), 'emptyUncle'] = 1
 minerData.loc[(minerData['gasUsed']==0) & (minerData['main']==True), 'emptyBlock'] = 1
+minerData.loc[(minerData['gasUsed']==0), 'empty'] = 1
+minerData.loc[(minerData['gasUsed']>0), 'empty'] = 0
+
 minerData['emptyUncle'].fillna(0, inplace=True)
 minerData['emptyBlock'].fillna(0, inplace=True)
 emptyUncles = minerData['emptyUncle'].sum()
@@ -136,6 +139,17 @@ print minerData
 #create summary table
 minerBlocks = minerData.groupby('miner').sum()
 minerBlocks = minerBlocks.drop(['id', 'blockNum', 'includedBlockNum', 'idents', 'incDelay'], axis=1)
+
+uncGraphArray = []
+point = {}
+uncGraph = minerData.groupby('miner2').sum()
+uncGraph['totalBlocks']= uncGraph['main'] + uncGraph['uncle']
+uncGraph['uncRatio']= uncGraph['uncle'] / uncGraph['totalBlocks']
+for index, row in uncGraph.iterrows(): 
+    point['y']=row['uncRatio']
+    point['x']=row['totalBlocks']
+    uncGraphArray.append(dict(point))
+
 
 #calc miner totals
 minerBlocks['totalBlocks'] = minerBlocks['main'] + minerBlocks['uncle']
@@ -266,6 +280,12 @@ for index, row in minerBlocks.iterrows():
 
 resultSummary = resultSummary.reindex([0, 2, 3, 4, 5, 6, 7, 1])
 
+model = sm.OLS(minerData['blockAward'], minerData[['const','empty']])
+results = model.fit()
+print (results.summary())
+
+#for index,row in minerBlocks
+
 with pd.option_context('display.max_rows', None, 'display.max_columns', None):
     print(resultSummary)
 
@@ -273,6 +293,7 @@ with pd.option_context('display.max_rows', None, 'display.max_columns', None):
     print(minerBlocks)
 
 minerProfits = resultSummary.to_json(orient = 'records')
+
 parentdir = os.path.dirname(os.getcwd())
 if not os.path.exists(parentdir + '/json'):
     os.mkdir(parentdir + '/json')
@@ -280,6 +301,13 @@ filepath_profit = parentdir + '/json/profit.json'
 
 with open(filepath_profit, 'w') as outfile:
     outfile.write(minerProfits)
+
+if not os.path.exists(parentdir + '/json'):
+    os.mkdir(parentdir + '/json')
+filepath_uncGraph = parentdir + '/json/uncGraph.json'
+
+with open(filepath_uncGraph, 'w') as outfile:
+    json.dump(uncGraphArray, outfile)
 
 
 '''

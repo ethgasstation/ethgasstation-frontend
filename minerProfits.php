@@ -154,7 +154,7 @@
                           <th>Gas Revenue (ETH)<sup>3</sup></th>
                           <th>Gas Profit (ETH)<sup>4</sup></th>
                           <th>Gas Profit (Fiat)</th>
-                          <th>Gas Profit % of Total<sup>6</sup></th>
+                          <th>Gas Profit Margin (%)</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -170,7 +170,7 @@
                         echo("<td>". number_format($row['profit'],3). "</td>");
                         $profitFiat = $row['profit']*$exchangeRate;
                         echo("<td>". $currSymbol.number_format($profitFiat,2). "</td>");
-                        echo("<td>". number_format($row['profitPct'],3). "</td>");
+                        echo("<td>". round($row['profitPct']*100). "</td>");
                         echo('</tr>');
 
                       }
@@ -190,6 +190,21 @@
     </div>
   </div>             
 </div>
+
+ <div class="row">
+
+            <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="x_panel tile fixed_height_320">
+                <div class="x_title">
+                  <h4>Uncle Rates by Blocks Mined</h4>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content myBar">
+                  <canvas id="myScatter" height="70" width="300"></canvas>
+                </div>
+              </div>
+            </div>
+            </div>
     <!-- /misc transactions -->
 
   </div>
@@ -235,6 +250,49 @@
             $("#gbp").click(function(){
                 location = "http://ethgasstation.info/minerProfits.php?curr=gbp";                       
             });
+
+
+        if ($('#myScatter').length ){ 
+			  
+			  var ctx = document.getElementById("myScatter");
+			  var myScatter = new Chart(ctx, {
+				type: 'scatter',
+				data: {
+            datasets:[{
+              pointBackgroundColor: "rgba(3, 88, 106, 0.70)",
+              data: [ <?php echo($dataString); ?> ]
+            }]
+        },
+        
+        options:{
+          legend:{
+            display: false,
+          },
+          showLines:false,
+          scales:{
+            xAxes:[{
+              type: 'logarithmic',
+              position: 'bottom',
+              scaleLabel: {
+                display: true,
+                labelString:'Number of Blocks Mined'
+              }
+            }],
+            yAxes:[{
+              scaleLabel: {
+                display: true,
+                labelString: 'Uncle Rate'
+              }
+            }]
+          }
+        }
+        })
+      }
+
+
+
+
+
       
       </script>
 

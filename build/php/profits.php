@@ -69,10 +69,22 @@ try{
     $profitTable = json_decode($profitRaw, true);
     $gasGuzzRaw = file_get_contents("http://localhost/json/gasguzz.json");
     $gasGuzzTable = json_decode($gasGuzzRaw, true);
+    $uncGraphRaw = file_get_contents("http://localhost/json/uncGraph.json");
+    $uncGraphData = json_decode($uncGraphRaw, true);
 
 } catch (Exception $e) {
     echo 'waith for tables to be populated';
 }
+
+$dataString = '';
+foreach ($uncGraphData as $point)
+{
+    $dataString = $dataString . '{x: ';
+    $dataString = $dataString . $point['x'] . ', ';
+    $dataString = $dataString . 'y: '. $point['y']. '},';
+
+}
+$dataString = rtrim($dataString,',');
 
 
 //free memory associated with result

@@ -305,7 +305,7 @@ print(gasGuzz)
 #Poisson Regression
 
 cursor = cnx.cursor()
-query = ("SELECT (minedtransactions.minedBlock - transactions.postedBlock) as delay, minedtransactions.gasused, transactions.gasOffered, minedtransactions.minedGasPrice FROM transactions INNER JOIN minedtransactions ON transactions.txHash = minedtransactions.txHash WHERE transactions.postedBlock IS NOT NULL AND transactions.postedBlock > %s AND transactions.postedBlock < %s ORDER BY delay LIMIT 100000")
+query = ("SELECT (minedtransactions.minedBlock - transactions.postedBlock) as delay, minedtransactions.gasused, transactions.gasOffered, minedtransactions.minedGasPrice FROM transactions INNER JOIN minedtransactions ON transactions.txHash = minedtransactions.txHash WHERE transactions.postedBlock IS NOT NULL AND transactions.postedBlock > %s AND transactions.postedBlock < %s ORDER BY minedBlock desc LIMIT 100000")
 
 cursor.execute(query, (startBlock, endBlock))
 head = cursor.column_names
@@ -316,7 +316,12 @@ txData.columns = head
 txData['delay'] = pd.to_numeric(txData['delay'], errors='coerce')
 txData[txData['delay']>1000] = np.nan
 txData = txData.dropna()
+#summary table
 
+priceWait = txData.loc[:, ['minedGasPrice', 'delay']]
+priceWait.loc[priceWait['minedGasPrice']>=40, 'minedGasPrice'] = 40
+priceWait = priceWait.groupby('minedGasPrice').mean().reset_index()
+print priceWait
 
 #define gas predictors
 
@@ -376,6 +381,7 @@ quantiles = quantiles.to_dict()
 dictResults.update(quantiles)
 dictResults.update(blockTime)
 priceTable = priceTable.to_json(orient = 'records')
+priceWait = priceWait.to_json(orient = 'records')
 miningTable = txDataMiner.to_json(orient = 'records')
 topMinerTable = topMiners.to_json(orient = 'records')
 gasGuzzTable = gasGuzz.to_json(orient = 'records')
@@ -389,6 +395,7 @@ filepath_pricetable = parentdir + '/json/price.json'
 filepath_miners = parentdir + '/json/miners.json'
 filepath_gasguzz = parentdir + '/json/gasguzz.json'
 filepath_topMiners = parentdir + '/json/topMiners.json'
+filepath_priceWait = parentdir + '/json/priceWait.json'
 
 with open(filepath_calc, 'w') as outfile:
     json.dump(dictResults, outfile)
@@ -407,6 +414,9 @@ with open(filepath_gasguzz, 'w') as outfile:
 
 with open(filepath_topMiners, 'w') as outfile:
     outfile.write(topMinerTable)
+
+with open(filepath_priceWait, 'w') as outfile:
+    outfile.write(priceWait)
 
 print (results.summary())
 print (gpRecs)

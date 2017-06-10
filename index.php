@@ -102,6 +102,10 @@
               <span class="count_top"><i class="fa fa-space-shuttle"></i>Median Cost for Transfer</span>
               <div class="count" id="medTx"><?php echo "$medianfeeDisplay";?></div>
             </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-tachometer"></i> SafeLow Cost for Transfer</span>
+              <div class="count green"><?php echo "$lowTransfer" ?></div>
+            </div>
              <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-clock-o"></i> Median Wait (s)</span>
               <div class="count"><?php echo "$medianwaitsec" ?></div>
@@ -109,10 +113,6 @@
              <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-clock-o"></i> Median Wait (blocks)</span>
               <div class="count"><?php echo "$medianwaitblock" ?></div>
-            </div>
-            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-tachometer"></i> Gas Price High (Gwei)</span>
-              <div class="count red"><?php echo "$gaspricehigh" ?></div>
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-tachometer"></i> Gas Price Mid (Gwei)</span>

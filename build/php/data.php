@@ -234,6 +234,10 @@ try{
     $minerString = file_get_contents("http://localhost/json/topMiners.json");
     $topMiners = json_decode($minerString, true);
 
+    $priceWaitString = file_get_contents("http://localhost/json/priceWait.json");
+    $priceWait = json_decode($priceWaitString, true);
+    
+
     $gpRecsString = file_get_contents("http://localhost/json/ethgasAPI.json");
     $gpRecs = json_decode($gpRecsString, true);
 
@@ -241,6 +245,7 @@ try{
     $calcParams = json_decode($calcParamString, true);
 
     $safeLowWait = round(exp($calcParams['cons'] + $calcParams['priceCat1'])*$calcParams['blockInterval']/60,1);
+    $lowTransfer = '$'. number_format($gpRecs['safeLow']/1e9*21000*$ethprice,4);
     $avgWait = round(exp($calcParams['cons'])*$calcParams['blockInterval']/60,1);
     $fastWait = round(exp($calcParams['cons'] + $calcParams['priceCat4'])*$calcParams['blockInterval']/60,1);
 } catch (Exception $e){
