@@ -195,8 +195,10 @@ for x in range(len(priceTable)):
         gpRecs['safeLow'] = priceTable.loc[x, 'adjustedMinP']
         break
 
-medianGasPrice = txData['minedGasPrice'].quantile(.5)
-gpRecs['Average'] = medianGasPrice
+for x in range(len(priceTable)):
+    if (priceTable.loc[x, 'cumPctTxBlocks']) >= 50:
+        gpRecs['Average'] = priceTable.loc[x, 'adjustedMinP']
+        break
 
 for x in range(len(priceTable)):
     if (priceTable.loc[x, 'cumPctTxBlocks']) >= 98.5:
