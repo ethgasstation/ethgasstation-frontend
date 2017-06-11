@@ -319,7 +319,6 @@ txData['delay'] = pd.to_numeric(txData['delay'], errors='coerce')
 txData['delay2'] = pd.to_numeric(txData['delay2'], errors='coerce')
 txData['delay2'] = txData['delay2']/float(60)
 txData[txData['delay']>1000] = np.nan
-txData = txData.dropna()
 #summary table
 
 priceWait = txData.loc[:, ['minedGasPrice', 'delay2']]
@@ -329,36 +328,43 @@ priceWait = priceWait.loc[(priceWait['minedGasPrice']<=10) | (priceWait['minedGa
 
 
 #define gas predictors
+print (gpRecs)
+txData = txData.dropna()
 
-dep = pd.DataFrame()
-dep['priceCat1'] = (txData['minedGasPrice'] < 20).astype(int)
-#dep['priceCat2'] = (txData['minedGasPrice'] == gpRecs['Average']).astype(int)
-dep['priceCat3'] = ((txData['minedGasPrice'] > 20) & (txData['minedGasPrice'] < gpRecs['Fastest'])).astype(int)
-dep['priceCat4'] = (txData['minedGasPrice'] > gpRecs['Fastest']).astype(int)
-
+if (gpRecs['safeLow'] < gpRecs['Average']):
+    txData['priceCat1'] = ((txData['minedGasPrice'] < gpRecs['Average']) & (txData['minedGasPrice'] >= gpRecs['safeLow'])).astype(int)
+    txData['priceCat5'] = (txData['minedGasPrice'] < gpRecs['safeLow']).astype(int)
+else:
+    txData['priceCat1'] = (txData['minedGasPrice'] < gpRecs['Average']).astype(int)
+    txData['priceCat5'] = (txData['minedGasPrice'] < 1).astype(int)
+txData['priceCat2'] = (txData['minedGasPrice'] == gpRecs['Average']).astype(int)
+txData['priceCat3'] = ((txData['minedGasPrice'] > gpRecs['Average']) & (txData['minedGasPrice'] < gpRecs['Fastest'])).astype(int)
+txData['priceCat4'] = (txData['minedGasPrice'] >= gpRecs['Fastest']).astype(int)
 
 # Define gasused cats
 
 quantiles= txData['gasused'].quantile([.5, .75, .9, 1])
 
-dep['gasCat1'] = (txData['gasused'] == 21000).astype(int)
-dep['gasCat2'] = ((txData['gasused']>21000) & (txData['gasused']<=quantiles[.75])).astype(int)
-dep['gasCat3'] = ((txData['gasused']>quantiles[.75]) & (txData['gasused']<=quantiles[.9])).astype(int)
-dep['gasCat4'] = (txData['gasused']> quantiles[.9]).astype(int)
+txData['gasCat1'] = (txData['gasused'] == 21000).astype(int)
+txData['gasCat2'] = ((txData['gasused']>21000) & (txData['gasused']<=quantiles[.75])).astype(int)
+txData['gasCat3'] = ((txData['gasused']>quantiles[.75]) & (txData['gasused']<=quantiles[.9])).astype(int)
+txData['gasCat4'] = (txData['gasused']> quantiles[.9]).astype(int)
 
-dep['cons'] = 1
+txData['cons'] = 1
 
-indep = txData['delay']
 #with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-#   print(indep)
+#   print(txData)
 #with pd.option_context('display.max_rows', None, 'display.max_columns', None):
 #    print(dep)
+txData['logDelay'] = np.log(txData['delay'])
 
-model = sm.Poisson(indep, dep.loc[:,['priceCat1', 'priceCat3', 'priceCat4', 'gasCat2', 'gasCat3', 'gasCat4', 'cons']])
+model = sm.OLS(txData['logDelay'], txData[['cons', 'priceCat1','priceCat5', 'priceCat3', 'priceCat4', 'gasCat2', 'gasCat3', 'gasCat4']])
 
 results = model.fit(disp=0)
 dictResults = dict(results.params)
-dep['predict'] = results.predict()
+
+
+print (results.summary())
 
 print(dictResults)
 
