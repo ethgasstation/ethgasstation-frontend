@@ -262,17 +262,19 @@
             function estimateWait (gCat, pCat)
             {
               paramPriceCat1 = <?php echo ($calcParams['priceCat1']) ?>;
-              paramPriceCat3 = <?php echo ($calcParams['priceCat3']) ?>;
+              paramPriceCat2 = <?php echo ($calcParams['priceCat2']) ?>;
               paramPriceCat4 = <?php echo ($calcParams['priceCat4']) ?>;
               paramCons = <?php echo ($calcParams['cons']) ?>;
               paramGasCat2 = <?php echo ($calcParams['gasCat2']) ?>;
               paramGasCat3 = <?php echo ($calcParams['gasCat3']) ?>;
               paramGasCat4 = <?php echo ($calcParams['gasCat4']) ?>;
 
-              exp = paramCons + (paramPriceCat1*pCat['cat1']) + (paramPriceCat3*pCat['cat3']) + (paramPriceCat4*pCat['cat4']) + (paramGasCat2*gCat['gas2']) + (paramGasCat3*gCat['gas3']) + (paramGasCat4*gCat['gas4']); 
+              exp = Math.exp(paramCons + (paramPriceCat1*pCat['cat1']) + (paramPriceCat2*pCat['cat2']) + (paramPriceCat4*pCat['cat4']) + (paramGasCat2*gCat['gas2']) + (paramGasCat3*gCat['gas3']) + (paramGasCat4*gCat['gas4'])); 
               
-              wait = (Math.exp(exp));
-              return Number(wait.toFixed(2));
+              
+            
+
+              return exp;
             }
             
             function getPriceCats(gasPrice)
@@ -281,25 +283,25 @@
               if ((gasPrice >= <?php echo($gasPriceRecs['safeLow']) ?>) && (gasPrice < <?php echo($gasPriceRecs['Average']) ?>))
               {
                 pCats['cat1'] = 1;
-                pCats['cat3'] = 0;
+                pCats['cat2'] = 0;
                 pCats['cat4'] = 0;
               }
               else if (gasPrice == <?php echo($gasPriceRecs['Average']) ?>)
               {
                 pCats['cat1'] = 0;
-                pCats['cat3'] = 0;
+                pCats['cat2'] = 1;
                 pCats['cat4'] = 0;
               }
               else if ((gasPrice > <?php echo($gasPriceRecs['Average']) ?>) && (gasPrice < <?php echo($gasPriceRecs['Fastest']) ?>))
               {
                 pCats['cat1'] = 0;
-                pCats['cat3'] = 1;
+                pCats['cat2'] = 0;
                 pCats['cat4'] = 0;
               }
               else if (gasPrice >= <?php echo($gasPriceRecs['Fastest']) ?>)
               {
                 pCats['cat1'] = 0;
-                pCats['cat3'] = 0;
+                pCats['cat2'] = 0;
                 pCats['cat4'] = 1;
               }
               return pCats;
@@ -410,9 +412,11 @@
               console.log(currency);
               exchangeRate =<?php echo ($exchangeRate) ?>;
               blockInterval = <?php echo ($calcParams['blockInterval']) ?>;
-          
-
-              txMeanSecs = Math.round(blocksWait*blockInterval);
+              txMeanSecs = blocksWait * blockInterval;
+              txMeanSecs = Number(txMeanSecs.toFixed(0));
+              blocksWait = Number(blocksWait.toFixed(1));
+      
+              
               txFeeEth = txGasPrice/1e9 * txGasUsed;
               txFeeEth = Number((txFeeEth).toFixed(6))
               txFeeFiat = txFeeEth * exchangeRate;

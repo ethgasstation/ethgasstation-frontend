@@ -61,7 +61,7 @@ filter.watch(function(err,blockHash)
     var ts = Math.round(+new Date()/1000);
     web3.eth.getBlock(blockHash, function (err, block)
     {
-        if (!('number' in block)){
+        if (!block){
             return;
         }
         if (!(block.number in blockTime))
@@ -86,21 +86,22 @@ filter.watch(function(err,blockHash)
         blockCounter++;
         console.log(block.number);
         currentBlock = block.number;
-        if (block.number % 100 === 0 )
+        if (currentBlock % 100 === 0 )
         {
             startQuery = currentBlock - 5760;
             commandString = 'node gasStationAnalyze.js ' + currentBlock;
-            commandString2 = 'python gascalc.py ' + startQuery + ' ' +  currentBlock;
+            commandString2 = 'python gascalc2.py ' + startQuery + ' ' +  currentBlock;
             launchProcess (commandString);
             launchProcess (commandString2); 
             
         }
-        if (block.number % 1000 === 0 )
+        if (currentBlock % 1000 === 0 )
         {
             profitBlock = currentBlock - 100000;
-            commandString = 'python miner4.py ' + profitBlock + ' ' + currentBlock;
+            commandString3 = 'python miner4.py ' + profitBlock + ' ' + currentBlock;
+            launchProcess (commandString3);
         }
-        if (block.number % 50 === 0 )
+        if (currentBlock % 50 === 0 )
         {
 
             var y = watchedTx.length;
@@ -166,7 +167,7 @@ filter2.watch(function(err, txHash)
                     
                     
                     writeData(post2, 'transactions');
-                    if (gasPrice < 20)
+                    if ((gasPrice < 20) && (result.gas == 21000))
                     {
                         watchedTx.push(post2);
                     }
@@ -242,7 +243,7 @@ function validateTx (tx, blockNum, last)
         }
         else
         {
-            if (txCheck.postedBlock >= currentBlock - 100)
+            if (txCheck.postedBlock >= currentBlock - 200)
             {
                 watchedTx.push(txCheck);
             }

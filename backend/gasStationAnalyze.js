@@ -17,7 +17,7 @@ connection.connect(function(err) {
 // define Query Interval
 
 var toBlock = process.argv[2];
-var startSelect = toBlock - 10000;
+var startSelect = toBlock - 5760;
 var start2 = toBlock - 100;
 
 //post is the global object that will be used to write to new database

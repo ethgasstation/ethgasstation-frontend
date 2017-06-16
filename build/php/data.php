@@ -247,7 +247,7 @@ try{
             $row['minedGasPrice'] = '>40';
         }
         $priceWaitLabels = $priceWaitLabels. "'". $row['minedGasPrice']."'".',';
-        $priceWaitData = $priceWaitData. round($row['delay2'],1). ',';
+        $priceWaitData = $priceWaitData. round($row['delay'],1). ',';
     }
     $priceWaitData = rtrim($priceWaitData,',');
     $priceWaitLabels = rtrim($priceWaitLabels, ',');
@@ -258,10 +258,13 @@ try{
     $calcParamString = file_get_contents("http://localhost/json/calc.json");
     $calcParams = json_decode($calcParamString, true);
 
-    $safeLowWait = round(exp($calcParams['cons'] + $calcParams['priceCat1'])*$calcParams['blockInterval']/60,1);
+    $sWait = exp($calcParams['cons'] + $calcParams['priceCat1']);
+    $aWait = exp($calcParams['cons'] + $calcParams['priceCat2']);
+    $fWait = exp($calcParams['cons'] + $calcParams['priceCat4']);
+    $safeLowWait = round($sWait*$calcParams['blockInterval']/60,1);
     $lowTransfer = '$'. number_format($gpRecs['safeLow']/1e9*21000*$ethprice,4);
-    $avgWait = round(exp($calcParams['cons'])*$calcParams['blockInterval']/60,1);
-    $fastWait = round(exp($calcParams['cons'] + $calcParams['priceCat4'])*$calcParams['blockInterval']/60,1);
+    $avgWait = round($aWait*$calcParams['blockInterval']/60,1);
+    $fastWait = round($fWait*$calcParams['blockInterval']/60,1);
 } catch (Exception $e){
     echo 'waith for tables to be populated';
 }
