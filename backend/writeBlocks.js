@@ -1,3 +1,5 @@
+//This script writes a range of blocks and their uncles into speedo table
+
 var Web3 = require('web3');
 var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 var mysql = require('mysql');

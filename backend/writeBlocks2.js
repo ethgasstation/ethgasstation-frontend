@@ -1,3 +1,5 @@
+//This script writes a single block and its transactions and its uncles to mysql
+
 var Web3 = require('web3');
 var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 var mysql = require('mysql');
