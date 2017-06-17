@@ -98,7 +98,7 @@
                       foreach ($gasGuzzTable as $row){
                         echo('<tr>');
                         //echo("<td>".$row['toAddress']."</td>");
-                        echo("<td>"."<a href=\"https://etherscan.io/address/{$row['toAddress']}\" target=\"_blank\"><{$row['toAddress']}></a>"."</td>");
+                        echo("<td>"."<a href=\"https://etherscan.io/address/{$row['toAddress']}\" target=\"_blank\">{$row['toAddress']}</a>"."</td>");
                         echo("<td>". $row['ID']). "</td>";
                         echo("<td>". number_format($row['pcttot'], 2). "</td>");
                         echo('</tr>');

@@ -243,7 +243,7 @@ print (gpRecs)
 gasGuzz = txData.groupby('toAddress').sum()
 gasGuzz = gasGuzz.sort_values('gasused', ascending = False)
 totgas = gasGuzz['gasused'].sum()
-gasGuzz['pcttot'] = gasGuzz['gasused']/totgas
+gasGuzz['pcttot'] = gasGuzz['gasused']/totgas*100
 
 gasGuzz = gasGuzz.head(n=10)
 gg = {
@@ -257,7 +257,7 @@ gg = {
     '0xff1f9c77a0f1fd8f48cfeee58b714ca03420ddac': 'e4row',
     '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819': 'Etherdelta',
     '0xe94b04a0fed112f3664e45adb2b8915693dd5ff3': 'Bittrex Safe Split',
-    '0xace62f87abe9f4ee9fd6e115d91548df24ca0943': 'Aragon',
+    '0xace62f87abe9f4ee9fd6e115d91548df24ca0943': 'Monaco',
     '0xb9e7f8568e08d5659f5d29c4997173d84cdf2607': 'Swarm City'
 
 
@@ -291,10 +291,9 @@ txData = txData.dropna()
 
 priceWait = txData.loc[:, ['minedGasPrice', 'delay']]
 priceWait.loc[priceWait['minedGasPrice']>=40, 'minedGasPrice'] = 40
-print(priceWait)
 priceWait['delay'] = priceWait['delay'].apply(np.log)
-priceWait = priceWait.groupby('minedGasPrice').mean().reset_index()
-print(priceWait)
+priceWait = priceWait.groupby('minedGasPrice').mean()
+priceWait.reset_index(inplace=True)
 priceWait['delay'] = priceWait['delay'].apply(np.exp)
 priceWait['delay'] = priceWait['delay']*blockInterval/float(60)
 priceWait = priceWait.loc[(priceWait['minedGasPrice']<=10) | (priceWait['minedGasPrice']==20) | (priceWait['minedGasPrice'] == 40), ['minedGasPrice', 'delay']]
