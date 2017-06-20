@@ -453,11 +453,11 @@ print (gpRecs)
 
 dep = pd.DataFrame()
 
-#if (gpRecs['safeLow'] < gpRecs['Average']):
-#    dep['priceCat1'] = ((txData2['minedGasPrice']== gpRecs['safeLow'])).astype(int)
-#dep['priceCat2'] = (txData2['minedGasPrice'] == gpRecs['Average']).astype(int)
+if (gpRecs['safeLow'] < gpRecs['Average']):
+    dep['priceCat1'] = ((txData2['minedGasPrice']== gpRecs['safeLow'])).astype(int)
+dep['priceCat2'] = (txData2['minedGasPrice'] == gpRecs['Average']).astype(int)
 #dep['priceCat3'] = ((txData2['minedGasPrice'] > gpRecs['Average']) & (txData2['minedGasPrice'] < gpRecs['Fastest'])).astype(int)
-#dep['priceCat4'] = (txData2['minedGasPrice'] >= gpRecs['Fastest']).astype(int)
+dep['priceCat4'] = (txData2['minedGasPrice'] >= gpRecs['Fastest']).astype(int)
 
 # Define gasused cats
 
@@ -485,7 +485,7 @@ results = model.fit(disp=0)
 dictResults = dict(results.params)
 print (results.summary())
 print (gpRecs)
-'''
+
 if not 'priceCat1' in dictResults:
     dictResults['priceCat1'] = dictResults['priceCat2']
 
@@ -499,8 +499,6 @@ if (predictFastest >= predictAverage):
     gpRecs['Fastest'] = gpRecs['Average']
 
 #safeLow cannot be zero and must have 50 transactions mined at or below price over last 10,000 blocks
-'''
-ddd
 
 
 quantiles = quantiles.reset_index(drop=True)
