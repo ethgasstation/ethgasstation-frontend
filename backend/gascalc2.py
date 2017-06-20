@@ -483,12 +483,12 @@ model = sm.OLS(indep, dep)
 
 results = model.fit(disp=0)
 dictResults = dict(results.params)
+'''
 if not 'priceCat1' in dictResults:
     dictResults['priceCat1'] = dictResults['priceCat2']
 
 
 print(dictResults)
-ddd
 #check to see if really fastest
 predictAverage = dictResults['cons']
 predictFastest = dictResults['cons'] + dictResults['priceCat4']
@@ -497,7 +497,8 @@ if (predictFastest >= predictAverage):
     gpRecs['Fastest'] = gpRecs['Average']
 
 #safeLow cannot be zero and must have 50 transactions mined at or below price over last 10,000 blocks
-
+'''
+ddd
 
 
 quantiles = quantiles.reset_index(drop=True)
