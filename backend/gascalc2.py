@@ -432,18 +432,14 @@ cursor.close()
 
 priceWait = txData2.loc[:, ['minedGasPrice', 'delay']]
 priceWait.loc[priceWait['minedGasPrice']>=40, 'minedGasPrice'] = 40
-
-priceWait.loc[(priceWait['minedGasPrice']>10) & (priceWait['minedGasPrice']<20)]=np.nan
-priceWait.loc[(priceWait['minedGasPrice']>20) & (priceWait['minedGasPrice']<40)]=np.nan
-
+priceWait = priceWait.loc[(priceWait['minedGasPrice']<=10) | (priceWait['minedGasPrice']==20) | (priceWait['minedGasPrice'] == 40), ['minedGasPrice', 'delay']]
 priceWait.loc[priceWait['minedGasPrice']<1, 'minedGasPrice'] = 0
-
 priceWait['delay'] = priceWait['delay'].apply(np.log)
 priceWait = priceWait.groupby('minedGasPrice').mean()
 priceWait.reset_index(inplace=True)
 priceWait['delay'] = priceWait['delay'].apply(np.exp)
 priceWait['delay'] = priceWait['delay']*blockInterval/float(60)
-priceWait = priceWait.loc[(priceWait['minedGasPrice']<=10) | (priceWait['minedGasPrice']==20) | (priceWait['minedGasPrice'] == 40), ['minedGasPrice', 'delay']]
+
 
 print(priceWait)
 
@@ -469,9 +465,9 @@ dep['gasCat4'] = (txData2['gasused']> quantiles[.9]).astype(int)
 
 dep['cons'] = 1
 
-txData2['logDelay'] = txData2['delay'].apply(np.log)
+txData2['logDelay'] = txData2['delay']
 indep = txData2['logDelay']
-print(txData2.loc[txData2['minedGasPrice']>=40, 'delay2'].mean())
+
 #with pd.option_context('display.max_rows', None, 'display.max_columns', None):
 #   print(indep)
 #with pd.option_context('display.max_rows', None, 'display.max_columns', None):
@@ -484,6 +480,8 @@ results = model.fit(disp=0)
 dictResults = dict(results.params)
 print (results.summary())
 print (gpRecs)
+
+dddd
 
 if not 'priceCat1' in dictResults:
     dictResults['priceCat1'] = dictResults['priceCat2']
