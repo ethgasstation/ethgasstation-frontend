@@ -384,6 +384,14 @@ txData2[txData2['delay'] < 0] = np.nan
 txData2[txData2['delay2'] < 0] = np.nan
 txData2 = txData2.dropna()
 
+if (gpRecs['safeLow'] < minLow):
+    gpRecs['safeLow'] = minLow
+
+if (gpRecs['safeLow'] == 0):
+    gpRecs['safeLow'] = 1
+
+
+
 #create Summary Stats
 
 post['totalTimed'] = len(txData2)
@@ -417,21 +425,6 @@ cnx.commit()
 cursor.close()
 
 #--summary stats for mysql
-
-
-txData2['delay'] = txData2['minedBlock'] - txData2['postedBlock']
-txData2['delay2'] = txData2['tsMined'] - txData2['tsPosted']
-txData2[txData2['delay']>1000] = np.nan
-txData2[txData2['delay'] < 0] = np.nan
-txData2[txData2['delay2'] < 0] = np.nan
-txData = txData.dropna()
-
-if (gpRecs['safeLow'] < minLow):
-    gpRecs['safeLow'] = minLow
-
-if (gpRecs['safeLow'] == 0):
-    gpRecs['safeLow'] = 1
-
 
 #summary table
 
