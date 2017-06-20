@@ -453,20 +453,20 @@ print (gpRecs)
 
 dep = pd.DataFrame()
 
-if (gpRecs['safeLow'] < gpRecs['Average']):
-    dep['priceCat1'] = ((txData2['minedGasPrice']== gpRecs['safeLow'])).astype(int)
-dep['priceCat2'] = (txData2['minedGasPrice'] == gpRecs['Average']).astype(int)
+#if (gpRecs['safeLow'] < gpRecs['Average']):
+#    dep['priceCat1'] = ((txData2['minedGasPrice']== gpRecs['safeLow'])).astype(int)
+#dep['priceCat2'] = (txData2['minedGasPrice'] == gpRecs['Average']).astype(int)
 #dep['priceCat3'] = ((txData2['minedGasPrice'] > gpRecs['Average']) & (txData2['minedGasPrice'] < gpRecs['Fastest'])).astype(int)
-dep['priceCat4'] = (txData2['minedGasPrice'] >= gpRecs['Fastest']).astype(int)
+#dep['priceCat4'] = (txData2['minedGasPrice'] >= gpRecs['Fastest']).astype(int)
 
 # Define gasused cats
 
 quantiles= txData2['gasused'].quantile([.5, .75, .9, 1])
 
 #dep['gasCat1'] = (txData2['gasused'] == 21000).astype(int)
-dep['gasCat2'] = ((txData2['gasused']>21000) & (txData2['gasused']<=quantiles[.75])).astype(int)
-dep['gasCat3'] = ((txData2['gasused']>quantiles[.75]) & (txData2['gasused']<=quantiles[.9])).astype(int)
-dep['gasCat4'] = (txData2['gasused']> quantiles[.9]).astype(int)
+#dep['gasCat2'] = ((txData2['gasused']>21000) & (txData2['gasused']<=quantiles[.75])).astype(int)
+#dep['gasCat3'] = ((txData2['gasused']>quantiles[.75]) & (txData2['gasused']<=quantiles[.9])).astype(int)
+#dep['gasCat4'] = (txData2['gasused']> quantiles[.9]).astype(int)
 
 dep['cons'] = 1
 
@@ -488,7 +488,7 @@ if not 'priceCat1' in dictResults:
 
 
 print(dictResults)
-
+ddd
 #check to see if really fastest
 predictAverage = dictResults['cons']
 predictFastest = dictResults['cons'] + dictResults['priceCat4']
