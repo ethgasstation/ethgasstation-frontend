@@ -552,7 +552,7 @@ function avgGasUsed (startSelect,toBlock){
     });
 
 }
-
+//stopped here
 //Cheapest/MostExpensive StdTx
 
 function cheapestStdTx (startSelect, toBlock) {

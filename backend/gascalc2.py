@@ -11,12 +11,14 @@ import urllib,json
 
 startBlock = sys.argv[1]
 endBlock = sys.argv[2]
+
+
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
 
 cursor = cnx.cursor()
 
 # First Query to Determine Block TIme, and Estimate Miner Policies
-query = ("SELECT minedGasPrice, toAddress, gasused, miner, tsMined, minedBlock, emptyBlock, minedGasPriceCat FROM minedtransactions WHERE minedBlock > %s AND minedBlock < %s ")
+query = ("SELECT txHash, minedGasPrice, toAddress, gasused, miner, tsMined, minedBlock, emptyBlock, minedGasPriceCat FROM minedtransactions WHERE minedBlock > %s AND minedBlock < %s ")
 
 cursor.execute(query, (startBlock, endBlock))
 head = cursor.column_names
@@ -24,6 +26,90 @@ head = cursor.column_names
 txData = pd.DataFrame(cursor.fetchall())
 txData.columns = head
 cursor.close()
+
+start100Block = int(endBlock)-100
+endBlock = int(endBlock)
+
+
+txData['minedGasPrice'] = txData['minedGasPrice'].apply(lambda x: x/1000)
+txData['minedGasPrice'] = txData['minedGasPrice'].apply(lambda x: np.round(x, decimals=0) if x >=1 else np.round(x, decimals=3))
+
+txData['txFee'] = txData['gasused']*txData['minedGasPrice']
+
+#summary stats
+post = {}
+post2 = {}
+
+totalTx = len(txData)
+post2['latestblockNum'] = post['latestblockNum'] = int(endBlock)
+post2['startSelect'] = post['startSelect'] = int(startBlock)
+post['totalCatTx1'] = len(txData[txData['minedGasPriceCat']==1])
+post['totalCatTx2'] = len(txData[txData['minedGasPriceCat']==2])
+post['totalCatTx3'] = len(txData[txData['minedGasPriceCat']==3])
+post['totalCatTx4'] = len(txData[txData['minedGasPriceCat']==4])
+post['totalCatTx5'] = len(txData[txData['minedGasPriceCat']==5])
+post['totalTx'] = int(totalTx)
+post['totalTransfers'] = len(txData[txData['gasused']==21000])
+post['totalConCalls'] = len(txData[txData['gasused']!=21000])
+post['maxMinedGasPrice'] = int(txData['minedGasPrice'].max())
+post['minMinedGasPrice'] = txData['minedGasPrice'].min()
+post['minMinedGasPrice'] = int(post['minMinedGasPrice']*1000)
+post['medianGasPrice']= int(txData['minedGasPrice'].quantile(.5))
+post['totalBlocks'] = int(txData['minedBlock'].max() - txData['minedBlock'].min())
+post['avgGasUsed'] = int(txData['gasused'].mean())
+
+post['cheapestTx'] = txData.loc[txData['gasused']==21000, 'txFee'].min()
+temp = txData.loc[txData['txFee']==post['cheapestTx'], 'txHash'].reset_index()
+post['cheapestTxID'] = temp.loc[0 , 'txHash']
+post['cheapestTx'] = int(post['cheapestTx'])
+
+post['dearestTx'] = txData.loc[txData['gasused']==21000, 'txFee'].max()
+temp = txData.loc[txData['txFee']==post['dearestTx'], 'txHash'].reset_index()
+post['dearestTxID'] = temp.loc[0 , 'txHash']
+post['dearestTx'] = int(post['dearestTx'])
+
+post['dearConTx'] = txData['txFee'].max()
+temp = txData.loc[txData['txFee']==post['dearConTx'], 'txHash'].reset_index()
+post['dearConTxID'] = temp.loc[0 , 'txHash']
+post['dearConTx'] = int(post['dearConTx'])
+
+post['avgTxFee'] = int(txData.loc[txData['gasused']==21000, 'txFee'].median())
+post['avgContractFee'] = int(txData.loc[txData['gasused']>21000, 'txFee'].median())
+post['avgContractGas']  = int(txData.loc[txData['gasused']>21000, 'gasused'].median())
+
+post2['ethConsumedLast100'] = float(txData.loc[(txData['minedBlock']>=start100Block) & (txData['minedBlock']< endBlock), 'txFee'].sum())
+
+
+# Query to Determine Empty / Full Blokcs
+cursor = cnx.cursor()
+query = ("SELECT speed FROM speedo2 WHERE blockNum > %s AND blockNum < %s ")
+
+cursor.execute(query, (startBlock, endBlock))
+head = cursor.column_names
+
+txData3 = pd.DataFrame(cursor.fetchall())
+txData3.columns = head
+cursor.close()
+
+post['emptyBlocks'] =  len(txData3[txData3['speed']==0])
+post['fullBlocks'] = len(txData3[txData3['speed']>=.95])
+
+
+#get ETH Prices
+url = "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD,EUR,GBP,CNY"
+response = urllib.urlopen(url)
+pricesRaw = json.loads(response.read())
+response.close()
+ethPricesTable = pd.DataFrame.from_dict(pricesRaw, orient='index')
+
+post['ETHpriceUSD'] = int(ethPricesTable.loc['USD', 0])
+post['ETHpriceEUR'] = int(ethPricesTable.loc['EUR', 0])
+post['ETHpriceCNY'] = int(ethPricesTable.loc['CNY', 0])
+post['ETHpriceGBP'] = int(ethPricesTable.loc['GBP', 0])
+
+#--prices
+
+#--summary stats
 
 #Calculate Block Time
 blockTime = txData[['tsMined', 'minedBlock']]
@@ -56,7 +142,7 @@ for index, row in txDataPrice.iterrows():
         minLow = row['minedGasPrice']
         break
 
-totalTx = len(txData)
+
 
 # Next Find Each Miners Mininum Price of All Mined Transactions
 
@@ -73,8 +159,6 @@ txDataMiner.reset_index(inplace=True)
 
 txDataMiner = txDataMiner.merge(txDataTx, how='left', on=['miner','minedGasPriceCat'])
 txDataMiner.rename(columns = {'minedGasPrice': 'minPrice', 'minedGasPriceCat':'minCat'}, inplace = True)
-
-
 
 txDataMiner.loc[txDataMiner['minCat']==1, 'catTotal'] = txDataCat.loc[txDataCat['minedGasPriceCat']==1, 'count'].values[0]
 txDataMiner.loc[txDataMiner['minCat']==2, 'catTotal'] = txDataCat.loc[txDataCat['minedGasPriceCat']==2, 'count'].values[0]
@@ -140,22 +224,24 @@ txDataMiner.loc[(txDataMiner['oeRatio'] <0.2) & (txDataMiner['adjustedMinPCat']=
 
 txDataMiner  = txDataMiner.sort_values(['adjustedMinP','totBlocks'], ascending = [True, False])
 
+print(txDataMiner)
 
+#Make Table with Key Miner Stats
 
 topMiners = txDataMiner.sort_values('totBlocks', ascending=False)
 topMiners = topMiners.loc[:,['miner','adjustedMinP','pctEmp', 'pctTot']].head(10)
 topMiners = topMiners.sort_values(['adjustedMinP','pctEmp'], ascending = [True, True]).reset_index(drop=True)
 
 
-#Make Table with Key Miner Stats
+
 priceTable = txDataMiner[['pctTxBlocks', 'adjustedMinP']].groupby('adjustedMinP').sum().reset_index()
 priceTable['pctTotBlocks'] = priceTable['pctTxBlocks']*pctTxBlocks
 priceTable['cumPctTxBlocks'] = priceTable['pctTxBlocks'].cumsum()
 priceTable['cumPctTotBlocks'] = priceTable['pctTotBlocks'].cumsum()
 
 print(priceTable)
-#--cumulative columns
 
+#--Key Miner Stats
 
 #get Initial Gas Price Recs based on % of blocks excluding empty blocks
 gpRecs = {}
@@ -196,7 +282,9 @@ except:
 #findLowest validated status
 
 validationTable.sort_index()
-validationTable= validationTable.reset_index()
+validationTable= validationTable.reset_index(drop=True)
+validationTable['gasPrice'] = validationTable['gasPrice'].apply(lambda x: x/1000)
+validationTable['gasPrice'] = validationTable['gasPrice'].apply(lambda x: np.round(x, decimals=0) if x >=1 else np.round(x, decimals=1))
 print(validationTable)
 
 
@@ -275,22 +363,66 @@ print(gasGuzz)
 #Regression Model for Calculator
 
 cursor = cnx.cursor()
-query = ("SELECT minedtransactions.minedBlock, transactions.postedBlock, minedtransactions.tsMined, transactions.tsPosted, minedtransactions.gasused, transactions.postedblock, minedtransactions.minedblock, transactions.gasOffered, minedtransactions.minedGasPrice FROM transactions INNER JOIN minedtransactions ON transactions.txHash = minedtransactions.txHash WHERE transactions.postedBlock IS NOT NULL AND transactions.postedBlock > %s AND transactions.postedBlock < %s")
+query = ("SELECT minedtransactions.minedBlock, transactions.postedBlock, minedtransactions.tsMined, transactions.tsPosted, minedtransactions.gasused, transactions.postedblock, minedtransactions.minedblock, transactions.gasOffered, minedtransactions.minedGasPrice FROM transactions INNER JOIN minedtransactions ON transactions.txHash = minedtransactions.txHash WHERE transactions.postedBlock > %s AND transactions.postedBlock < %s")
 
 cursor.execute(query, (startBlock, endBlock))
 head = cursor.column_names
+txData2 = pd.DataFrame(cursor.fetchall())
+txData2.columns = head
+cursor.close()
 
-txData = pd.DataFrame(cursor.fetchall())
-txData.columns = head
+#change gas price from mwei to gwei but don't round if less than 1 gwei
+txData2['minedGasPrice'] = txData2['minedGasPrice'].apply(lambda x: x/1000)
+print(txData2['minedGasPrice'].min())
+txData2['minedGasPrice'] = txData2['minedGasPrice'].apply(lambda x: np.round(x, decimals=0) if x >=1 else np.round(x, decimals=3))
+print(txData2['minedGasPrice'].min())
 
-txData['delay'] = txData['minedBlock'] - txData['postedBlock']
-txData['delay2'] = txData['tsMined'] - txData['tsPosted']
-txData[txData['delay']>1000] = np.nan
-txData = txData.dropna()
-#summary table
+txData2['delay'] = txData2['minedBlock'] - txData2['postedBlock']
+txData2['delay2'] = txData2['tsMined'] - txData2['tsPosted']
+txData2[txData2['delay']>1000] = np.nan
+txData2[txData2['delay'] < 0] = np.nan
+txData2[txData2['delay2'] < 0] = np.nan
+txData2 = txData2.dropna()
 
-priceWait = txData.loc[:, ['minedGasPrice', 'delay']]
+#create Summary Stats
+
+post['totalTimed'] = len(txData2)
+post['maxMineDelay'] = int(txData2['delay'].max())
+post['minMineDelay'] = int(txData2['delay'].min())
+post['medianDelay'] = int(txData2['delay'].quantile(.5))
+post['delay95'] = int(txData2['delay'].quantile(.95))
+post['delay5'] = int(txData2['delay'].quantile(.05))
+post['medianDelayTime'] = int(txData2['delay2'].quantile(.5))
+post['delay95time'] = int(txData2['delay2'].quantile(.95))
+post['delay5time'] = int(txData2['delay2'].quantile(.05))
+post2['medianDelayLast100'] = int(txData2.loc[(txData2['minedBlock']>=start100Block) & (txData2['minedBlock']< endBlock), 'delay2'].median())
+
+#write Summary Stats
+print(post)
+cursor = cnx.cursor()
+query = ("INSERT INTO txDataLast10k "
+        "(totalTimed, maxMineDelay, minMineDelay, medianMinedDelay, medianTime, latestblockNum, startSelect, cat1gasTotTx, cat2gasTotTx, cat3gasTotTx, cat4gasTotTx, cat5gasTotTx, totalTx, totalTransfers, totalConCalls, maxMinedGasPrice, minMinedGasPrice, medianGasPrice, totalBlocks, avgGasUsed, cheapestTx, cheapestTxID, dearestTx, dearestTxID, dearConTx, dearConTxID, mediantxFee, avgContractFee, avgContractGas, ETHpriceUSD, ETHpriceEUR, ETHpriceGBP, ETHpriceCNY)"
+        "VALUES (%(totalTimed)s, %(maxMineDelay)s, %(minMineDelay)s, %(medianDelay)s, %(medianDelayTime)s, %(latestblockNum)s, %(startSelect)s, %(totalCatTx1)s, %(totalCatTx2)s, %(totalCatTx3)s, %(totalCatTx4)s, %(totalCatTx5)s, %(totalTx)s, %(totalTransfers)s, %(totalConCalls)s, %(maxMinedGasPrice)s, %(minMinedGasPrice)s, %(medianGasPrice)s, %(totalBlocks)s, %(avgGasUsed)s, %(cheapestTx)s, %(cheapestTxID)s, %(dearestTx)s, %(dearestTxID)s, %(dearConTx)s, %(dearConTxID)s, %(avgTxFee)s, %(avgContractFee)s, %(avgContractGas)s, %(ETHpriceUSD)s, %(ETHpriceEUR)s, %(ETHpriceGBP)s, %(ETHpriceCNY)s)")
+        
+        
+cursor.execute(query, post)
+cnx.commit()
+
+query = ("INSERT INTO txDataLast100b "
+        "(ethConsumedLast100, medianDelayLast100, latestblockNum, startSelect)"
+        "VALUES (%(ethConsumedLast100)s, %(medianDelayLast100)s, %(latestblockNum)s, %(startSelect)s)")
+
+cursor.execute(query, post2)
+cnx.commit()
+cursor.close()
+
+#--summary stats for mysql
+
+#summary delay table
+
+priceWait = txData2.loc[:, ['minedGasPrice', 'delay']]
 priceWait.loc[priceWait['minedGasPrice']>=40, 'minedGasPrice'] = 40
+priceWait.loc[priceWait['minedGasPrice']<1, 'minedGasPrice'] = 0
 priceWait['delay'] = priceWait['delay'].apply(np.log)
 priceWait = priceWait.groupby('minedGasPrice').mean()
 priceWait.reset_index(inplace=True)
@@ -306,27 +438,27 @@ print (gpRecs)
 dep = pd.DataFrame()
 
 if (gpRecs['safeLow'] < gpRecs['Average']):
-    dep['priceCat1'] = ((txData['minedGasPrice']== gpRecs['safeLow'])).astype(int)
-dep['priceCat2'] = (txData['minedGasPrice'] == gpRecs['Average']).astype(int)
-#dep['priceCat3'] = ((txData['minedGasPrice'] > gpRecs['Average']) & (txData['minedGasPrice'] < gpRecs['Fastest'])).astype(int)
-dep['priceCat4'] = (txData['minedGasPrice'] >= gpRecs['Fastest']).astype(int)
+    dep['priceCat1'] = ((txData2['minedGasPrice']== gpRecs['safeLow'])).astype(int)
+dep['priceCat2'] = (txData2['minedGasPrice'] == gpRecs['Average']).astype(int)
+#dep['priceCat3'] = ((txData2['minedGasPrice'] > gpRecs['Average']) & (txData2['minedGasPrice'] < gpRecs['Fastest'])).astype(int)
+dep['priceCat4'] = (txData2['minedGasPrice'] >= gpRecs['Fastest']).astype(int)
 
 # Define gasused cats
 
-quantiles= txData['gasused'].quantile([.5, .75, .9, 1])
+quantiles= txData2['gasused'].quantile([.5, .75, .9, 1])
 
-#dep['gasCat1'] = (txData['gasused'] == 21000).astype(int)
-dep['gasCat2'] = ((txData['gasused']>21000) & (txData['gasused']<=quantiles[.75])).astype(int)
-dep['gasCat3'] = ((txData['gasused']>quantiles[.75]) & (txData['gasused']<=quantiles[.9])).astype(int)
-dep['gasCat4'] = (txData['gasused']> quantiles[.9]).astype(int)
+#dep['gasCat1'] = (txData2['gasused'] == 21000).astype(int)
+dep['gasCat2'] = ((txData2['gasused']>21000) & (txData2['gasused']<=quantiles[.75])).astype(int)
+dep['gasCat3'] = ((txData2['gasused']>quantiles[.75]) & (txData2['gasused']<=quantiles[.9])).astype(int)
+dep['gasCat4'] = (txData2['gasused']> quantiles[.9]).astype(int)
 
 dep['cons'] = 1
 
-txData['logDelay'] = txData['delay'].apply(np.log)
-indep = txData['logDelay']
-print(txData.loc[txData['minedGasPrice']>=40, 'delay2'].mean())
+txData2['logDelay'] = txData2['delay'].apply(np.log)
+indep = txData2['logDelay']
+print(txData2.loc[txData2['minedGasPrice']>=40, 'delay2'].mean())
 #with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-#   print(txData)
+#   print(txData2)
 #with pd.option_context('display.max_rows', None, 'display.max_columns', None):
 #    print(dep)
 
@@ -406,5 +538,5 @@ print (results.summary())
 print (gpRecs)
 
 
-cursor.close()
+
 cnx.close()
