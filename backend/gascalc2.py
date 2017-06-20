@@ -483,6 +483,8 @@ model = sm.OLS(indep, dep)
 
 results = model.fit(disp=0)
 dictResults = dict(results.params)
+print (results.summary())
+print (gpRecs)
 '''
 if not 'priceCat1' in dictResults:
     dictResults['priceCat1'] = dictResults['priceCat2']
@@ -545,8 +547,7 @@ with open(filepath_topMiners, 'w') as outfile:
 with open(filepath_priceWait, 'w') as outfile:
     outfile.write(priceWait)
 
-print (results.summary())
-print (gpRecs)
+
 
 
 
