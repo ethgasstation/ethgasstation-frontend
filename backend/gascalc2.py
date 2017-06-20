@@ -282,7 +282,7 @@ except:
 #findLowest validated status
 
 validationTable.sort_index()
-validationTable= validationTable.reset_index(drop=True)
+validationTable= validationTable.reset_index(drop=False)
 validationTable['gasPrice'] = validationTable['gasPrice'].apply(lambda x: x/1000)
 validationTable['gasPrice'] = validationTable['gasPrice'].apply(lambda x: np.round(x, decimals=0) if x >=1 else np.round(x, decimals=1))
 print(validationTable)
