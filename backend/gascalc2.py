@@ -466,10 +466,8 @@ dep['gasCat4'] = (txData2['gasused']> quantiles[.9]).astype(int)
 dep['cons'] = 1
 
 txData2['logDelay'] = txData2['delay'].apply(np.log)
-txData2['logDelay'] = txData2['logDelay'].astype(float)
-
 indep = txData2['logDelay']
-print(indep)
+
 #with pd.option_context('display.max_rows', None, 'display.max_columns', None):
 #   print(indep)
 #with pd.option_context('display.max_rows', None, 'display.max_columns', None):
@@ -483,7 +481,6 @@ dictResults = dict(results.params)
 print (results.summary())
 print (gpRecs)
 
-dddd
 
 if not 'priceCat1' in dictResults:
     dictResults['priceCat1'] = dictResults['priceCat2']
