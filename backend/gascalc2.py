@@ -467,7 +467,7 @@ dictResults = dict(results.params)
 print (results.summary())
 print (gpRecs)
 
-
+dddd
 if not 'priceCat1' in dictResults:
     dictResults['priceCat1'] = dictResults['priceCat2']
 
