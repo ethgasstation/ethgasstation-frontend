@@ -70,7 +70,7 @@ function processBlock(block)
     {
         console.log(num);
         var gasPrice = txObj.gasPrice.toString(10);
-        gasPrice = gasPrice/1e9; //convert to Gwei
+        gasPrice = gasPrice/1e6; //convert to Gwei
         var gasPriceCat = getGasPriceCat(gasPrice);
         var txReceipt = web3.eth.getTransactionReceipt(txObj.hash);
         fee = txReceipt.gasUsed * gasPrice;
@@ -182,15 +182,15 @@ function getGasPriceCat (gasPrice)
 {   
     var gasPriceCat;
 
-    if (gasPrice < 10){
+    if (gasPrice < 10000){
         gasPriceCat =1;}
-    else if (gasPrice >= 10 && gasPrice <20){
+    else if (gasPrice >= 10000 && gasPrice <20000){
         gasPriceCat=2;}
-    else if (gasPrice === 20 ){
+    else if (gasPrice === 20000 ){
         gasPriceCat= 3;}
-    else if (gasPrice >20 && gasPrice <=30){
+    else if (gasPrice >20000 && gasPrice <=30000){
         gasPriceCat= 4;}
-    else if (gasPrice >30){
+    else if (gasPrice >30000){
         gasPriceCat= 5;}
     
     return gasPriceCat;

@@ -120,7 +120,7 @@ settype($medianfeeusd, "float");
 $medianwaitsec = $row['medianTime'];
 $medianwaitblock = $row['medianMinedDelay'];
 $gaspricehigh = $row['maxMinedGasPrice'];
-$gaspricelow = $row['minMinedGasPrice'];
+$gaspricelow = $row['minMinedGasPrice']/1000;
 $gaspricemedian = $row['medianGasPrice'];
 
 $cheapestTx = $row['cheapestTx'];
@@ -132,78 +132,17 @@ $dearestConId = $row['dearConTxID'];
 $longestWait = $row['longestWait'];
 $longestWaitId = $row['longestWaitID'];
 
-$cheapestTxUSD = $cheapestTx * $ethprice / 1e9;
-$cheapestTxEUR = $cheapestTx * $ethpriceEUR / 1e9;
-$cheapestTxCNY = $cheapestTx * $ethpriceCNY / 1e9;
-$cheapestTxGBP = $cheapestTx * $ethpriceGBP / 1e9;
 
-$dearestTxUSD = $dearestTx * $ethprice / 1e9;
-$dearestTxEUR = $dearestTx * $ethpriceEUR / 1e9;
-$dearestTxCNY = $dearestTx * $ethpriceCNY / 1e9;
-$dearestTxGBP = $dearestTx * $ethpriceGBP / 1e9;
-
-$dearestConUSD = $dearestCon * $ethprice / 1e9;
-$dearestConEUR = $dearestCon * $ethpriceEUR / 1e9;
-$dearestConCNY = $dearestCon * $ethpriceCNY / 1e9;
-$dearestConGBP = $dearestCon * $ethpriceGBP / 1e9;
-
-
-$longestWait = round($longestWait/3600,1);
-
-if ($currency == 'eur'){
-	$medianfeeDisplay = '€' . round($medianfeeEUR,4);
-	$cheapestTxDisplay = '€' . round($cheapestTxEUR,4);
-    $dearestTxDisplay = '€' . round($dearestTxEUR,2);
-    $dearestConDisplay = '€' . round($dearestConEUR,2);
-    $avgConFeeDisplay = '€' . round($avgConFeeEUR,3);
-}
-elseif ($currency == 'cny'){
-	$medianfeeDisplay = '¥' . round($medianfeeCNY,4);
-	$cheapestTxDisplay = '¥' . round($cheapestTxCNY,4);
-    $dearestTxDisplay = '¥' . round($dearestTxCNY,2);
-    $dearestConDisplay = '¥' . round($dearestConCNY,2);
-    $avgConFeeDisplay = '¥' . round($avgConFeeCNY,3);
-}
-elseif ($currency == 'gbp'){
-	$medianfeeDisplay = '£' . round($medianfeeGBP,4);
-	$cheapestTxDisplay = '£' . round($cheapestTxGBP,4);
-    $dearestTxDisplay = '£' . round($dearestTxGBP,2);
-    $dearestConDisplay = '£' . round($dearestConGBP,2);
-    $avgConFeeDisplay = '£' . round($avgConFeeGBP,3);
-	
-}
-else {
-	$medianfeeDisplay = '$' . round($medianfeeUSD,4);
-	$cheapestTxDisplay = '$' . round($cheapestTxUSD,4);
-    $dearestTxDisplay = '$' . round($dearestTxUSD,2);
-    $dearestConDisplay = '$' . round($dearestConUSD,2);
-    $avgConFeeDisplay = '$' . round($avgConFeeUSD,3);
-
-
-}
 
 
 //Get data for Transaction confirmation by gas price graph
 
 $cat1Tx = $row['cat1gasTotTx'];
-$cat1TimeMed = $row['cat1gasMedianTime'];
-$cat1Time95 = $row['cat1gas95DelayTime'];
-
 $cat2Tx = $row['cat2gasTotTx'];
-$cat2TimeMed = $row['cat2gasMedianTime'];
-$cat2Time95 = $row['cat2gas95DelayTime'];
-
 $cat3Tx = $row['cat3gasTotTx'];
-$cat3TimeMed = $row['cat3gasMedianTime'];
-$cat3Time95 = $row['cat3gas95DelayTime'];
-
 $cat4Tx = $row['cat4gasTotTx'];
-$cat4TimeMed = $row['cat4gasMedianTime'];
-$cat4Time95 = $row['cat4gas95DelayTime'];
-
 $cat5Tx = $row['cat5gasTotTx'];
-$cat5TimeMed = $row['cat5gasMedianTime'];
-$cat5Time95 = $row['cat5gas95DelayTime'];
+
 
 if ($cat1Tx == null)
 {
@@ -217,17 +156,27 @@ $cat3TxPct = round($cat3Tx/$totTx, 4) *100;
 $cat4TxPct = round($cat4Tx/$totTx, 4) *100;
 $cat5TxPct = round($cat5Tx/$totTx, 4) *100;
 
-$cat1TimeMedMin = round($cat1TimeMed/60, 1);
-$cat2TimeMedMin = round($cat2TimeMed/60, 1);
-$cat3TimeMedMin = round($cat3TimeMed/60, 1);
-$cat4TimeMedMin = round($cat4TimeMed/60, 1);
-$cat5TimeMedMin = round($cat5TimeMed/60, 1);
 
-$cat1Time95Min = round($cat1Time95/60, 1);
-$cat2Time95Min = round($cat2Time95/60, 1);
-$cat3Time95Min = round($cat3Time95/60, 1);
-$cat4Time95Min = round($cat4Time95/60, 1);
-$cat5Time95Min = round($cat5Time95/60, 1);
+if ($currency == 'eur'){
+    $exchangeRate = $ethpriceEUR;
+    $currString = '€';
+}
+elseif ($currency == 'cny'){
+    $exchangeRate = $ethpriceCNY;
+    $currString = '¥';
+
+}
+elseif ($currency == 'gbp'){
+    $exchangeRate = $ethpriceGBP;
+    $currString = '£';
+}
+else{
+    $exchangeRate = $ethprice;
+    $currString = '$';
+}
+
+
+
 
 //Data for miner ranking table
 try{
@@ -262,12 +211,58 @@ try{
     $aWait = exp($calcParams['cons'] + $calcParams['priceCat2']);
     $fWait = exp($calcParams['cons'] + $calcParams['priceCat4']);
     $safeLowWait = round($sWait*$calcParams['blockInterval']/60,1);
-    $lowTransfer = '$'. number_format($gpRecs['safeLow']/1e9*21000*$ethprice,4);
+    $lowTransfer = $currString . number_format($gpRecs['safeLow']/1e9*21000*$exchangeRate,3);
     $avgWait = round($aWait*$calcParams['blockInterval']/60,1);
     $fastWait = round($fWait*$calcParams['blockInterval']/60,1);
 } catch (Exception $e){
     echo 'waith for tables to be populated';
 }
+$cheapestTxUSD = $cheapestTx * $ethprice / 1e9;
+$cheapestTxEUR = $cheapestTx * $ethpriceEUR / 1e9;
+$cheapestTxCNY = $cheapestTx * $ethpriceCNY / 1e9;
+$cheapestTxGBP = $cheapestTx * $ethpriceGBP / 1e9;
 
+$dearestTxUSD = $dearestTx * $ethprice / 1e9;
+$dearestTxEUR = $dearestTx * $ethpriceEUR / 1e9;
+$dearestTxCNY = $dearestTx * $ethpriceCNY / 1e9;
+$dearestTxGBP = $dearestTx * $ethpriceGBP / 1e9;
+
+$dearestConUSD = $dearestCon * $ethprice / 1e9;
+$dearestConEUR = $dearestCon * $ethpriceEUR / 1e9;
+$dearestConCNY = $dearestCon * $ethpriceCNY / 1e9;
+$dearestConGBP = $dearestCon * $ethpriceGBP / 1e9;
+
+
+if ($currency == 'eur'){
+	$medianfeeDisplay = '€' . round($medianfeeEUR,4);
+	$cheapestTxDisplay = '€' . round($cheapestTxEUR,4);
+    $dearestTxDisplay = '€' . round($dearestTxEUR,2);
+    $dearestConDisplay = '€' . round($dearestConEUR,2);
+    $avgConFeeDisplay = '€' . round($avgConFeeEUR,3);
+}
+elseif ($currency == 'cny'){
+	$medianfeeDisplay = '¥' . round($medianfeeCNY,4);
+	$cheapestTxDisplay = '¥' . round($cheapestTxCNY,4);
+    $dearestTxDisplay = '¥' . round($dearestTxCNY,2);
+    $dearestConDisplay = '¥' . round($dearestConCNY,2);
+    $avgConFeeDisplay = '¥' . round($avgConFeeCNY,3);
+}
+elseif ($currency == 'gbp'){
+	$medianfeeDisplay = '£' . round($medianfeeGBP,4);
+	$cheapestTxDisplay = '£' . round($cheapestTxGBP,4);
+    $dearestTxDisplay = '£' . round($dearestTxGBP,2);
+    $dearestConDisplay = '£' . round($dearestConGBP,2);
+    $avgConFeeDisplay = '£' . round($avgConFeeGBP,3);
+	
+}
+else {
+	$medianfeeDisplay = '$' . round($medianfeeUSD,4);
+	$cheapestTxDisplay = '$' . round($cheapestTxUSD,4);
+    $dearestTxDisplay = '$' . round($dearestTxUSD,2);
+    $dearestConDisplay = '$' . round($dearestConUSD,2);
+    $avgConFeeDisplay = '$' . round($avgConFeeUSD,3);
+
+
+}
 
 ?>

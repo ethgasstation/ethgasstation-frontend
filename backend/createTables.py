@@ -21,7 +21,7 @@ query = ("CREATE TABLE speedo2 ("
         "PRIMARY KEY (id))")
 
 cursor.execute(query)
-
+'''
 query = ("CREATE TABLE txDataLast100b ("
         "id INT NOT NULL AUTO_INCREMENT,"
         "latestblockNum INT,"
@@ -186,6 +186,6 @@ cursor.execute(query)
 query = ("CREATE TABLE minedtransactions (txHash VARCHAR(75), minedBlock int, toAddress VARCHAR(50), fromAddress VARCHAR(50), miner text, minedGasPrice INT, minedGasPriceCat INT, gasused INT, blockGasUsed INT, blockGasLimit INT, tsMined INT, emptyBlock BOOLEAN, PRIMARY KEY(txHash))")
 
 cursor.execute(query)
-
+'''
 cursor.close()
 cnx.close()

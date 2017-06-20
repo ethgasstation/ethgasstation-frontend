@@ -89,9 +89,7 @@ filter.watch(function(err,blockHash)
         if (currentBlock % 100 === 0 )
         {
             startQuery = currentBlock - 5760;
-            commandString = 'node gasStationAnalyze.js ' + currentBlock;
             commandString2 = 'python gascalc2.py ' + startQuery + ' ' +  currentBlock;
-            launchProcess (commandString);
             launchProcess (commandString2); 
             
         }
@@ -153,7 +151,7 @@ filter2.watch(function(err, txHash)
                 if (result != null)
                 {    
                     var gasPrice = result.gasPrice.toString(10);
-                    gasPrice = gasPrice/1e9;
+                    gasPrice = gasPrice/1e6;
                     var gasPriceCat = getGasPriceCat(gasPrice);
                     
                     var post2 = {
@@ -167,7 +165,7 @@ filter2.watch(function(err, txHash)
                     
                     
                     writeData(post2, 'transactions');
-                    if ((gasPrice < 20) && (result.gas == 21000))
+                    if ((gasPrice < 20000) && (result.gas == 21000))
                     {
                         watchedTx.push(post2);
                     }
@@ -200,15 +198,15 @@ function getGasPriceCat (gasPrice)
 {   
     var gasPriceCat;
 
-    if (gasPrice < 10){
+    if (gasPrice < 10000){
         gasPriceCat =1;}
-    else if (gasPrice >= 10 && gasPrice <20){
+    else if (gasPrice >= 10000 && gasPrice <20000){
         gasPriceCat=2;}
-    else if (gasPrice === 20 ){
+    else if (gasPrice === 20000 ){
         gasPriceCat= 3;}
-    else if (gasPrice >20 && gasPrice <=30){
+    else if (gasPrice >20000 && gasPrice <=30000){
         gasPriceCat= 4;}
-    else if (gasPrice >30){
+    else if (gasPrice >30000){
         gasPriceCat= 5;}
     
     return gasPriceCat;
