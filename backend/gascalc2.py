@@ -287,10 +287,20 @@ txData['delay'] = txData['minedBlock'] - txData['postedBlock']
 txData['delay2'] = txData['tsMined'] - txData['tsPosted']
 txData[txData['delay']>1000] = np.nan
 txData = txData.dropna()
+
+if (gpRecs['safeLow'] < minLow):
+    gpRecs['safeLow'] = minLow
+
+if (gpRecs['safeLow'] == 0):
+    gpRecs['safeLow'] = 1
+
+
 #summary table
 
 priceWait = txData.loc[:, ['minedGasPrice', 'delay']]
 priceWait.loc[priceWait['minedGasPrice']>=40, 'minedGasPrice'] = 40
+priceWait.loc[(priceWait['minedGasPrice']>10) & (priceWait['minedGasPrice']<20)]=np.nan
+priceWait.loc[(priceWait['minedGasPrice']>20) & (priceWait['minedGasPrice']<40)]=np.nan
 priceWait['delay'] = priceWait['delay'].apply(np.log)
 priceWait = priceWait.groupby('minedGasPrice').mean()
 priceWait.reset_index(inplace=True)
@@ -349,12 +359,6 @@ if (predictFastest >= predictAverage):
     gpRecs['Fastest'] = gpRecs['Average']
 
 #safeLow cannot be zero and must have 50 transactions mined at or below price over last 10,000 blocks
-
-if (gpRecs['safeLow'] < minLow):
-    gpRecs['safeLow'] = minLow
-
-if (gpRecs['safeLow'] == 0):
-    gpRecs['safeLow'] = 1
 
 
 
