@@ -474,7 +474,7 @@ indep = txData2['logDelay']
 #    print(dep)
 
 
-model = sm.OLS(indep, dep)
+model = sm.OLS(indep, dep, hasconst=True)
 
 results = model.fit(disp=0)
 dictResults = dict(results.params)
