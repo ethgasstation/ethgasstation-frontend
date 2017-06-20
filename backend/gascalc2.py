@@ -464,9 +464,9 @@ dep = pd.DataFrame()
 quantiles= txData2['gasused'].quantile([.5, .75, .9, 1])
 
 #dep['gasCat1'] = (txData2['gasused'] == 21000).astype(int)
-#dep['gasCat2'] = ((txData2['gasused']>21000) & (txData2['gasused']<=quantiles[.75])).astype(int)
-#dep['gasCat3'] = ((txData2['gasused']>quantiles[.75]) & (txData2['gasused']<=quantiles[.9])).astype(int)
-#dep['gasCat4'] = (txData2['gasused']> quantiles[.9]).astype(int)
+dep['gasCat2'] = ((txData2['gasused']>21000) & (txData2['gasused']<=quantiles[.75])).astype(int)
+dep['gasCat3'] = ((txData2['gasused']>quantiles[.75]) & (txData2['gasused']<=quantiles[.9])).astype(int)
+dep['gasCat4'] = (txData2['gasused']> quantiles[.9]).astype(int)
 
 dep['cons'] = 1
 
