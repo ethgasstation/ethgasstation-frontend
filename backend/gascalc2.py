@@ -55,7 +55,6 @@ post['maxMinedGasPrice'] = int(txData['minedGasPrice'].max())
 post['minMinedGasPrice'] = txData['minedGasPrice'].min()
 post['minMinedGasPrice'] = int(post['minMinedGasPrice']*1000)
 post['medianGasPrice']= int(txData['minedGasPrice'].quantile(.5))
-post['totalBlocks'] = int(txData['minedBlock'].max() - txData['minedBlock'].min())
 post['avgGasUsed'] = int(txData['gasused'].mean())
 
 post['cheapestTx'] = txData.loc[txData['gasused']==21000, 'txFee'].min()
@@ -93,7 +92,7 @@ cursor.close()
 
 post['emptyBlocks'] =  len(txData3[txData3['speed']==0])
 post['fullBlocks'] = len(txData3[txData3['speed']>=.95])
-
+post['totalBlocks'] = len(txData3)
 
 #get ETH Prices
 url = "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD,EUR,GBP,CNY"
