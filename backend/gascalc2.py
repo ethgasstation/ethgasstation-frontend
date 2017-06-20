@@ -467,8 +467,9 @@ dep['cons'] = 1
 
 txData2['logDelay'] = txData2['delay'].apply(np.log)
 txData2['logDelay'] = txData2['logDelay'].astype(float)
-indep = txData2['logDelay']
 
+indep = txData2['logDelay']
+print(indep)
 #with pd.option_context('display.max_rows', None, 'display.max_columns', None):
 #   print(indep)
 #with pd.option_context('display.max_rows', None, 'display.max_columns', None):
