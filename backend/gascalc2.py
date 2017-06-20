@@ -473,10 +473,10 @@ dep['cons'] = 1
 txData2['logDelay'] = txData2['delay'].apply(np.log)
 indep = txData2['logDelay']
 print(txData2.loc[txData2['minedGasPrice']>=40, 'delay2'].mean())
-with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-   print(indep)
-with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-    print(dep)
+#with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+#   print(indep)
+#with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+#    print(dep)
 
 
 model = sm.OLS(indep, dep)
