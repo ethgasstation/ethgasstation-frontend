@@ -466,7 +466,7 @@ dep['gasCat4'] = (txData2['gasused']> quantiles[.9]).astype(int)
 dep['cons'] = 1
 
 txData2['logDelay'] = txData2['delay'].apply(np.log)
-txData2['logDelay'] = txData2['logDelay'].astype(int)
+txData2['logDelay'] = txData2['logDelay'].astype(float)
 indep = txData2['logDelay']
 
 #with pd.option_context('display.max_rows', None, 'display.max_columns', None):
