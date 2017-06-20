@@ -49,13 +49,13 @@ function processBlock(block)
         }
         else if (num < result2.numTx)
         {
-            result2.blockFee = result2.blockFee + (txFee/1e4);
+            result2.blockFee = result2.blockFee + (txFee/1e7);
             processTx(result.transactions[num], num, result2.blockFee);
 
         }
         else
         {
-            result2.blockFee = result2.blockFee + (txFee/1e4);
+            result2.blockFee = result2.blockFee + (txFee/1e7);
             console.log(result2.blockFee);
             connection.query('INSERT INTO speedo2 SET ?', [result2], function(err, out)
             {
