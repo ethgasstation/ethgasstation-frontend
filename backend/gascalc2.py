@@ -379,8 +379,8 @@ print(txData2['minedGasPrice'].min())
 txData2['delay'] = txData2['minedBlock'] - txData2['postedBlock']
 txData2['delay2'] = txData2['tsMined'] - txData2['tsPosted']
 txData2[txData2['delay']>1000] = np.nan
-txData2[txData2['delay'] < 0] = np.nan
-txData2[txData2['delay2'] < 0] = np.nan
+txData2[txData2['delay'] <= 0] = np.nan
+txData2[txData2['delay2'] <= 0] = np.nan
 txData2 = txData2.dropna()
 
 if (gpRecs['safeLow'] < minLow):
@@ -449,8 +449,8 @@ dep['gasCat4'] = (txData2['gasused']> quantiles[.9]).astype(int)
 
 dep['cons'] = 1
 
-#txData2['logDelay'] = txData2['delay'].apply(np.log)
-txData2['logDelay'] = txData2['delay']
+txData2['logDelay'] = txData2['delay'].apply(np.log)
+#txData2['logDelay'] = txData2['delay']
 txData2 = txData2.dropna()
 indep = txData2['logDelay']
 
