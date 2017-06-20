@@ -129,6 +129,7 @@ blockTime = {
 txDataMiner = pd.DataFrame({'txCount':txData.groupby('miner').size()})
 txDataTx = pd.DataFrame({'catCount':txData.groupby(by=['minedGasPriceCat','miner']).size()}).reset_index()
 txDataPriceCat = txData.groupby('minedGasPriceCat').mean()
+txDataPriceCat = txDataPriceCat.round()
 txDataCat = pd.DataFrame({'count':txData.groupby('minedGasPriceCat').size()}).reset_index()
 txDataPrice = pd.DataFrame({'count':txData.groupby('minedGasPrice').size()}).reset_index()
 
