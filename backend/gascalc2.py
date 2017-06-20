@@ -405,23 +405,7 @@ post['delay5time'] = int(txData2['delay2'].quantile(.05))
 post2['medianDelayLast100'] = int(txData2.loc[(txData2['minedBlock']>=start100Block) & (txData2['minedBlock']< endBlock), 'delay2'].median())
 
 #write Summary Stats
-print(post)
-cursor = cnx.cursor()
-query = ("INSERT INTO txDataLast10k "
-        "(totalTimed, maxMineDelay, minMineDelay, medianMinedDelay, medianTime, latestblockNum, startSelect, cat1gasTotTx, cat2gasTotTx, cat3gasTotTx, cat4gasTotTx, cat5gasTotTx, totalTx, totalTransfers, totalConCalls, maxMinedGasPrice, minMinedGasPrice, medianGasPrice, totalBlocks, avgGasUsed, cheapestTx, cheapestTxID, dearestTx, dearestTxID, dearConTx, dearConTxID, mediantxFee, avgContractFee, avgContractGas, ETHpriceUSD, ETHpriceEUR, ETHpriceGBP, ETHpriceCNY, emptyBlocks, fullBlocks)"
-        "VALUES (%(totalTimed)s, %(maxMineDelay)s, %(minMineDelay)s, %(medianDelay)s, %(medianDelayTime)s, %(latestblockNum)s, %(startSelect)s, %(totalCatTx1)s, %(totalCatTx2)s, %(totalCatTx3)s, %(totalCatTx4)s, %(totalCatTx5)s, %(totalTx)s, %(totalTransfers)s, %(totalConCalls)s, %(maxMinedGasPrice)s, %(minMinedGasPrice)s, %(medianGasPrice)s, %(totalBlocks)s, %(avgGasUsed)s, %(cheapestTx)s, %(cheapestTxID)s, %(dearestTx)s, %(dearestTxID)s, %(dearConTx)s, %(dearConTxID)s, %(avgTxFee)s, %(avgContractFee)s, %(avgContractGas)s, %(ETHpriceUSD)s, %(ETHpriceEUR)s, %(ETHpriceGBP)s, %(ETHpriceCNY)s, %(emptyBlocks)s, %(fullBlocks)s)")
-        
-        
-cursor.execute(query, post)
-cnx.commit()
 
-query = ("INSERT INTO txDataLast100b "
-        "(ethConsumedLast100, medianDelayLast100, latestblockNum, startSelect)"
-        "VALUES (%(ethConsumedLast100)s, %(medianDelayLast100)s, %(latestblockNum)s, %(startSelect)s)")
-
-cursor.execute(query, post2)
-cnx.commit()
-cursor.close()
 
 #--summary stats for mysql
 
@@ -466,7 +450,7 @@ dep['gasCat4'] = (txData2['gasused']> quantiles[.9]).astype(int)
 dep['cons'] = 1
 
 txData2['logDelay'] = txData2['delay'].apply(np.log)
-txData2 = txData2.dropna
+txData2 = txData2.dropna()
 indep = txData2['logDelay']
 
 #with pd.option_context('display.max_rows', None, 'display.max_columns', None):
@@ -542,8 +526,22 @@ with open(filepath_topMiners, 'w') as outfile:
 with open(filepath_priceWait, 'w') as outfile:
     outfile.write(priceWait)
 
+print(post)
+cursor = cnx.cursor()
+query = ("INSERT INTO txDataLast10k "
+        "(totalTimed, maxMineDelay, minMineDelay, medianMinedDelay, medianTime, latestblockNum, startSelect, cat1gasTotTx, cat2gasTotTx, cat3gasTotTx, cat4gasTotTx, cat5gasTotTx, totalTx, totalTransfers, totalConCalls, maxMinedGasPrice, minMinedGasPrice, medianGasPrice, totalBlocks, avgGasUsed, cheapestTx, cheapestTxID, dearestTx, dearestTxID, dearConTx, dearConTxID, mediantxFee, avgContractFee, avgContractGas, ETHpriceUSD, ETHpriceEUR, ETHpriceGBP, ETHpriceCNY, emptyBlocks, fullBlocks)"
+        "VALUES (%(totalTimed)s, %(maxMineDelay)s, %(minMineDelay)s, %(medianDelay)s, %(medianDelayTime)s, %(latestblockNum)s, %(startSelect)s, %(totalCatTx1)s, %(totalCatTx2)s, %(totalCatTx3)s, %(totalCatTx4)s, %(totalCatTx5)s, %(totalTx)s, %(totalTransfers)s, %(totalConCalls)s, %(maxMinedGasPrice)s, %(minMinedGasPrice)s, %(medianGasPrice)s, %(totalBlocks)s, %(avgGasUsed)s, %(cheapestTx)s, %(cheapestTxID)s, %(dearestTx)s, %(dearestTxID)s, %(dearConTx)s, %(dearConTxID)s, %(avgTxFee)s, %(avgContractFee)s, %(avgContractGas)s, %(ETHpriceUSD)s, %(ETHpriceEUR)s, %(ETHpriceGBP)s, %(ETHpriceCNY)s, %(emptyBlocks)s, %(fullBlocks)s)")
+        
+        
+cursor.execute(query, post)
+cnx.commit()
 
+query = ("INSERT INTO txDataLast100b "
+        "(ethConsumedLast100, medianDelayLast100, latestblockNum, startSelect)"
+        "VALUES (%(ethConsumedLast100)s, %(medianDelayLast100)s, %(latestblockNum)s, %(startSelect)s)")
 
+cursor.execute(query, post2)
+cnx.commit()
 
-
+cursor.close()
 cnx.close()
