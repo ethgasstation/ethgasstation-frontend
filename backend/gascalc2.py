@@ -384,7 +384,6 @@ print(txData2['minedGasPrice'].min())
 
 txData2['delay'] = txData2['minedBlock'] - txData2['postedBlock']
 txData2['delay2'] = txData2['tsMined'] - txData2['tsPosted']
-txData2[txData2['delay']>1000] = np.nan
 txData2[txData2['delay'] <= 0] = np.nan
 txData2[txData2['delay2'] <= 0] = np.nan
 txData2 = txData2.dropna()
