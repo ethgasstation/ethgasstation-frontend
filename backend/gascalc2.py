@@ -473,8 +473,9 @@ if not 'priceCat1' in dictResults:
 
 
 print(dictResults)
+
 #check to see if really fastest
-predictAverage = dictResults['cons']
+predictAverage = dictResults['cons'] + dictResults['priceCat2']
 predictFastest = dictResults['cons'] + dictResults['priceCat4']
 
 if (predictFastest >= predictAverage):
