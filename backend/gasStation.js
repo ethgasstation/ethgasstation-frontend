@@ -83,9 +83,21 @@ filter.watch(function(err,blockHash)
             delete blockTime[deleteBlock];
             delete blockProcess[deleteBlock];
         }
+
         blockCounter++;
         console.log(block.number);
         currentBlock = block.number;
+        memPoolBlock = currentBlock - 1000;
+        connection.query('SELECT transactions.txHash, transactions.postedBlock, transactions.gasPrice, transactions.gasOffered, minedtransactions.minedBlock FROM transactions LEFT JOIN minedtransactions ON transactions.txHash = minedtransactions.txHash WHERE transactions.postedBlock > ?', [memPoolBlock], function(err, result)
+        {
+            if (err)
+            {
+                console.log(err.stack);
+            }
+            writeMemPool(result);
+
+        })
+
         if (currentBlock % 100 === 0 )
         {
             startQuery = currentBlock - 5760;
@@ -163,7 +175,7 @@ filter2.watch(function(err, txHash)
                         tsPosted: ts2
                     }
                     
-                    
+                
                     writeData(post2, 'transactions');
                     if ((gasPrice < 20000) && (result.gas == 21000))
                     {
@@ -268,4 +280,14 @@ function validateTx (tx, blockNum, last)
     })
 
 }
-
+function writeMemPool(result)
+{
+    console.log(result);
+    var str = JSON.stringify(result);
+    fs.writeFile(path.join(__dirname, '..', '/json/mempool.json'), str, (err) => {
+        if (err)
+        {
+            console.log(err.stack)
+        }
+    })
+}
