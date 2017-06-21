@@ -251,6 +251,10 @@ gpRecs['safeLow'] = priceTable.loc[priceTable['cumPctTxBlocks']>=2, 'adjustedMin
 gpRecs['Average'] = priceTable.loc[priceTable['cumPctTxBlocks']>=50, 'adjustedMinP'].min()
 gpRecs['Fastest'] = priceTable.loc[priceTable['cumPctTxBlocks']>=98.5, 'adjustedMinP'].min()
 
+if (gpRecs['Fastest'] <post['medianGasPrice']):
+    gpRecs['Fastest'] = post['medianGasPrice']+1
+
+
 print(gpRecs)
 
 
@@ -482,8 +486,8 @@ print(dictResults)
 predictAverage = dictResults['cons'] + dictResults['priceCat2']
 predictFastest = dictResults['cons'] + dictResults['priceCat4']
 
-if (predictFastest >= predictAverage):
-    gpRecs['Fastest'] = gpRecs['Average']
+#if ((predictFastest >= predictAverage) & gpRecs):
+ #   gpRecs['Fastest'] = gpRecs['Average']
 
 #safeLow cannot be zero and must have 50 transactions mined at or below price over last 10,000 blocks
 
