@@ -274,7 +274,8 @@ except:
     validation = {
         'mined': [True],
         'index': [0],
-        'postedBlock': [0]
+        'postedBlock': [0],
+        'gasPrice': [20000]
 
     }
     validationTable = pd.DataFrame.from_dict(validation, orient='columns')
