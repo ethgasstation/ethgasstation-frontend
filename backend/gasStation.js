@@ -70,22 +70,26 @@ filter.watch(function(err,blockHash)
             blockProcess[block.number] = false;
         }
         writeBlock = block.number - 3;
+        memPoolBlock = block.number - 8;
         deleteBlock = block.number - 25;
         if ((writeBlock in blockTime) && (blockProcess[writeBlock]===false))
         {
             commandString = 'node writeBlocks2.js '+ writeBlock + ' ' + blockTime[writeBlock];
             launchProcess(commandString);
             blockProcess[writeBlock] = true; //only process a block once
-
+            commandString2 = 'python mempool.py '+ memPoolBlock + ' ' + blockTime[writeBlock];
+            launchProcess(commandString2);
         }  
         if (deleteBlock in blockTime)
         {
             delete blockTime[deleteBlock];
             delete blockProcess[deleteBlock];
         }
+
         blockCounter++;
         console.log(block.number);
         currentBlock = block.number;
+
         if (currentBlock % 100 === 0 )
         {
             startQuery = currentBlock - 5760;
@@ -163,7 +167,7 @@ filter2.watch(function(err, txHash)
                         tsPosted: ts2
                     }
                     
-                    
+                
                     writeData(post2, 'transactions');
                     if ((gasPrice < 20000) && (result.gas == 21000))
                     {
@@ -268,4 +272,14 @@ function validateTx (tx, blockNum, last)
     })
 
 }
-
+function writeMemPool(result)
+{
+    console.log(result);
+    var str = JSON.stringify(result);
+    fs.writeFile(path.join(__dirname, '..', '/json/mempool.json'), str, (err) => {
+        if (err)
+        {
+            console.log(err.stack)
+        }
+    })
+}
