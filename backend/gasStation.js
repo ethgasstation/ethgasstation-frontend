@@ -70,13 +70,15 @@ filter.watch(function(err,blockHash)
             blockProcess[block.number] = false;
         }
         writeBlock = block.number - 3;
+        memPoolBlock = block.number - 8;
         deleteBlock = block.number - 25;
         if ((writeBlock in blockTime) && (blockProcess[writeBlock]===false))
         {
             commandString = 'node writeBlocks2.js '+ writeBlock + ' ' + blockTime[writeBlock];
             launchProcess(commandString);
             blockProcess[writeBlock] = true; //only process a block once
-
+            commandString2 = 'python mempool.py '+ memPoolBlock + ' ' + blockTime[writeBlock];
+            launchProcess(commandString2);
         }  
         if (deleteBlock in blockTime)
         {
@@ -87,16 +89,6 @@ filter.watch(function(err,blockHash)
         blockCounter++;
         console.log(block.number);
         currentBlock = block.number;
-        memPoolBlock = currentBlock - 1000;
-        connection.query('SELECT transactions.txHash, transactions.postedBlock, transactions.gasPrice, transactions.gasOffered, minedtransactions.minedBlock FROM transactions LEFT JOIN minedtransactions ON transactions.txHash = minedtransactions.txHash WHERE transactions.postedBlock > ?', [memPoolBlock], function(err, result)
-        {
-            if (err)
-            {
-                console.log(err.stack);
-            }
-            writeMemPool(result);
-
-        })
 
         if (currentBlock % 100 === 0 )
         {
