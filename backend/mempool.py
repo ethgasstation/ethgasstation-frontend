@@ -7,7 +7,7 @@ import subprocess, json
 
 endBlock = int(sys.argv[1])
 callTime = int(sys.argv[2])
-startBlock = str(endBlock-2500)
+startBlock = str(endBlock-250)
 priorBlock = str(endBlock-1)
 endBlock = str(endBlock)
 

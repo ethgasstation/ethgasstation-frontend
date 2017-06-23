@@ -100,7 +100,7 @@
                       <?php
                       foreach ($validatedArray as $row){
                         echo('<tr>');
-                        echo("<td>". round($row['gasPrice']/1000). "</td>");
+                        echo("<td>". round(($row['gasPrice']/1000), 3). "</td>");
                         echo("<td>". $row['txHash']. "</td>");
                         echo("<td>". $row['postedBlock']. "</td>");
                         if (!$row['mined']){

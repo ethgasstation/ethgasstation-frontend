@@ -21,6 +21,7 @@
                   <li><a href="validatedTable.php"><i class ="fa fa-cubes"></i>Low Gas Price Watch List</a></li>
                   <li><a href="minerProfits.php"><i class ="fa fa-money"></i>Gas Profits</a></li>
                   <li><a href="gasguzzlers.php"><i class ="fa fa-car"></i>Gas Burners</a></li>
+                  <li><a href="mempool.php"><i class ="fa fa-upload"></i>Mempool Monitor</a></li>
                   <li><a><i class="fa fa-bookmark-o"></i>FAQ<span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="about.php">What Is This Site?</a></li>

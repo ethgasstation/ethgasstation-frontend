@@ -93,11 +93,10 @@
                           <th>Gas Price (Gwei)</th>
                           <th>Mempool</br>Total Gas (1e6)</th>
                           <th>Mempool</br>Total Transactions</th>
-                          <th>Mean Time in </br>Mempool (Blocks)</th>
                           <th>Mean Time in </br>Mempool (Min)</th>
                           <th></th>
-                          <th><span style = 'color:#1ABB9C'>Gas Mined</span></th>
-                          <th><span style = 'color:#1ABB9C'>Gas Removed</span></th>
+                          <th><span style = 'color:#1ABB9C'>Gas Mined (1e6)</span></th>
+                          <th><span style = 'color:#1ABB9C'>Gas Removed (1e6)</span></th>
                           <th><span style = 'color:#1ABB9C'>Transactions Mined</span></th>
                         </tr>
                       </thead>
@@ -108,8 +107,13 @@
                         echo("<td>". $row['gasPrice']. "</td>");
                         echo("<td>". $row['gasOffered']. "</td>");
                         echo("<td>". $row['numTxPending']. "</td>");
-                        echo("<td>". $row['waitBlocks']. "</td>");
-                        echo("<td>". round($row['waitTime']/60, 1). "</td>");
+                        if ($row['numTxPending']>10){
+                          echo("<td>". round($row['waitTime']/60, 1). "</td>");
+                        }
+                        else{
+                          echo("<td>". '..' . "</td>");
+                        }
+                        
                         echo("<td>". "</td>");
                         echo("<td>". $row['gasused']. "</td>");
                         echo("<td>". $row['gasRemoved']. "</td>");
@@ -120,6 +124,7 @@
                       ?>
                         </tbody>
                     </table>
+                    <p> Note: Mempool counts do not distinguish between valid and invalid transactions or if transaction is later resubmitted with higher price - so timings may be articially inflated</p>
 
                  </div>
     
