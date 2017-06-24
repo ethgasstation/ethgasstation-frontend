@@ -31,7 +31,7 @@ cursor = cnx.cursor()
 
 query = ("SELECT transactions.postedBlock, transactions.gasPrice, transactions.gasOffered, transactions.tsPosted, minedtransactions.minedBlock, minedtransactions.gasused FROM transactions LEFT JOIN minedtransactions ON transactions.txHash = minedtransactions.txHash WHERE transactions.postedBlock > %s and transactions.postedBlock < %s")
 
-query2 = ("SELECT miner, blockNum, gasLimit, gasUsed FROM speedo2 WHERE blockNum >= %s AND blocknum <= %s ORDER BY blockNum ASC")
+query2 = ("SELECT miner, blockNum, gasLimit, gasUsed FROM speedo2 WHERE blockNum >= %s AND blocknum <= %s AND uncle = 0 ORDER BY blockNum ASC")
 
 cursor.execute(query, (startBlock, endBlock))
 head = cursor.column_names
@@ -89,12 +89,19 @@ else:
 
 voteDict = {}
 voteDict = minedTx.loc[1,:].to_dict()
-voteDict['priorLimit'] = str(minedTx.loc[0,'gasLimit'])
-voteDict['priorGasused'] = str(minedTx.loc[0,'gasUsed'])
+voteDict['priorLimit'] = int(minedTx.loc[0,'gasLimit'])
+voteDict['priorGasused'] = int(minedTx.loc[0,'gasUsed'])
 voteDict['vote'] = vote
 voteDict['gasUsed'] = str(voteDict['gasUsed'])
 voteDict['blockNum'] = str(voteDict['blockNum'])
 voteDict['gasLimit'] = str(voteDict['gasLimit'])
+
+'''
+defaultLimit = (voteDict['priorLimit'] * 1023 + voteDict['priorGasused']*1.5)/1024
+
+print(voteDict['gasLimit'])
+print(defaultLimit)
+'''
 
 if voteDict['miner'] in dictMiner.keys():
     voteDict['miner'] = dictMiner[voteDict['miner']]

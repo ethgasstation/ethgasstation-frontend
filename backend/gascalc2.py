@@ -555,30 +555,80 @@ query = ("INSERT INTO txDataLast100b "
 
 cursor.execute(query, post2)
 cnx.commit()
-'''
-query = ("SELECT * FROM votes ORDER BY ID DESC LIMIT 5000")
+
+query = ("SELECT * FROM votes ORDER BY ID DESC LIMIT 2500")
 cursor.execute(query)
 head = cursor.column_names
 voteData = pd.DataFrame(cursor.fetchall())
 voteData.columns = head
+voteData = voteData.drop('id', axis=1)
 
-voteRaise = voteData[voteData['vote']=='Raise']
-voteRaise = voteRaise.groupby(['miner']).max()
-voteRaise = voteRaise.drop('id', axis=1)
-voteRaise = voteRaise.rename(columns= {'blockNum':'raiseBlock', 'priorLimit':'raisePrior', 'gasLimit':'raiseNewLimit'})
-voteHold = voteData[voteData['vote']=='Hold']
-voteHold = voteHold.groupby(['miner']).max()
-voteHold = voteHold.drop('id', axis=1)
-voteTots = pd.concat([voteRaise, voteHold], axis=1)
-voteLower = voteData[voteData['vote']=='Lower']
-voteLower = voteLower.groupby(['miner']).max()
+lastvote = pd.DataFrame()
+raiseVote = pd.DataFrame()
+lowerVote = pd.DataFrame()
 
 
+voteTots = voteData.groupby('miner')
+
+for name, group in voteTots:
+    last = group.sort_values('blockNum', ascending=False)
+    head = last.head(1)
+    lastvote = lastvote.append(head)
+
+voteRaise = pd.DataFrame(voteData[voteData['vote']=='Raise'])
+voteRaise = voteRaise.groupby('miner')
+
+for name, group in voteRaise:
+    last = group.sort_values('blockNum', ascending=False)
+    head = last.head(1)
+    raiseVote = raiseVote.append(head)
+
+voteLower = pd.DataFrame(voteData[voteData['vote']=='Lower'])
+voteLower = voteLower.groupby('miner')
+
+for name, group in voteLower:
+    last = group.sort_values('blockNum', ascending=False)
+    head = last.head(1)
+    lowerVote = lowerVote.append(head)
+
+lastvote = lastvote.reset_index(drop = True)
+raiseVote = raiseVote.reset_index(drop = True)
+lowerVote = lowerVote.reset_index(drop = True)
+
+raiseVote = raiseVote.drop(['vote', 'gasLimit', 'gasused', 'priorGasused'], axis=1)
+lowerVote = lowerVote.drop(['vote', 'gasLimit', 'gasused', 'priorGasused'], axis=1)
+
+lastvote = lastvote.rename(columns = {'blockNum':'lastVoteBlock', 'gasLimit': 'newLimit'})
+raiseVote = raiseVote.rename(columns = {'blockNum':'lastRaiseBlock', 'priorLimit': 'LimitAtRaiseVote'})
+lowerVote = lowerVote.rename(columns = {'blockNum':'lastLowerBlock', 'priorLimit': 'LimitAtLowerVote'})
+
+lastvote = lastvote.merge(raiseVote, how='left', on='miner')
+lastvote = lastvote.merge(lowerVote, how='left', on='miner')
+
+
+for index,row in lastvote.iterrows():
+    if (row['vote']=='Hold'):
+        lastvote.loc[index, 'target'] = str(row['priorLimit'])
+    elif (row['vote']=='Raise'):
+        if (row['LimitAtLowerVote']> row['newLimit']):
+            avg = int((row['LimitAtLowerVote']+ row['newLimit'])/2)
+            lastvote.loc[index, 'target'] = str(avg)
+        else:
+            lastvote.loc[index, 'target'] = str('>'+ str(row['newLimit']))
+    else:
+        if (row['LimitAtRaiseVote']< row['newLimit']):
+            avg = int((row['LimitAtRaiseVote']+ row['newLimit'])/2)
+            lastvote.loc[index, 'target'] = str(avg)
+        else:
+            lastvote.loc[index, 'target'] = str('<'+ str(row['newLimit']))
+
+voteTable = lastvote.to_json(orient = 'records')
+filepath_voting = parentdir + '/json/minerVotes.json'
+with open(filepath_voting, 'w') as outfile:
+    outfile.write(voteTable)
 
 
 
-print(voteTots)
-'''
 
 cursor.close()
 cnx.close()
