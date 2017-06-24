@@ -90,7 +90,9 @@ else:
 voteDict = {}
 voteDict = minedTx.loc[1,:].to_dict()
 voteDict['priorLimit'] = str(minedTx.loc[0,'gasLimit'])
+voteDict['priorGasused'] = str(minedTx.loc[0,'gasUsed'])
 voteDict['vote'] = vote
+voteDict['gasUsed'] = str(voteDict['gasUsed'])
 voteDict['blockNum'] = str(voteDict['blockNum'])
 voteDict['gasLimit'] = str(voteDict['gasLimit'])
 
@@ -98,10 +100,10 @@ if voteDict['miner'] in dictMiner.keys():
     voteDict['miner'] = dictMiner[voteDict['miner']]
     
 query3= ("INSERT INTO votes "
-        "(blockNum, miner, vote, gasLimit, priorLimit)"
-        "VALUES (%s, %s, %s, %s, %s)")
+        "(blockNum, miner, vote, gasLimit, priorLimit, gasused, priorGasused)"
+        "VALUES (%s, %s, %s, %s, %s, %s, %s)")
 cursor= cnx.cursor()
-cursor.execute(query3, (voteDict['blockNum'], voteDict['miner'], voteDict['vote'], voteDict['gasLimit'], voteDict['priorLimit']))
+cursor.execute(query3, (voteDict['blockNum'], voteDict['miner'], voteDict['vote'], voteDict['gasLimit'], voteDict['priorLimit'], voteDict['gasUsed'], voteDict['priorGasused']))
 cnx.commit()
 cursor.close()
 cnx.close()

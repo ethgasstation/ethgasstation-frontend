@@ -194,6 +194,8 @@ query = ("CREATE TABLE votes ("
         "vote TEXT,"
         "priorLimit INT,"
         "gasLimit INT,"
+        "gasused INT,"
+        "priorGasused INT,"
         "PRIMARY KEY (id))")
 
 cursor.execute(query)
