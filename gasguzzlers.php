@@ -66,7 +66,7 @@
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
               <ul class="nav navbar-nav navbar-right">
-              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Stats over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
+              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Stats over last 2,500 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
               </p>
             </ul>
             </nav>
@@ -81,7 +81,7 @@
               <div class="col-md-8 col-sm-8 col-xs-12">
                 <div class="x_panel tile fixed_height_420">
                   <div class="x_title">
-                    <h4>Top 10 ETH Contracts By Gas Used Over Last 10,000 Blocks</h4>
+                    <h4>Top 10 ETH Contracts By Gas Used Over Last 2,500 Blocks</h4>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">

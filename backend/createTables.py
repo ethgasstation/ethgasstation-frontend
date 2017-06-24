@@ -2,7 +2,7 @@ import mysql.connector, sys
 
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
 cursor = cnx.cursor()
-
+'''
 query = ("CREATE TABLE speedo2 ("
         "id INT NOT NULL AUTO_INCREMENT, " 
         "blockNum INT, " 
@@ -21,7 +21,7 @@ query = ("CREATE TABLE speedo2 ("
         "PRIMARY KEY (id))")
 
 cursor.execute(query)
-'''
+
 query = ("CREATE TABLE txDataLast100b ("
         "id INT NOT NULL AUTO_INCREMENT,"
         "latestblockNum INT,"
@@ -187,5 +187,19 @@ query = ("CREATE TABLE minedtransactions (txHash VARCHAR(75), minedBlock int, to
 
 cursor.execute(query)
 '''
+query = ("CREATE TABLE votes ("
+        "id INT NOT NULL AUTO_INCREMENT,"
+        "miner TEXT,"
+        "blockNum INT,"
+        "vote TEXT,"
+        "priorLimit INT,"
+        "gasLimit INT,"
+        "PRIMARY KEY (id))")
+
+cursor.execute(query)
+
+
+
+
 cursor.close()
 cnx.close()

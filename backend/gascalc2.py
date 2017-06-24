@@ -138,7 +138,7 @@ txDataPrice = pd.DataFrame({'count':txData.groupby('minedGasPrice').size()}).res
 txDataPrice['sum'] = txDataPrice['count'].cumsum()
 
 for index, row in txDataPrice.iterrows():
-    if row['sum'] > 50:
+    if row['sum'] > 12:
         minLow = row['minedGasPrice']
         break
 
@@ -392,6 +392,8 @@ txData2[txData2['delay'] <= 0] = np.nan
 txData2[txData2['delay2'] <= 0] = np.nan
 txData2 = txData2.dropna()
 
+#safeLow cannot be zero and must have 12 transactions mined at or below price over last 2,500 blocks
+
 if (gpRecs['safeLow'] < minLow):
     gpRecs['safeLow'] = minLow
 
@@ -489,7 +491,8 @@ predictFastest = dictResults['cons'] + dictResults['priceCat4']
 #if ((predictFastest >= predictAverage) & gpRecs):
  #   gpRecs['Fastest'] = gpRecs['Average']
 
-#safeLow cannot be zero and must have 50 transactions mined at or below price over last 10,000 blocks
+
+
 
 
 quantiles = quantiles.reset_index(drop=True)
@@ -552,6 +555,30 @@ query = ("INSERT INTO txDataLast100b "
 
 cursor.execute(query, post2)
 cnx.commit()
+'''
+query = ("SELECT * FROM votes ORDER BY ID DESC LIMIT 5000")
+cursor.execute(query)
+head = cursor.column_names
+voteData = pd.DataFrame(cursor.fetchall())
+voteData.columns = head
+
+voteRaise = voteData[voteData['vote']=='Raise']
+voteRaise = voteRaise.groupby(['miner']).max()
+voteRaise = voteRaise.drop('id', axis=1)
+voteRaise = voteRaise.rename(columns= {'blockNum':'raiseBlock', 'priorLimit':'raisePrior', 'gasLimit':'raiseNewLimit'})
+voteHold = voteData[voteData['vote']=='Hold']
+voteHold = voteHold.groupby(['miner']).max()
+voteHold = voteHold.drop('id', axis=1)
+voteTots = pd.concat([voteRaise, voteHold], axis=1)
+voteLower = voteData[voteData['vote']=='Lower']
+voteLower = voteLower.groupby(['miner']).max()
+
+
+
+
+
+print(voteTots)
+'''
 
 cursor.close()
 cnx.close()

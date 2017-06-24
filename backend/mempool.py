@@ -42,9 +42,8 @@ cursor.execute(query2, (priorBlock, endBlock))
 head = cursor.column_names
 minedTx = pd.DataFrame(cursor.fetchall())
 minedTx.columns = head
-
 cursor.close()
-cnx.close()
+
 
 endBlock = int(endBlock)
 
@@ -90,11 +89,22 @@ else:
 
 voteDict = {}
 voteDict = minedTx.loc[1,:].to_dict()
+voteDict['priorLimit'] = str(minedTx.loc[0,'gasLimit'])
 voteDict['vote'] = vote
+voteDict['blockNum'] = str(voteDict['blockNum'])
+voteDict['gasLimit'] = str(voteDict['gasLimit'])
 
 if voteDict['miner'] in dictMiner.keys():
     voteDict['miner'] = dictMiner[voteDict['miner']]
     
+query3= ("INSERT INTO votes "
+        "(blockNum, miner, vote, gasLimit, priorLimit)"
+        "VALUES (%s, %s, %s, %s, %s)")
+cursor= cnx.cursor()
+cursor.execute(query3, (voteDict['blockNum'], voteDict['miner'], voteDict['vote'], voteDict['gasLimit'], voteDict['priorLimit']))
+cnx.commit()
+cursor.close()
+cnx.close()
 
 memPoolTable = memPool.to_json(orient = 'records')
 parentdir = os.path.dirname(os.getcwd())

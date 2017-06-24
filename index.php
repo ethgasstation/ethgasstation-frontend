@@ -84,7 +84,7 @@
                     <li id="cny"><a href="#"> CNY<?php if($currency=='cny'){echo'<span class="pull-right"><i class="fa fa-check"></i></span>';}?></a></li>
                   </ul>
                 </li>
-              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Estimates over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
+              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Estimates over last 2,500 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
               </p>
             </ul>
             </nav>
@@ -296,7 +296,7 @@
             <div class="col-md-4 col-sm-4 col-xs-12">
               <div class="x_panel tile fixed_height_420">
                 <div class="x_title">
-                  <h4>Misc Stats <small> (Last 10,000 blocks)</small></h4>
+                  <h4>Misc Stats <small> (Last 2,500 blocks)</small></h4>
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
