@@ -7,7 +7,7 @@ import subprocess, json
 
 endBlock = int(sys.argv[1])
 callTime = int(sys.argv[2])
-startBlock = str(endBlock-250)
+startBlock = str(endBlock-500)
 priorBlock = str(endBlock-1)
 endBlock = str(endBlock)
 
@@ -29,9 +29,10 @@ dictMiner = {
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
 cursor = cnx.cursor()
 
-query = ("SELECT transactions.postedBlock, transactions.gasPrice, transactions.gasOffered, transactions.tsPosted, minedtransactions.minedBlock, minedtransactions.gasused FROM transactions LEFT JOIN minedtransactions ON transactions.txHash = minedtransactions.txHash WHERE transactions.postedBlock > %s and transactions.postedBlock < %s")
+query = ("SELECT transactions.txHash, transactions.postedBlock, transactions.gasPrice, transactions.gasOffered, transactions.tsPosted, minedtransactions.minedBlock, minedtransactions.gasused FROM transactions LEFT JOIN minedtransactions ON transactions.txHash = minedtransactions.txHash WHERE transactions.postedBlock > %s and transactions.postedBlock < %s")
 
 query2 = ("SELECT miner, blockNum, gasLimit, gasUsed FROM speedo2 WHERE blockNum >= %s AND blocknum <= %s AND uncle = 0 ORDER BY blockNum ASC")
+
 
 cursor.execute(query, (startBlock, endBlock))
 head = cursor.column_names
@@ -42,6 +43,12 @@ cursor.execute(query2, (priorBlock, endBlock))
 head = cursor.column_names
 minedTx = pd.DataFrame(cursor.fetchall())
 minedTx.columns = head
+
+
+cursor.execute("SELECT txHash FROM txpool2 WHERE block = %(priorBlock)s", {'priorBlock':priorBlock})
+head = cursor.column_names
+txpool = pd.DataFrame(cursor.fetchall())
+txpool.columns = head
 cursor.close()
 
 
@@ -59,6 +66,10 @@ memPoolTx['gasRemoved'] = memPoolTx['gasOffered']
 memPoolTx.loc[memPoolTx['lastBlock'] == False, 'gasRemoved'] = np.nan 
 memPoolTx['pending'] = pd.isnull(memPoolTx['minedBlock'])
 memPoolTx = memPoolTx[(memPoolTx['pending']==True) | (memPoolTx['lastBlock']==True)]
+print (memPoolTx)
+memPoolTx = memPoolTx.merge(txpool, how='inner', on='txHash')
+print (memPoolTx)
+
 
 memPool = memPoolTx.groupby('gasPrice').sum().reset_index()
 memPool = memPool.drop(['minedBlock', 'postedBlock', 'tsPosted', 'waitBlocks', 'waitTime'], axis=1)
@@ -95,13 +106,6 @@ voteDict['vote'] = vote
 voteDict['gasUsed'] = str(voteDict['gasUsed'])
 voteDict['blockNum'] = str(voteDict['blockNum'])
 voteDict['gasLimit'] = str(voteDict['gasLimit'])
-
-'''
-defaultLimit = (voteDict['priorLimit'] * 1023 + voteDict['priorGasused']*1.5)/1024
-
-print(voteDict['gasLimit'])
-print(defaultLimit)
-'''
 
 if voteDict['miner'] in dictMiner.keys():
     voteDict['miner'] = dictMiner[voteDict['miner']]

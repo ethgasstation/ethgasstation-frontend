@@ -397,7 +397,7 @@ txData2 = txData2.dropna()
 if (gpRecs['safeLow'] < minLow):
     gpRecs['safeLow'] = minLow
 
-if (gpRecs['safeLow'] == 0):
+if (gpRecs['safeLow'] < 1):
     gpRecs['safeLow'] = 1
 
 
@@ -604,7 +604,6 @@ lowerVote = lowerVote.rename(columns = {'blockNum':'lastLowerBlock', 'priorLimit
 
 lastvote = lastvote.merge(raiseVote, how='left', on='miner')
 lastvote = lastvote.merge(lowerVote, how='left', on='miner')
-
 
 for index,row in lastvote.iterrows():
     if (row['vote']=='Hold'):

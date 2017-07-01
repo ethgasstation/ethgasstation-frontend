@@ -84,7 +84,7 @@
                     <li id="cny"><a href="#"> CNY<?php if($currency=='cny'){echo'<span class="pull-right"><i class="fa fa-check"></i></span>';}?></a></li>
                   </ul>
                 </li>
-              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Estimates over last 2,500 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
+              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Estimates over last 5,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
               </p>
             </ul>
             </nav>
@@ -265,7 +265,7 @@
     '0x4bb96091ee9d802ed039c4d1a5f6216f90f81b01'=>'Ethpool',
     '0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5'=>'Nanopool',
     '0x2a65aca4d5fc5b5c859090a6c34d164135398226'=>'Dwarfpool',
-    '0x61c808d82a3ac53231750dadc13c777b59310bd9'=>'f2pool',
+    '0x829bd824b016326a401d083b33d092293333a830'=>'f2pool',
     '0xa42af2c70d316684e57aefcc6e393fecb1c7e84e'=>'Coinotron',
     '0x6c7f03ddfdd8a37ca267c88630a4fee958591de0'=>'alpereum'
 

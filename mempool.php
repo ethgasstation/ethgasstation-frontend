@@ -82,7 +82,7 @@
               <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel tile fixed_height_420">
                   <div class="x_title">
-                    <h4>Mempool Status By Gas Price</h4>
+                    <h4>Transaction Pool Status By Gas Price</h4>
                     <p class="nav navbar-right"><span style = 'color:red'>Miner: </span><?php echo($voteArray['miner']); ?></br><span style = 'color:red'> Prior Block Gas Used: </span><?php echo($voteArray['priorGasused']);?></br><span style = 'color:red'> Gas Used: </span><?php echo($voteArray['gasUsed']);?></br><span style = 'color:red'> Gas Limit: </span><?php echo($voteArray['gasLimit']);?></br><span style = 'color:red'> Gas Limit Vote: </span><?php echo($voteArray['vote']);?></p> 
                     <div class="clearfix"></div>
                   </div>
@@ -91,9 +91,9 @@
                       <thead>
                         <tr>
                           <th>Gas Price (Gwei)</th>
-                          <th>Mempool</br>Total Gas (1e6)</th>
-                          <th>Mempool</br>Total Transactions</th>
-                          <th>Mean Time in </br>Mempool (Min)</th>
+                          <th>TxPool</br>Total Gas (1e6)</th>
+                          <th>TxPool</br>Total Transactions</th>
+                          <th>Mean Time in </br>TxPool (Min)</th>
                           <th></th>
                           <th><span style = 'color:#1ABB9C'>Gas Mined (1e6)</span></th>
                           <th><span style = 'color:#1ABB9C'>Gas Removed (1e6)</span></th>
@@ -124,7 +124,6 @@
                       ?>
                         </tbody>
                     </table>
-                    <p> Note: Mempool counts do not distinguish between valid and invalid transactions or if transaction is later resubmitted with higher price - so timings may be articially inflated</p>
 
                  </div>
     
