@@ -124,7 +124,7 @@ for batchloop in range(1, 3):
         print(len(blockTxs))
         predictDataSet= predictDataSet.append(blockTxs)
         print(block)
-    remainder = pd.DataFrame(txpoolData.loc['id' > tailId,:])
+    remainder = pd.DataFrame(txpoolData.loc[txpoolData['id'] > tailId,:])
     batch['batchStart'] = batch['batchStart'] + 100000
     batch['batchEnd'] = batch['batchEnd'] + 100000
     blockStart = blockEnd
