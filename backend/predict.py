@@ -12,11 +12,20 @@ from sqlalchemy import create_engine
 
 
 # analysis constants
+#setTheseBased on Dataset
+analyzeBlock['start'] = 3930236
+analyzeBlock['end'] = 3935602
+lenTxPool = 13828903
+
 engine = create_engine('mysql+mysqlconnector://ethgas:station@127.0.0.1:3306/tx', echo=False)
+cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
+cursor = cnx.cursor()
 
 predictDataSet = pd.DataFrame()
 remainder = pd.DataFrame()
-gasLimit = 4710000
+
+cycles = (lenTxPool/100000) + 1
+print ('cycles = '+ str(cycles))
 
 # functions to define new predcitors for each posted transaction
 
@@ -54,7 +63,7 @@ def txBelow (gasPrice):
 #Load Hash Power table- should be current for analysis set
 
 try:
-    url = "http://localhost/json/price.json"
+    url = "http://localhost/json/price2.json"
     response = urllib.urlopen(url)
     hashPower = pd.read_json(response, orient='records')
     response.close()
@@ -67,21 +76,25 @@ print (hashPower)
 
 
 #get all posted transactions in MySql start 10,000 blocks prior to analysis
-cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
-cursor = cnx.cursor()
-cursor.execute("SELECT txHash, gasPrice, gasOffered, postedBlock from transactions where postedblock > 3920236 and postedblock < 3935603")
+
+cursor.execute("SELECT txHash, gasPrice, gasOffered, postedBlock from transactions where postedblock >= %(start)s and postedblock <= %(end)s", analyzeBlock)
 head = cursor.column_names
 allPosted = pd.DataFrame(cursor.fetchall())
 allPosted.columns = head
 
+cursor.execute("SELECT blockNum, gasLimit from speedo2 where blockNum >= %(start)s and blockNum <= %(end)s", analyzeBlock)
+head = cursor.column_names
+blockInfo = pd.DataFrame(cursor.fetchall())
+blockInfo.columns = head
+gasLimitAvg = int(blockInfo['gasLimit'].mean())
 
 #loop to iterate through txpool- need to calculate based on length of txpool table
 
 batch = {}
 batch['batchStart'] = 1
 batch['batchEnd'] = 100000
-blockStart = 3930236
-for batchloop in range(1, 3):
+blockStart = analyzeBlock['start']
+for batchloop in range(1, cycles):
     cursor.execute("SELECT id, txHash, block from txpool where id >= %(batchStart)s AND id < %(batchEnd)s ", batch)
     head = cursor.column_names
     txpoolData = pd.DataFrame(cursor.fetchall())
@@ -102,7 +115,10 @@ for batchloop in range(1, 3):
 
         #get all gas offered by gas price in Block's txpool
         currentBlockTxPoolSum = pd.DataFrame(currentBlockTxPool.groupby('gasPrice').sum())
-        currentBlockTxPoolSum['gasLimit'] = 4710000
+        blockGasLimit = blockInfo.loc[blockInfo['blockNum']==block, 'gasLimit']
+        if blockGasLimit == np.nan:
+            blockGasLimit = gasLimitAvg
+        currentBlockTxPoolSum['gasLimit'] = blockGasLimit
         currentBlockTxPoolSum['pctLimit'] = currentBlockTxPoolSum['gasOffered']/currentBlockTxPoolSum['gasLimit']
 
         #get num tx by gas price in Block's txpool
@@ -137,7 +153,7 @@ for batchloop in range(1, 3):
 predictDataSet = predictDataSet.reset_index(drop=True)
 print(predictDataSet)
 
-predictDataSet.to_sql(con=engine, name = 'prediction', if_exists='append', index=False)
+predictDataSet.to_sql(con=engine, name = 'prediction1', if_exists='append', index=True)
 
 
 
