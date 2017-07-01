@@ -12,6 +12,7 @@ import urllib,json
 
 # analysis constants
 predictDataSet = pd.DataFrame()
+remainder = pd.DataFrame()
 gasLimit = 4710000
 
 # functions to define new predcitors for each posted transaction
@@ -72,17 +73,20 @@ allPosted.columns = head
 
 
 #loop to iterate through txpool- need to calculate based on length of txpool table
-batchStart = 1
-batchEnd = 100000
+
+batch = {}
+batch['batchStart'] = 1
+batch['batchEnd'] = 100000
 blockStart = 3930236
 for batchloop in range(1, 2):
-    cursor.execute("SELECT txHash, block from txpool where id >= %(batchStart)s AND id < %(batchEnd)s ", {'batchStart':batchStart, 'batchEnd':batchEnd})
+    cursor.execute("SELECT id, txHash, block from txpool where id >= %(batchStart)s AND id < %(batchEnd)s ", batch)
     head = cursor.column_names
     txpoolData = pd.DataFrame(cursor.fetchall())
     txpoolData.columns = head
+    txpoolData = txpoolData.append(remainder).sort_values('block')
 
-    #blockEnd = (txpoolData['block'].max()-1)
-    blockEnd = blockStart + 5
+    blockEnd = (txpoolData['block'].max()-1)
+    tailId = txpoolData.loc[txpoolData['block']==blockEnd, 'id'].min()
     print(blockStart) 
     print (blockEnd)
 
@@ -118,8 +122,16 @@ for batchloop in range(1, 2):
         print(len(blockTxs))
         predictDataSet= predictDataSet.append(blockTxs)
         print(block)
+    remainder = pd.DataFrame(txpoolData.loc[tailId:,:])
+    batch['batchStart'] = batch['batchStart'] + 100000
+    batch['batchEnd'] = batch['batchEnd'] + 100000
 
+
+predictDataSet.reset_index(drop=True)
 print(predictDataSet)
+
+print (batch['batchStart'])
+print (batch['batchEnd'])
 
 
 
