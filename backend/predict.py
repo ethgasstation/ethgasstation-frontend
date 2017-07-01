@@ -55,6 +55,8 @@ currentBlockTxPoolSum['gasLimit'] = 4710000
 currentBlockTxPoolSum['pctLimit'] = currentBlockTxPoolSum['gasOffered']/currentBlockTxPoolSum['gasLimit']
 print(currentBlockTxPoolSum)
 
+currentBlockTxPoolSumTx = pd.DataFrame(currentBlockTxPool.groupby('gasPrice').count())
+print (currentBlockTxPoolSumTx)
 
 blockTxs = pd.DataFrame(allPosted.loc[allPosted['postedBlock']==block]) 
 
@@ -74,6 +76,14 @@ def getPctLimitGasBelow (gasPrice):
 def getHashPowerAccepting (gasPrice):
     lower = hashPower.loc[hashPower.index <= gasPrice, 'cumPctTotBlocks']
     return (lower.max())
+
+def totalTxinTxP ():
+    return (len(currentBlockTxPool))
+
+def txAbove (gasPrice):
+    seriesTxAbove = currentBlockTxPoolSumTx.loc[currentBlockTxPoolSumTx.index > gasPrice, 'count']
+    return (seriesTxAbove.sum())
+
 
 blockTxs = blockTxs.sort_values('gasPrice')
 
