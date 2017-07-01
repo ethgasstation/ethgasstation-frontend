@@ -76,7 +76,7 @@ batchStart = 1
 batchEnd = 100000
 blockStart = 3930236
 for batchloop in range(1, 2):
-    cursor.execute("SELECT txHash, block from txpool where id >= %(batchStart) AND id < %(batchEnd)s ", {'batchStart':batchStart, 'batchEnd':batchEnd})
+    cursor.execute("SELECT txHash, block from txpool where id >= %(batchStart)s AND id < %(batchEnd)s ", {'batchStart':batchStart, 'batchEnd':batchEnd})
     head = cursor.column_names
     txpoolData = pd.DataFrame(cursor.fetchall())
     txpoolData.columns = head
