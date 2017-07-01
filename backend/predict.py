@@ -128,7 +128,7 @@ for batchloop in range(1, 3):
     batch['batchStart'] = batch['batchStart'] + 100000
     batch['batchEnd'] = batch['batchEnd'] + 100000
     blockStart = blockEnd+1
-    print('remainder ' + len(remainder))
+    print('remainder ' + str(len(remainder)))
 
 
 predictDataSet = predictDataSet.reset_index(drop=True)
