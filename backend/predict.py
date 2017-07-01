@@ -78,12 +78,14 @@ batch = {}
 batch['batchStart'] = 1
 batch['batchEnd'] = 100000
 blockStart = 3930236
-for batchloop in range(1, 2):
+for batchloop in range(1, 3):
     cursor.execute("SELECT id, txHash, block from txpool where id >= %(batchStart)s AND id < %(batchEnd)s ", batch)
     head = cursor.column_names
     txpoolData = pd.DataFrame(cursor.fetchall())
     txpoolData.columns = head
+    print(len(txpoolData))
     txpoolData = txpoolData.append(remainder).sort_values('block')
+    print(len(txpoolData))
 
     blockEnd = (txpoolData['block'].max()-1)
     tailId = txpoolData.loc[txpoolData['block']==blockEnd, 'id'].min()
@@ -125,9 +127,11 @@ for batchloop in range(1, 2):
     remainder = pd.DataFrame(txpoolData.loc[tailId:,:])
     batch['batchStart'] = batch['batchStart'] + 100000
     batch['batchEnd'] = batch['batchEnd'] + 100000
+    blockStart = blockEnd+1
+    print('remainder ' + len(remainder))
 
 
-predictDataSet.reset_index(drop=True)
+predictDataSet = predictDataSet.reset_index(drop=True)
 print(predictDataSet)
 
 print (batch['batchStart'])
