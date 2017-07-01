@@ -13,6 +13,7 @@ from sqlalchemy import create_engine
 
 # analysis constants
 #setTheseBased on Dataset
+analyzeBlock = {}
 analyzeBlock['start'] = 3930236
 analyzeBlock['end'] = 3935602
 lenTxPool = 13828903
