@@ -8,9 +8,12 @@ import math
 import sys
 import os, subprocess, re
 import urllib,json
+from sqlalchemy import create_engine
 
 
 # analysis constants
+engine = create_engine('mysql+mysqlconnector://ethgas:station@127.0.0.1:3306/tx', echo=False)
+
 predictDataSet = pd.DataFrame()
 remainder = pd.DataFrame()
 gasLimit = 4710000
@@ -133,6 +136,9 @@ for batchloop in range(1, 3):
 
 predictDataSet = predictDataSet.reset_index(drop=True)
 print(predictDataSet)
+
+predictDataSet.to_sql(con=engine, name = 'prediction', if_exists='append', index=False)
+
 
 
 
