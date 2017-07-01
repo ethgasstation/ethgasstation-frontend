@@ -95,11 +95,9 @@ for batchloop in range(1, 2):
         currentBlockTxPoolSum = pd.DataFrame(currentBlockTxPool.groupby('gasPrice').sum())
         currentBlockTxPoolSum['gasLimit'] = 4710000
         currentBlockTxPoolSum['pctLimit'] = currentBlockTxPoolSum['gasOffered']/currentBlockTxPoolSum['gasLimit']
-        print(currentBlockTxPoolSum)
 
         #get num tx by gas price in Block's txpool
         currentBlockTxPoolSumTx = pd.DataFrame(currentBlockTxPool.groupby('gasPrice').count())
-        print (currentBlockTxPoolSumTx)
 
         #Define dataframe with all the posted transactions for the block then iterate through the block to define new predictors for each transaction
 
@@ -117,7 +115,7 @@ for batchloop in range(1, 2):
             blockTxs.loc[index, 'txAt'] = txAt(row['gasPrice'])
             blockTxs.loc[index, 'txBelow'] = txBelow(row['gasPrice'])
 
-        print(blockTxs)
+        print(len(blockTxs))
         predictDataSet= predictDataSet.append(blockTxs)
         print(block)
 
