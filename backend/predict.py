@@ -88,7 +88,7 @@ for batchloop in range(1, 3):
     print(len(txpoolData))
 
     blockEnd = (txpoolData['block'].max()-1)
-    tailId = txpoolData.loc[txpoolData['block']==blockEnd, 'id'].min()
+    tailId = txpoolData.loc[txpoolData['block']==blockEnd, 'id'].max()
     print(blockStart) 
     print (blockEnd)
 
@@ -124,18 +124,15 @@ for batchloop in range(1, 3):
         print(len(blockTxs))
         predictDataSet= predictDataSet.append(blockTxs)
         print(block)
-    remainder = pd.DataFrame(txpoolData.loc[tailId:,:])
+    remainder = pd.DataFrame(txpoolData.loc['id' > tailId,:])
     batch['batchStart'] = batch['batchStart'] + 100000
     batch['batchEnd'] = batch['batchEnd'] + 100000
-    blockStart = blockEnd+1
+    blockStart = blockEnd
     print('remainder ' + str(len(remainder)))
 
 
 predictDataSet = predictDataSet.reset_index(drop=True)
 print(predictDataSet)
-
-print (batch['batchStart'])
-print (batch['batchEnd'])
 
 
 
