@@ -81,8 +81,16 @@ def totalTxinTxP ():
     return (len(currentBlockTxPool))
 
 def txAbove (gasPrice):
-    seriesTxAbove = currentBlockTxPoolSumTx.loc[currentBlockTxPoolSumTx.index > gasPrice, 'count']
+    seriesTxAbove = currentBlockTxPoolSumTx.loc[currentBlockTxPoolSumTx.index > gasPrice, 'txHash']
     return (seriesTxAbove.sum())
+
+def txAt (gasPrice):
+    seriesTxAt = currentBlockTxPoolSumTx.loc[currentBlockTxPoolSumTx.index == gasPrice, 'txHash']
+    return (seriesTxAt.sum())
+
+def txBelow (gasPrice):
+    seriesTxBelow = currentBlockTxPoolSumTx.loc[currentBlockTxPoolSumTx.index < gasPrice, 'txHash']
+    return (seriesTxBelow.sum())
 
 
 blockTxs = blockTxs.sort_values('gasPrice')
@@ -92,8 +100,10 @@ for index,row in blockTxs.iterrows():
     blockTxs.loc[index, 'pctLimitGasAt'] = getPctLimitGasAt(row['gasPrice'])
     blockTxs.loc[index, 'pctLimitGasBelow'] = getPctLimitGasBelow(row['gasPrice'])
     blockTxs.loc[index, 'hashPowerAccepting'] = getHashPowerAccepting(row['gasPrice'])
-    
-
+    blockTxs.loc[index, 'totalTxTxP'] = totalTxinTxP()
+    blockTxs.loc[index, 'txAbove'] = txAbove(row['gasPrice'])
+    blockTxs.loc[index, 'txAt'] = txAt(row['gasPrice'])
+    blockTxs.loc[index, 'txBelow'] = txBelow(row['gasPrice'])
 
 print(blockTxs)
 
