@@ -117,7 +117,7 @@ for batchloop in range(1, cycles):
         #get all gas offered by gas price in Block's txpool
         currentBlockTxPoolSum = pd.DataFrame(currentBlockTxPool.groupby('gasPrice').sum())
         blockGasLimit = blockInfo.loc[blockInfo['blockNum']==block, 'gasLimit']
-        if math.isnan(blockGasLimit):
+        if np.isnan(blockGasLimit):
             blockGasLimit = gasLimitAvg
         currentBlockTxPoolSum['gasLimit'] = blockGasLimit
         currentBlockTxPoolSum['pctLimit'] = currentBlockTxPoolSum['gasOffered']/currentBlockTxPoolSum['gasLimit']
