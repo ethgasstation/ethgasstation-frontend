@@ -132,6 +132,7 @@ for batchloop in range(1, cycles):
         blockTxs = pd.DataFrame(allPosted.loc[allPosted['postedBlock']==block])
         blockTxs = blockTxs.reset_index(drop=True) 
         blockTxs = blockTxs.sort_values('gasPrice')
+        blockTxs['gasOffered'] = blockTxs['gasOffered'].apply(lambda x: x/gasLimitAvg)
 
         for index,row in blockTxs.iterrows():
             blockTxs.loc[index, 'pctLimitGasAbove'] = getPctLimitGasAbove(row['gasPrice'])

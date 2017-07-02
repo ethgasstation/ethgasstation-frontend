@@ -171,7 +171,7 @@ filter2.watch(function(err, txHash)
                     
                 
                     writeData(post2, 'transactions');
-                    if ((gasPrice < 20000) && (result.gas == 21000))
+                    if ((gasPrice < 4000) && (result.gas == 21000))
                     {
                         watchedTx.push(post2);
                     }
