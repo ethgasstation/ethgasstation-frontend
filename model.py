@@ -45,11 +45,17 @@ print(predictData['confirmTime'].count())
 print(predictData['const'].count())
 print(predictData)
 
-model = sm.Poisson(predictData['confirmTime'], predictData['const'])
+dep = pd.DataFrame()
+indep = pd.DataFrame()
+dep = predictData['confirmTime']
+indep['const'] = predictData['const']
+
+model = sm.Poisson(dep, indep)
 results = model.fit()
 print (results.summary())
 
-model = sm.Poisson(predictData['confirmTime'], [predictData['const'], predictData['hashPowerAccepting']])
+indep['hashPowerAccepting'] = predictData['hashPowerAccepting']
+model = sm.Poisson(dep, indep)
 results = model.fit()
 print (results.summary())
 
