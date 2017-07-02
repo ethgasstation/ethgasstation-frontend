@@ -9,6 +9,7 @@ import sys
 import os, subprocess, re
 import urllib,json
 from sqlalchemy import create_engine 
+from patsy import dmatrices
 
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
 cursor = cnx.cursor()
@@ -33,18 +34,28 @@ print(predictData[predictData['confirmTime']<=0].count())
 
 predictData[predictData['confirmTime'] <= 0] = np.nan
 predictData = predictData.dropna(how='any')
-predictData['const'] = 1
 
 print ('cleaned transactions: ')
 print (len(predictData))
-
-
-predictData['gasOffered'] = predictData['gasOffered'].apply(lambda x: x/4710000)
 
 print(predictData['confirmTime'].count())
 print(predictData['const'].count())
 print(predictData)
 
+predictData['gasOffered'] = predictData['gasOffered'].apply(lambda x: x/4710000)
+
+y, X = dmatrices('confirmTime ~ hashPowerAccepting', data = predictData, return_type = 'dataframe')
+
+print(y[:5])
+print(X[:5])
+
+model = sm.Poisson(y, X)
+results = model.fit()
+print (results.summary())
+
+
+
+'''
 dep = pd.DataFrame()
 indep = pd.DataFrame()
 dep = predictData['confirmTime']
@@ -67,3 +78,4 @@ model = sm.Poisson(predictData['confirmTime'], [predictData['const'], predictDat
 results = model.fit()
 print (results.summary())
 
+''''
