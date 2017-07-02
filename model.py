@@ -48,7 +48,7 @@ y, X = dmatrices('confirmTime ~ hashPowerAccepting', data = predictData, return_
 print(y[:5])
 print(X[:5])
 
-model = sm.Poisson(y, X)
+model = sm.OLS(y, X)
 results = model.fit()
 print (results.summary())
 
