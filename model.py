@@ -43,7 +43,7 @@ predictData['gasOffered'] = predictData['gasOffered'].apply(lambda x: x/4710000)
 
 print(predictData)
 
-model = sm.Poisson(predictData['confirmTime'], [predictData['const']])
+model = sm.Poisson(predictData['confirmTime'], predictData['const'])
 results = model.fit()
 print (results.summary())
 
