@@ -18,7 +18,7 @@ analyzeBlock['start'] = 3930236
 analyzeBlock['end'] = 3935602
 lenTxPool = 13828903
 
-engine = create_engine('mysql+mysqlconnector://ethgas:station@127.0.0.1:3306/tx', echo=False)
+
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
 cursor = cnx.cursor()
 
@@ -152,6 +152,7 @@ for batchloop in range(1, cycles):
 predictDataSet = predictDataSet.reset_index(drop=True)
 print(predictDataSet)
 
+engine = create_engine('mysql+mysqlconnector://ethgas:station@127.0.0.1:3306/tx', echo=False)
 predictDataSet.to_sql(con=engine, name = 'prediction1', if_exists='append', index=True)
 
 
