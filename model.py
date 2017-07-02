@@ -12,7 +12,7 @@ from sqlalchemy import create_engine
 
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
 cursor = cnx.cursor()
-query = ("SELECT prediction1.*, minedtransactions.minedBlock, minedtransactions.gasused FROM prediction1 LEFT JOIN minedtransactions ON prediction1.txHash = minedtransactions.txHash")
+query = ("SELECT prediction1.*, minedtransactions.minedBlock, minedtransactions.gasused FROM prediction1 INNER JOIN minedtransactions ON prediction1.txHash = minedtransactions.txHash")
 
 cursor.execute(query)
 head = cursor.column_names
