@@ -41,6 +41,8 @@ print (len(predictData))
 
 predictData['gasOffered'] = predictData['gasOffered'].apply(lambda x: x/4710000)
 
+print(predictData['confirmTime'].count())
+print(predictData['const'].count())
 print(predictData)
 
 model = sm.Poisson(predictData['confirmTime'], predictData['const'])
