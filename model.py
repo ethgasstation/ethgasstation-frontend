@@ -39,18 +39,18 @@ print ('cleaned transactions: ')
 print (len(predictData))
 
 print(predictData['confirmTime'].count())
-print(predictData)
+#print(predictData)
 
 predictData['logCTime'] = predictData['confirmTime'].apply(np.log)
 
 predictData['gasOffered'] = predictData['gasOffered'].apply(lambda x: x/4710000)
 
-y, X = dmatrices('logCTime ~ hashPowerAccepting + gasOffered + pctLimitGasAbove', data = predictData, return_type = 'dataframe')
+y, X = dmatrices('confirmTime ~ hashPowerAccepting + gasOffered + pctLimitGasAbove', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
 
-model = sm.OLS(y, X)
+model = sm.Poisson(y, X)
 results = model.fit()
 print (results.summary())
 
