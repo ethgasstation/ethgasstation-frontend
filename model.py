@@ -26,18 +26,22 @@ print('total confirmed transactions:')
 print(predictData['minedBlock'].count())
 
 predictData['confirmTime'] = predictData['minedBlock']-predictData['postedBlock']
-predictData['const'] = 1
+
 
 print('zero/neg confirm times: ')
 print(predictData[predictData['confirmTime']<=0].count())
+
 predictData[predictData['confirmTime'] <= 0] = np.nan
 predictData.dropna()
+predictData['const'] = 1
 
 print ('cleaned transactions: ')
 print (len(predictData))
 
 
 predictData['gasOffered'] = predictData['gasOffered'].apply(lambda x: x/4710000)
+
+print(predictData)
 
 model = sm.Poisson(predictData['confirmTime'], [predictData['const']])
 results = model.fit()
