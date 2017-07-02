@@ -39,7 +39,6 @@ print ('cleaned transactions: ')
 print (len(predictData))
 
 print(predictData['confirmTime'].count())
-print(predictData['const'].count())
 print(predictData)
 
 predictData['gasOffered'] = predictData['gasOffered'].apply(lambda x: x/4710000)
