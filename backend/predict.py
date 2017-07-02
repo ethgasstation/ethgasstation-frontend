@@ -13,9 +13,11 @@ from sqlalchemy import create_engine
 
 # analysis constants
 #setTheseBased on Dataset
-analyzeBlock = {}
-analyzeBlock['start'] = 3930236
-analyzeBlock['end'] = 3935602
+analyzeBlock = {
+    'start' : 3930236,
+    'end' : 3935602
+}
+
 lenTxPool = 13828903
 
 engine = create_engine('mysql+mysqlconnector://ethgas:station@127.0.0.1:3306/tx', echo=False)
@@ -91,9 +93,11 @@ gasLimitAvg = int(blockInfo['gasLimit'].mean())
 
 #loop to iterate through txpool- need to calculate based on length of txpool table
 
-batch = {}
-batch['batchStart'] = 1
-batch['batchEnd'] = 100000
+batch = {
+    'batchStart' : 1,
+    'batchEnd' : 100000 
+}
+
 blockStart = analyzeBlock['start']
 for batchloop in range(1, cycles):
     cursor.execute("SELECT id, txHash, block from txpool where id >= %(batchStart)s AND id < %(batchEnd)s ", batch)
@@ -148,6 +152,7 @@ for batchloop in range(1, cycles):
     blockStart = blockEnd
     print('remainder ' + str(len(remainder)))
     predictDataSet.to_sql(con=engine, name = 'prediction1', if_exists='append', index=False)
+    predictDataSet = pd.DataFrame()
 
 
 
