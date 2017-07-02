@@ -45,7 +45,7 @@ predictData['logCTime'] = predictData['confirmTime'].apply(np.log)
 
 predictData['gasOffered'] = predictData['gasOffered'].apply(lambda x: x/4710000)
 
-y, X = dmatrices('logCTime ~ hashPowerAccepting, gasOffered, pctLimitGasAbove', data = predictData, return_type = 'dataframe')
+y, X = dmatrices('logCTime ~ hashPowerAccepting + gasOffered + pctLimitGasAbove', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
