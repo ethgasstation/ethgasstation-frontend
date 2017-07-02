@@ -45,14 +45,13 @@ predictData['logCTime'] = predictData['confirmTime'].apply(np.log)
 
 predictData['gasOffered'] = predictData['gasOffered'].apply(lambda x: x/4710000)
 
-predictData2 = predictData.head(n=1000)
 
-y, X = dmatrices('confirmTime ~ hashPowerAccepting + gasOffered + pctLimitGasAbove', data = predictData2, return_type = 'dataframe')
+y, X = dmatrices('logCTime ~ hashPowerAccepting + gasOffered + pctLimitGasAbove', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
 
-model = sm.Poisson(y, X)
+model = sm.OLS(y, X)
 results = model.fit()
 print (results.summary())
 
