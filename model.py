@@ -63,8 +63,7 @@ model = sm.GLM(y, X, family=sm.families.Poisson())
 results = model.fit()
 print (results.summary())
 
-
-x['predict'] = results.predict()
+X['predict'] = results.predict()
 '''
 dep = pd.DataFrame()
 indep = pd.DataFrame()
