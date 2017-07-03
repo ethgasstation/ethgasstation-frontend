@@ -49,12 +49,12 @@ print(predictData['confirmTime'].min())
 print(predictData['confirmTime'].max())
 print(predictData['hashPowerAccepting'].min())
 print(predictData['hashPowerAccepting'].max())
-print(predictData.isnull())
 
 
 
 
-y, X = dmatrices('confirmTime ~ transfer + hashPowerAccepting', data = predictData, return_type = 'dataframe')
+
+y, X = dmatrices('confirmTime ~ transfer + hashPowerAccepting + pctLimitGasAbove', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
