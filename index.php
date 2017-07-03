@@ -473,7 +473,7 @@
 				data: {
 				  labels: [<?php echo($priceWaitLabels);?>],
 				  datasets: [{
-					label: 'Avg Time to Confirm',
+					label: 'Median Time to Confirm',
 					backgroundColor: "#26B99A",
 					data: [<?php echo($priceWaitData); ?>]
 				  }]
