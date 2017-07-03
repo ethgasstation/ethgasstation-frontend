@@ -45,10 +45,11 @@ predictData['logCTime'] = predictData['confirmTime'].apply(np.log)
 
 predictData['transfer'] = predictData['gasOffered'] == 21000
 predictData['gasOffered'] = predictData['gasOffered'].apply(lambda x: x/4710000)
+print(predictData['confirmTime'].min())
+print(predictData['confirmTime'].max())
 
 
-
-y, X = dmatrices('confirmTime ~ gasPrice', data = predictData, return_type = 'dataframe')
+y, X = dmatrices('confirmTime ~ transfer', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
