@@ -54,7 +54,7 @@ print(predictData['hashPowerAccepting'].max())
 
 
 
-y, X = dmatrices('confirmTime ~ transfer + hashPowerAccepting + pctLimitGasAbove + pctLimitGasAt + gasOffered + txAbove + txAt + txBelow + gasPrice + pctLimitGasBelow', data = predictData, return_type = 'dataframe')
+y, X = dmatrices('confirmTime ~ transfer + hashPowerAccepting + pctLimitGasAbove + pctLimitGasAt + gasOffered + txAbove + txAt', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
@@ -69,7 +69,7 @@ y['predict'] = results.predict()
 with pd.option_context('display.max_rows', 5000, 'display.max_columns', None):
 
     print(y)
-    print(X)
+ 
 
 '''
 dep = pd.DataFrame()
