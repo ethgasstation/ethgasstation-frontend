@@ -33,6 +33,7 @@ print('zero/neg confirm times: ')
 print(predictData[predictData['confirmTime']<=0].count())
 
 predictData[predictData['confirmTime'] <= 0] = np.nan
+predictData[predictData['confirmTime'] >= 500] = np.nan
 predictData = predictData.dropna(how='any')
 
 print ('cleaned transactions: ')
