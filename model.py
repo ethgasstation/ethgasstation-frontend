@@ -54,7 +54,7 @@ print(predictData['hashPowerAccepting'].max())
 
 
 
-y, X = dmatrices('confirmTime ~ transfer + hashPowerAccepting + pctLimitGasAbove + pctLimitGasAt + totalTxTxP', data = predictData, return_type = 'dataframe')
+y, X = dmatrices('confirmTime ~ transfer + hashPowerAccepting + pctLimitGasAbove + pctLimitGasAt + totalTxTxP + gasOffered', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
