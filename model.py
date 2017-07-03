@@ -51,7 +51,17 @@ print(predictData['confirmTime'].max())
 print(predictData['hashPowerAccepting'].min())
 print(predictData['hashPowerAccepting'].max())
 
+print('gas above mean: ')
+print(predictData['pctLimitGasAbove'].mean())
 
+print('gas at mean: ')
+print(predictData['pctLimitGasAt'].mean())
+
+print('tx above mean: ')
+print(predictData['txAbove'].mean())
+
+print('tx at mean: ')
+print(predictData['txAt'].mean())
 
 
 
@@ -67,9 +77,22 @@ print (results.summary())
 
 y['predict'] = results.predict()
 
-with pd.option_context('display.max_rows', 5000, 'display.max_columns', None):
+y1, X1 = dmatrices('logCTime ~ transfer + hashPowerAccepting + pctLimitGasAbove + pctLimitGasAt + gasOffered + txAbove + txAt', data = predictData, return_type = 'dataframe')
+
+print(y[:5])
+print(X[:5])
+
+model = sm.OLS(y, X)
+results = model.fit()
+print (results.summary())
+y1['predict'] = results.predict
+y1['confirmTime'] = predictData['confirmTime']
+y1['predictTime'] = y1['predict'].apply(lambda x: exp(x))
+
+with pd.option_context('display.max_rows', 1000, 'display.max_columns', None):
 
     print(y)
+    print(y1)
  
 
 '''
