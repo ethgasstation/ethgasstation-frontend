@@ -64,10 +64,12 @@ results = model.fit()
 print (results.summary())
 
 
-X['predict'] = results.predict()
+y['predict'] = results.predict()
 
-print(y)
-print(X)
+with pd.option_context('display.max_rows', 5000, 'display.max_columns', None):
+
+    print(y)
+    print(X)
 
 '''
 dep = pd.DataFrame()
