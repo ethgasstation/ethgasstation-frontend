@@ -64,7 +64,7 @@ results = model.fit()
 print (results.summary())
 
 
-
+x['predict'] = results.predict()
 '''
 dep = pd.DataFrame()
 indep = pd.DataFrame()
