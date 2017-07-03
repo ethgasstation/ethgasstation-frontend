@@ -76,7 +76,7 @@ print (results.summary())
 
 
 y['predict'] = results.predict()
-y['gasPrice'] = X['gasPrice']
+y['gasPrice'] = predictData['gasPrice']
 
 y1, X1 = dmatrices('logCTime ~ transfer + hashPowerAccepting + pctLimitGasAbove + pctLimitGasAt + gasOffered + txAbove + txAt', data = predictData, return_type = 'dataframe')
 
