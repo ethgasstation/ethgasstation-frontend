@@ -43,7 +43,7 @@ print(predictData['confirmTime'].count())
 
 predictData['logCTime'] = predictData['confirmTime'].apply(np.log)
 
-predictData['transfer'] = np.where[predictData['gasOffered'] == 21000, 1 , 0]
+predictData['transfer'] == predictData['gasOffered'].apply(lambda x: 1 if x ==21000 else 0) 
 predictData['gasOffered'] = predictData['gasOffered'].apply(lambda x: x/4710000)
 print(predictData['confirmTime'].min())
 print(predictData['confirmTime'].max())
