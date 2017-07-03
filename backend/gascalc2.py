@@ -6,6 +6,7 @@ import math
 import sys
 import os, subprocess, re
 import urllib,json
+from patsy import dmatrices
 
 #connect to MySQL with start / end blocks
 
@@ -441,39 +442,39 @@ print(priceWait)
 #define gas predictors
 print (gpRecs)
 
-dep = pd.DataFrame()
 
 if (gpRecs['safeLow'] < gpRecs['Average']):
-    dep['priceCat1'] = ((txData2['minedGasPrice']== gpRecs['safeLow'])).astype(int)
-dep['priceCat2'] = (txData2['minedGasPrice'] == gpRecs['Average']).astype(int)
+    txData2['priceCat1'] = ((txData2['minedGasPrice']== gpRecs['safeLow'])).astype(int)
+txData2['priceCat2'] = (txData2['minedGasPrice'] == gpRecs['Average']).astype(int)
 #dep['priceCat3'] = ((txData2['minedGasPrice'] > gpRecs['Average']) & (txData2['minedGasPrice'] < gpRecs['Fastest'])).astype(int)
-dep['priceCat4'] = (txData2['minedGasPrice'] >= gpRecs['Fastest']).astype(int)
+txData2['priceCat4'] = (txData2['minedGasPrice'] >= gpRecs['Fastest']).astype(int)
 
 # Define gasused cats
 
 quantiles= txData2['gasused'].quantile([.5, .75, .9, 1])
 
 #dep['gasCat1'] = (txData2['gasused'] == 21000).astype(int)
-dep['gasCat2'] = ((txData2['gasused']>21000) & (txData2['gasused']<=quantiles[.75])).astype(int)
-dep['gasCat3'] = ((txData2['gasused']>quantiles[.75]) & (txData2['gasused']<=quantiles[.9])).astype(int)
-dep['gasCat4'] = (txData2['gasused']> quantiles[.9]).astype(int)
-
-dep['cons'] = 1
+txData2['gasCat2'] = ((txData2['gasused']>21000) & (txData2['gasused']<=quantiles[.75])).astype(int)
+txData2['gasCat3'] = ((txData2['gasused']>quantiles[.75]) & (txData2['gasused']<=quantiles[.9])).astype(int)
+txData2['gasCat4'] = (txData2['gasused']> quantiles[.9]).astype(int)
 
 #txData2['logDelay'] = txData2['delay'].apply(np.log)
 #txData2['logDelay'] = txData2['delay']
 txData2 = txData2.dropna()
-indep = txData2['delay']
+
 
 #with pd.option_context('display.max_rows', None, 'display.max_columns', None):
 #   print(indep)
 #with pd.option_context('display.max_rows', None, 'display.max_columns', None):
 #    print(dep)
 
+y, X = dmatrices('delay ~ priceCat1 + priceCat2 + priceCat4 + gasCat2 + gasCat3 + gasCat4', data = txData2, return_type = 'dataframe')
 
-model = sm.Poisson(indep, dep)
+print(y[:5])
+print(X[:5])
 
-results = model.fit(disp=0)
+model = sm.GLM(y, X, family=sm.families.Poisson())
+results = model.fit()
 dictResults = dict(results.params)
 print (results.summary())
 print (gpRecs)
