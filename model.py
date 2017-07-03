@@ -76,6 +76,7 @@ print (results.summary())
 
 
 y['predict'] = results.predict()
+y['gasPrice'] = X['gasPrice']
 
 y1, X1 = dmatrices('logCTime ~ transfer + hashPowerAccepting + pctLimitGasAbove + pctLimitGasAt + gasOffered + txAbove + txAt', data = predictData, return_type = 'dataframe')
 
@@ -91,7 +92,7 @@ y1['predictTime'] = y1['predict'].apply(lambda x: np.exp(x))
 
 with pd.option_context('display.max_rows', 1000, 'display.max_columns', None):
 
-    print(y)
+    print(y.loc[y['gasPrice']==1000,:])
     print(y1)
  
 
