@@ -87,7 +87,7 @@ results = model.fit()
 print (results.summary())
 y1['predict'] = results.predict
 y1['confirmTime'] = predictData['confirmTime']
-y1['predictTime'] = y1['predict'].apply(lambda x: exp(x))
+y1['predictTime'] = y1['predict'].apply(lambda x: np.exp(x))
 
 with pd.option_context('display.max_rows', 1000, 'display.max_columns', None):
 
