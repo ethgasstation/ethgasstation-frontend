@@ -469,8 +469,11 @@ txData2 = txData2.dropna()
 #with pd.option_context('display.max_rows', None, 'display.max_columns', None):
 #    print(dep)
 
-y, X = dmatrices('delay ~ priceCat1 + priceCat2 + priceCat4 + gasCat2 + gasCat3 + gasCat4', data = txData2, return_type = 'dataframe')
-
+if (gpRecs['safeLow'] < gpRecs['Average']):
+    y, X = dmatrices('delay ~ priceCat1 + priceCat2 + priceCat4 + gasCat2 + gasCat3 + gasCat4', data = txData2, return_type = 'dataframe')
+else:
+    y, X = dmatrices('delay ~ priceCat2 + priceCat4 + gasCat2 + gasCat3 + gasCat4', data = txData2, return_type = 'dataframe')
+    
 print(y[:5])
 print(X[:5])
 
