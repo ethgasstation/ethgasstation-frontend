@@ -430,7 +430,7 @@ priceWait.loc[priceWait['minedGasPrice']>=40, 'minedGasPrice'] = 40
 priceWait = priceWait.loc[(priceWait['minedGasPrice']<=10) | (priceWait['minedGasPrice']==20) | (priceWait['minedGasPrice'] == 40), ['minedGasPrice', 'delay']]
 priceWait.loc[priceWait['minedGasPrice']<1, 'minedGasPrice'] = 0
 #priceWait['delay'] = priceWait['delay'].apply(np.log)
-priceWait = priceWait.groupby('minedGasPrice').mean()
+priceWait = priceWait.groupby('minedGasPrice').median()
 priceWait.reset_index(inplace=True)
 #priceWait['delay'] = priceWait['delay'].apply(np.exp)
 priceWait['delay'] = priceWait['delay']*blockInterval/float(60)
