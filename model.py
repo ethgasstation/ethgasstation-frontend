@@ -85,7 +85,7 @@ print(X[:5])
 model = sm.OLS(y1, X1)
 results = model.fit()
 print (results.summary())
-y1['predict'] = results.predict
+y1['predict'] = results.predict()
 y1['confirmTime'] = predictData['confirmTime']
 y1['predictTime'] = y1['predict'].apply(lambda x: np.exp(x))
 
