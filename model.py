@@ -48,7 +48,7 @@ predictData['gasOffered'] = predictData['gasOffered'].apply(lambda x: x/4710000)
 print(predictData['confirmTime'].min())
 print(predictData['confirmTime'].max())
 print(predictData['hashPowerAccepting'].min())
-print(predictData['hashPowerAccpeting'].max())
+print(predictData['hashPowerAccepting'].max())
 print(predictData.isnull())
 
 
