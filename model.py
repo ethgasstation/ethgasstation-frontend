@@ -13,7 +13,7 @@ from patsy import dmatrices
 
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
 cursor = cnx.cursor()
-query = ("SELECT prediction1.*, minedtransactions.minedBlock, minedtransactions.gasused FROM prediction1 LEFT JOIN minedtransactions ON prediction1.txHash = minedtransactions.txHash")
+query = ("SELECT prediction1.*, minedtransactions.minedBlock, minedtransactions.gasused FROM prediction1 LEFT JOIN minedtransactions ON prediction1.txHash = minedtransactions.txHash where minedtransactions.minedBlock > 3930236 AND minedtransactions.minedBlock <= 3935650")
 
 cursor.execute(query)
 head = cursor.column_names
