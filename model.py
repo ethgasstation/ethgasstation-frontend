@@ -66,7 +66,7 @@ print (results.summary())
 
 X['predict'] = results.predict()
 
-
+print(y)
 print(X)
 
 '''
