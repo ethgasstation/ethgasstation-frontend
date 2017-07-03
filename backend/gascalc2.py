@@ -471,7 +471,7 @@ indep = txData2['delay']
 #    print(dep)
 
 
-model = sm.OLS(indep, dep, hasconst=True)
+model = sm.Poisson(indep, dep)
 
 results = model.fit(disp=0)
 dictResults = dict(results.params)
