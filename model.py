@@ -13,7 +13,7 @@ from patsy import dmatrices
 
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
 cursor = cnx.cursor()
-query = ("SELECT prediction1.*, minedtransactions.minedBlock, minedtransactions.gasused FROM prediction1 LEFT JOIN minedtransactions ON prediction1.txHash = minedtransactions.txHash where minedtransactions.minedBlock > 3930236 AND minedtransactions.minedBlock <= 3935650")
+query = ("SELECT prediction1.*, minedtransactions.minedBlock, minedtransactions.gasused FROM prediction1 LEFT JOIN minedtransactions ON prediction1.txHash = minedtransactions.txHash")
 
 cursor.execute(query)
 head = cursor.column_names
@@ -82,7 +82,7 @@ y1, X1 = dmatrices('logCTime ~ transfer + hashPowerAccepting + pctLimitGasAbove 
 print(y[:5])
 print(X[:5])
 
-model = sm.OLS(y, X)
+model = sm.OLS(y1, X1)
 results = model.fit()
 print (results.summary())
 y1['predict'] = results.predict
