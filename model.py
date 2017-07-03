@@ -43,15 +43,17 @@ print(predictData['confirmTime'].count())
 
 predictData['logCTime'] = predictData['confirmTime'].apply(np.log)
 
+predictData['transfer'] = predictData.loc[predictData['gasOffered'] == 21000]
 predictData['gasOffered'] = predictData['gasOffered'].apply(lambda x: x/4710000)
 
 
-y, X = dmatrices('logCTime ~ hashPowerAccepting + gasOffered + pctLimitGasAbove + pctLimitGasAt + totalTxTxP', data = predictData, return_type = 'dataframe')
+
+y, X = dmatrices('confirmTime ~ gasPrice', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
 
-model = sm.OLS(y, X)
+model = sm.GLM(y, X, family=sm.families.Poisson())
 results = model.fit()
 print (results.summary())
 
