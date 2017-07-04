@@ -98,7 +98,7 @@ y1['predictTime'] = y1['predict'].apply(lambda x: np.exp(x))
 
 with pd.option_context('display.max_rows', 5000, 'display.max_columns', None):
 
-    print(y.loc[(y['gasPrice']==1000) & (y['predict']<15),:])
+    print(y.loc[(y['gasPrice']==1000) & (y['transfer']==1),:])
     #print(y1)
  
 
