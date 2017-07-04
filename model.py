@@ -82,6 +82,7 @@ y['pctLimitGasAt'] = predictData['pctLimitGasAt']
 y['txAbove'] = predictData['txAbove']
 y['txAt'] = predictData['txAt']
 y['gasOffered'] = predictData['gasOffered']
+y['transfer'] = predictData['transfer']
 
 y1, X1 = dmatrices('logCTime ~ transfer + hashPowerAccepting + pctLimitGasAbove + pctLimitGasAt + gasOffered + txAbove + txAt', data = predictData, return_type = 'dataframe')
 
