@@ -88,9 +88,14 @@ results = model.fit()
 print (results.summary())
 y1['predict'] = results.predict()
 y1['confirmTime'] = predictData['confirmTime']
+y1['pctLimitGasAbove'] = predictData['pctLimitGasAbove']
+y1['pctLimitGasAt'] = predictData['pctLimitGasAt']
+y1['txAbove'] = predictData['txAbove']
+y1['txAt'] = predictData['txAt']
+y1['gasOffered'] = predictData['gasOffered']
 y1['predictTime'] = y1['predict'].apply(lambda x: np.exp(x))
 
-with pd.option_context('display.max_rows', 1000, 'display.max_columns', None):
+with pd.option_context('display.max_rows', 5000, 'display.max_columns', None):
 
     print(y.loc[y['gasPrice']==1000,:])
     print(y1)
