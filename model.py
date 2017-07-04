@@ -77,6 +77,11 @@ print (results.summary())
 
 y['predict'] = results.predict()
 y['gasPrice'] = predictData['gasPrice']
+y['pctLimitGasAbove'] = predictData['pctLimitGasAbove']
+y['pctLimitGasAt'] = predictData['pctLimitGasAt']
+y['txAbove'] = predictData['txAbove']
+y['txAt'] = predictData['txAt']
+y['gasOffered'] = predictData['gasOffered']
 
 y1, X1 = dmatrices('logCTime ~ transfer + hashPowerAccepting + pctLimitGasAbove + pctLimitGasAt + gasOffered + txAbove + txAt', data = predictData, return_type = 'dataframe')
 
@@ -88,17 +93,12 @@ results = model.fit()
 print (results.summary())
 y1['predict'] = results.predict()
 y1['confirmTime'] = predictData['confirmTime']
-y1['pctLimitGasAbove'] = predictData['pctLimitGasAbove']
-y1['pctLimitGasAt'] = predictData['pctLimitGasAt']
-y1['txAbove'] = predictData['txAbove']
-y1['txAt'] = predictData['txAt']
-y1['gasOffered'] = predictData['gasOffered']
 y1['predictTime'] = y1['predict'].apply(lambda x: np.exp(x))
 
 with pd.option_context('display.max_rows', 5000, 'display.max_columns', None):
 
     print(y.loc[y['gasPrice']==1000,:])
-    print(y1)
+    #print(y1)
  
 
 '''
