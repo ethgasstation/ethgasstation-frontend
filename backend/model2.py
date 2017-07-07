@@ -19,6 +19,13 @@ cursor.execute(query)
 head = cursor.column_names
 predictData = pd.DataFrame(cursor.fetchall())
 predictData.columns = head
+
+predict1 = pd.DataFrame(predictData.iloc[0:100000, :])
+predict2 = pd.DataFrame(predictData.iloc[100000:200000, :])
+
+print(predict1)
+print(predict2)
+
 cursor.close()
 
 print('total transactions:')

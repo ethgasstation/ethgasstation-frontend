@@ -3,5 +3,6 @@ var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
 
 var tx = process.argv[2];
 
-var receipt = web3.eth.getTransaction(tx);
+var receipt = web3.eth.getTransactionReceipt(tx);
+receipt = JSON.stringify(receipt)
 console.log(receipt);
