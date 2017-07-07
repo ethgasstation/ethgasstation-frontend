@@ -49,7 +49,7 @@ predictData['transfer'] = predictData['gasOffered'].apply(lambda x: 1 if x ==210
 avgGasLimit = predictData.loc[0, 'gasOffered'] / predictData.loc[0, 'gasOfferedPct']
 transactionGas = float(21000)/avgGasLimit
 
-quantiles= predictData['pctGasOffered'].quantile([.5, .75, .9, 1])
+quantiles= predictData['gasOfferedPct'].quantile([.5, .75, .9, 1])
 print (transactionGas)
 print(quantiles)
 
