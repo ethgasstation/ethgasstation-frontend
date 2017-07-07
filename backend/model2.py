@@ -26,11 +26,12 @@ compStart = 0
 compEnd = 20000
 ints = int(len(predictData)/20000)
 print ('ints ' + str(ints)) 
-for x in range (1, ints):
+for x in range (0, ints):
     predict1 = pd.DataFrame(predictData.iloc[compStart:compEnd, :])
     predict1.to_sql(con=engine, name = 'prediction2complete', if_exists='append', index=True)
     compStart = compStart + 20000
     compEnd = compEnd + 20000
+print('compEnd ' + str(compEnd))
 predict1 = pd.DataFrame(predictData.iloc[compEnd:, :])
 predict1.to_sql(con=engine, name = 'prediction2complete', if_exists='append', index=True)   
 cursor.close()
