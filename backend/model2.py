@@ -22,13 +22,17 @@ head = cursor.column_names
 predictData = pd.DataFrame(cursor.fetchall())
 predictData.columns = head
 
-predict1 = pd.DataFrame(predictData.iloc[0:100000, :])
-predict1.to_sql(con=engine, name = 'prediction2complete', if_exists='append', index=True)
-predict1 = pd.DataFrame(predictData.iloc[100000:200000, :])
-predict1.to_sql(con=engine, name = 'prediction2complete', if_exists='append', index=True)
-predict1 = pd.DataFrame(predictData.iloc[200000:, :])
-predict1.to_sql(con=engine, name = 'prediction2complete', if_exists='append', index=True)
-
+compStart = 0
+compEnd = 20000
+ints = int(len(predictData)/20000)
+print ('ints ' + ints) 
+for x in range (1, ints):
+    predict1 = pd.DataFrame(predictData.iloc[compStart:compEnd, :])
+    predict1.to_sql(con=engine, name = 'prediction2complete', if_exists='append', index=True)
+    compStart = compStart + 20000
+    compEnd = compEnd + 20000
+predict1 = pd.DataFrame(predictData.iloc[compEnd:, :])
+predict1.to_sql(con=engine, name = 'prediction2complete', if_exists='append', index=True)   
 cursor.close()
 
 print('total transactions:')
