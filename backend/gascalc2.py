@@ -460,7 +460,7 @@ txData2['gasCat4'] = (txData2['gasused']> quantiles[.9]).astype(int)
 
 #txData2['logDelay'] = txData2['delay'].apply(np.log)
 #txData2['logDelay'] = txData2['delay']
-txData2[txData2['delay'] >= 500] = np.nan
+txData2.loc[txData2['delay'] >= 500, 'delay'] = 500
 txData2 = txData2.dropna()
 
 

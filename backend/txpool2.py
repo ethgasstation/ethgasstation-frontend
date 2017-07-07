@@ -31,6 +31,8 @@ txpool['block'] = startBlock
 
 print(txpool)
 
+#txpool.to_sql(con=engine, name = 'txpool', if_exists='append', index=False)
+
 txpool.to_sql(con=engine, name = 'txpool2', if_exists='append', index=False)
 
 

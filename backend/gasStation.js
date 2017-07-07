@@ -274,14 +274,4 @@ function validateTx (tx, blockNum, last)
     })
 
 }
-function writeMemPool(result)
-{
-    console.log(result);
-    var str = JSON.stringify(result);
-    fs.writeFile(path.join(__dirname, '..', '/json/mempool.json'), str, (err) => {
-        if (err)
-        {
-            console.log(err.stack)
-        }
-    })
-}
+

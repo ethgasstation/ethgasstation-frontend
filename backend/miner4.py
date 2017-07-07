@@ -12,6 +12,14 @@ cursor = cnx.cursor()
 startBlock = int(sys.argv[1])
 endBlock = int(sys.argv[2])
 
+#prune databases
+deleteBlock = endBlock - 10000
+#cursor.execute("DELETE FROM transactions WHERE postedBlock < %(deleteBlock)s", {'deleteBlock':deleteBlock})
+#cnx.commit()
+#cursor.execute("DELETE FROM minedtransactions WHERE minedBlock < %(deleteBlock)s", {'deleteBlock':deleteBlock})
+#cnx.commit()
+cursor.execute("DELETE FROM speedo2 WHERE blockNum < %(deleteBlock)s", {'deleteBlock':startBlock})
+cnx.commit()
 
 # First Query to Determine Block TIme, and Estimate Miner Policies
 query = ("SELECT * FROM speedo2 where blockNum>= %s and blockNum < %s")
@@ -58,7 +66,7 @@ minerData.loc[minerData['uncsReported']==0, 'includeFee'] = 0
 
 # Define Miners of Interest
 
-keyMiners = ['0xea674fdde714fd979de3edf0f56aa9716b898ec8', '0x1e9939daaad6924ad004c2560e90804164900341', '0xb2930b35844a230f00e51431acae96fe543a0347', '0x2a65aca4d5fc5b5c859090a6c34d164135398226', '0x61c808d82a3ac53231750dadc13c777b59310bd9', '0x4bb96091ee9d802ed039c4d1a5f6216f90f81b01']
+keyMiners = ['0xea674fdde714fd979de3edf0f56aa9716b898ec8', '0x1e9939daaad6924ad004c2560e90804164900341', '0xb2930b35844a230f00e51431acae96fe543a0347', '0x2a65aca4d5fc5b5c859090a6c34d164135398226', '0x829bd824b016326a401d083b33d092293333a830', '0x4bb96091ee9d802ed039c4d1a5f6216f90f81b01']
 
 dictMiners = {
     '0xea674fdde714fd979de3edf0f56aa9716b898ec8':'Ethermine',
@@ -67,7 +75,7 @@ dictMiners = {
     '0x4bb96091ee9d802ed039c4d1a5f6216f90f81b01':'Ethpool',
     '0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5':'Nanopool',
     '0x2a65aca4d5fc5b5c859090a6c34d164135398226':'Dwarfpool',
-    '0x61c808d82a3ac53231750dadc13c777b59310bd9':'F2pool',
+    '0x829bd824b016326a401d083b33d092293333a830':'F2pool',
     '0xa42af2c70d316684e57aefcc6e393fecb1c7e84e':'Coinotron',
     '0x6c7f03ddfdd8a37ca267c88630a4fee958591de0':'Alpereum',
     'All Others':'All Others'
@@ -278,7 +286,7 @@ for index, row in minerBlocks.iterrows():
     x=x+1
 
 
-resultSummary = resultSummary.reindex([0, 2, 3, 4, 5, 6, 7, 1])
+#resultSummary = resultSummary.reindex([0, 2, 3, 4, 5, 6, 7, 1])
 
 model = sm.OLS(minerData['blockAward'], minerData[['const','empty']])
 results = model.fit()
