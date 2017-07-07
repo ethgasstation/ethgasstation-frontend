@@ -14,6 +14,8 @@ from patsy import dmatrices
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
 cursor = cnx.cursor()
 query = ("SELECT prediction2.*, minedtransactions.minedBlock, minedtransactions.gasused FROM prediction2 LEFT JOIN minedtransactions ON prediction2.txHash = minedtransactions.txHash")
+engine = create_engine('mysql+mysqlconnector://ethgas:station@127.0.0.1:3306/tx', echo=False)
+
 
 cursor.execute(query)
 head = cursor.column_names
@@ -21,10 +23,11 @@ predictData = pd.DataFrame(cursor.fetchall())
 predictData.columns = head
 
 predict1 = pd.DataFrame(predictData.iloc[0:100000, :])
-predict2 = pd.DataFrame(predictData.iloc[100000:200000, :])
-
-print(predict1)
-print(predict2)
+predict1.to_sql(con=engine, name = 'prediction2complete', if_exists='append', index=True)
+predict1 = pd.DataFrame(predictData.iloc[100000:200000, :])
+predict1.to_sql(con=engine, name = 'prediction2complete', if_exists='append', index=True)
+predict1 = pd.DataFrame(predictData.iloc[200000:, :])
+predict1.to_sql(con=engine, name = 'prediction2complete', if_exists='append', index=True)
 
 cursor.close()
 
