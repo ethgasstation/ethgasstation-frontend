@@ -53,7 +53,7 @@ try{
 
 
 
-    $gasPriceRecString = file_get_contents("http://localhost/json/ethgasAPI.json");
+    $gasPriceRecString = file_get_contents("http://localhost/json/ethgas.json");
     $gasPriceRecs = json_decode($gasPriceRecString, true);
 } catch (Exception $e) {
     echo 'waith for tables to be populated';

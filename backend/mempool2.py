@@ -87,6 +87,8 @@ memPool = pd.concat([memPool, memPoolAvg], axis = 1)
 memPool = memPool.rename(columns = {'lastBlock':'numTxMined', 'pending': 'numTxPending'})
 memPool = memPool.fillna(value=0)
 
+#gasLimit Voting
+
 minedTxDiff = minedTx['gasLimit']
 minedTxDiff = minedTxDiff.diff()
 gasLimitChange = minedTxDiff.sum()

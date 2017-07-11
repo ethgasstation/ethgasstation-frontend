@@ -82,7 +82,7 @@ post2['ethConsumedLast100'] = float(txData.loc[(txData['minedBlock']>=start100Bl
 
 # Query to Determine Empty / Full Blokcs
 cursor = cnx.cursor()
-query = ("SELECT speed FROM speedo2 WHERE blockNum > %s AND blockNum < %s ")
+query = ("SELECT speed, gasLimit FROM speedo2 WHERE blockNum > %s AND blockNum < %s ")
 
 cursor.execute(query, (startBlock, endBlock))
 head = cursor.column_names
@@ -90,6 +90,7 @@ head = cursor.column_names
 txData3 = pd.DataFrame(cursor.fetchall())
 txData3.columns = head
 cursor.close()
+
 
 post['emptyBlocks'] =  len(txData3[txData3['speed']==0])
 post['fullBlocks'] = len(txData3[txData3['speed']>=.95])
@@ -139,7 +140,7 @@ txDataPrice = pd.DataFrame({'count':txData.groupby('minedGasPrice').size()}).res
 txDataPrice['sum'] = txDataPrice['count'].cumsum()
 
 for index, row in txDataPrice.iterrows():
-    if row['sum'] > 12:
+    if row['sum'] > 50:
         minLow = row['minedGasPrice']
         break
 
@@ -246,7 +247,8 @@ print(priceTable)
 
 #get Initial Gas Price Recs based on % of blocks excluding empty blocks
 gpRecs = {}
-
+gpRecs['gasLimit'] = txData3['gasLimit'].mean()
+gpRecs['minLow'] = math.ceil(minLow*1000)/1000
 gpRecs['Cheapest'] = priceTable.loc[0, 'adjustedMinP']
 gpRecs['safeLow'] = priceTable.loc[priceTable['cumPctTxBlocks']>=2, 'adjustedMinP'].min()
 gpRecs['Average'] = priceTable.loc[priceTable['cumPctTxBlocks']>=50, 'adjustedMinP'].min()
@@ -309,19 +311,19 @@ if not (rejected.empty):
     #check to see if there is an accepted gas price above the highest rejected
     acceptGp = validationTable.loc[(validationTable['mined'] == True) & (validationTable['index'] > rejectedMaxgp)]
     if not(acceptGp.empty):
-        acceptGp = int(round(acceptGp['gasPrice'].min()))
+        acceptGp = acceptGp['gasPrice'].min()
     else:
         acceptGp = None
 
     #check to see if there is an accepted gas price lower than rejected but mined later
     latestGp =  validationTable.loc[(validationTable['mined'] == True) & (validationTable['postedBlock'] > rejMaxPostedBlock)]
     if not (latestGp.empty):
-        latestGp= int(round(latestGp['gasPrice'].min()))
+        latestGp= latestGp['gasPrice'].min()
     else:
         latestGp = None
     if ((acceptGp is not None) & (latestGp is not None)):
-        acceptGp = int(acceptGp)
-        latestGp = int(latestGp)
+        acceptGp = acceptGp
+        latestGp = latestGp
         gpRecs['safeLow']= min(acceptGp, latestGp)
     elif (acceptGp is not None):
         gpRecs['safeLow'] = acceptGp
@@ -398,8 +400,6 @@ txData2 = txData2.dropna()
 if (gpRecs['safeLow'] < minLow):
     gpRecs['safeLow'] = minLow
 
-if (gpRecs['safeLow'] < 1):
-    gpRecs['safeLow'] = 1
 
 
 
@@ -506,6 +506,8 @@ quantiles = quantiles.to_dict()
 
 dictResults.update(quantiles)
 dictResults.update(blockTime)
+gpRecs.update(blockTime)
+
 priceTable = priceTable.to_json(orient = 'records')
 priceWait = priceWait.to_json(orient = 'records')
 miningTable = txDataMiner.to_json(orient = 'records')
@@ -516,7 +518,7 @@ parentdir = os.path.dirname(os.getcwd())
 if not os.path.exists(parentdir + '/json'):
     os.mkdir(parentdir + '/json')
 filepath_calc = parentdir + '/json/calc.json'
-filepath_recs = parentdir + '/json/ethgasAPI.json'
+filepath_recs = parentdir + '/json/ethgas.json'
 filepath_pricetable = parentdir + '/json/price.json'
 filepath_miners = parentdir + '/json/miners.json'
 filepath_gasguzz = parentdir + '/json/gasguzz.json'

@@ -70,14 +70,14 @@ filter.watch(function(err,blockHash)
             blockProcess[block.number] = false;
         }
         writeBlock = block.number - 3;
-        memPoolBlock = block.number - 8;
+        memPoolBlock = block.number - 1;
         deleteBlock = block.number - 25;
         if ((writeBlock in blockTime) && (blockProcess[writeBlock]===false))
         {
             commandString = 'node writeBlocks2.js '+ writeBlock + ' ' + blockTime[writeBlock];
             launchProcess(commandString);
             blockProcess[writeBlock] = true; //only process a block once
-            commandString2 = 'python mempool2.py '+ memPoolBlock + ' ' + blockTime[writeBlock];
+            commandString2 = 'python mempool4.py '+ memPoolBlock + ' ' + blockTime[writeBlock];
             launchProcess(commandString2);
             launchProcess('python txpool2.py ' + block.number)
         }  

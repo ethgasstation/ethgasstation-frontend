@@ -1,5 +1,5 @@
 #analysis:  block 3975317 - 3980356:  276,618 total submitted transactions
-
+#avgGasLimit = 6704158
 import mysql.connector
 import pandas as pd
 import numpy as np 

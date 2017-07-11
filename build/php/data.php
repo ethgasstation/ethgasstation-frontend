@@ -201,8 +201,11 @@ try{
     $priceWaitData = rtrim($priceWaitData,',');
     $priceWaitLabels = rtrim($priceWaitLabels, ',');
     
-    $gpRecsString = file_get_contents("http://localhost/json/ethgasAPI.json");
+    $gpRecsString = file_get_contents("http://localhost/json/ethgas.json");
     $gpRecs = json_decode($gpRecsString, true);
+
+    $gpRecsString2 = file_get_contents("http://localhost/json/ethgasAPI.json");
+    $gpRecs2 = json_decode($gpRecsString2, true);
 
     $calcParamString = file_get_contents("http://localhost/json/calc.json");
     $calcParams = json_decode($calcParamString, true);
