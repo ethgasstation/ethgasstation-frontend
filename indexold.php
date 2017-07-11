@@ -197,37 +197,33 @@
              <div class="col-md-4 col-sm-4 col-xs-12">
               <div class="x_panel tile fixed_height_320">
                 <div class="x_title">
-                      <h4>Recommended Gas Prices / Predicted Wait Times </br> <small> (based on current network conditions)</small></h4>
+                      <h4>Recommended User Gas Prices</h4>
                       <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
                     <table class="table table-bordered">
                       <thead>
                         <tr>
-                          <th>Speed</th>
+                          <th>Desired Tx Speed</th>
                           <th>Gas Price (gwei)</th>
-                          <th>Transfer Wait (m)</th>
-                          <th>Contract Wait (m)</th>
+                          <th>Average Wait (m)</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <td style = "color:#1ABB9C"><strong>SafeLow</strong></td>
-                          <td style = "color:#1ABB9C" ><?php echo ($gpRecs2['safeLow']) ?></td>
-                          <td style = "color:#03586A" ><?php echo ($gpRecs2['safeLowWait']) ?></td>
-                          <td style = "color:#03586A" ><?php echo ($gpRecs2['safeLowWaitC']) ?></td>
+                          <td>Safe Low</td>
+                          <td style = "color:#03586A" ><?php echo ($gpRecs['safeLow']) ?></td>
+                          <td style = "color:#03586A" ><?php echo ($safeLowWait) ?></td>
                         </tr>
                         <tr>
-                          <td style = "color:#03586A"><strong>Average<strong></td>
-                          <td style = "color:#03586A"><?php echo ($gpRecs2['average']) ?></td>
-                          <td style = "color:#03586A" ><?php echo ($gpRecs2['avgWait']) ?></td>
-                          <td style = "color:#03586A" ><?php echo ($gpRecs2['avgWaitC']) ?></td>
+                          <td>Average</td>
+                          <td style = "color:#03586A"><?php echo ($gpRecs['Average']) ?></td>
+                          <td style = "color:#03586A" ><?php echo ($avgWait) ?></td>
                         </tr>
                         <tr>
-                          <td style = "color:red"><strong>Fast<strong></td>
-                          <td style = "color:red"><?php echo ($gpRecs2['fastest']) ?></td>
-                          <td style = "color:#03586A" ><?php echo ($gpRecs2['fastWait']) ?></td>
-                          <td style = "color:#03586A" ><?php echo ($gpRecs2['fastWaitC']) ?></td>
+                          <td>Fastest</td>
+                          <td style = "color:#03586A"><?php echo ($gpRecs['Fastest']) ?></td>
+                          <td style = "color:#03586A" ><?php echo ($fastWait) ?></td>
                         </tr>
                       </tbody>
                     </table>
