@@ -137,6 +137,10 @@ print(predictData['txAt'].mean())
 
 print(predictData)
 
+#test = predictData.loc[(predictData['hashPowerAccepting'] > 10) &(predictData['hashPowerAccepting'] <13 ) & (predictData['transfer']==1) & (predictData['pctLimitGasAbove'] > 6 ), ['confirmTime']]
+
+print ('txLessthan1gweiGP: ')
+print (predictData[predictData['gasPrice']<1000].count())
 
 y, X = dmatrices('confirmTime ~ hashPowerAccepting + transfer + pctLimitGasAbove + pctLimitGasAt + totalTxTxP', data = predictData, return_type = 'dataframe')
 

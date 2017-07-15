@@ -14,12 +14,19 @@ endBlock = int(sys.argv[2])
 
 #prune databases
 deleteBlock = endBlock - 10000
-#cursor.execute("DELETE FROM transactions WHERE postedBlock < %(deleteBlock)s", {'deleteBlock':deleteBlock})
-#cnx.commit()
-#cursor.execute("DELETE FROM minedtransactions WHERE minedBlock < %(deleteBlock)s", {'deleteBlock':deleteBlock})
-#cnx.commit()
-cursor.execute("DELETE FROM speedo2 WHERE blockNum < %(deleteBlock)s", {'deleteBlock':startBlock})
+deleteBlock2 = endBlock - 100000
+
+cursor.execute("DELETE FROM transactions WHERE postedBlock < %(deleteBlock)s", {'deleteBlock':deleteBlock})
 cnx.commit()
+cursor.execute("DELETE FROM minedtransactions WHERE minedBlock < %(deleteBlock)s", {'deleteBlock':deleteBlock})
+cnx.commit()
+cursor.execute("DELETE FROM speedo2 WHERE blockNum < %(deleteBlock2)s", {'deleteBlock2':deleteBlock2})
+cnx.commit()
+cursor.execute("DELETE FROM txDataLast10k WHERE blockNum < %(deleteBlock2)s", {'deleteBlock2':deleteBlock2})
+cnx.commit()
+cursor.execute("DELETE FROM txDataLast100b WHERE blockNum < %(deleteBlock2)s", {'deleteBlock':deleteBlock})
+cnx.commit()
+
 
 # First Query to Determine Block TIme, and Estimate Miner Policies
 query = ("SELECT * FROM speedo2 where blockNum>= %s and blockNum < %s")

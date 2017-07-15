@@ -6,11 +6,13 @@ import numpy as np
 import subprocess, json
 import os, subprocess, re
 import urllib
+import math
+from sqlalchemy import create_engine
 
 endBlock = int(sys.argv[1])
 callTime = int(sys.argv[2])
 
-
+engine = create_engine('mysql+mysqlconnector://ethgas:station@127.0.0.1:3306/tx', echo=False)
 
 
 dictMiner = {
@@ -33,7 +35,7 @@ try:
     response.close()
 except:
     print ('error')
-
+hashPower['adjustedMinP'] = hashPower['adjustedMinP'].apply(lambda x: math.floor(x*10)/10)
 print (hashPower)
 
 try:
@@ -70,15 +72,19 @@ memPoolTx['waitTime'] = memPoolTx['tsPosted'].apply(lambda x: callTime-x)
 memPoolTx['pctLimit'] = memPoolTx['gasOffered'].apply(lambda x: x/ calc['gasLimit'])
 memPoolTx['gasOffered'] = memPoolTx['gasOffered'].apply(lambda x: x/1e6)
 
+#pd.options.display.max_colwidth=100
+#print(memPoolTx.loc[memPoolTx['gasPrice']==0.6, :])
+
+
 memPool = memPoolTx.groupby('gasPrice').sum().reset_index()
 
 memPool = memPool.drop(['postedBlock', 'tsPosted', 'waitBlocks', 'waitTime'], axis=1)
 memPool['gasOffered'] = memPool['gasOffered'].apply(lambda x: np.round(x, decimals=2))
 
-memPoolAvg = memPoolTx.groupby('gasPrice').mean().reset_index()
+memPoolAvg = memPoolTx.groupby('gasPrice').median().reset_index()
 memPoolAvg = memPoolAvg.drop(['postedBlock', 'tsPosted', 'gasOffered', 'gasPrice', 'tx', 'pctLimit'], axis=1)
-memPoolAvg['waitTime'] = memPoolAvg['waitTime'].apply(lambda x: np.round(x, decimals=0))
-memPoolAvg['waitBlocks'] = memPoolAvg['waitBlocks'].apply(lambda x: np.round(x, decimals=2))
+#memPoolAvg['waitTime'] = memPoolAvg['waitTime'].apply(lambda x: np.round(x, decimals=0))
+#memPoolAvg['waitBlocks'] = memPoolAvg['waitBlocks'].apply(lambda x: np.round(x, decimals=2))
 
 memPool = pd.concat([memPool, memPoolAvg], axis = 1)
 memPool = memPool.fillna(value=0)
@@ -129,12 +135,19 @@ predictTable['transfer']=1
 
 #model Parameters
 
-predictTable['intercept'] = 2.1152
-predictTable['hashPowerCoef'] = -0.0124
-predictTable['tfercoef'] = -.4628
-predictTable['pctLimitGasAboveCoeff'] = .0189
-predictTable['pctLimitGasAtCoeff'] = .0181
-predictTable['totalTxCoeff'] = .00009466
+#predictTable['intercept'] = 2.1152
+#predictTable['hashPowerCoef'] = -0.0124
+#predictTable['tfercoef'] = -.4628
+#predictTable['pctLimitGasAboveCoeff'] = .0189
+#predictTable['pctLimitGasAtCoeff'] = .0181
+#predictTable['totalTxCoeff'] = .00009466
+
+predictTable['intercept'] = 4.2062
+predictTable['hashPowerCoef'] = -0.0298
+predictTable['tfercoef'] = -1.1295
+predictTable['pctLimitGasAboveCoeff'] = .0133
+predictTable['pctLimitGasAtCoeff'] = .0291
+predictTable['totalTxCoeff'] = .0002
 
 predictTable['totalTxVal'] = predictTable['totalTxCoeff'].apply(lambda x: x * totalTxTxP)
 
@@ -150,17 +163,23 @@ predictTable['expectedWaitC'] = predictTable['sumC'].apply(lambda x: np.exp(x))
 predictTable['expectedWaitC'] = predictTable['expectedWaitC'].apply(lambda x: 2 if (x < 2) else x)
 predictTable['expectedTimeC'] = predictTable['expectedWaitC'].apply(lambda x: x * calc['blockInterval']/60)
 
+predictTable['endBlock'] = endBlock
+
+#uncomment to create validation data
+#predictTable.to_sql(con=engine, name = 'validate', if_exists='append', index=False)
+
 print(predictTable)
 
 def getSafeLow():
     series = predictTable.loc[predictTable['expectedTime'] <= 15, 'gasPrice']
     safeLow = series.min()
     minHashList = hashPower.loc[hashPower['cumPctTotBlocks']>2, 'adjustedMinP'].values
+    print(minHashList)
     if (safeLow < minHashList.min()):
         safeLow = minHashList.min()
     if (safeLow < calc['minLow']):
         safeLow = calc['minLow']
-    return safeLow
+    return (math.ceil(safeLow*100)/100)
 
 def getAverage():
     series = predictTable.loc[predictTable['expectedTime'] <= 5, 'gasPrice']
@@ -168,14 +187,14 @@ def getAverage():
     minHashList = hashPower.loc[hashPower['cumPctTotBlocks']>=50, 'adjustedMinP'].values
     if (average < minHashList.min()):
         average= minHashList.min()
-    return average
+    return (math.ceil(average*100)/100)
 
 def getFastest():
     series = predictTable.loc[predictTable['expectedWait'] <= 2, 'gasPrice']
     fastest = series.min()
     if (fastest == np.nan):
         fastest = 100
-    return fastest
+    return (math.ceil(fastest*100)/100)
 
 def getWait(gasPrice):
     if gasPrice<1:
