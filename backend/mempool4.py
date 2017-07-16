@@ -35,7 +35,7 @@ try:
     response.close()
 except:
     print ('error')
-hashPower['adjustedMinP'] = hashPower['adjustedMinP'].apply(lambda x: math.floor(x*10)/10)
+hashPower['adjustedMinP'] = hashPower['adjustedMinP'].apply(lambda x: math.ceil(x*10)/10)
 print (hashPower)
 
 try:
