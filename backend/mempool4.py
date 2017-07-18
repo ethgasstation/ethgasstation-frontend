@@ -174,9 +174,14 @@ def getSafeLow():
     series = predictTable.loc[predictTable['expectedTime'] <= 15, 'gasPrice']
     safeLow = series.min()
     minHashList = hashPower.loc[hashPower['cumPctTotBlocks']>2, 'adjustedMinP'].values
+    series2 = memPoolAvg.loc[memPoolAvg['waitBlocks'], 'gasPrice' <= 45]
+    safe = series2.min()
+    print ('safe ' . str(safe))
     print(minHashList)
     if (safeLow < minHashList.min()):
         safeLow = minHashList.min()
+    if (safeLow < safe):
+        safeLow = safe
     if (safeLow < calc['minLow']):
         safeLow = calc['minLow']
     return (math.ceil(safeLow*100)/100)
