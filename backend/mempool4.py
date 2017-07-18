@@ -181,8 +181,6 @@ def getSafeLow():
     print(minHashList)
     if (safeLow < minHashList.min()):
         safeLow = minHashList.min()
-    if (safeLow < safe):
-        safeLow = safe
     if (safeLow < calc['minLow']):
         safeLow = calc['minLow']
     return (math.ceil(safeLow*100)/100)
