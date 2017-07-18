@@ -176,7 +176,8 @@ def getSafeLow():
     minHashList = hashPower.loc[hashPower['cumPctTotBlocks']>2, 'adjustedMinP'].values
     series2 = memPool.loc[memPool['waitBlocks'] <=45, 'gasPrice']
     safe = series2.min()
-    print ('safe ' . str(safe))
+    print ('safe ')
+    print (safe)
     print(minHashList)
     if (safeLow < minHashList.min()):
         safeLow = minHashList.min()
