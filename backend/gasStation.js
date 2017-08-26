@@ -166,7 +166,9 @@ filter2.watch(function(err, txHash)
                         gasOffered: result.gas,
                         gasPrice: gasPrice,
                         gasPriceCat: gasPriceCat,
-                        tsPosted: ts2
+                        tsPosted: ts2,
+                        toAddress: result.to,
+                        fromAddress: result.from
                     }
                     
                 

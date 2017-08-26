@@ -40,7 +40,7 @@ cursor.execute("DELETE FROM txpool2  WHERE block < %(dblock)s ", {'dblock': dblo
 cnx.commit()
 cursor.close()
 
-
+#ALTER TABLE txpool ADD id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
 
 
 

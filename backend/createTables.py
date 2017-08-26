@@ -179,7 +179,7 @@ query = ("CREATE TABLE txDataLast10k ("
     
 cursor.execute(query)
 
-query = ("CREATE TABLE transactions (txHash VARCHAR(75), postedBlock INT, gasPrice INT, gasPriceCat INT, gasOffered INT, tsPosted INT, PRIMARY KEY(txHash))")
+query = ("CREATE TABLE transactions (txHash VARCHAR(75), toAddress VARCHAR(75), fromAddress VARCHAR(75), postedBlock INT, gasPrice INT, gasPriceCat INT, gasOffered INT, tsPosted INT, PRIMARY KEY(txHash))")
 
 cursor.execute(query)
 

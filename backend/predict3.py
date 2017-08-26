@@ -1,4 +1,4 @@
-#analysis:  block 3975317 - 3980356:  276,618 total submitted transactions
+#analysis:  block 4069515 - 4073929:  232,845 total submitted transactions
 #avgGasLimit = 6704158
 import mysql.connector
 import pandas as pd
@@ -14,11 +14,11 @@ from sqlalchemy import create_engine
 # analysis constants
 #setTheseBased on Dataset
 analyzeBlock = {
-    'start' : 3975317,
-    'end' : 3980367
+    'start' : 4069515,
+    'end' : 4073929
 }
 
-lenTxPool = 1444975
+lenTxPool = 752674
 
 engine = create_engine('mysql+mysqlconnector://ethgas:station@127.0.0.1:3306/tx', echo=False)
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
@@ -66,13 +66,22 @@ def txBelow (gasPrice):
     seriesTxBelow = currentBlockTxPoolSumTx.loc[currentBlockTxPoolSumTx.index < gasPrice, 'txHash']
     return (seriesTxBelow.sum())
 
-def ageAt (gasPrice):
-    seriesAgeAt = currentBlockTxPoolMeanTx.loc[currentBlockTxPoolMeanTx.index == gasPrice, 'blockAge']
-    return(seriesAgeAt.sum())
+def ageAt (hashPowerAccepting):
+    #returns age of tx at level of hashPowerAccepting to (hashpoweraccepting + 5%) to capture age of tx slightly above but still close in terms of acceptance
+    low = hashPower.loc[hashPower['cumPctTotBlocks']==hashPowerAccepting].index
+    low = low.max()
+    highSeries = hashPower.loc[hashPower['cumPctTotBlocks']<=(hashPowerAccepting + 5)].index
+    high = highSeries.max()
+    seriesAgeAt = currentBlockTxPoolMeanTx.loc[(currentBlockTxPoolMeanTx.index >= low) & (currentBlockTxPoolMeanTx.index <= high), 'blockAge']
+    numAt = currentBlockTxPoolMeanTx.loc[(currentBlockTxPoolMeanTx.index >= low) & (currentBlockTxPoolMeanTx.index <= high), 'txCount']
+    numAtTot = numAt.sum()
+    numAt = numAt/numAtTot
+    weight = seriesAgeAt*numAt
+    weightAvg = weight.sum()
+    if weightAvg == np.nan:
+        weightAvg = 0
+    return(weightAvg)
 
-def ageAbove (gasPrice):
-    seriesAgeAt = currentBlockTxPoolMeanTx.loc[currentBlockTxPoolMeanTx.index == gasPrice, 'blockAge']
-    return(seriesAgeAt.sum())
 
 #Load Hash Power table- should be current for analysis set
 
@@ -85,6 +94,7 @@ except:
     print ('error')
 
 hashPower['adjustedMinP'] = hashPower['adjustedMinP'].apply(lambda x: x*1000)
+hashPower['cumPctTotBlocks'] = hashPower['cumPctTotBlocks'].astype(int)
 hashPower = hashPower.set_index('adjustedMinP', drop=True)
 print (hashPower)
 
@@ -144,8 +154,12 @@ for batchloop in range(1, cycles):
         #get mean age of tx in txpool by gasprice /dont count tx offering more gas than gas limit
         currentBlockTxPool.loc[currentBlockTxPool['gasOffered'] > (gasLimitAvg/.95), 'blockAge'] = np.nan
 
-        f = {'txHash':['sum'], 'blockAge':['mean']}
-        currentBlockTxPoolMeanTx = pd.DataFrame(currentBlockTxPool.groupby('gasPrice').agg(f))
+        f = {'txHash':['count'], 'blockAge':['mean']}
+        currentBlockTxPoolMeanTx = currentBlockTxPool.groupby('gasPrice').agg(f)
+        currentBlockTxPoolMeanTx.columns = ['blockAge', 'txCount']
+        #print(currentBlockTxPool)
+        #print(currentBlockTxPoolMeanTx)
+        
 
         #Define dataframe with all the posted transactions for the block then iterate through the block to define new predictors for each transaction
 
@@ -153,6 +167,8 @@ for batchloop in range(1, cycles):
         blockTxs = blockTxs.reset_index(drop=True) 
         blockTxs = blockTxs.sort_values('gasPrice')
         blockTxs['gasOfferedPct'] = blockTxs['gasOffered'].apply(lambda x: x/gasLimitAvg)
+
+        
 
         for index,row in blockTxs.iterrows():
             blockTxs.loc[index, 'pctLimitGasAbove'] = getPctLimitGasAbove(row['gasPrice'])
@@ -164,9 +180,8 @@ for batchloop in range(1, cycles):
             blockTxs.loc[index, 'txAbove'] = txAbove(row['gasPrice'])
             blockTxs.loc[index, 'txAt'] = txAt(row['gasPrice'])
             blockTxs.loc[index, 'txBelow'] = txBelow(row['gasPrice'])
-            blockTxs.loc[index, 'ageAt'] = ageAt(row['gasPrice'])
-            blockTxs.loc[index, 'ageAbove'] = ageAbove(row['gasPrice'])
-
+            blockTxs.loc[index, 'ageAt'] = ageAt(blockTxs.loc[index, 'hashPowerAccepting'].astype(int))
+            
         print(len(blockTxs))
         predictDataSet= predictDataSet.append(blockTxs)
         print(block)
@@ -175,7 +190,7 @@ for batchloop in range(1, cycles):
     batch['batchEnd'] = batch['batchEnd'] + 100000
     blockStart = blockEnd
     print('remainder ' + str(len(remainder)))
-    predictDataSet.to_sql(con=engine, name = 'prediction2', if_exists='append', index=False)
+    predictDataSet.to_sql(con=engine, name = 'prediction3', if_exists='append', index=False)
     predictDataSet = pd.DataFrame()
 
 

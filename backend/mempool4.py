@@ -196,7 +196,7 @@ def getAverage():
 def getFastest():
     series = predictTable.loc[predictTable['expectedWait'] <= 2, 'gasPrice']
     fastest = series.min()
-    if (fastest == np.nan):
+    if np.isnan(fastest):
         fastest = 100
     return (math.ceil(fastest*100)/100)
 
@@ -226,6 +226,7 @@ calc2['safeLowWait'] = getWait(calc2['safeLow'])
 calc2['average'] = getAverage()
 calc2['avgWait'] = getWait(calc2['average'])
 calc2['fastest'] = getFastest()
+print calc2['fastest']
 calc2['fastWait'] = getWait(calc2['fastest'])
 calc2['safeLowWaitC'] = getConWait(calc2['safeLow'])
 calc2['avgWaitC'] = getConWait(calc2['average'])
