@@ -14,92 +14,11 @@ from patsy import dmatrices
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
 cursor = cnx.cursor()
 
-'''
-#run this the fist time to make complete dataset
-query = ("SELECT prediction6.*, minedtransactions.minedBlock, minedtransactions.gasused FROM prediction6 LEFT JOIN minedtransactions ON prediction6.txHash = minedtransactions.txHash")
-engine = create_engine('mysql+mysqlconnector://ethgas:station@127.0.0.1:3306/tx', echo=False)
-
-
-cursor.execute(query)
-head = cursor.column_names
-predictData = pd.DataFrame(cursor.fetchall())
-predictData.columns = head
-
-compStart = 0
-compEnd = 20000
-ints = int(len(predictData)/20000)
-print ('ints ' + str(ints)) 
-for x in range (0, ints):
-    predict1 = pd.DataFrame(predictData.iloc[compStart:compEnd, :])
-    predict1.to_sql(con=engine, name = 'prediction6complete', if_exists='append', index=True)
-    compStart = compStart + 20000
-    compEnd = compEnd + 20000
-print('compEnd ' + str(compEnd))
-predict1 = pd.DataFrame(predictData.iloc[compStart:, :])
-predict1.to_sql(con=engine, name = 'prediction6complete', if_exists='append', index=True) 
-
-
-query = ("SELECT * FROM prediction6complete")
-cursor.execute(query)
-head = cursor.column_names
-predictData = pd.DataFrame(cursor.fetchall())
-predictData.columns = head
-
-
-predictData = predictData.drop('totalTxFee', axis=1)
-
-query = ("SELECT * FROM prediction5complete")
-cursor.execute(query)
-head = cursor.column_names
-predictData2 = pd.DataFrame(cursor.fetchall())
-predictData2.columns = head
-
-
-predictData2.drop('ageAt', axis=1, inplace=True)
-
-predictData = predictData.append(predictData2).reset_index(drop=True)
-
-print('total transactions:')
-print(len(predictData))
-print('total confirmed transactions:')
-print(predictData['minedBlock'].count())
-
-predictData['confirmTime'] = predictData['minedBlock']-predictData['postedBlock']
-
-
-print('zero/neg confirm times: ')
-print(predictData[predictData['confirmTime']<=0].count())
-
-predictData[predictData['confirmTime'] <= 0] = np.nan
-predictData['dump'] = predictData['numFrom'].apply(lambda x: 1 if x>5 else 0)
-predictData.loc[predictData['confirmTime'] >= 200, 'confirmTime'] = 200
-predictData = predictData.dropna(how='any')
-predictData['txAtAbove'] = predictData['txAt'] + predictData['txAbove']
-
-#combine and save
-engine = create_engine('mysql+mysqlconnector://ethgas:station@127.0.0.1:3306/tx', echo=False) 
-compStart = 0
-compEnd = 20000
-ints = int(len(predictData)/20000)
-print ('ints ' + str(ints)) 
-for x in range (0, ints):
-    predict1 = pd.DataFrame(predictData.iloc[compStart:compEnd, :])
-    predict1.to_sql(con=engine, name = 'predictionCombined', if_exists='append', index=True)
-    compStart = compStart + 20000
-    compEnd = compEnd + 20000
-print('compEnd ' + str(compEnd))
-predict1 = pd.DataFrame(predictData.iloc[compStart:, :])
-predict1.to_sql(con=engine, name = 'predictionCombined', if_exists='append', index=True) 
-'''
-
 query = ("SELECT * FROM predictionCombined")
 cursor.execute(query)
 head = cursor.column_names
 predictData = pd.DataFrame(cursor.fetchall())
 predictData.columns = head
-predictData.loc[predictData['totalTxTxP']==0, 'confirmTime'] = np.nan
-predictData['ico'] = predictData['numTo'].apply(lambda x: 1 if x>100 else 0)
-predictData = predictData.dropna(how='any')
 cursor.close()
 
 print ('cleaned transactions: ')
