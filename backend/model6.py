@@ -185,7 +185,8 @@ pdValidate['outlier3'] = pdValidate.loc[(pdValidate['dump']==0) & (pdValidate['i
 
 print ('>2.5 diff no dump no ico')
 print (pdValidate['outlier3'].sum())
-
+with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+    print(pdValidate.loc[pdValidate['outlier3']==1)
 
 print ('total validation')
 print (len(pdValidate))
