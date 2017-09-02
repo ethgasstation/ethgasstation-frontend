@@ -120,6 +120,8 @@ def validateTx (block, gasPrice, numFrom, numTo):
         gasPrice = gasPrice*10
         gasPrice = np.floor(gasPrice)
         gasPrice = gasPrice / float(10)
+    if gasPrice > 100:
+        gasPrice = 100
     print ('roundedGasPrice')
     print (gasPrice)
     print ('block')
