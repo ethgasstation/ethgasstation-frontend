@@ -228,9 +228,9 @@ def getAverage():
 def getFastest():
     series = predictTable.loc[predictTable['expectedTime'] <= 2, 'gasPrice']
     fastest = series.min()
-    minHashList = hashPower[hashPower['hashpPct']>=80].index
-    if (fastest < minHashList.min()):
-        fastest= minHashList.min()
+    series2 = predictTable.loc[predictTable['gasPrice']==23, 'expectedTime'].values[0]
+    if (fastest < series2):
+        fastest= 23
     if np.isnan(fastest):
         fastest = 100
     return (math.ceil(fastest*100)/100)
