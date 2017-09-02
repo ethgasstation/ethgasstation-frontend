@@ -181,7 +181,7 @@ print (pdValidate['outlier'].mean())
 print ('>2.5 diff')
 print (pdValidate['outlier2'].sum())
 
-pdValidate['outlier3'] = pdValidate[pdValidate['dump']==0 & pdValidate['ico']==0, 'outlier2']
+pdValidate['outlier3'] = pdValidate.loc[(pdValidate['dump']==0) & (pdValidate['ico']==0), 'outlier2']
 
 print ('>2.5 diff no dump no ico')
 print (pdValidate['outlier3'].sum())
