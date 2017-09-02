@@ -63,8 +63,8 @@ head = cursor.column_names
 memPoolTx = pd.DataFrame(cursor.fetchall())
 memPoolTx.columns = head
 memPoolTx['tx'] = 1
-memPoolTx['gasPrice'] = memPoolTx['gasPrice'].apply(lambda x: x/float(1000))
-memPoolTx['gasPrice'] = memPoolTx['gasPrice'].apply(lambda x: np.round(x, decimals=0) if x >=1 else np.round(x, decimals=3))
+#memPoolTx['gasPrice'] = memPoolTx['gasPrice'].apply(lambda x: x/float(1000))
+#memPoolTx['gasPrice'] = memPoolTx['gasPrice'].apply(lambda x: np.round(x, decimals=0) if x >=1 else np.round(x, decimals=3))
 memPoolTx['waitBlocks'] = memPoolTx['postedBlock'].apply(lambda x: endBlock-x)
 memPoolTx['waitTime'] = memPoolTx['tsPosted'].apply(lambda x: callTime-x)
 memPoolTx['gasOffered'] = memPoolTx['gasOffered'].apply(lambda x: x/1e6)

@@ -169,7 +169,6 @@ txDataMiner.loc[txDataMiner['minCat']==4, 'catTotal'] = txDataCat.loc[txDataCat[
 txDataMiner.loc[txDataMiner['minCat']==5, 'catTotal'] = txDataCat.loc[txDataCat['minedGasPriceCat']==5, 'count'].values[0]
 
 
-
 def getPctCat(cat, minP):
     catTotal = txDataCat.loc[txDataCat['minedGasPriceCat']==cat, 'count'].values[0]
     numAboveMinP = len(txData.loc[(txData['minedGasPriceCat']==cat) & (txData['minedGasPrice']>=minP)])
@@ -227,6 +226,29 @@ txDataMiner.loc[(txDataMiner['oeRatio'] <0.2) & (txDataMiner['adjustedMinPCat']=
 txDataMiner  = txDataMiner.sort_values(['adjustedMinP','totBlocks'], ascending = [True, False])
 
 print(txDataMiner)
+
+
+txDataMinP = pd.DataFrame(txData[['minedBlock', 'minedGasPrice']].groupby('minedBlock').min().reset_index())
+txDataMinP['minedGasPrice'] = txDataMinP['minedGasPrice'].apply(lambda x: x * 1000)
+txDataHashP = pd.DataFrame(txDataMinP.groupby('minedGasPrice').count().reset_index())
+txDataHashP = txDataHashP.rename(columns={'minedGasPrice': 'minMinedGP', 'minedBlock': 'count'})
+totalBlocks2 = txDataHashP['count'].sum()
+
+print(txDataHashP)
+
+n=100000
+predictTable = pd.DataFrame({'gasPrice' :  range(1000, n+1000, 1000)})
+ptable2 = pd.DataFrame({'gasPrice' : [0, 100, 200, 300, 400, 500, 600, 700, 800, 900]})
+predictTable = predictTable.append(ptable2).reset_index(drop=True)
+predictTable = predictTable.sort_values('gasPrice').reset_index(drop=True)
+predictTable['hashP'] = 0
+
+for index, row in txDataHashP.iterrows():
+    predictTable.loc[predictTable['gasPrice'] >= row['minMinedGP'], 'hashP'] = predictTable['hashP'].apply(lambda x: x+ row['count'])
+    
+predictTable['hashpPct'] = predictTable['hashP'].apply(lambda x: x/float(totalBlocks2)*100)
+print (predictTable)
+
 
 #Make Table with Key Miner Stats
 
@@ -508,7 +530,7 @@ dictResults.update(quantiles)
 dictResults.update(blockTime)
 gpRecs.update(blockTime)
 
-priceTable = priceTable.to_json(orient = 'records')
+predictTable = predictTable.to_json(orient = 'records')
 priceWait = priceWait.to_json(orient = 'records')
 miningTable = txDataMiner.to_json(orient = 'records')
 topMinerTable = topMiners.to_json(orient = 'records')
@@ -532,7 +554,7 @@ with open(filepath_recs, 'w') as outfile:
     json.dump(gpRecs, outfile)
 
 with open(filepath_pricetable, 'w') as outfile:
-    outfile.write(priceTable)
+    outfile.write(predictTable)
 
 with open(filepath_miners, 'w') as outfile:
     outfile.write(miningTable)

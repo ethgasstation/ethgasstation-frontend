@@ -197,7 +197,7 @@
              <div class="col-md-4 col-sm-4 col-xs-12">
               <div class="x_panel tile fixed_height_320">
                 <div class="x_title">
-                      <h4>Recommended Gas Prices / Predicted Wait Times </br> <small> (based on current network conditions)</small></h4>
+                      <h4>Recommended Gas Prices</br> <small> (based on current network conditions)</small></h4>
                       <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
@@ -205,32 +205,29 @@
                       <thead>
                         <tr>
                           <th>Speed</th>
-                          <th>Gas Price (gwei)</th>
-                          <th>Transfer Wait (m)</th>
-                          <th>Contract Wait (m)</th>
+                          <th>Gas Price </br> (gwei)</th>
+                          <th>Predicted Wait </br> (minutes)</th>
                         </tr>
                       </thead>
                       <tbody>
                         <tr>
-                          <td style = "color:#1ABB9C"><strong>SafeLow</strong></td>
+                          <td style = "color:#1ABB9C"><strong>SafeLow (<20m)</strong></td>
                           <td style = "color:#1ABB9C" ><?php echo ($gpRecs2['safeLow']) ?></td>
                           <td style = "color:#03586A" ><?php echo ($gpRecs2['safeLowWait']) ?></td>
-                          <td style = "color:#03586A" ><?php echo ($gpRecs2['safeLowWaitC']) ?></td>
                         </tr>
                         <tr>
-                          <td style = "color:#03586A"><strong>Average<strong></td>
+                          <td style = "color:#03586A"><strong>Standard (<5m)<strong></td>
                           <td style = "color:#03586A"><?php echo ($gpRecs2['average']) ?></td>
                           <td style = "color:#03586A" ><?php echo ($gpRecs2['avgWait']) ?></td>
-                          <td style = "color:#03586A" ><?php echo ($gpRecs2['avgWaitC']) ?></td>
                         </tr>
                         <tr>
-                          <td style = "color:red"><strong>Fast<strong></td>
+                          <td style = "color:red"><strong>Fast (<2m)<strong></td>
                           <td style = "color:red"><?php echo ($gpRecs2['fastest']) ?></td>
                           <td style = "color:#03586A" ><?php echo ($gpRecs2['fastWait']) ?></td>
-                          <td style = "color:#03586A" ><?php echo ($gpRecs2['fastWaitC']) ?></td>
                         </tr>
                       </tbody>
                     </table>
+                    <p>Note: Estimates not valid when multiple transactions are batched from the same address or for transactions sent to addresses with many (e.g. > 100) pending transactions</p>
                 </div>
              </div> 
           </div>
