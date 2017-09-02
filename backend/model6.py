@@ -172,8 +172,8 @@ model = sm.OLS(y2, X2)
 results = model.fit()
 print (results.summary())
 
-pdValidate['outlier'] = predictData['confirmTime'] / predictData['prediction']
-pdValidate['outlier2'] = predictData['outlier'].apply(lambda x: 1 if x>2.5 else 0)
+pdValidate['outlier'] = pdValidate['confirmTime'] / pdValidate['prediction']
+pdValidate['outlier2'] = pdValidate['outlier'].apply(lambda x: 1 if x>2.5 else 0)
 
 print ('mean diff')
 print (pdValidate['outlier'].mean())
