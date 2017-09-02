@@ -177,7 +177,6 @@ cursor.execute("SELECT endBlock, gasPrice, sum, expectedWait from validate")
 head = cursor.column_names
 validatePredict = pd.DataFrame(cursor.fetchall())
 validatePredict.columns = head
-validatePredict['gasPrice'] = validatePredict['gasPrice'].apply(lambda x: x*10000)
 
 print (validatePredict)
 
