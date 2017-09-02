@@ -59,8 +59,9 @@ combData = combData.append(predictData)
 
 print ('length after combine')
 print (len(combData))
+with pd.option_context('display.max_columns', None):
+    print(combData)
 
-print (combData)
 combData = combData.dropna(how='any')
 
 print ('length after drop missing')
