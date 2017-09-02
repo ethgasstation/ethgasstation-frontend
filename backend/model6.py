@@ -89,7 +89,7 @@ pdGp3 = predictData[predictData['gp3']==1]
 pdGp4 = predictData[predictData['gp4']==1]
 pdGp5 = predictData[predictData['gp5']==1]
 '''
-pdValidate = pd.DataFrame(predictData[predictData['prediction']>0,:])
+pdValidate = pd.DataFrame(predictData.loc[predictData['prediction']>0,:])
 
 y, X = dmatrices('confirmTime ~ gp1+ gp2+ gp3 + gp4 + dump + ico + txAtAbove', data = predictData, return_type = 'dataframe')
 
