@@ -26,7 +26,7 @@ print (len(predictData))
 
 #print(predictData)
 avgGasLimit = predictData.loc[0, 'gasOffered'] / predictData.loc[0, 'gasOfferedPct']
-predictData.loc[predictData['gasOfferred']>= (avgGasLimit/1.05), 'confirmTime'] = np.nan
+predictData.loc[predictData['gasOffered']>= (avgGasLimit/1.05), 'confirmTime'] = np.nan
 predictData = predictData.dropna(how='any')
 
 print ('cleaned transactions: ')
