@@ -228,8 +228,7 @@ def getAverage():
 def getFastest():
     series = predictTable.loc[predictTable['expectedTime'] <= 2, 'gasPrice']
     fastest = series.min()
-    series2 = predictTable.loc[predictTable['gasPrice']==23, 'expectedTime'].values[0]
-    if (fastest < series2):
+    if fastest <23:
         fastest= 23
     if np.isnan(fastest):
         fastest = 100
