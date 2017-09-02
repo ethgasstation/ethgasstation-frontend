@@ -134,9 +134,8 @@ def validateTx (block, gasPrice, numFrom, numTo):
             sum = sum + dump
         if numTo >=100:
             sum = sum + ico
-        prediction = exp(sum)
+        prediction = np.exp(sum)
         print (prediction)
-        ddd
         return prediction
     else:
         return np.nan
