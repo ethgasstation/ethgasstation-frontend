@@ -97,6 +97,9 @@ pdGp5 = predictData[predictData['gp5']==1]
 '''
 pdValidate = pd.DataFrame(predictData.loc[predictData['prediction']>0,:])
 
+print('pdValidate')
+print (pdValidate)
+
 y, X = dmatrices('confirmTime ~ gp1+ gp2+ gp3 + gp4 + dump + ico + txAtAbove', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
