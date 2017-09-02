@@ -52,7 +52,7 @@ combData['transfer'] = combData['gasOffered'].apply(lambda x: 1 if x ==21000 els
 combData['ico'] = combData['numTo'].apply(lambda x: 1 if x>100 else 0)
 combData['totalTxFee'] = -1
 combData['prediction'] = -1
-combData = combData.drop[['index', 'level_0'], axis=1]
+combData = combData.drop(['index', 'level_0'], axis=1)
 
 print ('length prior to combine')
 print (len(combData))
