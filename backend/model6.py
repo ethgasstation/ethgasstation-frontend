@@ -14,7 +14,7 @@ from patsy import dmatrices
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
 cursor = cnx.cursor()
 
-query = ("SELECT * FROM predictionCombined")
+query = ("SELECT * FROM predictionCombined2")
 cursor.execute(query)
 head = cursor.column_names
 predictData = pd.DataFrame(cursor.fetchall())
@@ -26,13 +26,12 @@ print (len(predictData))
 
 #print(predictData)
 
-predictData['logCTime'] = predictData['confirmTime'].apply(np.log)
-predictData['transfer'] = predictData['gasOffered'].apply(lambda x: 1 if x ==21000 else 0) 
+
 
 print ('numTo median:')
 print (predictData['numTo'].quantile(.5))
 
-print ('numTo 95%')
+print ('numTo 75%')
 print (predictData['numTo'].quantile(.95))
 
 
@@ -41,6 +40,7 @@ print (predictData['numTo'].quantile(.95))
 avgGasLimit = predictData.loc[0, 'gasOffered'] / predictData.loc[0, 'gasOfferedPct']
 transactionGas = float(21000)/avgGasLimit
 
+'''
 quantiles= predictData['gasOfferedPct'].quantile([.5, .75, .9, 1])
 print (transactionGas)
 print(quantiles)
@@ -53,6 +53,7 @@ predictData['gasCat4'] = (predictData['gasOfferedPct']> quantiles[.9]).astype(in
 print('median gasOfferedPct')
 print(transactionGas)
 print(quantiles[.5])
+'''
 
 print('confirmTImes')
 print(predictData['confirmTime'].min())
@@ -83,14 +84,14 @@ predictData['gp3'] = predictData['gasPrice'].apply(lambda x: 1 if (x >=1000 and 
 predictData['gp4'] = predictData['gasPrice'].apply(lambda x: 1 if (x >=4000 and x<23000) else 0)
 predictData['gp5'] = predictData['gasPrice'].apply(lambda x: 1 if x >=23000 else 0)
 
-  
+'''  
 pdGp3 = predictData[predictData['gp3']==1]
 pdGp4 = predictData[predictData['gp4']==1]
 pdGp5 = predictData[predictData['gp5']==1]
+'''
+pdValidate = predictData[predictData['prediction']>0]
 
-
-
-y, X = dmatrices('confirmTime ~ dump + ico + txAtAbove', data = pdGp3, return_type = 'dataframe')
+y, X = dmatrices('confirmTime ~ gp1+ gp2+ gp3 + gp4 + dump + ico + txAtAbove', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
@@ -112,7 +113,7 @@ print(y)
 
 print (y.loc[(y['dump']==0) & (y['gasPrice'] < 1000), ['confirmTime', 'predict', 'gasPrice']])
 
-a, B = dmatrices('confirmTime ~ dump + ico + txAtAbove', data = pdGp4, return_type = 'dataframe')
+a, B = dmatrices('confirmTime ~ gp1+ gp2+ gp3 + gp4 + dump + ico + txAtAbove', data = pdValidate, return_type = 'dataframe')
 
 
 model = sm.GLM(a, B, family=sm.families.Poisson())
@@ -123,7 +124,7 @@ a['predict'] = results.predict()
 print(a[:15])
 print(B[:15])
 
-
+'''
 c, D = dmatrices('confirmTime ~ dump + ico + txAtAbove', data = pdGp5, return_type = 'dataframe')
 
 
@@ -147,9 +148,9 @@ print (results.summary())
 e['predict'] = results.predict()
 print(e[:15])
 print(F[:15])
+'''
 
-
-y1, X1 = dmatrices('logCTime ~ gp1+ gp2+ gp3 + gp4 + txAt + dump + numTo + txAbove', data = predictData, return_type = 'dataframe')
+y1, X1 = dmatrices('logCTime ~ gp1+ gp2+ gp3 + gp4 + txAtAbove + dump + ico', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
@@ -171,7 +172,21 @@ model = sm.OLS(y2, X2)
 results = model.fit()
 print (results.summary())
 
+pdValidate['outlier'] = predictData['confirmTime'] / predictData['prediction']
+pdValidate['outlier2'] = predictData['outlier'].apply(lambda x: 1 if x>2.5 else 0)
 
+print ('mean diff')
+print (pdValidate['outlier'].mean())
+
+print ('>2.5 diff')
+print (pdValidate['outlier2'].sum())
+
+print ('total validation')
+print (len(pdValidate))
+
+
+
+'''
 y3, X3 = dmatrices('logCTime ~ hashPowerAccepting + txAtAbove + dump', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
@@ -181,7 +196,7 @@ model = sm.OLS(y3, X3)
 results = model.fit()
 print (results.summary())
 
-'''
+
 y4, X4 = dmatrices('logCTime ~ hashPowerAccepting + gasOffered', data = predictData, return_type = 'dataframe')
 
 print(y[:5])

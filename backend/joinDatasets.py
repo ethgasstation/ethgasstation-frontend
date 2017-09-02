@@ -48,13 +48,14 @@ head = cursor.column_names
 combData = pd.DataFrame(cursor.fetchall())
 combData.columns = head
 
+'''
 combData['logCTime'] = combData['confirmTime'].apply(np.log)
 combData['transfer'] = combData['gasOffered'].apply(lambda x: 1 if x ==21000 else 0) 
 combData['ico'] = combData['numTo'].apply(lambda x: 1 if x>100 else 0)
 combData['totalTxFee'] = -1
 combData['prediction'] = -1
 combData.loc[combData['totalTxTxP']==0, 'confirmTime'] = np.nan
-
+'''
 print ('length prior to combine')
 print (len(combData))
 
