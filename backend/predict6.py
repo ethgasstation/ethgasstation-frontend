@@ -177,6 +177,8 @@ validatePredict = pd.DataFrame(cursor.fetchall())
 validatePredict.columns = head
 validatePredict['gasPrice'] = validatePredict['gasPrice'].apply(lambda x: x*10000)
 
+print (validatePredict)
+
 #loop to iterate through txpool- need to calculate based on length of txpool table
 
 batch = {
