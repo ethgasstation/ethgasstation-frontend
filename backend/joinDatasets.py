@@ -36,6 +36,7 @@ predictData['ico'] = predictData['numTo'].apply(lambda x: 1 if x>100 else 0)
 predictData['logCTime'] = predictData['confirmTime'].apply(np.log)
 predictData['transfer'] = predictData['gasOffered'].apply(lambda x: 1 if x ==21000 else 0) 
 
+
 predictData.loc[predictData['prediction']==np.nan, 'confirmTime'] = np.nan
 
 predictData = predictData.dropna(how='any')
@@ -52,12 +53,13 @@ combData['transfer'] = combData['gasOffered'].apply(lambda x: 1 if x ==21000 els
 combData['ico'] = combData['numTo'].apply(lambda x: 1 if x>100 else 0)
 combData['totalTxFee'] = -1
 combData['prediction'] = -1
-combData = combData.drop(['index', 'level_0'], axis=1)
+combData.loc[combData['totalTxTxP']==0, 'confirmTime'] = np.nan
 
 print ('length prior to combine')
 print (len(combData))
 
 combData = combData.append(predictData)
+combData = combData.drop(['index', 'level_0'], axis=1)
 
 print ('length after combine')
 print (len(combData))
@@ -69,29 +71,17 @@ combData = combData.dropna(how='any')
 print ('length after drop missing')
 print (len(combData))
 
-ddd
 #combine and save
 engine = create_engine('mysql+mysqlconnector://ethgas:station@127.0.0.1:3306/tx', echo=False) 
 compStart = 0
 compEnd = 20000
-ints = int(len(predictData)/20000)
+ints = int(len(combData)/20000)
 print ('ints ' + str(ints)) 
 for x in range (0, ints):
-    predict1 = pd.DataFrame(predictData.iloc[compStart:compEnd, :])
-    predict1.to_sql(con=engine, name = 'predictionCombined', if_exists='append', index=True)
+    predict1 = pd.DataFrame(combData.iloc[compStart:compEnd, :])
+    predict1.to_sql(con=engine, name = 'predictionCombined2', if_exists='append', index=True)
     compStart = compStart + 20000
     compEnd = compEnd + 20000
 print('compEnd ' + str(compEnd))
-predict1 = pd.DataFrame(predictData.iloc[compStart:, :])
-predict1.to_sql(con=engine, name = 'predictionCombined', if_exists='append', index=True) 
-
-
-query = ("SELECT * FROM predictionCombined")
-cursor.execute(query)
-head = cursor.column_names
-predictData = pd.DataFrame(cursor.fetchall())
-predictData.columns = head
-predictData.loc[predictData['totalTxTxP']==0, 'confirmTime'] = np.nan
-predictData['ico'] = predictData['numTo'].apply(lambda x: 1 if x>100 else 0)
-predictData = predictData.dropna(how='any')
-cursor.close()
+predict1 = pd.DataFrame(combData.iloc[compStart:, :])
+predict1.to_sql(con=engine, name = 'predictionCombined2', if_exists='append', index=True) 
