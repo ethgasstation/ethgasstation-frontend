@@ -25,6 +25,12 @@ print ('cleaned transactions: ')
 print (len(predictData))
 
 #print(predictData)
+avgGasLimit = predictData.loc[0, 'gasOffered'] / predictData.loc[0, 'gasOfferedPct']
+predictData.loc[predictData['gasOfferred']>= (avgGasLimit/1.05), 'confirmTime'] = np.nan
+predictData = predictData.dropna(how='any')
+
+print ('cleaned transactions: ')
+print (len(predictData))
 
 
 
@@ -113,7 +119,7 @@ print(y)
 
 print (y.loc[(y['dump']==0) & (y['gasPrice'] < 1000), ['confirmTime', 'predict', 'gasPrice']])
 
-a, B = dmatrices('confirmTime ~ gp1+ gp2+ gp3 + gp4 + dump + ico + txAtAbove, transfer', data = pdValidate, return_type = 'dataframe')
+a, B = dmatrices('confirmTime ~ gp1+ gp2+ gp3 + gp4 + dump + ico + txAtAbove', data = pdValidate, return_type = 'dataframe')
 
 
 model = sm.GLM(a, B, family=sm.families.Poisson())
