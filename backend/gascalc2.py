@@ -530,6 +530,7 @@ dictResults.update(quantiles)
 dictResults.update(blockTime)
 gpRecs.update(blockTime)
 
+priceTable = priceTable.to_json(orient = 'records')
 predictTable = predictTable.to_json(orient = 'records')
 priceWait = priceWait.to_json(orient = 'records')
 miningTable = txDataMiner.to_json(orient = 'records')
@@ -542,6 +543,7 @@ if not os.path.exists(parentdir + '/json'):
 filepath_calc = parentdir + '/json/calc.json'
 filepath_recs = parentdir + '/json/ethgas.json'
 filepath_pricetable = parentdir + '/json/price.json'
+filepath_predictTable = parentdir + '/json/price3.json'
 filepath_miners = parentdir + '/json/miners.json'
 filepath_gasguzz = parentdir + '/json/gasguzz.json'
 filepath_topMiners = parentdir + '/json/topMiners.json'
@@ -554,6 +556,9 @@ with open(filepath_recs, 'w') as outfile:
     json.dump(gpRecs, outfile)
 
 with open(filepath_pricetable, 'w') as outfile:
+    outfile.write(priceTable)
+
+with open(filepath_predictTable, 'w') as outfile:
     outfile.write(predictTable)
 
 with open(filepath_miners, 'w') as outfile:
@@ -585,6 +590,8 @@ query = ("INSERT INTO txDataLast100b "
 cursor.execute(query, post2)
 cnx.commit()
 
+
+'''
 query = ("SELECT * FROM votes ORDER BY ID DESC LIMIT 2500")
 cursor.execute(query)
 head = cursor.column_names
@@ -660,3 +667,4 @@ with open(filepath_voting, 'w') as outfile:
 
 cursor.close()
 cnx.close()
+'''

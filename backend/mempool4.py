@@ -29,7 +29,7 @@ dictMiner = {
 }
 
 try:
-    url = "http://localhost/json/price.json"
+    url = "http://localhost/json/price3.json"
     response = urllib.urlopen(url)
     hashPower = pd.read_json(response, orient='records')
     response.close()
