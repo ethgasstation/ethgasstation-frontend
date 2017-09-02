@@ -89,7 +89,7 @@ pdGp3 = predictData[predictData['gp3']==1]
 pdGp4 = predictData[predictData['gp4']==1]
 pdGp5 = predictData[predictData['gp5']==1]
 '''
-pdValidate = predictData[predictData['prediction']>0]
+pdValidate = pd.DataFrame(predictData[predictData['prediction']>0,:])
 
 y, X = dmatrices('confirmTime ~ gp1+ gp2+ gp3 + gp4 + dump + ico + txAtAbove', data = predictData, return_type = 'dataframe')
 
@@ -180,6 +180,12 @@ print (pdValidate['outlier'].mean())
 
 print ('>2.5 diff')
 print (pdValidate['outlier2'].sum())
+
+pdValidate['outlier3'] = pdValidate[pdValidate['dump']==0 & pdValidate['ico']==0, 'outlier2']
+
+print ('>2.5 diff no dump no ico')
+print (pdValidate['outlier3'].sum())
+
 
 print ('total validation')
 print (len(pdValidate))
