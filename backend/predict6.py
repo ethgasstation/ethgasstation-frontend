@@ -113,13 +113,13 @@ def numFrom (address):
     return (num + num2)
 
 def validateTx (block, gasPrice, numFrom, numTo):
-    gasPrice = gasPrice * 10
-    if gasPrice < 10000:
-        gasPrice = gasPrice/1000
+    gasPrice = gasPrice / 1000
+    if gasPrice >=1:
         gasPrice = np.floor(gasPrice)
-    elif gasPrice >=10000:
-        gasPrice = gasPrice/10000
+    else:
+        gasPrice = gasPrice*10
         gasPrice = np.floor(gasPrice)
+        gasPrice = gasPrice / float(10)
     print ('roundedGasPrice')
     print (gasPrice)
     print ('block')

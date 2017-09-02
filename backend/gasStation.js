@@ -95,7 +95,7 @@ filter.watch(function(err,blockHash)
         if (currentBlock % 100 === 0 )
         {
             startQuery = currentBlock - 5000;
-            commandString2 = 'python gascalc2.py ' + startQuery + ' ' +  currentBlock;
+            commandString2 = 'python gascalc3.py ' + startQuery + ' ' +  currentBlock;
             launchProcess (commandString2); 
             
         }
