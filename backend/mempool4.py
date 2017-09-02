@@ -152,11 +152,11 @@ predictTable['transfer']=1
 #predictTable['pctLimitGasAtCoeff'] = .0291
 #predictTable['totalTxCoeff'] = .0002
 
-predictTable['intercept'] = .9471
-predictTable['gp1'] = 1.9277
-predictTable['gp2'] = 1.3221
-predictTable['gp3'] = .5899
-predictTable['gp4'] = 0.2544
+predictTable['intercept'] = .9175
+predictTable['gp1'] = 1.9851
+predictTable['gp2'] = 1.3651
+predictTable['gp3'] = 0.6198
+predictTable['gp4'] = 0.2628
 predictTable['txAtAboveCoef']= 0.0005 
 predictTable['numFrom'] = 0
 

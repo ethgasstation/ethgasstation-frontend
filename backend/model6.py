@@ -113,7 +113,7 @@ print(y)
 
 print (y.loc[(y['dump']==0) & (y['gasPrice'] < 1000), ['confirmTime', 'predict', 'gasPrice']])
 
-a, B = dmatrices('confirmTime ~ gp1+ gp2+ gp3 + gp4 + dump + ico + txAtAbove', data = pdValidate, return_type = 'dataframe')
+a, B = dmatrices('confirmTime ~ gp1+ gp2+ gp3 + gp4 + dump + ico + txAtAbove, transfer, totalTxFee', data = pdValidate, return_type = 'dataframe')
 
 
 model = sm.GLM(a, B, family=sm.families.Poisson())
@@ -186,7 +186,7 @@ pdValidate['outlier3'] = pdValidate.loc[(pdValidate['dump']==0) & (pdValidate['i
 print ('>2.5 diff no dump no ico')
 print (pdValidate['outlier3'].sum())
 with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-    print(pdValidate.loc[pdValidate['outlier3']==1, ['prediction', 'confirmTime', 'numTo', 'numFrom', 'gasPrice', 'txAtAbove', 'postedBlock', 'totalTxFee']])
+    print(pdValidate.loc[pdValidate['outlier3']==1, ['prediction', 'confirmTime', 'gasPrice', 'totalTxFee', 'numTo',  'txAtAbove', 'postedBlock']])
 
 print ('total validation')
 print (len(pdValidate))
