@@ -283,7 +283,7 @@ with open(filepath_gpRecs2, 'w') as outfile:
     json.dump(calc2, outfile)
 
 with open(filepath_predictTable, 'w') as outfile:
-    json.dump(predictTableOut, outfile)
+    outfile.write(predictTableOut)
 
 with open(filepath_memPool, 'w') as outfile:
     outfile.write(memPoolTable)
