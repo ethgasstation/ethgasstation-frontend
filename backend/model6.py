@@ -99,7 +99,7 @@ pdValidate = pd.DataFrame(predictData.loc[predictData['prediction']>0,:])
 
 print('pdValidate')
 with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-    print (pdValidate)
+    print (pdValidate['transfer'])
 
 y, X = dmatrices('confirmTime ~ gp1+ gp2+ gp3 + gp4 + dump + ico + txAtAbove', data = predictData, return_type = 'dataframe')
 
@@ -123,7 +123,7 @@ print(y)
 
 print (y.loc[(y['dump']==0) & (y['gasPrice'] < 1000), ['confirmTime', 'predict', 'gasPrice']])
 
-a, B = dmatrices('confirmTime ~ gp1+ gp2+ gp3 + gp4 + dump + ico + txAtAbove', data = pdValidate, return_type = 'dataframe')
+a, B = dmatrices('confirmTime ~ gp1+ gp2+ gp3 + gp4 + dump + ico + txAtAbove + transfer', data = pdValidate, return_type = 'dataframe')
 
 
 model = sm.GLM(a, B, family=sm.families.Poisson())
