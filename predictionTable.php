@@ -81,7 +81,7 @@
               <div class="col-md-8 col-sm-12 col-xs-12">
                 <div class="x_panel tile fixed_height_420">
                   <div class="x_title">
-                    <h4>Predicted Confirm Times By Gas Price At Block <?php echo $predictArray['endBlock'][0]?></h4>
+                    <h4>Predicted Confirm Times By Gas Price At Block <?php echo $predictArray[0]['endBlock']?></h4>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
