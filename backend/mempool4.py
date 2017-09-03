@@ -91,6 +91,9 @@ memPoolAvg = memPoolAvg.drop(['postedBlock', 'tsPosted', 'gasOffered', 'gasPrice
 memPool = pd.concat([memPool, memPoolAvg], axis = 1)
 memPool = memPool.fillna(value=0)
 
+memPool['fee'] = memPool['tx'] * memPool['gasPrice']
+
+totalFee = memPool['fee'].sum()
 print (memPool)
 
 n=100
@@ -181,6 +184,15 @@ for index, row in predictTable.iterrows():
         predictTable.loc[index, 'sum'] = row['gp4']
     else:
         predictTable.loc[index, 'sum'] = row['gp5']
+
+if (totalFee < 45000000):
+    netDemand = 1
+elif totalFee >= 45000000 and totalFee < 95000000:
+    netDemand = 2
+elif totalFee >= 95000000:
+    netDemand = 3
+
+calc2['netDemand'] = netDemand
 
 print(predictTable)
 
