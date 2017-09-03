@@ -107,7 +107,7 @@
                         echo("<td>". round($row['expectedWait']). "</td>");
                         echo("<td>". round($row['expectedTime'],1). "</td>");
                         echo("<td>". round($uci). "</td>");
-                        echo("<td>". round($uciWait). "</td>");
+                        echo("<td>". round($uciWait, 1). "</td>");
                         echo('</tr>');}
 
                       }
