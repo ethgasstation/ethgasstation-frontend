@@ -194,6 +194,7 @@ predictTable['expectedWaitC'] = predictTable['expectedWait'].apply(lambda x: 2 i
 predictTable['expectedTimeC'] = predictTable['expectedWait'].apply(lambda x: x * calc['blockInterval']/60)
 
 predictTable['endBlock'] = endBlock
+predictTable['blockInterval'] = calc['blockInterval']
 
 #uncomment to create validation data
 #predictTable.to_sql(con=engine, name = 'validate', if_exists='append', index=False)
