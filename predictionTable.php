@@ -104,7 +104,7 @@
                         #echo("<td>". round($row['pctTotBlocks'],1). "</td>");
                         echo("<td>". $row['expectedWait']. "</td>");
                         echo("<td>". $uci. "</td>");
-                        echo("<td>". $row['expectedTime. "</td>");
+                        echo("<td>". $row['expectedTime']. "</td>");
                         echo('</tr>');
 
                       }
