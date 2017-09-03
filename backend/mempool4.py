@@ -192,7 +192,7 @@ elif totalFee >= 45000000 and totalFee < 95000000:
 elif totalFee >= 95000000:
     netDemand = 3
 
-calc2['netDemand'] = netDemand
+
 
 print(predictTable)
 
@@ -279,6 +279,7 @@ calc2['safeLowWaitC'] = getConWait(calc2['safeLow'])
 calc2['avgWaitC'] = getConWait(calc2['average'])
 calc2['fastWaitC'] = getConWait(calc2['fastest'])
 calc2['blockNum'] = endBlock
+calc2['netDemand'] = netDemand
 print(calc2)
 
 
