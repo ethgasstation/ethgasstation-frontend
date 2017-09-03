@@ -78,7 +78,7 @@
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="col-md-8 col-sm-12 col-xs-12">
                 <div class="x_panel tile fixed_height_420">
                   <div class="x_title">
                     <h4>Blocks Mined by Minimum Gas Price Accepted</h4>
@@ -98,7 +98,7 @@
                       <tbody>
                       <?php
                       foreach ($predictArray as $row){
-                        if ($row['gasPrice']>=1.0){
+                        if ($row['gasPrice']>=0.5){
                         echo('<tr>');
                         $uci = $row['expectedWait'] * 2.5;
                         echo("<td> ≥ ". $row['gasPrice']. "</td>");
