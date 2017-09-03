@@ -270,15 +270,20 @@ print(calc2)
 
 
 memPoolTable = memPool.to_json(orient = 'records')
+predictTableOut = predictTable.to_json(orient = 'records')
 parentdir = os.path.dirname(os.getcwd())
 if not os.path.exists(parentdir + '/json'):
     os.mkdir(parentdir + '/json')
 filepath_gpRecs2 = parentdir + '/json/ethgasAPI.json'
 filepath_memPool = parentdir + '/json/memPool.json'
+filepath_predictTable = parentdir + '/json/predictTable.json'
 
 
 with open(filepath_gpRecs2, 'w') as outfile:
     json.dump(calc2, outfile)
+
+with open(filepath_predictTable, 'w') as outfile:
+    json.dump(predictTableOut, outfile)
 
 with open(filepath_memPool, 'w') as outfile:
     outfile.write(memPoolTable)
