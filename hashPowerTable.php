@@ -92,7 +92,7 @@
                           <!--<th>% of Total<br>Blocks</th>
                           <th>% of Non-Empty<br>Blocks</th>-->
                           <th>Percent of<br>Total Blocks</th>
-                          #<th>Percent of<br> Non-empty Blocks</th>
+                          <!--<th>Percent of<br> Non-empty Blocks</th>-->
                         </tr>
                       </thead>
                       <tbody>
@@ -102,7 +102,7 @@
                         echo("<td> ≥ ". $row['gasPrice']. "</td>");
                         #echo("<td>". round($row['pctTotBlocks'],1). "</td>");
                         #echo("<td>". round($row['pctTxBlocks'],1). "</td>");
-                        echo("<td>". $row['hashpPct']. "</td>");
+                        echo("<td>". round($row['hashpPct'], 1). "</td>");
                         #echo("<td>". round($row['cumPctTxBlocks'],1). "</td>");
                         echo('</tr>');
 
