@@ -88,10 +88,10 @@
                   <table class="table table-striped">
                       <thead>
                         <tr>
-                          <th>Lowest Gas Price In Block<br>(Gwei)</th>
+                          <th>Lowest Gas Price In Block (Gwei)</th>
                           <!--<th>% of Total<br>Blocks</th>
                           <th>% of Non-Empty<br>Blocks</th>-->
-                          <th>Percent of<br>Total Blocks</th>
+                          <th>Percent of Total Blocks</th>
                           <!--<th>Percent of<br> Non-empty Blocks</th>-->
                         </tr>
                       </thead>
