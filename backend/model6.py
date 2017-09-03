@@ -123,7 +123,7 @@ print(y)
 
 print (y.loc[(y['dump']==0) & (y['gasPrice'] < 1000), ['confirmTime', 'predict', 'gasPrice']])
 
-a, B = dmatrices('confirmTime ~ gp1+ gp2+ gp3 + gp4 + dump + ico + txAtAbove + transfer', data = pdValidate, return_type = 'dataframe')
+a, B = dmatrices('confirmTime ~ gp1+ gp2+ gp3 + gp4 + dump + ico + txAtAbove + totalTxFee', data = pdValidate, return_type = 'dataframe')
 
 
 model = sm.GLM(a, B, family=sm.families.Poisson())
