@@ -90,10 +90,10 @@
                         <tr>
                           <th>Gas Price (Gwei)</th>
                           <!--<th>% of Total<br>Blocks</th>-->
-                          <th>Mean Blocks To Confirm</th>
-                          <th>Mean Time to Confirm (minutes)</th>
-                          <th>99% confidence less than X (blocks)</th>
-                          <th>99% confidence wait time (minutes)</th>
+                          <th>Mean Time To Confirm (Blocks)</th>
+                          <th>Mean Time to Confirm (Minutes)</th>
+                          <th>99% Confidence Confirm Time (Blocks)</th>
+                          <th>99% Confidence Confirm Time (Minutes)</th>
                         </tr>
                       </thead>
                       <tbody>
