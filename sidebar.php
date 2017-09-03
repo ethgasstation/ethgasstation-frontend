@@ -23,6 +23,7 @@
                   <li><a href="gasguzzlers.php"><i class ="fa fa-car"></i>Gas Burners</a></li>
                   <!--<li><a href="minerVotes.php"><i class ="fa fa-thumbs-up"></i>Miner Gas Limit Voting</a></li>-->
                   <li><a href="txpool2.php"><i class ="fa fa-upload"></i>TxPool Monitor</a></li>
+                  <li><a href="predictionTable.php"><i class ="fa fa-cubes"></i>Predict Confirm Time</a></li>
                   <li><a><i class="fa fa-bookmark-o"></i>FAQ<span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="about.php">What Is This Site?</a></li>
