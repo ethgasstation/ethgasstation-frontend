@@ -66,7 +66,7 @@
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
               <ul class="nav navbar-nav navbar-right">
-              <p> Beta </p>
+              <p class="navbar-text navbar-left" style="padding-left: 5px"> Beta </p>
               </ul>
             </nav>
           </div>
