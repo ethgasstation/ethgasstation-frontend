@@ -98,14 +98,15 @@
                       <tbody>
                       <?php
                       foreach ($predictArray as $row){
+                        if ($row['gasPrice']>=1.0){
                         echo('<tr>');
                         $uci = $row['expectedWait'] * 2.5;
                         echo("<td> ≥ ". $row['gasPrice']. "</td>");
                         #echo("<td>". round($row['pctTotBlocks'],1). "</td>");
-                        echo("<td>". $row['expectedWait']. "</td>");
-                        echo("<td>". $uci. "</td>");
-                        echo("<td>". $row['expectedTime']. "</td>");
-                        echo('</tr>');
+                        echo("<td>". round($row['expectedWait']). "</td>");
+                        echo("<td>". round($uci). "</td>");
+                        echo("<td>". round($row['expectedTime'],1). "</td>");
+                        echo('</tr>');}
 
                       }
                       ?>
