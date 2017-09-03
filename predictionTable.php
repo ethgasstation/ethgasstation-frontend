@@ -97,6 +97,7 @@
                       </thead>
                       <tbody>
                       <?php
+                      var_dump($predictArray);
                       foreach ($predictArray as $row){
                         echo('<tr>');
                         $uci = $row['expectedWait'] * 2.5;
