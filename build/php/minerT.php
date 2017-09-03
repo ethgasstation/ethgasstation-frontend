@@ -28,7 +28,7 @@ $priceArray = json_decode($priceString, true);
 
 $predictString = file_get_contents("http://localhost/json/predictTable.json");
 $predictArray = json_decode($predictString, true);
-dump ($predictArray);
+ var_dump($predictArray);
 
 $voteString = file_get_contents("http://localhost/json/minerVotes.json");
 $voteArray = json_decode($voteString, true);
