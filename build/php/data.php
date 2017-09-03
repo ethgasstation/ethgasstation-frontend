@@ -214,7 +214,7 @@ try{
     $aWait = exp($calcParams['Intercept'] + $calcParams['priceCat2']);
     $fWait = exp($calcParams['Intercept'] + $calcParams['priceCat4']);
     $safeLowWait = round($sWait*$calcParams['blockInterval']/60,1);
-    $lowTransfer = $currString . number_format($gpRecs['safeLow']/1e9*21000*$exchangeRate,3);
+    $lowTransfer = $currString . number_format($gpRecs2['safeLow']/1e9*21000*$exchangeRate,3);
     $avgWait = round($aWait*$calcParams['blockInterval']/60,1);
     $fastWait = round($fWait*$calcParams['blockInterval']/60,1);
 } catch (Exception $e){
