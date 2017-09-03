@@ -23,7 +23,7 @@ try{
 $minerString = file_get_contents("http://localhost/json/miners.json");
 $minersArray = json_decode($minerString, true);
 
-$priceString = file_get_contents("http://localhost/json/price.json");
+$priceString = file_get_contents("http://localhost/json/price3.json");
 $priceArray = json_decode($priceString, true);
 
 $voteString = file_get_contents("http://localhost/json/minerVotes.json");
