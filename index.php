@@ -119,9 +119,15 @@
               <div class="count"><?php echo "$gaspricemedian" ?></div>
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-tachometer"></i> Gas Price Low (Gwei)</span>
-              <div class="count green"><?php echo "$gaspricelow" ?></div>
-            </div>
+              <span class="count_top"><i class="fa fa-tachometer"></i> Current Network Demand</span>
+              <?php 
+              if ($gpRecs2['netDemand'] == 1){
+                echo("<div class='count green'>Normal</div>");}
+              elseif (gpRecs2['netDemand'] ==2){
+                echo ("<div class='count red'>High</div>");}
+              elseif (gpRecs2['netDemand'] ==3){
+                  echo ("<div class='count red'>Very High</div>");}
+              ?>
           </div>
           <!-- /top tiles -->
 
