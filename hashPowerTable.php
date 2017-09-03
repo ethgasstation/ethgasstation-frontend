@@ -99,6 +99,7 @@
                       <?php
                       foreach ($priceArray as $row){
                         echo('<tr>');
+                        $row['gasPrice'] = $row['gasPrice']/1000;
                         echo("<td> ≥ ". $row['gasPrice']. "</td>");
                         #echo("<td>". round($row['pctTotBlocks'],1). "</td>");
                         #echo("<td>". round($row['pctTxBlocks'],1). "</td>");
