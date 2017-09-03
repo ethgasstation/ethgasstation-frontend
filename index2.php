@@ -122,11 +122,11 @@
               <span class="count_top"><i class="fa fa-tachometer"></i> Current Network Demand</span>
               <?php 
               if ($gpRecs2['netDemand'] == 1){
-                echo("<div class='count green'>Normal</div>");}
+                echo("<div class='count green'>OK</div>");}
               elseif (gpRecs2['netDemand'] ==2){
-                echo ("<div class='count red'><High></div>");}
+                echo ("<div class='count red'>High</div>");}
               elseif (gpRecs2['netDemand'] ==3){
-                  echo ("<div class='count red'><Very High></div>");}
+                  echo ("<div class='count red'>Very High</div>");}
               ?>
           </div>
           <!-- /top tiles -->
