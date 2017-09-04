@@ -135,7 +135,7 @@
                         <div class="clearfix"></div>
                      </div>
                      <div class="x_content myLine">
-                        <canvas id="lineChart" height="100" width="300" ></canvas> 
+                     <div id="slider"></div>
                         <div class="clearfix"></div> 
                     </div> 
                 </div>
@@ -420,6 +420,10 @@
 
 <!-- Custom Theme Scripts -->
     <script>
+
+  $( function() {
+    $( "#slider" ).slider();
+  } );
 
     //Data for Transaction Count by Gas Price Graph
 
