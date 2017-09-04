@@ -146,11 +146,11 @@
                       <div id="slider2"></div>
                       </br>
                       </br>
-                      <form class="form-horizontal form-label-left input_mask">
-                        <div class="form-group">
+                      <form>
+                        <div>
                           <label class="col-md-3 col-sm-3 col-xs-12">Gas Used<span class="required">*</span></label>
-    
-                            <input type="number" placeholder="21000" id="gas_used">
+                          
+                          <input type="number" placeholder="21000" id="gas_used">
                           
                         </div>
                       </form>
