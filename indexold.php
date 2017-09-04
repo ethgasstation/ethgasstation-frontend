@@ -56,6 +56,7 @@
     <script type="text/javascript" src="speedometer/controls.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
     <style>#slider { margin: 10px; }	</style>
+    <style>#slider2 { margin: 10px; }	</style>
     <script src="//code.jquery.com/jquery-1.12.4.js"></script>
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
