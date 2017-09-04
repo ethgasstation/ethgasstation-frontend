@@ -145,17 +145,23 @@
                       <p>Adjust Desired Confirmation Time</P>
                       <div id="slider2"></div>
                       </br>
-                      <form>
-                        <div>
-                          <label>Gas Used<span class="required">*</span></label>
-                          <input type="number" placeholder="21000" id="gas_used" style="width:80px">
-                          <div>
-                            <label>Avg Time To Confirmation</label>
-                            <input type="number" placeholder="5" id="timeToConfirm" style="width:35px"> 
+                      <form class="form-horizontal form-label-left input_mask">
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Gas Used<span class="required">*</span></label>
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <input type="number" class="form-control" placeholder="21000" id="gas_used">
                           </div>
-                          <div>
-                            <label>Transaction Fee (Fiat)</label>
-                            <input type="number" placeholder="0.005" id="fiatFee" style="width:70px"> 
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Avg Time To Confirmation</label>
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <input type="number" placeholder="5" id="timeToConfirm"> 
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Transaction Fee (Fiat)</label>
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <input type="number" placeholder="0.005" id="fiatFee"> 
                           </div>   
                         </div>
                       </form>
