@@ -149,9 +149,9 @@
                       <form class="form-horizontal form-label-left input_mask">
                         <div class="form-group">
                           <label class="col-md-3 col-sm-3 col-xs-12">Gas Used<span class="required">*</span></label>
-                          <div class="col-md-3 col-sm-4 col-xs-12">
+    
                             <input type="number" placeholder="21000" id="gas_used">
-                          </div>
+                          
                         </div>
                       </form>
                       <div class="clearfix"></div> 
