@@ -137,22 +137,21 @@
                         <h4>Recent Network Activity: <small>Gas Demand / Average Wait Time (100 block intervals)</small></h4>
                         <div class="clearfix"></div>
                      </div>
-                     <div class="x_content myLine">
-                     <div id="slider"></div>
-                     <div class="clearfix"></div>
-                     <div id="slider2"></div>
-                     <div class="clearfix"></div>
-                     </br>
-                     </br>
-                     <form class="form-horizontal form-label-left input_mask">
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Gas Used<span class="required">*</span></label>
-                        <div class="col-md-3 col-sm-4 col-xs-12">
-                          <input type="number" class="form-control" placeholder="21000" id="gas_used">
+                     <div class="x_content">
+                      <div id="slider"></div>
+                      </br>
+                      <div id="slider2"></div>
+                      </br>
+                      </br>
+                      <form class="form-horizontal form-label-left input_mask">
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Gas Used<span class="required">*</span></label>
+                          <div class="col-md-3 col-sm-4 col-xs-12">
+                            <input type="number" class="form-control" placeholder="21000" id="gas_used">
+                          </div>
                         </div>
-                      </div>
                       </form>
-                        <div class="clearfix"></div> 
+                      <div class="clearfix"></div> 
                     </div> 
                 </div>
             </div>
