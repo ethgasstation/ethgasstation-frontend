@@ -149,7 +149,9 @@
                       <form>
                         <div>
                           <label>Gas Used<span class="required">*</span></label>
-                          <input type="number" placeholder="21000" id="gas_used">   
+                          <input type="number" placeholder="21000" id="gas_used">
+                          <label>Avg Time To Confirmation</label>
+                          <input type="number" placeholder="5" id="timeToConfirm">    
                         </div>
                       </form>
                       <div class="clearfix"></div> 
