@@ -135,7 +135,7 @@
              <div class="col-md-8 col-sm-8 col-xs-12">
                  <div class="x_panel tile fixed_height_320">
                      <div class="x_title">
-                        <h4>Recent Network Activity: <small>Gas Demand / Average Wait Time (100 block intervals)</small></h4>
+                        <h4>Dynamic Gas-Time-Price Estimator</h4>
                         <div class="clearfix"></div>
                      </div>
                      <div class="x_content">
@@ -163,13 +163,15 @@
                             <input type="number" class="form-control" placeholder="5" id="timeToConfirm"> 
                           </div>
                         </div>
-
-                        </div>
                         <div class="form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Transaction Fee (Fiat)</label>
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Tx Fee (Fiat)</label>
                           <div class="col-md-3 col-sm-3 col-xs-12">
                             <input type="number" class="form-control" placeholder="0.005" id="fiatFee"> 
-                          </div>   
+                          </div> 
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Tx Fee (ETH)</label>
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <input type="number" class="form-control" placeholder="0.005" id="fiatFee"> 
+                          </div>  
                         </div>
                       </form>
                       <div class="clearfix"></div> 
