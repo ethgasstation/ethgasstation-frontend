@@ -140,6 +140,8 @@
                      <div class="x_content myLine">
                      <div id="slider"></div>
                      </br>
+                     <div id="slider2"></div>
+                     </br>
                      </br>
                      <form class="form-horizontal form-label-left input_mask">
                       <div class="form-group">
@@ -438,6 +440,13 @@
       value: 14,
       max: 110
     });
+
+    
+    $( "#slider2" ).slider({
+      value: 14,
+      max: 110
+    });
+
 
     //Data for Transaction Count by Gas Price Graph
 
