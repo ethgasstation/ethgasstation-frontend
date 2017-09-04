@@ -139,8 +139,10 @@
                         <div class="clearfix"></div>
                      </div>
                      <div class="x_content">
+                      <p>Adjust Gas Price</p>
                       <div id="slider"></div>
                       </br>
+                      <p>Adjust Desired Confirmation Time</P>
                       <div id="slider2"></div>
                       </br>
                       </br>
