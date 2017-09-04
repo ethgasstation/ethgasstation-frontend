@@ -414,7 +414,7 @@
     </div>
 
  <!-- jQuery -->
-    <script src="vendors/jquery/dist/jquery.min.js"></script>
+   <!-- <script src="vendors/jquery/dist/jquery.min.js"></script> -->
  <!-- Bootstrap -->
     <script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
  <!-- Chart.js -->
