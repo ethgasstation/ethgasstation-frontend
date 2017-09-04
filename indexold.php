@@ -425,7 +425,7 @@
     <script>
 
     $( "#slider" ).slider({
-      value: 14
+      value: 14,
       max: 110
     });
 
