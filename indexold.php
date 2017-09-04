@@ -148,10 +148,8 @@
                       </br>
                       <form>
                         <div>
-                          <label class="col-md-3 col-sm-3 col-xs-12">Gas Used<span class="required">*</span></label>
-                          
-                          <input type="number" placeholder="21000" id="gas_used">
-                          
+                          <label>Gas Used<span class="required">*</span></label>
+                          <input type="number" placeholder="21000" id="gas_used">   
                         </div>
                       </form>
                       <div class="clearfix"></div> 
