@@ -144,20 +144,26 @@
                       </br>
                       <form class="form-horizontal form-label-left input_mask">
                         <div class="form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Gas Used<span class="required">*</span></label>
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Gas Price<span class="required">*</span></label>
                           <div class="col-md-3 col-sm-3 col-xs-12">
                             <input type="number" class="form-control" placeholder="21000" id="gas_used">
                           </div>
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Gas Price<span class="required">*</span></label>
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Gas Used<span class="required">*</span></label>
                           <div class="col-md-3 col-sm-3 col-xs-12">
                             <input type="number" class="form-control" placeholder="21000" id="gas_used">
                           </div>
                         </div>
                         <div class="form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Time (avg)</label>
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Avg Time (min)</label>
                           <div class="col-md-3 col-sm-3 col-xs-12">
                             <input type="number" class="form-control" placeholder="5" id="timeToConfirm"> 
                           </div>
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Avg Time (blocks)</label>
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <input type="number" class="form-control" placeholder="5" id="timeToConfirm"> 
+                          </div>
+                        </div>
+
                         </div>
                         <div class="form-group">
                           <label class="control-label col-md-3 col-sm-3 col-xs-12">Transaction Fee (Fiat)</label>
