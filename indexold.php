@@ -145,7 +145,6 @@
                       <p>Adjust Desired Confirmation Time</P>
                       <div id="slider2"></div>
                       </br>
-                      </br>
                       <form>
                         <div>
                           <label>Gas Used<span class="required">*</span></label>
@@ -153,6 +152,10 @@
                           <div>
                             <label>Avg Time To Confirmation</label>
                             <input type="number" placeholder="5" id="timeToConfirm" style="width:35px"> 
+                          </div>
+                          <div>
+                            <label>Transaction Fee (Fiat)</label>
+                            <input type="number" placeholder="0.005" id="fiatFee" style="width:70px"> 
                           </div>   
                         </div>
                       </form>
