@@ -421,9 +421,7 @@
 <!-- Custom Theme Scripts -->
     <script>
 
-  $( function() {
     $( "#slider" ).slider();
-  } );
 
     //Data for Transaction Count by Gas Price Graph
 
