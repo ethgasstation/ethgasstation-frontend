@@ -153,15 +153,15 @@
                           </div>
                         </div>
                         <div class="form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Avg Time To Confirmation</label>
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Time (avg)</label>
                           <div class="col-md-3 col-sm-3 col-xs-12">
-                            <input type="number" placeholder="5" id="timeToConfirm"> 
+                            <input type="number" class="form-control" placeholder="5" id="timeToConfirm"> 
                           </div>
                         </div>
                         <div class="form-group">
                           <label class="control-label col-md-3 col-sm-3 col-xs-12">Transaction Fee (Fiat)</label>
                           <div class="col-md-3 col-sm-3 col-xs-12">
-                            <input type="number" placeholder="0.005" id="fiatFee"> 
+                            <input type="number" class="form-control" placeholder="0.005" id="fiatFee"> 
                           </div>   
                         </div>
                       </form>
