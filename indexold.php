@@ -139,7 +139,6 @@
                      </div>
                      <div class="x_content myLine">
                      <div id="slider"></div>
-                     </br>
                      <div class="clearfix"></div>
                      <div id="slider2"></div>
                      <div class="clearfix"></div>
