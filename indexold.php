@@ -444,7 +444,7 @@
     
     $( "#slider2" ).slider({
       value: 14,
-      max: 110
+      max: 100
     });
 
 
