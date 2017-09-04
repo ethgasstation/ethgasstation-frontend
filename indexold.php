@@ -424,7 +424,10 @@
 <!-- Custom Theme Scripts -->
     <script>
 
-    $( "#slider" ).slider();
+    $( "#slider" ).slider({
+      value: 14
+      max: 110
+    });
 
     //Data for Transaction Count by Gas Price Graph
 
