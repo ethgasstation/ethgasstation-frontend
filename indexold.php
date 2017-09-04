@@ -139,6 +139,14 @@
                      </div>
                      <div class="x_content myLine">
                      <div id="slider"></div>
+                     <form class="form-horizontal form-label-left input_mask">
+                      <div class="form-group">
+                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Gas Used<span class="required">*</span></label>
+                        <div class="col-md-4 col-sm-4 col-xs-12">
+                          <input type="number" class="form-control" placeholder="21000" id="gas_used">
+                        </div>
+                      </div>
+                      </form>
                         <div class="clearfix"></div> 
                     </div> 
                 </div>
