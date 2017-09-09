@@ -9,8 +9,8 @@ import urllib,json
 from sqlalchemy import create_engine 
 
 
-dataset = 'prediction7'
-target = 'prediction7complete'
+dataset = 'prediction8'
+target = 'prediction8complete'
 
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
 cursor = cnx.cursor()

@@ -185,11 +185,11 @@ for index, row in predictTable.iterrows():
     else:
         predictTable.loc[index, 'sum'] = row['gp5']
 
-if (totalFee < 45000000):
+if (totalFee < 45000):
     netDemand = 1
-elif totalFee >= 45000000 and totalFee < 95000000:
+elif totalFee >= 45000 and totalFee < 95000:
     netDemand = 2
-elif totalFee >= 95000000:
+elif totalFee >= 95000:
     netDemand = 3
 
 
@@ -199,12 +199,17 @@ print(predictTable)
 
 predictTable['expectedWait'] = predictTable['sum'].apply(lambda x: np.exp(x))
 predictTable['expectedWait'] = predictTable['expectedWait'].apply(lambda x: 2 if (x < 2) else x)
-predictTable['expectedTime'] = predictTable['expectedWait'].apply(lambda x: x * calc['blockInterval']/60)
+predictTable['expectedWait'] = predictTable['expectedWait'].apply(lambda x: np.round(x))
 
+predictTable['expectedTime'] = predictTable['expectedWait'].apply(lambda x: x * calc['blockInterval']/60)
+predictTable['expectedTime'] = predictTable['expectedTime'].apply(lambda x: np.round(x, decimals=1))
+
+
+'''
 predictTable['expectedWaitC'] = predictTable['sum'].apply(lambda x: np.exp(x))
 predictTable['expectedWaitC'] = predictTable['expectedWait'].apply(lambda x: 2 if (x < 2) else x)
 predictTable['expectedTimeC'] = predictTable['expectedWait'].apply(lambda x: x * calc['blockInterval']/60)
-
+'''
 predictTable['endBlock'] = endBlock
 predictTable['blockInterval'] = calc['blockInterval']
 
@@ -238,7 +243,7 @@ def getAverage():
         average= minHashList.min()
     return (math.ceil(average*100)/100)
 
-def getFastest():
+def getFast():
     series = predictTable.loc[predictTable['expectedTime'] <= 2, 'gasPrice']
     fastest = series.min()
     minHashList = hashPower[hashPower['hashpPct']>=90].index
@@ -247,6 +252,12 @@ def getFastest():
     if np.isnan(fastest):
         fastest = 100
     return (math.ceil(fastest*100)/100)
+
+def getFastest():
+    fastest = predictTable['expectedTime'].min()
+    series = predictTable.loc[predictTable['expectedTime'] == fastest, 'gasPrice']
+    fastest = series.min()
+    return (fastest) 
 
 def getWait(gasPrice):
     if gasPrice<1:
@@ -273,15 +284,17 @@ calc2['safeLow'] = getSafeLow()
 calc2['safeLowWait'] = getWait(calc2['safeLow'])
 calc2['average'] = getAverage()
 calc2['avgWait'] = getWait(calc2['average'])
-calc2['fastest'] = getFastest()
-calc2['fastWait'] = getWait(calc2['fastest'])
-calc2['safeLowWaitC'] = getConWait(calc2['safeLow'])
-calc2['avgWaitC'] = getConWait(calc2['average'])
-calc2['fastWaitC'] = getConWait(calc2['fastest'])
+calc2['fast'] = getFast()
+calc2['fastWait'] = getWait(calc2['fast'])
+#calc2['safeLowWaitC'] = getConWait(calc2['safeLow'])
+#calc2['avgWaitC'] = getConWait(calc2['average'])
+#calc2['fastWaitC'] = getConWait(calc2['fastest'])
 calc2['blockNum'] = endBlock
 calc2['netDemand'] = netDemand
+calc2['fastest'] = getFastest()
 print(calc2)
 
+print ('total fee: ' + str(totalFee))
 
 memPoolTable = memPool.to_json(orient = 'records')
 predictTableOut = predictTable.to_json(orient = 'records')

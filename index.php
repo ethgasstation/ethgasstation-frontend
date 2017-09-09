@@ -123,9 +123,9 @@
               <?php 
               if ($gpRecs2['netDemand'] == 1){
                 echo("<div class='count green'>Normal</div>");}
-              elseif (gpRecs2['netDemand'] ==2){
-                echo ("<div class='count red'>High</div>");}
-              elseif (gpRecs2['netDemand'] ==3){
+              elseif ($gpRecs2['netDemand'] == 2){
+                echo ("<div class='count'>High</div>");}
+              elseif ($gpRecs2['netDemand'] == 3){
                   echo ("<div class='count red'>Very High</div>");}
               ?>
           </div>
@@ -228,7 +228,7 @@
                         </tr>
                         <tr>
                           <td style = "color:red"><strong>Fast (<2m)<strong></td>
-                          <td style = "color:red"><?php echo ($gpRecs2['fastest']) ?></td>
+                          <td style = "color:red"><?php echo ($gpRecs2['fast']) ?></td>
                           <td style = "color:#03586A" ><?php echo ($gpRecs2['fastWait']) ?></td>
                         </tr>
                       </tbody>

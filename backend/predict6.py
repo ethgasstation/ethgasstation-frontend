@@ -17,11 +17,11 @@ from sqlalchemy import create_engine
 # analysis constants
 #setTheseBased on Dataset
 analyzeBlock = {
-    'start' : 4225516,
-    'end' : 4226707
+    'start' : 4247917,
+    'end' : 4249826
 }
 
-lenTxPool = 11528896
+lenTxPool = 10941321
 
 engine = create_engine('mysql+mysqlconnector://ethgas:station@127.0.0.1:3306/tx', echo=False)
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
@@ -283,7 +283,7 @@ for batchloop in range(1, cycles):
     batch['batchEnd'] = batch['batchEnd'] + 100000
     blockStart = blockEnd
     print('remainder ' + str(len(remainder)))
-    predictDataSet.to_sql(con=engine, name = 'prediction7', if_exists='append', index=False)
+    predictDataSet.to_sql(con=engine, name = 'prediction8', if_exists='append', index=False)
     predictDataSet = pd.DataFrame()
 
 

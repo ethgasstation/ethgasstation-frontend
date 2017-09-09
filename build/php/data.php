@@ -207,6 +207,10 @@ try{
     $gpRecsString2 = file_get_contents("http://localhost/json/ethgasAPI.json");
     $gpRecs2 = json_decode($gpRecsString2, true);
 
+    $predictString = file_get_contents("http://localhost/json/predictTable.json");
+    $predictTable = json_decode($predictString, true);
+    $avgRef = $gpRecs2['average']+9;
+
     $calcParamString = file_get_contents("http://localhost/json/calc.json");
     $calcParams = json_decode($calcParamString, true);
 

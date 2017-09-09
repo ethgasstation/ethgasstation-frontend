@@ -98,8 +98,6 @@ pdGp5 = predictData[predictData['gp5']==1]
 pdValidate = pd.DataFrame(predictData.loc[predictData['prediction']>0,:])
 
 print('pdValidate')
-with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-    print (pdValidate['transfer'])
 
 y, X = dmatrices('confirmTime ~ gp1+ gp2+ gp3 + gp4 + dump + ico + txAtAbove', data = predictData, return_type = 'dataframe')
 
@@ -184,6 +182,10 @@ print (results.summary())
 
 pdValidate['outlier'] = pdValidate['confirmTime'] / pdValidate['prediction']
 pdValidate['outlier2'] = pdValidate['outlier'].apply(lambda x: 1 if x>2.5 else 0)
+pdValidate.loc[(pdValidate['outlier']<=3) & (pdValidate['gasPrice']<4000), 'outlier2'] = 0
+pdValidate['normalTx']= (pdValidate['ico']==0) & (pdValidate['dump']==0)
+pdValidate['lowGPnormal'] = (pdValidate['normalTx']==1) & (pdValidate['gasPrice']<4000) & (pdValidate['gasPrice']>=1000)
+
 
 print ('mean diff')
 print (pdValidate['outlier'].mean())
@@ -191,12 +193,21 @@ print (pdValidate['outlier'].mean())
 print ('>2.5 diff')
 print (pdValidate['outlier2'].sum())
 
-pdValidate['outlier3'] = pdValidate.loc[(pdValidate['dump']==0) & (pdValidate['ico']==0), 'outlier2']
-
 print ('>2.5 diff no dump no ico')
-print (pdValidate['outlier3'].sum())
+print (pdValidate.loc[pdValidate['normalTx']==1, 'outlier2'].sum())
+
+print ('total no dump no ico')
+print (pdValidate['normalTx'].sum())
+
+print ('total no dump no ico low gas price outliers')
+print (pdValidate.loc[pdValidate['lowGPnormal']==1, 'outlier2'].sum())
+
+print ('total no dump no ico low gas price')
+print (pdValidate['lowGPnormal'].sum())
+
+
 with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-    print(pdValidate.loc[pdValidate['outlier3']==1, ['prediction', 'confirmTime', 'gasPrice', 'totalTxFee', 'numTo',  'txAtAbove', 'postedBlock']])
+    print(pdValidate.loc[pdValidate['lowGPnormal']==1, ['prediction', 'confirmTime', 'outlier2']])
 
 print ('total validation')
 print (len(pdValidate))

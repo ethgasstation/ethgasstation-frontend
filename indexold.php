@@ -55,10 +55,13 @@
     <script type="text/javascript" src="speedometer/themes/default.js"></script>
     <script type="text/javascript" src="speedometer/controls.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
-    <style>#slider { margin: 10px; }	</style>
-    <style>#slider2 { margin: 10px; }	</style>
+    <style> 
+    #slider { margin: 10px,} 
+    #slider .ui-slider-handle {background: #1ABB9C;}
+    </style>
     <script src="//code.jquery.com/jquery-1.12.4.js"></script>
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
 
   </head>
 
@@ -131,7 +134,7 @@
 
           <div class="row">
 
-          <!-- Network Activity Graph -->
+          <!-- Gas Price Estimator -->
              <div class="col-md-8 col-sm-8 col-xs-12">
                  <div class="x_panel tile fixed_height_320">
                      <div class="x_title">
@@ -139,14 +142,14 @@
                         <div class="clearfix"></div>
                      </div>
                      <div class="x_content">
-                      <p>Adjust Gas Price</p>
+                      <p>Select desired confirmation time</p>
                       <div id="slider"></div>
                       </br>
                       <form class="form-horizontal form-label-left input_mask">
                         <div class="form-group">
                           <label class="control-label col-md-3 col-sm-3 col-xs-12">Gas Price (Gwei)<span class="required">*</span></label>
                           <div class="col-md-3 col-sm-3 col-xs-12">
-                            <input type="number" class="form-control" placeholder="4" id="gas_used">
+                            <input type="number" class="form-control" readonly = "readonly" placeholder=<?php echo ($gpRecs2['average'])?> id="gasPrice">
                           </div>
                           <label class="control-label col-md-3 col-sm-3 col-xs-12">Gas Used<span class="required">*</span></label>
                           <div class="col-md-3 col-sm-3 col-xs-12">
@@ -156,31 +159,31 @@
                         <div class="form-group">
                           <label class="control-label col-md-3 col-sm-3 col-xs-12">Avg Time (min)</label>
                           <div class="col-md-3 col-sm-3 col-xs-12">
-                            <input type="number" class="form-control" placeholder="5" id="timeToConfirm"> 
+                            <input type="number" class="form-control" readonly = "readonly" placeholder= <?php echo ($predictTable[$avgRef]['expectedTime']); ?> id="timeToConfirm"> 
                           </div>
                           <label class="control-label col-md-3 col-sm-3 col-xs-12">Avg Time (blocks)</label>
                           <div class="col-md-3 col-sm-3 col-xs-12">
-                            <input type="number" class="form-control" placeholder="5" id="timeToConfirm"> 
+                            <input type="number" class="form-control" readonly = "readonly" placeholder= <?php echo ($predictTable[$avgRef]['expectedWait']); ?> id="blocksToConfirm"> 
                           </div>
                         </div>
                         <div class="form-group">
                           <label class="control-label col-md-3 col-sm-3 col-xs-12">99% Time (min)</label>
                           <div class="col-md-3 col-sm-3 col-xs-12">
-                            <input type="number" class="form-control" placeholder="5" id="timeToConfirm"> 
+                            <input type="number" class="form-control" readonly = "readonly" placeholder= <?php echo ($predictTable[$avgRef]['expectedTime']*2.5); ?> id="maxTimeToConfirm"> 
                           </div>
                           <label class="control-label col-md-3 col-sm-3 col-xs-12">99% Time (blocks)</label>
                           <div class="col-md-3 col-sm-3 col-xs-12">
-                            <input type="number" class="form-control" placeholder="5" id="timeToConfirm"> 
+                            <input type="number" class="form-control" readonly = "readonly" placeholder= <?php echo ($predictTable[$avgRef]['expectedWait']*2.5); ?> id="maxBlocksToConfirm"> 
                           </div>
                         </div>
                         <div class="form-group">
                           <label class="control-label col-md-3 col-sm-3 col-xs-12">Tx Fee (Fiat)</label>
                           <div class="col-md-3 col-sm-3 col-xs-12">
-                            <input type="number" class="form-control" placeholder="0.005" id="fiatFee"> 
+                            <input type="text" class="form-control" readonly = "readonly" placeholder= <?php $fee = round($gpRecs2['average']*21000/1e9*$exchangeRate, 2); echo($currString . $fee); ?> id="fiatFee"> 
                           </div> 
                           <label class="control-label col-md-3 col-sm-3 col-xs-12">Tx Fee (ETH)</label>
                           <div class="col-md-3 col-sm-3 col-xs-12">
-                            <input type="number" class="form-control" placeholder="0.005" id="fiatFee"> 
+                            <input type="number" class="form-control" readonly = "readonly" placeholder = <?php $fee = $gpRecs2['average']*21000/1e9; echo ($fee); ?> id="ethFee"> 
                           </div>  
                         </div>
                       </form>
@@ -469,16 +472,29 @@
 <!-- Custom Theme Scripts -->
     <script>
 
-    $( "#slider" ).slider({
-      value: 14,
-      max: 110
-    });
-
+    var exchangeRate = <?php echo ($exchangeRate) ?>;
+    var fastest = <?php echo ($gpRecs2['fastest']) ?>;
+    $(document).ready(function(){
+      var predictArray = $.getJSON("predictTable.json");}) 
     
-    $( "#slider2" ).slider({
-      value: 14,
-      max: 100
-    });
+
+      $( "#slider" ).slider({
+        value: <?php echo($avgRef) ?>,
+        min: 1,
+        max: fastest,
+        step: 1,
+        slide: function(event, ui){
+          console.log (predictArray);
+          $("#gasPrice").val(predictArray[ui.value]['gasPrice']);
+          $("#fiatFee").val(ui.value );
+          var fiatFee = exchangeRate * ui.value;
+          $("#ethFee").val(fiatFee);
+
+        }
+      });
+  
+  
+
 
 
     //Data for Transaction Count by Gas Price Graph
