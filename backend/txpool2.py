@@ -40,9 +40,9 @@ cursor.execute("DELETE FROM txpool2  WHERE block < %(dblock)s ", {'dblock': dblo
 cnx.commit()
 cursor.close()
 
-#ALTER TABLE txpool ADD id INT NOT NULL AUTO_INCREMENT PRIMARY KEY
+#ALTER TABLE txpool ADD id INT NOT NULL AUTO_INCREMENT PRIMARY KEY 
 
-#CREATE TABLE txpool (id INT NOT NULL AUTO_INCREMENT, txHash VARCHAR(75), block INT, PRIMARY KEY (id))
+#CREATE TABLE txpool (id INT NOT NULL AUTO_INCREMENT, txHash VARCHAR(75), block INT, PRIMARY KEY (id));
 
 
 

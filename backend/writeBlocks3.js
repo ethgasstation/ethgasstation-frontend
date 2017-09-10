@@ -1,4 +1,5 @@
 //This script writes a single block and its transactions and its uncles to mysql
+//Also calculates blocks min gas price accepted
 
 var Web3 = require('web3');
 var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
@@ -22,9 +23,8 @@ processBlock(blockNumber);
 function processBlock(block)
 {
 
-    function iterTxs(num, txFee, minGP)
+    function iterTxs(num, txFee, gp)
     {
-        
         if (result2.numTx == 0)
         {
             var post = 
@@ -35,7 +35,6 @@ function processBlock(block)
                 emptyBlock: true,
                 tsMined: ts,
                 emptyBlock: true,
-                minGasPrice: null
             }
             connection.query('INSERT INTO minedtransactions SET ?', [post], function(err, out)
             {
@@ -51,9 +50,9 @@ function processBlock(block)
         else if (num < result2.numTx)
         {
             result2.blockFee = result2.blockFee + (txFee/1e7);
-            if (minGP){
-                if (result2.minGP > minGP){
-                    result2.minGP = minGP;
+            if (gp){
+                if (gp < result2.minGasPrice){
+                    result2.minGasPrice = gp;
                 }
             }
             processTx(result.transactions[num], num, result2.blockFee);
@@ -62,12 +61,12 @@ function processBlock(block)
         else
         {
             result2.blockFee = result2.blockFee + (txFee/1e7);
-            if (minGP){
-                if (result2.minGP > minGP){
-                    result2.minGP = minGP;
+            if (gp){
+                if (gp < result2.minGasPrice){
+                    result2.minGasPrice = gp;
                 }
             }
-            console.log(result2.blockFee);
+            console.log(result2.minGasPrice);
             connection.query('INSERT INTO speedo2 SET ?', [result2], function(err, out)
             {
                 iterUncs();
@@ -81,11 +80,14 @@ function processBlock(block)
     {
         console.log(num);
         var gasPrice = txObj.gasPrice.toString(10);
-        gasPrice = gasPrice/1e6; //convert to Gwei
+        gasPrice = gasPrice/1e6; //convert to Mwei
+        if (num==0){
+            result2.minGasPrice = gasPrice;
+        }
         var gasPriceCat = getGasPriceCat(gasPrice);
         var txReceipt = web3.eth.getTransactionReceipt(txObj.hash);
         fee = txReceipt.gasUsed * gasPrice;
-        console.log(fee);
+        console.log('gasPrice ' + gasPrice);
         var post = 
         {
             txHash: txObj.hash,
@@ -157,7 +159,7 @@ function processBlock(block)
     var uncsReported = result.uncles.length;
     result2.main = 1;
     result2.uncle = 0;
-    result2.minGasPrice = 0;
+    result2.minGasPrice = null;
     result2.speed = result.gasUsed/result.gasLimit;
     result2.numTx = result.transactions.length;
     result2.blockNum = result.number;
@@ -169,7 +171,6 @@ function processBlock(block)
     if (result2.numTx == 0)
     {
         result2.blockFee = 0;
-        result2.minGasPrice = null;
         connection.query('INSERT INTO speedo2 SET ?', [result2], function(err, out)
         {
             if (err)

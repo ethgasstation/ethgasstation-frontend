@@ -74,10 +74,10 @@ filter.watch(function(err,blockHash)
         deleteBlock = block.number - 25;
         if ((writeBlock in blockTime) && (blockProcess[writeBlock]===false))
         {
-            commandString = 'node writeBlocks2.js '+ writeBlock + ' ' + blockTime[writeBlock];
+            commandString = 'node writeBlocks3.js '+ writeBlock + ' ' + blockTime[writeBlock];
             launchProcess(commandString);
             blockProcess[writeBlock] = true; //only process a block once
-            commandString2 = 'python mempool4.py '+ memPoolBlock + ' ' + blockTime[writeBlock];
+            commandString2 = 'python mempool5.py '+ memPoolBlock + ' ' + blockTime[writeBlock];
             launchProcess(commandString2);
             launchProcess('python txpool2.py ' + block.number)
         }  

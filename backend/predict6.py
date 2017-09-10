@@ -1,6 +1,6 @@
-#1) run- gascalcPredict2.py with start - 2000 blocks
-#2) edit analyzeBlock (start, end) and len (txpool)
-#3) edit dbname below
+
+#1) edit analyzeBlock (start, end) and len (txpool)
+#2) edit dbname below
 
 
 import mysql.connector
@@ -17,11 +17,11 @@ from sqlalchemy import create_engine
 # analysis constants
 #setTheseBased on Dataset
 analyzeBlock = {
-    'start' : 4247917,
-    'end' : 4249826
+    'start' : 4255707,
+    'end' : 4256700
 }
 
-lenTxPool = 10941321
+lenTxPool = 1962556
 
 engine = create_engine('mysql+mysqlconnector://ethgas:station@127.0.0.1:3306/tx', echo=False)
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
@@ -47,9 +47,21 @@ def getPctLimitGasBelow (gasPrice):
     seriesGasBelow = currentBlockTxPoolSum.loc[currentBlockTxPoolSum.index < gasPrice, 'pctLimit']
     return (seriesGasBelow.sum())
 
-def getHashPowerAccepting (gasPrice):
-    lower = hashPower.loc[hashPower.index <= gasPrice, 'hashpPct']
-    return (lower.max())
+def getHashPowerAccepting (gasPrice, block):
+    gasPrice = gasPrice/1000
+    if gasPrice >=1:
+        gasPrice = np.floor(gasPrice)
+    else:
+        gasPrice = gasPrice*10
+        gasPrice = np.floor(gasPrice)
+        gasPrice = gasPrice / float(10)
+    if gasPrice > 100:
+        gasPrice = 100
+    if block in validatePredict['endBlock'].values:
+        hpa = validatePredict.loc[(validatePredict['gasPrice']==gasPrice) & (validatePredict['endBlock'] == block), 'hashpPct'].values[0]
+        return hpa
+    else:
+        return np.nan
 
 def totalTxinTxP ():
     return (len(currentBlockTxPool))
@@ -144,16 +156,6 @@ def validateTx (block, gasPrice, numFrom, numTo):
 
 #Load Hash Power table- should be current for analysis set
 
-try:
-    url = "http://localhost/json/price3.json"
-    response = urllib.urlopen(url)
-    hashPower = pd.read_json(response, orient='records')
-    response.close()
-except:
-    print ('error')
-hashPower['hashpPct'] = hashPower['hashpPct'].round().astype(int)
-hashPower = hashPower.set_index('gasPrice', drop=True)
-print (hashPower)
 
 #get all posted transactions in MySql start 10,000 blocks prior to analysis
 
@@ -172,7 +174,7 @@ blockInfo = pd.DataFrame(cursor.fetchall())
 blockInfo.columns = head
 gasLimitAvg = blockInfo['gasLimit'].mean()
 
-cursor.execute("SELECT endBlock, gasPrice, sum, expectedWait from validate")
+cursor.execute("SELECT endBlock, gasPrice, sum, hashpPct, expectedWait from validate")
 head = cursor.column_names
 validatePredict = pd.DataFrame(cursor.fetchall())
 validatePredict.columns = head
@@ -262,7 +264,7 @@ for batchloop in range(1, cycles):
             blockTxs.loc[index, 'pctLimitGasAbove'] = getPctLimitGasAbove(row['gasPrice'])
             blockTxs.loc[index, 'pctLimitGasAt'] = getPctLimitGasAt(row['gasPrice'])
             blockTxs.loc[index, 'pctLimitGasBelow'] = getPctLimitGasBelow(row['gasPrice'])
-            blockTxs.loc[index, 'hashPowerAccepting'] = getHashPowerAccepting(row['gasPrice'])
+            blockTxs.loc[index, 'hashPowerAccepting'] = getHashPowerAccepting(row['gasPrice'], row['postedBlock'])
             blockTxs.loc[index, 'totalTxTxP'] = totalTxinTxP()
             blockTxs.loc[index, 'totalTxFee'] = totalTxFee()
             blockTxs.loc[index, 'totalGasTxP'] = totalGasTxP()
@@ -283,7 +285,7 @@ for batchloop in range(1, cycles):
     batch['batchEnd'] = batch['batchEnd'] + 100000
     blockStart = blockEnd
     print('remainder ' + str(len(remainder)))
-    predictDataSet.to_sql(con=engine, name = 'prediction8', if_exists='append', index=False)
+    predictDataSet.to_sql(con=engine, name = 'prediction9', if_exists='append', index=False)
     predictDataSet = pd.DataFrame()
 
 

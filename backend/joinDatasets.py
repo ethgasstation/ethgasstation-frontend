@@ -8,11 +8,14 @@ import os, subprocess, re
 import urllib,json
 from sqlalchemy import create_engine 
 
+newDataset = 'prediction9complete'
+target = 'predictionNew'
+
 
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
 cursor = cnx.cursor()
 
-query = ("SELECT * FROM prediction7complete")
+query = ("SELECT * FROM %s" % newDataset)
 cursor.execute(query)
 head = cursor.column_names
 predictData = pd.DataFrame(cursor.fetchall())
@@ -41,26 +44,29 @@ predictData.loc[predictData['prediction']==np.nan, 'confirmTime'] = np.nan
 
 predictData = predictData.dropna(how='any')
 
-
+'''
 query = ("SELECT * FROM predictionCombined")
 cursor.execute(query)
 head = cursor.column_names
 combData = pd.DataFrame(cursor.fetchall())
 combData.columns = head
 
-'''
+
 combData['logCTime'] = combData['confirmTime'].apply(np.log)
 combData['transfer'] = combData['gasOffered'].apply(lambda x: 1 if x ==21000 else 0) 
 combData['ico'] = combData['numTo'].apply(lambda x: 1 if x>100 else 0)
 combData['totalTxFee'] = -1
 combData['prediction'] = -1
 combData.loc[combData['totalTxTxP']==0, 'confirmTime'] = np.nan
-'''
+
 print ('length prior to combine')
 print (len(combData))
 
 combData = combData.append(predictData)
 combData = combData.drop(['index', 'level_0'], axis=1)
+'''
+
+combData = predictData
 
 print ('length after combine')
 print (len(combData))
@@ -80,9 +86,9 @@ ints = int(len(combData)/20000)
 print ('ints ' + str(ints)) 
 for x in range (0, ints):
     predict1 = pd.DataFrame(combData.iloc[compStart:compEnd, :])
-    predict1.to_sql(con=engine, name = 'predictionCombined2', if_exists='append', index=True)
+    predict1.to_sql(con=engine, name = target, if_exists='append', index=True)
     compStart = compStart + 20000
     compEnd = compEnd + 20000
 print('compEnd ' + str(compEnd))
 predict1 = pd.DataFrame(combData.iloc[compStart:, :])
-predict1.to_sql(con=engine, name = 'predictionCombined2', if_exists='append', index=True) 
+predict1.to_sql(con=engine, name = target, if_exists='append', index=True) 

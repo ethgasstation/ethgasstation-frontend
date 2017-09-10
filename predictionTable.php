@@ -104,7 +104,7 @@
                         $uciWait = $row['expectedTime'] * 2.5;
                         echo("<td>". $row['gasPrice']. "</td>");
                         #echo("<td>". round($row['pctTotBlocks'],1). "</td>");
-                        echo("<td>". round($row['expectedWait']). "</td>");
+                        echo("<td>". round($row['expectedWait'],1). "</td>");
                         echo("<td>". round($row['expectedTime'],1). "</td>");
                         echo("<td>". round($uci). "</td>");
                         echo("<td>". round($uciWait, 1). "</td>");

@@ -54,6 +54,30 @@
     <script type="text/javascript" src="speedometer/speedometer.js"></script>
     <script type="text/javascript" src="speedometer/themes/default.js"></script>
     <script type="text/javascript" src="speedometer/controls.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <style> 
+    #slider {
+      margin: 10px;} 
+    .ui-slider .ui-slider-handle {
+      background: #1ABB9C;
+      width: 25px;
+      height: 25px;}
+    .ui-slider-horizontal {
+        height: 15px;
+        width: 600px;
+    }
+    .positionable {
+    position: absolute;
+    display: block;
+    left: 70px;
+    top: 20px;
+    margin: 20px;
+    background-color: #F2F5F7;
+    text-align: center;
+  }
+    </style>
+    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 
   </head>
@@ -119,30 +143,70 @@
               <div class="count"><?php echo "$gaspricemedian" ?></div>
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-tachometer"></i> Current Network Demand</span>
-              <?php 
-              if ($gpRecs2['netDemand'] == 1){
-                echo("<div class='count green'>Normal</div>");}
-              elseif ($gpRecs2['netDemand'] == 2){
-                echo ("<div class='count'>High</div>");}
-              elseif ($gpRecs2['netDemand'] == 3){
-                  echo ("<div class='count red'>Very High</div>");}
-              ?>
+              <span class="count_top"><i class="fa fa-tachometer"></i> Gas Price Low (Gwei)</span>
+              <div class="count green"><?php echo "$gaspricelow" ?></div>
+            </div>
           </div>
           <!-- /top tiles -->
 
           <div class="row">
 
-          <!-- Network Activity Graph -->
+          <!-- Gas Price Estimator -->
              <div class="col-md-8 col-sm-8 col-xs-12">
                  <div class="x_panel tile fixed_height_320">
                      <div class="x_title">
-                        <h4>Recent Network Activity: <small>Gas Demand / Average Wait Time (100 block intervals)</small></h4>
+                        <h4>Gas-Time-Price Estimator: <small>For transactions sent at block: <?php echo($predictTable[0]['endBlock']);?></small></h4>
                         <div class="clearfix"></div>
                      </div>
-                     <div class="x_content myLine">
-                        <canvas id="lineChart" height="100" width="300" ></canvas> 
-                        <div class="clearfix"></div> 
+                     <div class="x_content">
+                      <p>Adjust confirmation time</p>
+                      <div id="slider" class="positionable" ></div>
+                      </br>
+                      </br>
+                      <form class="form-horizontal form-label-left input_mask">
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Avg Time (min)</label>
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <input type="number" class="form-control" readonly = "readonly" placeholder= <?php echo ($predictTable[$avgRef]['expectedTime']); ?> id="timeToConfirm"> 
+                          </div>
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Gas Used<span class="required">*</span></label>
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <input type="number" class="form-control" value="21000" id="gas_used">
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">95% Time (min)</label>
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <input type="number" class="form-control" readonly = "readonly" placeholder= <?php echo round(($predictTable[$avgRef]['expectedTime']*2.5),2); ?> id="maxTimeToConfirm"> 
+                          </div>
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Avg Time (blocks)</label>
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <input type="number" class="form-control" readonly = "readonly" placeholder= <?php echo ($predictTable[$avgRef]['expectedWait']); ?> id="blocksToConfirm"> 
+                          </div>
+                          
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Gas Price (Gwei)<span class="required">*</span></label>
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <input type="number" class="form-control" readonly = "readonly" value=<?php echo ($gpRecs2['average'])?> id="gasPrice">
+                          </div>
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">95% Time (blocks)</label>
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <input type="number" class="form-control" readonly = "readonly" placeholder= <?php echo ($predictTable[$avgRef]['expectedWait']*2.5); ?> id="maxBlocksToConfirm"> 
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Tx Fee (Fiat)</label>
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <input type="text" class="form-control" readonly = "readonly" placeholder= <?php $fee = round($gpRecs2['average']*21000/1e9*$exchangeRate, 3); echo($currString . $fee); ?> id="fiatFee"> 
+                          </div> 
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Tx Fee (ETH)</label>
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <input type="number" class="form-control" readonly = "readonly" placeholder = <?php $fee = $gpRecs2['average']*21000/1e9; echo (number_format($fee, 5)); ?> id="ethFee"> 
+                          </div>  
+                        </div>
+                      </form>
+                      <div class="clearfix"></div> 
                     </div> 
                 </div>
             </div>
@@ -200,45 +264,46 @@
 
           <!-- Recommended User Gas Prices-->
            
-             <div class="col-md-4 col-sm-4 col-xs-12">
-              <div class="x_panel tile fixed_height_320">
-                <div class="x_title">
-                      <h4>Recommended Gas Prices</br> <small> (based on current network conditions)</small></h4>
-                      <div class="clearfix"></div>
-                    </div>
-                    <div class="x_content">
-                    <table class="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th>Speed</th>
-                          <th>Gas Price </br> (gwei)</th>
-                          <th>Predicted Wait </br> (minutes)</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td style = "color:#1ABB9C"><strong>SafeLow (<20m)</strong></td>
-                          <td style = "color:#1ABB9C" ><?php echo ($gpRecs2['safeLow']) ?></td>
-                          <td style = "color:#03586A" ><?php echo ($gpRecs2['safeLowWait']) ?></td>
-                        </tr>
-                        <tr>
-                          <td style = "color:#03586A"><strong>Standard (<5m)<strong></td>
-                          <td style = "color:#03586A"><?php echo ($gpRecs2['average']) ?></td>
-                          <td style = "color:#03586A" ><?php echo ($gpRecs2['avgWait']) ?></td>
-                        </tr>
-                        <tr>
-                          <td style = "color:red"><strong>Fast (<2m)<strong></td>
-                          <td style = "color:red"><?php echo ($gpRecs2['fast']) ?></td>
-                          <td style = "color:#03586A" ><?php echo ($gpRecs2['fastWait']) ?></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                    <p>Note: Estimates not valid when multiple transactions are batched from the same address or for transactions sent to addresses with many (e.g. > 100) pending transactions</p>
+          <div class="col-md-4 col-sm-4 col-xs-12">
+          <div class="x_panel tile fixed_height_320">
+            <div class="x_title">
+                  <h4>Recommended Gas Prices</br> <small> (based on current network conditions)</small></h4>
+                  <div class="clearfix"></div>
                 </div>
-             </div> 
-          </div>
-          <div class="clearfix"></div>
-        </div>
+                <div class="x_content">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Speed</th>
+                      <th>Gas Price </br> (gwei)</th>
+                      <th>Predicted Wait </br> (minutes)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style = "color:#1ABB9C"><strong>SafeLow (<20m)</strong></td>
+                      <td style = "color:#1ABB9C" ><?php echo ($gpRecs2['safeLow']) ?></td>
+                      <td style = "color:#03586A" ><?php echo ($gpRecs2['safeLowWait']) ?></td>
+                    </tr>
+                    <tr>
+                      <td style = "color:#03586A"><strong>Standard (<5m)<strong></td>
+                      <td style = "color:#03586A"><?php echo ($gpRecs2['average']) ?></td>
+                      <td style = "color:#03586A" ><?php echo ($gpRecs2['avgWait']) ?></td>
+                    </tr>
+                    <tr>
+                      <td style = "color:red"><strong>Fast (<2m)<strong></td>
+                      <td style = "color:red"><?php echo ($gpRecs2['fast']) ?></td>
+                      <td style = "color:#03586A" ><?php echo ($gpRecs2['fastWait']) ?></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p>Note: Estimates not valid when multiple transactions are batched from the same address or for transactions sent to addresses with many (e.g. > 100) pending transactions</p>
+            </div>
+         </div> 
+      </div>
+      <div class="clearfix"></div>
+    </div>
+
 
         <!-- /Recommended prices -->
 
@@ -418,7 +483,7 @@
     </div>
 
  <!-- jQuery -->
-    <script src="vendors/jquery/dist/jquery.min.js"></script>
+   <!-- <script src="vendors/jquery/dist/jquery.min.js"></script> -->
  <!-- Bootstrap -->
     <script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
  <!-- Chart.js -->
@@ -427,6 +492,53 @@
 
 <!-- Custom Theme Scripts -->
     <script>
+
+    var exchangeRate = <?php echo ($exchangeRate) ?>;
+    var currSymbol = "<?php echo ($currString) ?>"
+
+    $(document).ready(function(){
+      $.ajax({
+        url: "json/predictTable.json",
+		    method: "GET",
+        dataType: "json",
+		    success: function(data) {
+          predictArray = data;
+        }
+      })
+    })
+    
+
+      $( "#slider" ).slider({
+        value: <?php echo($avgRef) ?>,
+        min: <?php echo($minRef) ?>,
+        max: <?php echo($fastestRef) ?>,
+        step: 1,
+        slide: function(event, ui){
+          $("#gasPrice").val(predictArray[ui.value]['gasPrice']);
+          $("#timeToConfirm").val(predictArray[ui.value]['expectedTime']);
+          $("#blocksToConfirm").val(predictArray[ui.value]['expectedWait']);
+          $("#maxTimeToConfirm").val(predictArray[ui.value]['maxWait']);
+          $("#maxBlocksToConfirm").val(predictArray[ui.value]['maxBlocks']);
+          var fiatFee = Math.round(exchangeRate * $("#gasPrice").val() * $("#gas_used").val()/ 1e9 *1000)/1000;
+          fiatString = currSymbol+fiatFee;
+          var ethFee = Math.round($("#gasPrice").val() * $("#gas_used").val()/ 1e9 *100000)/100000;
+          $("#fiatFee").val(fiatString);
+          $("#ethFee").val(ethFee);
+
+        }
+      });
+
+      $("#gas_used").change(function(){
+        var fiatFee = Math.round(exchangeRate * $("#gasPrice").val() * $("#gas_used").val()/ 1e9 *1000)/1000;
+        fiatString = currSymbol+fiatFee;
+        var ethFee = Math.round($("#gasPrice").val() * $("#gas_used").val()/ 1e9 *100000)/100000;
+        $("#fiatFee").val(fiatString);
+        $("#ethFee").val(ethFee);
+      })
+  
+  
+
+
 
     //Data for Transaction Count by Gas Price Graph
 

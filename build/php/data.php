@@ -209,7 +209,19 @@ try{
 
     $predictString = file_get_contents("http://localhost/json/predictTable.json");
     $predictTable = json_decode($predictString, true);
-    $avgRef = $gpRecs2['average']+9;
+
+    function sliderValue ($gasPrice){
+        if ($gasPrice < 1){
+            return ($gasPrice*10);
+        }
+        else{
+            return ($gasPrice+9);
+        }
+    }
+    $avgRef = sliderValue ($gpRecs2['average']);
+    $fastestRef = sliderValue($gpRecs2['fastest']);
+    $minRef = sliderValue($gpRecs2['safeLow']);
+
 
     $calcParamString = file_get_contents("http://localhost/json/calc.json");
     $calcParams = json_decode($calcParamString, true);

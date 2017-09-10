@@ -14,7 +14,7 @@ from patsy import dmatrices
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
 cursor = cnx.cursor()
 
-query = ("SELECT * FROM predictionCombined2")
+query = ("SELECT * FROM predictionNew")
 cursor.execute(query)
 head = cursor.column_names
 predictData = pd.DataFrame(cursor.fetchall())
@@ -96,8 +96,9 @@ pdGp4 = predictData[predictData['gp4']==1]
 pdGp5 = predictData[predictData['gp5']==1]
 '''
 pdValidate = pd.DataFrame(predictData.loc[predictData['prediction']>0,:])
+pdValidate.loc[pdValidate['hashPowerAccepting'] < 1, 'confirmTime']= np.nan
+pdValidate = pdValidate.dropna(how='any')
 
-print('pdValidate')
 
 y, X = dmatrices('confirmTime ~ gp1+ gp2+ gp3 + gp4 + dump + ico + txAtAbove', data = predictData, return_type = 'dataframe')
 
@@ -121,7 +122,7 @@ print(y)
 
 print (y.loc[(y['dump']==0) & (y['gasPrice'] < 1000), ['confirmTime', 'predict', 'gasPrice']])
 
-a, B = dmatrices('confirmTime ~ gp1+ gp2+ gp3 + gp4 + dump + ico + txAtAbove', data = pdValidate, return_type = 'dataframe')
+a, B = dmatrices('confirmTime ~ hashPowerAccepting + dump + ico + txAtAbove', data = pdValidate, return_type = 'dataframe')
 
 
 model = sm.GLM(a, B, family=sm.families.Poisson())
@@ -131,6 +132,20 @@ print (results.summary())
 a['predict'] = results.predict()
 print(a[:15])
 print(B[:15])
+
+
+a['predict'] = results.predict()
+a['gasPrice'] = predictData['gasPrice']
+a['hashPowerAccepting'] = predictData['hashPowerAccepting']
+a['txAbove'] = predictData['txAbove']
+a['txAt'] = predictData['txAt']
+a['numFrom'] = predictData['numFrom']
+a['dump'] = predictData['dump']
+
+print(a)
+
+print (a.loc[(a['dump']==0) & (a['gasPrice'] < 1000), ['confirmTime', 'predict', 'gasPrice']])
+
 
 '''
 c, D = dmatrices('confirmTime ~ dump + ico + txAtAbove', data = pdGp5, return_type = 'dataframe')
@@ -156,7 +171,7 @@ print (results.summary())
 e['predict'] = results.predict()
 print(e[:15])
 print(F[:15])
-'''
+
 
 y1, X1 = dmatrices('logCTime ~ gp1+ gp2+ gp3 + gp4 + txAtAbove + dump + ico', data = predictData, return_type = 'dataframe')
 
@@ -214,7 +229,7 @@ print (len(pdValidate))
 
 
 
-'''
+
 y3, X3 = dmatrices('logCTime ~ hashPowerAccepting + txAtAbove + dump', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
