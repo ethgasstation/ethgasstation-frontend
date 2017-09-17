@@ -2,7 +2,31 @@ import mysql.connector, sys
 
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
 cursor = cnx.cursor()
+
+
+query = ("CREATE TABLE speedo3 ("
+        "id INT NOT NULL AUTO_INCREMENT, " 
+        "blockNum INT, " 
+        "gasUsed INT, "
+        "miner TEXT, "
+        "uncle BOOLEAN, "
+        "main BOOLEAN, "
+        "gasLimit INT, "
+        "numTx INT,"
+        "speed DECIMAL(4,3),"
+        "blockHash TEXT, " 
+        "includedBlockNum INT, "
+        "blockFee INT, " 
+        "minGasPrice INT, "
+        "uncleBlockNum INT, "
+        "uncsReported INT, " 
+        "PRIMARY KEY (id))")
+
+cursor.execute(query)
+
 '''
+
+
 query = ("CREATE TABLE speedo2 ("
         "id INT NOT NULL AUTO_INCREMENT, " 
         "blockNum INT, " 
@@ -183,10 +207,11 @@ query = ("CREATE TABLE transactions (txHash VARCHAR(75), toAddress VARCHAR(75), 
 
 cursor.execute(query)
 
-query = ("CREATE TABLE minedtransactions (txHash VARCHAR(75), minedBlock int, toAddress VARCHAR(50), fromAddress VARCHAR(50), miner text, minedGasPrice INT, minedGasPriceCat INT, gasused INT, blockGasUsed INT, blockGasLimit INT, tsMined INT, emptyBlock BOOLEAN, PRIMARY KEY(txHash))")
+query = ("CREATE TABLE minedtransactions2 (txHash VARCHAR(75), minedBlock int, toAddress VARCHAR(50), fromAddress VARCHAR(50), miner text, minedGasPrice INT, tsMined INT, gasUsed INT, PRIMARY KEY(txHash))")
 
 cursor.execute(query)
-'''
+
+
 query = ("CREATE TABLE votes ("
         "id INT NOT NULL AUTO_INCREMENT,"
         "miner TEXT,"
@@ -202,6 +227,6 @@ cursor.execute(query)
 
 
 
-
+'''
 cursor.close()
 cnx.close()

@@ -8,8 +8,8 @@ import os, subprocess, re
 import urllib,json
 from sqlalchemy import create_engine 
 
-newDataset = 'prediction9complete'
-target = 'predictionNew'
+newDataset = 'prediction1complete'
+target = 'predictionNew2'
 
 
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
@@ -34,6 +34,10 @@ predictData[predictData['confirmTime'] <= 0] = np.nan
 predictData['dump'] = predictData['numFrom'].apply(lambda x: 1 if x>5 else 0)
 predictData.loc[predictData['confirmTime'] >= 200, 'confirmTime'] = 200
 predictData['txAtAbove'] = predictData['txAt'] + predictData['txAbove']
+predictData['dumpAtAbove'] = predictData['dumpAt'] + predictData['dumpAbove']
+predictData['icoAtAbove'] = predictData['icoAt'] + predictData['icoAbove']
+predictData['regAtAbove'] = predictData['txAtAbove'] - predictData['dumpAtAbove'] - predictData['icoAtAbove']
+predictData['batchAtAbove'] = predictData['dumpAtAbove']+ predictData['icoAtAbove']
 predictData.loc[predictData['totalTxTxP']==0, 'confirmTime'] = np.nan
 predictData['ico'] = predictData['numTo'].apply(lambda x: 1 if x>100 else 0)
 predictData['logCTime'] = predictData['confirmTime'].apply(np.log)
@@ -44,27 +48,19 @@ predictData.loc[predictData['prediction']==np.nan, 'confirmTime'] = np.nan
 
 predictData = predictData.dropna(how='any')
 
-'''
-query = ("SELECT * FROM predictionCombined")
+
+query = ("SELECT * FROM %s" % target)
 cursor.execute(query)
 head = cursor.column_names
 combData = pd.DataFrame(cursor.fetchall())
 combData.columns = head
-
-
-combData['logCTime'] = combData['confirmTime'].apply(np.log)
-combData['transfer'] = combData['gasOffered'].apply(lambda x: 1 if x ==21000 else 0) 
-combData['ico'] = combData['numTo'].apply(lambda x: 1 if x>100 else 0)
-combData['totalTxFee'] = -1
-combData['prediction'] = -1
-combData.loc[combData['totalTxTxP']==0, 'confirmTime'] = np.nan
 
 print ('length prior to combine')
 print (len(combData))
 
 combData = combData.append(predictData)
 combData = combData.drop(['index', 'level_0'], axis=1)
-'''
+
 
 combData = predictData
 

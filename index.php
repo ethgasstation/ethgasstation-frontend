@@ -44,8 +44,8 @@
 
 
     <!-- Custom Theme Style -->
-    <link href="build/css/custom.css" rel="stylesheet">
-     <?php include 'build/php/data.php'; ?>
+    
+     <?php include 'build/php/data2.php'; ?>
 
     <script type="text/javascript" src="speedometer/xcanvas.js"></script>
     <script type="text/javascript" src="speedometer/tbe.js"></script>
@@ -55,7 +55,7 @@
     <script type="text/javascript" src="speedometer/themes/default.js"></script>
     <script type="text/javascript" src="speedometer/controls.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
-    <style> 
+   <!-- <style> 
     #slider {
       margin: 10px;} 
     .ui-slider .ui-slider-handle {
@@ -66,6 +66,14 @@
         height: 15px;
         width: 600px;
     }
+    @media only screen 
+    and (min-device-width : 375px) 
+    and (max-device-width : 667px) 
+    and (orientation : portrait) {
+    
+     .ui-slider-horizontal {width:200px} 
+
+    }
     .positionable {
     position: absolute;
     display: block;
@@ -75,10 +83,10 @@
     background-color: #F2F5F7;
     text-align: center;
   }
-    </style>
+    </style>-->
     <script src="//code.jquery.com/jquery-1.12.4.js"></script>
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
+    <link href="build/css/custom.css" rel="stylesheet">
 
   </head>
 
@@ -123,12 +131,20 @@
           <!-- top tiles -->
           <div class="row tile_count">
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-space-shuttle"></i>Median Cost for Transfer</span>
-              <div class="count" id="medTx"><?php echo "$medianfeeDisplay";?></div>
+              <span class="count_top"><i class="fa fa-space-shuttle"></i>Std Cost for Transfer</span>
+              <div class="count" id="medTx"><?php $fee = round($gpRecs2['average']*21000/1e9*$exchangeRate, 3); echo($currString . $fee); ?></div>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-tachometer"></i> Gas Price Std (Gwei)</span>
+              <div class="count"><?php echo ($gpRecs2['average']) ?></div>
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-tachometer"></i> SafeLow Cost for Transfer</span>
               <div class="count green"><?php echo "$lowTransfer" ?></div>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-tachometer"></i> Gas Price SafeLow (Gwei)</span>
+              <div class="count green"><?php echo ($gpRecs2['safeLow']) ?></div>
             </div>
              <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-clock-o"></i> Median Wait (s)</span>
@@ -138,14 +154,8 @@
               <span class="count_top"><i class="fa fa-clock-o"></i> Median Wait (blocks)</span>
               <div class="count"><?php echo "$medianwaitblock" ?></div>
             </div>
-            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-tachometer"></i> Gas Price Mid (Gwei)</span>
-              <div class="count"><?php echo "$gaspricemedian" ?></div>
-            </div>
-            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-tachometer"></i> Gas Price Low (Gwei)</span>
-              <div class="count green"><?php echo "$gaspricelow" ?></div>
-            </div>
+            
+            
           </div>
           <!-- /top tiles -->
 
@@ -347,7 +357,7 @@
                         if(array_key_exists ($row['miner'],$minerNames)){
                         $row['miner'] = $minerNames[$row['miner']];}
                         echo("<td>". $row['miner']. "</td>");
-                        echo("<td>". $row['adjustedMinP']. "</td>");
+                        echo("<td>". $row['minGasPrice']. "</td>");
                         echo("<td>". round($row['pctEmp']). "</td>");
                         echo("<td>". round($row['pctTot']). "</td>");
 
@@ -506,7 +516,6 @@
         }
       })
     })
-    
 
       $( "#slider" ).slider({
         value: <?php echo($avgRef) ?>,
@@ -514,6 +523,7 @@
         max: <?php echo($fastestRef) ?>,
         step: 1,
         slide: function(event, ui){
+          console.log(predictArray);
           $("#gasPrice").val(predictArray[ui.value]['gasPrice']);
           $("#timeToConfirm").val(predictArray[ui.value]['expectedTime']);
           $("#blocksToConfirm").val(predictArray[ui.value]['expectedWait']);
@@ -548,7 +558,7 @@
 			  var mybarChart = new Chart(ctx, {
 				type: 'bar',
 				data: {
-				  labels: ["<10", "10-20", "20", ">20-30", ">30"],
+				  labels: ["<1", "1-4", "4-20", "20-50", ">50"],
 				  datasets: [{
                     label: "Percent of transactions",  
 					backgroundColor: "#26B99A",
@@ -626,7 +636,7 @@
 			} 
 
       //Data for Network Activity Graph
-      			 
+      /*			 
 			if ($('#lineChart').length ){	
 			
 			  var ctx = document.getElementById("lineChart");
@@ -693,7 +703,7 @@
 });
 
 			
-};
+};*/
 
     //Speedometer
 			  
@@ -702,7 +712,7 @@
               speedometer = new Speedometer ('speedometer', {theme: 'default'});
               speedometer.draw ();
               getSpeed();
-              setInterval(getSpeed,5000);
+              //setInterval(getSpeed,5000);
               
                }
 

@@ -13,6 +13,7 @@ cursor = cnx.cursor()
 
 out = subprocess.check_output(['geth', '--exec', 'JSON.stringify(txpool.content)', 'attach', 'http://localhost:8545'])
 
+
 dict = json.loads(out)
 dict2 = json.loads(dict)
 

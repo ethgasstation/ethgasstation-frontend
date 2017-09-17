@@ -74,7 +74,7 @@ filter.watch(function(err,blockHash)
         deleteBlock = block.number - 25;
         if ((writeBlock in blockTime) && (blockProcess[writeBlock]===false))
         {
-            commandString = 'node writeBlocks3.js '+ writeBlock + ' ' + blockTime[writeBlock];
+            commandString = 'node writeBlocks4.js '+ writeBlock + ' ' + blockTime[writeBlock];
             launchProcess(commandString);
             blockProcess[writeBlock] = true; //only process a block once
             commandString2 = 'python mempool5.py '+ memPoolBlock + ' ' + blockTime[writeBlock];
@@ -95,7 +95,7 @@ filter.watch(function(err,blockHash)
         if (currentBlock % 100 === 0 )
         {
             startQuery = currentBlock - 5000;
-            commandString2 = 'python gascalc2.py ' + startQuery + ' ' +  currentBlock;
+            commandString2 = 'python gascalc3.py ' + startQuery + ' ' +  currentBlock;
             launchProcess (commandString2); 
             
         }

@@ -118,7 +118,7 @@
                         if(array_key_exists ($row['miner'],$minerNames)){
                         $row['miner'] = $minerNames[$row['miner']];}
                         echo("<td>". $row['miner']. "</td>");
-                        echo("<td>". $row['adjustedMinP']. "</td>");
+                        echo("<td>". $row['minGasPrice']. "</td>");
                         echo("<td>". $row['totBlocks']. "</td>");
                         echo("<td>". $row['emptyBlocks']. "</td>");
                         echo("<td>". round($row['pctTot'],1). "</td>");

@@ -117,7 +117,7 @@
                       ?>
                         </tbody>
                     </table>
-                    <p>Note: All transactions posted to the network with a gas price < 20 gwei are monitored for confirmation.  If one does not confirm in 200 blocks, the 'Safe Low' gas price is updated to either 1) a gas price higher than the one that failed to confirm or 2) a lower priced transaction that was posted and confirmed after the transaction that did not confirm.  If neither is available, it is updated to the average gas price until a new low gas price transaction is posted and mined.</p>
+                    <p>Note: All transactions posted to the network with a gas price < 1 gwei are monitored for confirmation.  If one does not confirm in 200 blocks, the 'Safe Low' gas price is updated to either 1) a gas price higher than the one that failed to confirm or 2) a lower priced transaction that was posted and confirmed after the transaction that did not confirm.  If neither is available, it is updated to the average gas price until a new low gas price transaction is posted and mined.</p>
 
                  </div>
     

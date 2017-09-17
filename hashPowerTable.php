@@ -66,7 +66,7 @@
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
               <ul class="nav navbar-nav navbar-right">
-              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Stats over last 5,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
+              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong>Stats over last 200 blocks - Last update: Block <span style = 'color:#1ABB9C'> <?php echo($predictArray[0]['endBlock']) ?></strong></span>  
               </p>
             </ul>
             </nav>
@@ -97,9 +97,9 @@
                       </thead>
                       <tbody>
                       <?php
-                      foreach ($priceArray as $row){
+                      foreach ($predictArray as $row){
                         echo('<tr>');
-                        $row['gasPrice'] = $row['gasPrice']/1000;
+                        $row['gasPrice'] = $row['gasPrice'];
                         echo("<td>". $row['gasPrice']. "</td>");
                         #echo("<td>". round($row['pctTotBlocks'],1). "</td>");
                         #echo("<td>". round($row['pctTxBlocks'],1). "</td>");

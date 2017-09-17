@@ -45,9 +45,39 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.css" rel="stylesheet">
-     <?php include 'build/php/datacalc.php'; ?>
+     <?php include 'build/php/data.php'; ?>
 
-   
+    <script type="text/javascript" src="speedometer/xcanvas.js"></script>
+    <script type="text/javascript" src="speedometer/tbe.js"></script>
+
+    <script type="text/javascript" src="speedometer/digitaldisplay.js"></script>
+    <script type="text/javascript" src="speedometer/speedometer.js"></script>
+    <script type="text/javascript" src="speedometer/themes/default.js"></script>
+    <script type="text/javascript" src="speedometer/controls.js"></script>
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
+    <style> 
+    #slider {
+      margin: 10px;} 
+    .ui-slider .ui-slider-handle {
+      background: #1ABB9C;
+      width: 25px;
+      height: 25px;}
+    .ui-slider-horizontal {
+        height: 15px;
+        width: 600px;
+    }
+    .positionable {
+    position: absolute;
+    display: block;
+    left: 70px;
+    top: 20px;
+    margin: 20px;
+    background-color: #F2F5F7;
+    text-align: center;
+  }
+    </style>
+    <script src="//code.jquery.com/jquery-1.12.4.js"></script>
+    <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 
   </head>
@@ -55,10 +85,8 @@
   <body class="nav-md">
     <div class="container body">
       <div class="main_container">
+      <?php include 'sidebar.php'; ?>
 
-<!-- Sidebar -->
-
-        <?php include 'sidebar.php'; ?> 
 
         <!-- top navigation -->
         <div class="top_nav">
@@ -80,7 +108,7 @@
                     <li id="cny"><a href="#"> CNY<?php if($currency=='cny'){echo'<span class="pull-right"><i class="fa fa-check"></i></span>';}?></a></li>
                   </ul>
                 </li>
-                <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Estimates over last 5,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
+              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Estimates over last 5,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
               </p>
             </ul>
             </nav>
@@ -92,105 +120,315 @@
         <!-- page content -->
         <div class="right_col" role="main">
 
-        
+          <!-- top tiles -->
+          <div class="row tile_count">
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-space-shuttle"></i>Median Cost for Transfer</span>
+              <div class="count" id="medTx"><?php echo "$medianfeeDisplay";?></div>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-tachometer"></i> SafeLow Cost for Transfer</span>
+              <div class="count green"><?php echo "$lowTransfer" ?></div>
+            </div>
+             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-clock-o"></i> Median Wait (s)</span>
+              <div class="count"><?php echo "$medianwaitsec" ?></div>
+            </div>
+             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-clock-o"></i> Median Wait (blocks)</span>
+              <div class="count"><?php echo "$medianwaitblock" ?></div>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-tachometer"></i> Gas Price Mid (Gwei)</span>
+              <div class="count"><?php echo "$gaspricemedian" ?></div>
+            </div>
+            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+              <span class="count_top"><i class="fa fa-tachometer"></i> Gas Price Low (Gwei)</span>
+              <div class="count green"><?php echo "$gaspricelow" ?></div>
+            </div>
+          </div>
+          <!-- /top tiles -->
+
           <div class="row">
-              <div class="col-md-6 col-xs-12">
-                <div class="x_panel">
-                  <div class="x_title">
-                    <h4>Transaction Inputs</h4>
-                    <div class="clearfix"></div>
-                  </div>
-                  <div class="x_content">
-                    <br />
-                    <form class="form-horizontal form-label-left input_mask">
-                      <div class="form-group">
-                        <label class="control-label col-md-3 col-sm-3 col-xs-12">Gas Used<span class="required">*</span></label>
-                        <div class="col-md-9 col-sm-9 col-xs-12">
-                          <input type="number" class="form-control" placeholder="21000" id="gas_used">
-                        </div>
-                      </div>
-                      
-                      <div class="form-group">
-                        <label class="col-md-3 col-sm-3 col-xs-12 control-label">Gas Price<span class="required">*</span></label>
 
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="checkbox">
-                          <label>
-                          <input type="checkbox" class="flat" id="fast"> Fastest
-                          <?php echo ("(".$gasPriceRecs['Fastest']." Gwei)") ?></label>
+          <!-- Gas Price Estimator -->
+             <div class="col-md-8 col-sm-8 col-xs-12">
+                 <div class="x_panel tile fixed_height_320">
+                     <div class="x_title">
+                        <h4>Gas-Time-Price Estimator: <small>For transactions sent at block: <?php echo($predictTable[0]['endBlock']);?></small></h4>
+                        <div class="clearfix"></div>
+                     </div>
+                     <div class="x_content">
+                      <p>Adjust confirmation time</p>
+                      <div id="slider" class="positionable" ></div>
+                      </br>
+                      </br>
+                      <form class="form-horizontal form-label-left input_mask">
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Avg Time (min)</label>
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <input type="number" class="form-control" readonly = "readonly" placeholder= <?php echo ($predictTable[$avgRef]['expectedTime']); ?> id="timeToConfirm"> 
+                          </div>
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Gas Used<span class="required">*</span></label>
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <input type="number" class="form-control" value="21000" id="gas_used">
+                          </div>
                         </div>
-                      <div class="checkbox">
-                        <label>
-                        <input type="checkbox" class="flat" checked="checked" id="avg"> Average
-                        <?php echo ("(".$gasPriceRecs['Average']." Gwei)") ?></label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                        <input type="checkbox" class="flat" id="cheap"> Cheap
-                        <?php echo ("(".$gasPriceRecs['safeLow']." Gwei)") ?></label>
-                    </div>
-                     <div class="checkbox">
-                        <label>
-                        <input type="checkbox" class="flat" id="other"> Other
-                        </label>
-                    </div>
-                    <div>
-                      <input type="number" class="form-control" placeholder="(Gwei)" id="oth_val">
-                    </div>
-                  </div>
-                </div>
-                      <div class="ln_solid"></div>
-                      <div class="form-group">
-                        <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
-						              <button class="btn btn-primary" type="reset" id="reset">Reset</button>
-                          <button type="submit" class="btn btn-success">Submit</button>
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">95% Time (min)</label>
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <input type="number" class="form-control" readonly = "readonly" placeholder= <?php echo round(($predictTable[$avgRef]['expectedTime']*2.5),2); ?> id="maxTimeToConfirm"> 
+                          </div>
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Avg Time (blocks)</label>
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <input type="number" class="form-control" readonly = "readonly" placeholder= <?php echo ($predictTable[$avgRef]['expectedWait']); ?> id="blocksToConfirm"> 
+                          </div>
+                          
                         </div>
-                      </div>
-
-                    </form>
-                  </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Gas Price (Gwei)<span class="required">*</span></label>
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <input type="number" class="form-control" readonly = "readonly" value=<?php echo ($gpRecs2['average'])?> id="gasPrice">
+                          </div>
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">95% Time (blocks)</label>
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <input type="number" class="form-control" readonly = "readonly" placeholder= <?php echo ($predictTable[$avgRef]['expectedWait']*2.5); ?> id="maxBlocksToConfirm"> 
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Tx Fee (Fiat)</label>
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <input type="text" class="form-control" readonly = "readonly" placeholder= <?php $fee = round($gpRecs2['average']*21000/1e9*$exchangeRate, 3); echo($currString . $fee); ?> id="fiatFee"> 
+                          </div> 
+                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Tx Fee (ETH)</label>
+                          <div class="col-md-3 col-sm-3 col-xs-12">
+                            <input type="number" class="form-control" readonly = "readonly" placeholder = <?php $fee = $gpRecs2['average']*21000/1e9; echo (number_format($fee, 5)); ?> id="ethFee"> 
+                          </div>  
+                        </div>
+                      </form>
+                      <div class="clearfix"></div> 
+                    </div> 
                 </div>
             </div>
+          <!-- /network activity graph -->
 
-                 <div class="col-md-6 col-xs-12">
-              <div class="x_panel">
+          <!-- Speedometer -->
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <div class="x_panel tile fixed_height_320">
                 <div class="x_title">
-                  <h4 id="txArgs">Predictions:</h4>
+                  <h4>Real Time Gas Use: <small>% Block Limit (last 10)</small></h4>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                    <div id="speedometer" class="speedometer"></div>
+                    <p id="blockNum">Last Block: </p> 
+                </div>
+              </div>
+            </div>
+          <!--/Speedometer -->
+
+       </div>
+
+       <!-- Transactions by Gas Price -->
+
+        <div class="row">
+
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <div class="x_panel tile fixed_height_320">
+                <div class="x_title">
+                  <h4>Transaction Count by Gas Price</h4>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content myBar">
+                  <canvas id="mybarChart2" height="210" width="300"></canvas>
+                </div>
+              </div>
+            </div>
+        <!-- /Transaction by Gas Price -->
+
+        <!-- Confirmation Time by Gas Price -->
+
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <div class="x_panel tile fixed_height_320 overflow_hidden">
+                <div class="x_title">
+                  <h4>Confirmation Time by Gas Price</h4>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content myBar">
+                        <canvas id="mybarChart" height="210" width="300"> </canvas>
+                  </div>
+                </div>
+              </div>
+
+        <!-- /confirmation time -->
+
+          <!-- Recommended User Gas Prices-->
+           
+          <div class="col-md-4 col-sm-4 col-xs-12">
+          <div class="x_panel tile fixed_height_320">
+            <div class="x_title">
+                  <h4>Recommended Gas Prices</br> <small> (based on current network conditions)</small></h4>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th>Speed</th>
+                      <th>Gas Price </br> (gwei)</th>
+                      <th>Predicted Wait </br> (minutes)</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style = "color:#1ABB9C"><strong>SafeLow (<20m)</strong></td>
+                      <td style = "color:#1ABB9C" ><?php echo ($gpRecs2['safeLow']) ?></td>
+                      <td style = "color:#03586A" ><?php echo ($gpRecs2['safeLowWait']) ?></td>
+                    </tr>
+                    <tr>
+                      <td style = "color:#03586A"><strong>Standard (<5m)<strong></td>
+                      <td style = "color:#03586A"><?php echo ($gpRecs2['average']) ?></td>
+                      <td style = "color:#03586A" ><?php echo ($gpRecs2['avgWait']) ?></td>
+                    </tr>
+                    <tr>
+                      <td style = "color:red"><strong>Fast (<2m)<strong></td>
+                      <td style = "color:red"><?php echo ($gpRecs2['fast']) ?></td>
+                      <td style = "color:#03586A" ><?php echo ($gpRecs2['fastWait']) ?></td>
+                    </tr>
+                  </tbody>
+                </table>
+                <p>Note: Estimates not valid when multiple transactions are batched from the same address or for transactions sent to addresses with many (e.g. > 100) pending transactions</p>
+            </div>
+         </div> 
+      </div>
+      <div class="clearfix"></div>
+    </div>
+
+
+        <!-- /Recommended prices -->
+
+
+  <div class="row">
+
+        <!-- Miner Rankings -->
+
+            <div class="col-md-8 col-sm-12 col-xs-12">
+              <div class="x_panel tile fixed_height_420">
+                <div class="x_title">
+                  <h4>Top 10 Miners by Blocks Mined: <small> Support for user transactions</small></h4>
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
                   <table class="table table-bordered">
                       <thead>
                         <tr>
-                          <th>Outcome</th>
-                          <th></th>
-                
+                          <th>Miner</th>
+                          <th>Lowest gas price (gwei)</th>
+                          <th>% of blocks empty</th>
+                          <th>% of total blocks</th>
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>Mean Time to Confirm (Blocks)</td>
-                          <td id="meanBlocks"></td>
-                        </tr>
-                        <tr>
-                          <td>Mean Time to Confirm (Seconds)</td>
-                          <td id="meanSecs"></td>
-                        </tr>
-                         <tr>
-                          <td>Transaction fee (ETH)</td>
-                          <td id="txEth"></td>
-                        </tr>
-                         <tr>
-                          <td>Transaction fee (Fiat)</td>
-                          <td id="txFiat"></td>
-                        </tr>
-                         
+                        <?php
+                      $minerNames = array(
+    '0xea674fdde714fd979de3edf0f56aa9716b898ec8'=>'Ethermine',
+    '0x1e9939daaad6924ad004c2560e90804164900341'=>'ethfans',
+    '0xb2930b35844a230f00e51431acae96fe543a0347'=>'miningpoolhub',
+    '0x4bb96091ee9d802ed039c4d1a5f6216f90f81b01'=>'Ethpool',
+    '0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5'=>'Nanopool',
+    '0x2a65aca4d5fc5b5c859090a6c34d164135398226'=>'Dwarfpool',
+    '0x829bd824b016326a401d083b33d092293333a830'=>'f2pool',
+    '0xa42af2c70d316684e57aefcc6e393fecb1c7e84e'=>'Coinotron',
+    '0x6c7f03ddfdd8a37ca267c88630a4fee958591de0'=>'alpereum'
+
+                      );
+                      foreach ($topMiners as $row){
+                        echo('<tr>');
+                        if(array_key_exists ($row['miner'],$minerNames)){
+                        $row['miner'] = $minerNames[$row['miner']];}
+                        echo("<td>". $row['miner']. "</td>");
+                        echo("<td>". $row['adjustedMinP']. "</td>");
+                        echo("<td>". round($row['pctEmp']). "</td>");
+                        echo("<td>". round($row['pctTot']). "</td>");
+
+                        echo('</tr>');
+
+                      }
+                      ?>
                       </tbody>
                     </table>
                 </div>
             </div>
         </div>
-      </div>
+
+        <!-- /miner rankings -->
+
+        <!-- Misc Transaction Table -->
+
+            <div class="col-md-4 col-sm-4 col-xs-12">
+              <div class="x_panel tile fixed_height_420">
+                <div class="x_title">
+                  <h4>Misc Stats <small> (Last 2,500 blocks)</small></h4>
+                  <div class="clearfix"></div>
+                </div>
+                <div class="x_content">
+                  <table class="table table-bordered">
+                      <thead>
+                        <tr>
+                          <th>Category</th>
+                          <th>Value</th>
+                        </tr>
+                      </thead>
+                      <tbody> 
+                        <tr>
+                          <td>Cheapest Transfer Fee</td>
+                          <td id="cheapestTransfer"><?php echo '<a href="https://etherscan.io/tx/' .$cheapestTxId.'"'; echo "target=\"_blank\">$cheapestTxDisplay</a>";?></td>
+                    
+                        </tr>
+                        <tr>
+                          <td>Highest Transfer Fee</td>
+                          <td><?php echo '<a href="https://etherscan.io/tx/' .$dearestTxId.'"'."target=\"_blank\">$dearestTxDisplay</a>"?></td>
+                          
+                        </tr>
+                        <tr>
+                          <td>Highest Transaction Fee</td>
+                          <td><?php echo '<a href="https://etherscan.io/tx/' .$dearestConId.'"'."target=\"_blank\" >$dearestConDisplay</a>"?></td>
+                          
+                        </tr>
+                        <tr>
+                          <td>Contracts: Median Gas Per Call</td>
+                          <td><?php echo "$avgContractGas";?></td>
+                        </tr>
+                        <tr>
+                          <td>Contracts: Median Gas Fee</td>
+                          <td><?php echo "$avgConFeeDisplay";?></td>
+                        </tr>
+                        <tr>
+                          <td>Total Transactions (last 10k blocks)</td>
+                          <td><?php echo "$totTx";?></td>
+                        </tr>
+                        <tr>
+                          <td>Total Transfers</td>
+                          <td><?php echo "$totalTransfers"; $perTr =round($totalTransfers/$totTx*100); echo " ("."$perTr"."%)"?></td>
+                        </tr>
+                        <tr>
+                          <td>Total Contract Calls</td>
+                          <td><?php echo "$totalConCalls"; $perCon =round($totalConCalls/$totTx*100); echo " ("."$perCon"."%)"?></td>
+                        </tr>
+                        <tr>
+                          <td>% Empty Blocks</td>
+                          <td><?php echo "$percentEmpty";?></td>
+                        </tr>
+                        <tr>
+                          <td>% Full Blocks</td>
+                          <td><?php echo ($percentFull);?></td>
+                        </tr>
+                      </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- /misc transactions -->
 
@@ -201,6 +439,38 @@
 
         <!-- footer content -->
         <footer>
+          <div class="tip-button">
+             <button type="button" class="btn btn-round btn-success">ETH Tips - Thank you!</button>
+          </div>
+          <div class="message"></div>
+          
+          <script>
+          var tipButton = document.querySelector('.tip-button')
+          renderMessage('Try the safelow gas price with metamask or mist');
+          tipButton.addEventListener('click', function() {
+          if (typeof web3 === 'undefined') {
+          return renderMessage('You need to install MetaMask to use this feature.  https://metamask.io')
+          }
+          var user_address = web3.eth.accounts[0];
+          web3.eth.sendTransaction({
+          to: '0x446fa0c8EaD753c7ABf0B821f90D4338e72De380',
+          from: user_address,
+          value: web3.toWei('.01', 'ether'),
+            }, function (err, transactionHash) {
+              if (err) return renderMessage('Oh no!: ' + err.message)
+
+            // If you get a transactionHash, you can assume it was sent,
+            // or if you want to guarantee it was received, you can poll
+          // for that transaction to be mined first.
+          renderMessage('Thanks!')
+          })
+        })
+        function renderMessage (message) {
+          var messageEl = document.querySelector('.message')
+          messageEl.innerHTML = message
+        }
+
+           </script>
           
           <div class="pull-right">
             Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
@@ -213,7 +483,7 @@
     </div>
 
  <!-- jQuery -->
-    <script src="vendors/jquery/dist/jquery.min.js"></script>
+   <!-- <script src="vendors/jquery/dist/jquery.min.js"></script> -->
  <!-- Bootstrap -->
     <script src="vendors/bootstrap/dist/js/bootstrap.min.js"></script>
  <!-- Chart.js -->
@@ -221,228 +491,292 @@
     
 
 <!-- Custom Theme Scripts -->
-   <script>
+    <script>
 
+    var exchangeRate = <?php echo ($exchangeRate) ?>;
+    var currSymbol = "<?php echo ($currString) ?>"
+
+    $(document).ready(function(){
+      $.ajax({
+        url: "json/predictTable.json",
+		    method: "GET",
+        dataType: "json",
+		    success: function(data) {
+          predictArray = data;
+        }
+      })
+    })
+    
+
+      $( "#slider" ).slider({
+        value: <?php echo($avgRef) ?>,
+        min: <?php echo($minRef) ?>,
+        max: <?php echo($fastestRef) ?>,
+        step: 1,
+        slide: function(event, ui){
+          $("#gasPrice").val(predictArray[ui.value]['gasPrice']);
+          $("#timeToConfirm").val(predictArray[ui.value]['expectedTime']);
+          $("#blocksToConfirm").val(predictArray[ui.value]['expectedWait']);
+          $("#maxTimeToConfirm").val(predictArray[ui.value]['maxWait']);
+          $("#maxBlocksToConfirm").val(predictArray[ui.value]['maxBlocks']);
+          var fiatFee = Math.round(exchangeRate * $("#gasPrice").val() * $("#gas_used").val()/ 1e9 *1000)/1000;
+          fiatString = currSymbol+fiatFee;
+          var ethFee = Math.round($("#gasPrice").val() * $("#gas_used").val()/ 1e9 *100000)/100000;
+          $("#fiatFee").val(fiatString);
+          $("#ethFee").val(ethFee);
+
+        }
+      });
+
+      $("#gas_used").change(function(){
+        var fiatFee = Math.round(exchangeRate * $("#gasPrice").val() * $("#gas_used").val()/ 1e9 *1000)/1000;
+        fiatString = currSymbol+fiatFee;
+        var ethFee = Math.round($("#gasPrice").val() * $("#gas_used").val()/ 1e9 *100000)/100000;
+        $("#fiatFee").val(fiatString);
+        $("#ethFee").val(ethFee);
+      })
+  
+  
+
+
+
+    //Data for Transaction Count by Gas Price Graph
+
+        if ($('#mybarChart2').length ){ 
+			  
+			  var ctx = document.getElementById("mybarChart2");
+			  var mybarChart = new Chart(ctx, {
+				type: 'bar',
+				data: {
+				  labels: ["<10", "10-20", "20", ">20-30", ">30"],
+				  datasets: [{
+                    label: "Percent of transactions",  
+					backgroundColor: "#26B99A",
+					data: <?php echo '[' . $cat1TxPct. ',' . $cat2TxPct . ',' . $cat3TxPct . ',' . $cat4TxPct . ','. $cat5TxPct .']'; ?>
+				  }], 
+				},
+
+				options: {
+                    legend: {
+                        display: false
+                    },
+				  scales: {
+					yAxes: [{
+					  ticks: {
+						beginAtZero: true
+					  },
+						scaleLabel:{
+							display:true,
+							labelString:"% of transactions"
+						}
+					}],
+					xAxes:[{
+						scaleLabel:{
+							display:true,
+							labelString:"Gas price category"
+						}
+
+					}]
+				  }
+				}
+			  });
+        }
+
+        //Data for Confirmation Time by Gas Price Graph
+
+        if ($('#mybarChart').length ){ 
+			  
+			  var ctx = document.getElementById("mybarChart");
+			  var mybarChart = new Chart(ctx, {
+				type: 'bar',
+				data: {
+				  labels: [<?php echo($priceWaitLabels);?>],
+				  datasets: [{
+					label: 'Median Time to Confirm',
+					backgroundColor: "#26B99A",
+					data: [<?php echo($priceWaitData); ?>]
+				  }]
+				},
+
+				options: {
+                    legend: {
+                        display: false
+                    },
+				  scales: {
+					yAxes: [{
+					  ticks: {
+						beginAtZero: true
+					  },
+						scaleLabel:{
+							display:true,
+							labelString:"Time to Confirm (min)"
+						}
+					}],
+					xAxes:[{
+						scaleLabel:{
+							display:true,
+							labelString:"Gas price (gwei)"
+						}
+
+					}]
+				  }
+				}
+			  });
+			  
+			} 
+
+      //Data for Network Activity Graph
+      			 
+			if ($('#lineChart').length ){	
+			
+			  var ctx = document.getElementById("lineChart");
+			  var lineChart = new Chart(ctx, {
+				type: 'line',
+				data: {
+				  labels: <?php echo '[' . $x1. ',' . ' ' . ','. ' '. ','. ' ' . ',' . ' '. ','. $x6 . ',' . ' ' . ','. ' '. ','. ' ' . ',' . ' '. ','. $x11.']'; ?>,
+				  datasets: [{
+					label: "Avg Tx Fees Per Block (ETH)",
+					yAxisID: 'A',
+					backgroundColor: "rgba(38, 185, 154, 0.31)",
+					borderColor: "rgba(38, 185, 154, 0.7)",
+					pointBorderColor: "rgba(38, 185, 154, 0.7)",
+					pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
+					pointHoverBackgroundColor: "#fff",
+					pointHoverBorderColor: "rgba(220,220,220,1)",
+					pointBorderWidth: 1,
+					pointHoverRadius:5,
+					pointHitRadius:10,
+					data:  <?php echo '[' . $ya1. ',' . $ya2 . ',' . $ya3 . ',' . $ya4 . ',' . $ya5 . ',' . $ya6 . ',' . $ya7 .',' . $ya8 . ',' . $ya9 . ',' . $ya10. ',' .$ya11. ']'; ?>
+				  }, {
+					label: "Median Confirm Time (s)",
+					yAxisID: 'B',
+					backgroundColor: "rgba(3, 88, 106, 0.3)",
+					borderColor: "rgba(3, 88, 106, 0.70)",
+					pointBorderColor: "rgba(3, 88, 106, 0.70)",
+					pointBackgroundColor: "rgba(3, 88, 106, 0.70)",
+					pointHoverBackgroundColor: "#fff",
+					pointHoverBorderColor: "rgba(151,187,205,1)",
+					pointBorderWidth: 1,
+					data: <?php echo '[' . $yb1. ',' . $yb2 . ',' . $yb3 . ',' . $yb4 . ',' . $yb5 . ',' . $yb6 . ',' . $yb7 .',' . $yb8 . ',' . $yb9 . ',' . $yb10. ','. $yb11. ']'; ?>
+				  }]
+				},
+				options: {
+                    legend: {
+                        display: false
+                    },
+    			scales: {
+      			yAxes: [{
+       			 id: 'A',
+        		 type: 'linear',
+       			 position: 'left',
+             ticks: {
+							beginAtZero: false },
+						 scaleLabel: {
+							display:true,
+							labelString: 'Avg Tx Fees Per Block (ETH)'	
+						 }
+      }, {
+        		id: 'B',
+        		type: 'linear',
+       			position: 'right',
+						ticks: {
+							beginAtZero: false },
+						scaleLabel: {
+							display:true,
+							labelString: 'Time to confirm (s)'	
+						 }
+					
+        		
+      }]
+    }
+  }
+});
+
+			
+};
+
+    //Speedometer
+			  
+          if ($('#speedometer').length ){
+              var speedometer;
+              speedometer = new Speedometer ('speedometer', {theme: 'default'});
+              speedometer.draw ();
+              getSpeed();
+              setInterval(getSpeed,5000);
+              
+               }
+
+
+          function getSpeed (){
+
+          
+                    $.ajax({
+		                      url: "build/php/speedo.php",
+		                      method: "GET",
+                              dataType: "json",
+		                      success: function(data) {
+			                    var blockNum = data[0]['blockNum'];
+                                var speed = data[1]['average'];
+                                var speedFloat = parseFloat(speed,10) * 100;
+                                var speedInt = Math.round(speedFloat);
+                                updateSpeedo (speedInt,blockNum);
+                                var out = "Last Block: " + blockNum;
+                                $('#blockNum').text(out);
+                                
+                          }               
+                
+                    });
+          };
+
+          function updateSpeedo (speedInt, blockNum){
+
+            var curSpeed = speedometer.value();
+
+            if (curSpeed === speedInt){
+                return;
+
+            } 
+            else {
+                speedometer.animatedUpdate(speedInt,1000);
+            }
+            
+
+
+          }
 
       //Curency Support
       
-            $("#eur").click(function(){     
-                location = "http://ethgasstation.info/calculator.php?curr=eur";                              
+            $("#eur").click(function(){
+                 
+                location = "http://ethgasstation.info/index.php?curr=eur";
+			          
+                                                                     
             });
             
             $("#usd").click(function(){
-                location = "http://ethgasstation.info/calculator.php?curr=usd";
+                 
+                location = "http://ethgasstation.info/index.php?curr=usd";
+			          
+                                                                     
             });
           
             $("#cny").click(function(){
-                location = "http://ethgasstation.info/calculator.php?curr=cny";                                      
+
+                location = "http://ethgasstation.info/index.php?curr=cny";
+                               
+			        
+                                                                     
             });
 
             $("#gbp").click(function(){
-                location = "http://ethgasstation.info/calculator.php?curr=gbp";                       
+                 
+                location = "http://ethgasstation.info/index.php?curr=gbp";
+
+			  
+                                                                     
             });
 
-            $('input.flat').change(function(){
-                $('input.flat').not(this).prop('checked',false);
-            })
-            $('#oth_val').change(function(){
-               $('input.flat').prop('checked',false);
-                $('#other').prop('checked',true);
-            })
-            $('#reset').click(function(){
-              $('#meanBlocks').html("");
-              $('#meanSecs').html("");
-              $('#txEth').html("");
-              $('#txFiat').html("");
-              $('#txArgs').html("Predictions:");
-              $("#oth_val").parent().next(".validation").remove();
-              $("#gas_used").parent().next(".validation").remove();
-            })
-  
-            function estimateWait (gCat, pCat)
-            {
-              paramPriceCat1 = <?php echo ($calcParams['priceCat1']) ?>;
-              paramPriceCat2 = <?php echo ($calcParams['priceCat2']) ?>;
-              paramPriceCat4 = <?php echo ($calcParams['priceCat4']) ?>;
-              paramCons = <?php echo ($calcParams['Intercept']) ?>;
-              paramGasCat2 = <?php echo ($calcParams['gasCat2']) ?>;
-              paramGasCat3 = <?php echo ($calcParams['gasCat3']) ?>;
-              paramGasCat4 = <?php echo ($calcParams['gasCat4']) ?>;
-
-              exp = Math.exp(paramCons + (paramPriceCat1*pCat['cat1']) + (paramPriceCat2*pCat['cat2']) + (paramPriceCat4*pCat['cat4']) + (paramGasCat2*gCat['gas2']) + (paramGasCat3*gCat['gas3']) + (paramGasCat4*gCat['gas4'])); 
-              
-              
-            
-
-              return exp;
-            }
-            
-            function getPriceCats(gasPrice)
-            {
-              pCats= {};
-              if ((gasPrice >= <?php echo($gasPriceRecs['safeLow']) ?>) && (gasPrice < <?php echo($gasPriceRecs['Average']) ?>))
-              {
-                pCats['cat1'] = 1;
-                pCats['cat2'] = 0;
-                pCats['cat4'] = 0;
-              }
-              else if (gasPrice == <?php echo($gasPriceRecs['Average']) ?>)
-              {
-                pCats['cat1'] = 0;
-                pCats['cat2'] = 1;
-                pCats['cat4'] = 0;
-              }
-              else if ((gasPrice > <?php echo($gasPriceRecs['Average']) ?>) && (gasPrice < <?php echo($gasPriceRecs['Fastest']) ?>))
-              {
-                pCats['cat1'] = 0;
-                pCats['cat2'] = 0;
-                pCats['cat4'] = 0;
-              }
-              else if (gasPrice >= <?php echo($gasPriceRecs['Fastest']) ?>)
-              {
-                pCats['cat1'] = 0;
-                pCats['cat2'] = 0;
-                pCats['cat4'] = 1;
-              }
-              return pCats;
-            }
-
-            function getGasUsedCats (gasUsed)
-            { gCats={};
-              if (gasUsed <= 21000)
-              {
-                gCats['gas2']=0;
-                gCats['gas3']=0;
-                gCats['gas4']=0;
-              }
-              else if (gasUsed > 21000 && gasUsed <= <?php echo ($calcParams['75pct'])?>)
-              {
-                gCats['gas2']=1;
-                gCats['gas3']=0;
-                gCats['gas4']=0;
-              }
-              else if (gasUsed > <?php echo ($calcParams['75pct'])?> && gasUsed < <?php echo ($calcParams['90pct'])?>)
-              {
-                gCats['gas2']=0;
-                gCats['gas3']=1;
-                gCats['gas4']=0;
-              }
-              else if (gasUsed >= <?php echo ($calcParams['90pct'])?>)
-              {
-                gCats['gas2']=0;
-                gCats['gas3']=0;
-                gCats['gas4']=1;
-              }
-              return gCats;
-            }
-
-
-            $('form').submit(function(event){
-              
-              //Error Check
-              if(!$('#gas_used').val()){
-                $("#gas_used").parent().next(".validation").remove();
-                txGasUsed = 21000;
-              }
-              else if ($('#gas_used').val() > 4000000){
-                if ($("#gas_used").parent().next(".validation").length == 0){
-                  $string = "<div class='validation' style='color:red;margin-bottom: 20px;'>Please enter gas used less than 4,000,000 (block limit)";
-                  $("#gas_used").parent().after($string);
-                }
-                event.preventDefault(); // prevent form from POST to server
-                $('#gas_used').focus();
-                focusSet = true;
-                return;
-              }
-              else {
-                $("#gas_used").parent().next(".validation").remove();
-                txGasUsed = $('#gas_used').val();
-              }
-              //Gas Used Set - Now find Gas Price
-              if($('#other').prop('checked')===true){
-                otherGasPrice = $('#oth_val').val();
-                if (!otherGasPrice || otherGasPrice < <?php echo($gasPriceRecs['safeLow']) ?>)
-                {
-                    if ($("#oth_val").parent().next(".validation").length == 0){ // only add if not added
-                      $("#oth_val").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;'>Please enter gas price >= <?php echo($gasPriceRecs['Cheapest'])?> gwei</div>");
-                    }
-                    event.preventDefault(); // prevent form from POST to server
-                    $('#oth_val').focus();
-                    focusSet = true;
-                    return;
-                } 
-                else {
-                $("#oth_val").parent().next(".validation").remove();//remove it
-                txGasPrice = $("#oth_val").val();
-                gCats = getGasUsedCats(txGasUsed);
-                pCats = getPriceCats(txGasPrice);
-                blocksWait = estimateWait(gCats, pCats);
-                }
-              }
-              else {
-                if ($('#fast').prop('checked')===true){
-                  txGasPrice = <?php echo($gasPriceRecs['Fastest']) ?>;
-                  gCats = getGasUsedCats(txGasUsed);
-                  pCats = getPriceCats(txGasPrice);
-                  blocksWait = estimateWait(gCats, pCats);
-                }
-                else if ($('#avg').prop('checked')===true){
-                  txGasPrice = <?php echo($gasPriceRecs['Average']) ?>;
-                  gCats = getGasUsedCats(txGasUsed);
-                  pCats = getPriceCats(txGasPrice);
-                  blocksWait = estimateWait(gCats, pCats);
-                  console.log(blocksWait);
-                }
-                else if ($('#cheap').prop('checked')===true){
-                  txGasPrice = <?php echo($gasPriceRecs['safeLow']) ?>;
-                  gCats = getGasUsedCats(txGasUsed);
-                  pCats = getPriceCats(txGasPrice);
-                  blocksWait = estimateWait(gCats, pCats);
-                }
-               $('#oth_val').val("");
-               $("#oth_val").parent().next(".validation").remove();
-              }
-
-              event.preventDefault();
-              txArgs = "Predictions: <small><span style='color:red'> Gas Used = "+ txGasUsed + "; Gas Price = " + txGasPrice + " gwei</span></small>";
-              $('#txArgs').html(txArgs);
-              
-
-              currency = '<?php echo ($currency) ?>';
-              console.log(currency);
-              exchangeRate =<?php echo ($exchangeRate) ?>;
-              blockInterval = <?php echo ($calcParams['blockInterval']) ?>;
-              txMeanSecs = blocksWait * blockInterval;
-              txMeanSecs = Number(txMeanSecs.toFixed(0));
-              blocksWait = Number(blocksWait.toFixed(1));
-      
-              
-              txFeeEth = txGasPrice/1e9 * txGasUsed;
-              txFeeEth = Number((txFeeEth).toFixed(6))
-              txFeeFiat = txFeeEth * exchangeRate;
-              txFeeFiat = Number((txFeeFiat).toFixed(3));
-
-              $('#meanBlocks').html(blocksWait);
-              $('#meanSecs').html(txMeanSecs);
-              $('#txEth').html(txFeeEth);
-              if (currency=='usd'){
-                string="$"+txFeeFiat
-              $('#txFiat').html(string);
-            }
-              else if (currency=='eur'){
-                string="€"+txFeeFiat
-              $('#txFiat').html(string);
-            }
-              else if (currency=='cny'){
-                string="¥"+txFeeFiat
-              $('#txFiat').html(string);
-            }
-              else if (currency=='gbp'){
-                string="£"+txFeeFiat
-              $('#txFiat').html(string);
-            }
-
-          })
+         
 
 
 

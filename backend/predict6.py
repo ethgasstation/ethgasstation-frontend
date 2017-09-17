@@ -17,11 +17,11 @@ from sqlalchemy import create_engine
 # analysis constants
 #setTheseBased on Dataset
 analyzeBlock = {
-    'start' : 4255707,
-    'end' : 4256700
+    'start' : 4260752,
+    'end' : 4263807
 }
 
-lenTxPool = 1962556
+lenTxPool = 3657116
 
 engine = create_engine('mysql+mysqlconnector://ethgas:station@127.0.0.1:3306/tx', echo=False)
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
@@ -76,9 +76,25 @@ def txAbove (gasPrice):
     seriesTxAbove = currentBlockTxPoolSumTx.loc[currentBlockTxPoolSumTx.index > gasPrice, 'txHash']
     return (seriesTxAbove.sum())
 
+def icoAbove (gasPrice):
+    seriesIcoAbove = icoList.loc[icoList.index > gasPrice, 'txHash']
+    return (seriesIcoAbove.sum())
+
+def dumpAbove (gasPrice):
+    seriesDumpAbove = dumpList.loc[dumpList.index > gasPrice, 'txHash']
+    return (seriesDumpAbove.sum())
+
 def txAt (gasPrice):
     seriesTxAt = currentBlockTxPoolSumTx.loc[currentBlockTxPoolSumTx.index == gasPrice, 'txHash']
     return (seriesTxAt.sum())
+
+def icoAt (gasPrice):
+    seriesIcoAt = icoList.loc[icoList.index == gasPrice, 'txHash']
+    return (seriesIcoAt.sum())
+
+def dumpAt (gasPrice):
+    seriesDumpAt = dumpList.loc[dumpList.index == gasPrice, 'txHash']
+    return (seriesDumpAt.sum())
 
 def txBelow (gasPrice):
     seriesTxBelow = currentBlockTxPoolSumTx.loc[currentBlockTxPoolSumTx.index < gasPrice, 'txHash']
@@ -139,8 +155,8 @@ def validateTx (block, gasPrice, numFrom, numTo):
     print ('block')
     print (block)
     if block in validatePredict['endBlock'].values:
-        dump = 1.1163
-        ico = 1.489
+        dump = 0.9496
+        ico = 1.3166
         sum = validatePredict.loc[(validatePredict['gasPrice']==gasPrice) & (validatePredict['endBlock'] == block), 'sum'].values[0]
         if numFrom > 5:
             sum = sum + dump
@@ -221,18 +237,22 @@ for batchloop in range(1, cycles):
         
 
         print(currentBlockTxPoolSum)
-        
 
-        currentBlockTxPoolSumTo = pd.DataFrame(currentBlockTxPool.groupby('toAddress').count())
-
+        currentBlockTxPoolSumTo = currentBlockTxPool.groupby('toAddress').agg({'txHash':'count', 'gasPrice':'median'})
+        currentBlockTxPoolSumTo['ico'] = (currentBlockTxPoolSumTo['txHash']>25)
+        icoList = currentBlockTxPoolSumTo[currentBlockTxPoolSumTo['ico']==1]
+        icoList = icoList.groupby('gasPrice').sum()
         #with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-        print(currentBlockTxPoolSumTo)
-
-        currentBlockTxPoolSumFrom = pd.DataFrame(currentBlockTxPool.groupby('fromAddress').count())
-
-        print(currentBlockTxPoolSumFrom)
+        
+        print(icoList)
         
 
+        currentBlockTxPoolSumFrom = currentBlockTxPool.groupby('fromAddress').agg({'txHash':'count', 'gasPrice':'median'})
+        currentBlockTxPoolSumFrom['dump'] = (currentBlockTxPoolSumFrom['txHash']>25)
+        dumpList = currentBlockTxPoolSumFrom[currentBlockTxPoolSumFrom['dump']==1]
+        dumpList = dumpList.groupby('gasPrice').sum()
+        print(dumpList)
+        
         #get num tx by gas price in Block's txpool
         currentBlockTxPoolSumTx = pd.DataFrame(currentBlockTxPool.groupby('gasPrice').count())
         currentBlockTxPoolSumTx['totalFee'] = currentBlockTxPoolSumTx['txHash'] * currentBlockTxPoolSumTx.index
@@ -269,7 +289,11 @@ for batchloop in range(1, cycles):
             blockTxs.loc[index, 'totalTxFee'] = totalTxFee()
             blockTxs.loc[index, 'totalGasTxP'] = totalGasTxP()
             blockTxs.loc[index, 'txAbove'] = txAbove(row['gasPrice'])
+            blockTxs.loc[index, 'icoAbove'] = icoAbove(row['gasPrice'])
+            blockTxs.loc[index, 'dumpAbove'] = dumpAbove(row['gasPrice'])
             blockTxs.loc[index, 'txAt'] = txAt(row['gasPrice'])
+            blockTxs.loc[index, 'icoAt'] = icoAt(row['gasPrice'])
+            blockTxs.loc[index, 'dumpAt'] = dumpAt(row['gasPrice'])
             blockTxs.loc[index, 'txBelow'] = txBelow(row['gasPrice'])
             numToTemp = numTo(row['toAddress'])
             numFromTemp = numFrom(row['fromAddress'])
@@ -285,7 +309,7 @@ for batchloop in range(1, cycles):
     batch['batchEnd'] = batch['batchEnd'] + 100000
     blockStart = blockEnd
     print('remainder ' + str(len(remainder)))
-    predictDataSet.to_sql(con=engine, name = 'prediction9', if_exists='append', index=False)
+    predictDataSet.to_sql(con=engine, name = 'prediction1', if_exists='append', index=False)
     predictDataSet = pd.DataFrame()
 
 

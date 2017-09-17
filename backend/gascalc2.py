@@ -463,7 +463,7 @@ print(priceWait)
 
 #define gas predictors
 print (gpRecs)
-
+gpRecs['blockInterval'] = blockInterval
 
 if (gpRecs['safeLow'] < gpRecs['Average']):
     txData2['priceCat1'] = ((txData2['minedGasPrice']== gpRecs['safeLow'])).astype(int)

@@ -14,7 +14,7 @@ from patsy import dmatrices
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
 cursor = cnx.cursor()
 
-query = ("SELECT * FROM predictionNew")
+query = ("SELECT * FROM predictionNew2")
 cursor.execute(query)
 head = cursor.column_names
 predictData = pd.DataFrame(cursor.fetchall())
@@ -100,7 +100,7 @@ pdValidate.loc[pdValidate['hashPowerAccepting'] < 1, 'confirmTime']= np.nan
 pdValidate = pdValidate.dropna(how='any')
 
 
-y, X = dmatrices('confirmTime ~ gp1+ gp2+ gp3 + gp4 + dump + ico + txAtAbove', data = predictData, return_type = 'dataframe')
+y, X = dmatrices('confirmTime ~ hashPowerAccepting + dump + ico + txAtAbove', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
@@ -171,9 +171,9 @@ print (results.summary())
 e['predict'] = results.predict()
 print(e[:15])
 print(F[:15])
+'''
 
-
-y1, X1 = dmatrices('logCTime ~ gp1+ gp2+ gp3 + gp4 + txAtAbove + dump + ico', data = predictData, return_type = 'dataframe')
+y1, X1 = dmatrices('logCTime ~ hashPowerAccepting  + regAtAbove +dumpAtAbove + icoAtAbove + dump + ico', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
@@ -186,7 +186,7 @@ y1['confirmTime'] = predictData['confirmTime']
 y1['predictTime'] = y1['predict'].apply(lambda x: np.exp(x))
 
 
-y2, X2 = dmatrices('logCTime ~ gp1 + gp2+ gp3 + gp4 + txAt + dump + txAt', data = predictData, return_type = 'dataframe')
+y2, X2 = dmatrices('logCTime ~ hashPowerAccepting + txAtAbove + dump + ico', data = pdValidate, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
@@ -197,7 +197,7 @@ print (results.summary())
 
 pdValidate['outlier'] = pdValidate['confirmTime'] / pdValidate['prediction']
 pdValidate['outlier2'] = pdValidate['outlier'].apply(lambda x: 1 if x>2.5 else 0)
-pdValidate.loc[(pdValidate['outlier']<=3) & (pdValidate['gasPrice']<4000), 'outlier2'] = 0
+#pdValidate.loc[(pdValidate['outlier']<=3) & (pdValidate['gasPrice']<4000), 'outlier2'] = 0
 pdValidate['normalTx']= (pdValidate['ico']==0) & (pdValidate['dump']==0)
 pdValidate['lowGPnormal'] = (pdValidate['normalTx']==1) & (pdValidate['gasPrice']<4000) & (pdValidate['gasPrice']>=1000)
 
@@ -221,12 +221,12 @@ print ('total no dump no ico low gas price')
 print (pdValidate['lowGPnormal'].sum())
 
 
-with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-    print(pdValidate.loc[pdValidate['lowGPnormal']==1, ['prediction', 'confirmTime', 'outlier2']])
+#with pd.option_context('display.max_rows', None, 'display.max_columns', None):
+    #print(pdValidate.loc[pdValidate['lowGPnormal']==1, ['prediction', 'confirmTime', 'outlier2']])
 
 print ('total validation')
 print (len(pdValidate))
-
+'''
 
 
 

@@ -1110,6 +1110,9 @@ and (max-device-width : 667px)
 and (orientation : landscape) { 
     
     .myBar {width:45%}
+    .ui-slider-horizontal {
+        width: 50%;
+    }
     
 }
 
@@ -1119,6 +1122,9 @@ and (max-device-width : 667px)
 and (orientation : portrait) {
     
      .myBar {width:85%} 
+     .ui-slider-horizontal {
+        width: 50%;
+    }
 
 }
 
@@ -4287,4 +4293,31 @@ ul.notifications {
 
 .dataTables_wrapper > .row{
   overflow:auto !important; /*prevent datatables overflowing its container*/
+}
+#slider {
+    margin: 10px;} 
+  .ui-slider .ui-slider-handle {
+    background: #1ABB9C;
+    width: 25px;
+    height: 25px;}
+  .ui-slider-horizontal {
+      height: 15px;
+      width: 600px;
+  }
+  @media only screen 
+  and (min-device-width : 375px) 
+  and (max-device-width : 667px) 
+  and (orientation : portrait) {
+  
+   .ui-slider-horizontal {width:200px} 
+
+  }
+  .positionable {
+  position: absolute;
+  display: block;
+  left: 70px;
+  top: 20px;
+  margin: 20px;
+  background-color: #F2F5F7;
+  text-align: center;
 }
