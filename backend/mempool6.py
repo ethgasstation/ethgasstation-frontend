@@ -102,7 +102,7 @@ memPoolbyGP = memPoolTx[['txHash', 'gasPrice']].groupby('gasPrice').count()
 #create predict table to speed lookups
 n=100
 k=10
-predictTable = pd.DataFrame({'gasPrice' :  range(10, 1000, 10)})
+predictTable = pd.DataFrame({'gasPrice' :  range(10, 1010, 10)})
 ptable2 = pd.DataFrame({'gasPrice' : range(0, 10, 1)})
 predictTable = predictTable.append(ptable2).reset_index(drop=True)
 predictTable = predictTable.sort_values('gasPrice').reset_index(drop=True)
