@@ -51,7 +51,7 @@ txpoolList = txpool['txHash'].values.astype(str)
 txpoolList2 = txpoolList.tolist()
 
 
-cursor.execute("SELECT blockNum, minGasPrice FROM speedo2 WHERE main = 1 order by ID desc limit 200")
+cursor.execute("SELECT blockNum, minGasPrice, speed FROM speedo2 WHERE main = 1 order by ID desc limit 200")
 head = cursor.column_names
 gpData = pd.DataFrame(cursor.fetchall())
 gpData.columns = head
@@ -59,6 +59,7 @@ txDataHashP = pd.DataFrame(gpData.groupby('minGasPrice').count().reset_index())
 txDataHashP = txDataHashP.rename(columns={'blockNum': 'count'})
 txDataHashP['minGasPrice'] = txDataHashP['minGasPrice'].apply(lambda x: x/float(1000))
 totalBlocks2 = txDataHashP['count'].sum()
+avgSpeed = gpData.loc[:10, 'speed'].mean()
 
 print(txDataHashP)
 
@@ -242,8 +243,6 @@ def getSafeLow():
     #safe = series2.min()
     #print ('safe ')
     #print (safe)
-    print(minHashList.min())
-    print('t' + str(safeLow))
     if (safeLow < minHashList.min()):
         safeLow = minHashList.min()
     print('calc min low')
@@ -312,6 +311,8 @@ calc2['fastWait'] = getWait(calc2['fast'])
 calc2['blockNum'] = endBlock
 calc2['netDemand'] = netDemand
 calc2['fastest'] = getFastest()
+calc2['speed'] = np.round(avgSpeed*100)
+
 print(calc2)
 
 print ('total fee: ' + str(totalFee))

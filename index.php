@@ -55,35 +55,6 @@
     <script type="text/javascript" src="speedometer/themes/default.js"></script>
     <script type="text/javascript" src="speedometer/controls.js"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
-   <!-- <style> 
-    #slider {
-      margin: 10px;} 
-    .ui-slider .ui-slider-handle {
-      background: #1ABB9C;
-      width: 25px;
-      height: 25px;}
-    .ui-slider-horizontal {
-        height: 15px;
-        width: 600px;
-    }
-    @media only screen 
-    and (min-device-width : 375px) 
-    and (max-device-width : 667px) 
-    and (orientation : portrait) {
-    
-     .ui-slider-horizontal {width:200px} 
-
-    }
-    .positionable {
-    position: absolute;
-    display: block;
-    left: 70px;
-    top: 20px;
-    margin: 20px;
-    background-color: #F2F5F7;
-    text-align: center;
-  }
-    </style>-->
     <script src="//code.jquery.com/jquery-1.12.4.js"></script>
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <link href="build/css/custom.css" rel="stylesheet">
@@ -334,7 +305,7 @@
                         <tr>
                           <th>Miner</th>
                           <th>Lowest gas price (gwei)</th>
-                          <th>% of blocks empty</th>
+                          <th>Weighted avg gas price (gwei)</th>
                           <th>% of total blocks</th>
                         </tr>
                       </thead>
@@ -358,7 +329,7 @@
                         $row['miner'] = $minerNames[$row['miner']];}
                         echo("<td>". $row['miner']. "</td>");
                         echo("<td>". $row['minGasPrice']. "</td>");
-                        echo("<td>". round($row['pctEmp']). "</td>");
+                        echo("<td>". round($row['weightedAvgGP']). "</td>");
                         echo("<td>". round($row['pctTot']). "</td>");
 
                         echo('</tr>');
@@ -558,7 +529,7 @@
 			  var mybarChart = new Chart(ctx, {
 				type: 'bar',
 				data: {
-				  labels: ["<1", "1-4", "4-20", "20-50", ">50"],
+				  labels: ["≤1", "1≤4", "4≤20", "20≤50", ">50"],
 				  datasets: [{
                     label: "Percent of transactions",  
 					backgroundColor: "#26B99A",
@@ -721,15 +692,14 @@
 
           
                     $.ajax({
-		                      url: "build/php/speedo.php",
+		                      url: "json/ethgasAPI.json",
 		                      method: "GET",
                               dataType: "json",
 		                      success: function(data) {
-			                    var blockNum = data[0]['blockNum'];
-                                var speed = data[1]['average'];
-                                var speedFloat = parseFloat(speed,10) * 100;
-                                var speedInt = Math.round(speedFloat);
-                                updateSpeedo (speedInt,blockNum);
+			                          speedArray  = data;
+                                var speed = speedArray['speed'];
+                                var blockNum = speedArray['blockNum'];
+                                updateSpeedo (speed,blockNum);
                                 var out = "Last Block: " + blockNum;
                                 $('#blockNum').text(out);
                                 

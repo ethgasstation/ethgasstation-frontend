@@ -156,6 +156,12 @@ avgPricePd = txData[['miner', 'minedGasPrice']].groupby('miner').mean()
 avgPricePd = avgPricePd.rename(columns={"minedGasPrice": 'avgGasPrice'})
 txDataMiner = pd.concat([txDataMiner, minPricePd], axis = 1)
 txDataMiner = pd.concat([txDataMiner, avgPricePd], axis = 1)
+gasUsedbyMiner = txData[['miner', 'gasused', 'txFee']].groupby('miner').sum()
+gasUsedbyMiner['weightedAvgGP'] = gasUsedbyMiner['txFee'] / gasUsedbyMiner['gasused']
+txDataMiner = pd.concat([txDataMiner, gasUsedbyMiner], axis = 1)
+
+print (txDataMiner)
+
 
 # lowGasPriceWatchList
 recent = int(endBlock) - 150
@@ -172,11 +178,8 @@ print (lowPrice)
 # Calculate Each Miners % Empty and Total Blocks
 txBlocks = blockData[['miner','emptyBlocks','blockNum']].groupby('miner').agg({'emptyBlocks':'sum', 'blockNum':'count'})
 txDataMiner = pd.concat([txDataMiner, txBlocks], axis = 1)
-
 txDataMiner.reset_index(inplace=True)
-
 txDataMiner = txDataMiner.rename(columns={'index':'miner'})
-
 txDataMiner = txDataMiner.rename(columns = {'blockNum':'totBlocks', 'txHash':'totTx'})
 
 
@@ -196,8 +199,8 @@ print(txDataMiner)
 #Make Table with Key Miner Stats
 
 topMiners = txDataMiner.sort_values('totBlocks', ascending=False)
-topMiners = topMiners.loc[:,['miner','minGasPrice','pctEmp', 'pctTot']].head(10)
-topMiners = topMiners.sort_values(['minGasPrice','pctEmp'], ascending = [True, True]).reset_index(drop=True)
+topMiners = topMiners.loc[:,['miner','minGasPrice','weightedAvgGP', 'pctTot']].head(10)
+topMiners = topMiners.sort_values(['minGasPrice','weightedAvgGP'], ascending = [True, True]).reset_index(drop=True)
 
 
 

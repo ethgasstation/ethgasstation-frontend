@@ -46,7 +46,7 @@ print (predictData['numTo'].quantile(.95))
 avgGasLimit = predictData.loc[0, 'gasOffered'] / predictData.loc[0, 'gasOfferedPct']
 transactionGas = float(21000)/avgGasLimit
 
-'''
+
 quantiles= predictData['gasOfferedPct'].quantile([.5, .75, .9, 1])
 print (transactionGas)
 print(quantiles)
@@ -59,7 +59,8 @@ predictData['gasCat4'] = (predictData['gasOfferedPct']> quantiles[.9]).astype(in
 print('median gasOfferedPct')
 print(transactionGas)
 print(quantiles[.5])
-'''
+
+predictData['highGasOffered'] = (predictData['gasOfferedPct'] > 0.022).astype(int)
 
 print('confirmTImes')
 print(predictData['confirmTime'].min())
@@ -100,7 +101,7 @@ pdValidate.loc[pdValidate['hashPowerAccepting'] < 1, 'confirmTime']= np.nan
 pdValidate = pdValidate.dropna(how='any')
 
 
-y, X = dmatrices('confirmTime ~ hashPowerAccepting + dump + ico + txAtAbove', data = predictData, return_type = 'dataframe')
+y, X = dmatrices('confirmTime ~ hashPowerAccepting + dump + ico + gasCat4 + txAtAbove', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
@@ -173,7 +174,7 @@ print(e[:15])
 print(F[:15])
 '''
 
-y1, X1 = dmatrices('logCTime ~ hashPowerAccepting  + regAtAbove +dumpAtAbove + icoAtAbove + dump + ico', data = predictData, return_type = 'dataframe')
+y1, X1 = dmatrices('logCTime ~ hashPowerAccepting  + highGasOffered + dump + ico', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])

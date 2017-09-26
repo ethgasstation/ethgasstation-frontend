@@ -25,8 +25,6 @@ connection.connect(function(err) {
 blockTime = {};
 blockQueue = [];
 processing = false;
-var blockCounter=0;
-var txCounter=0;
 
 var filter = web3.eth.filter('latest');
 var filter2 = web3.eth.filter('pending');
@@ -39,11 +37,11 @@ filter.watch(function(err,blockHash){
     }
     var ts = Math.round(+new Date()/1000);
 
-    web3.eth.getBlock(blockHash, true, function (err, block){
+    web3.eth.getBlock(blockHash, function (err, block){
         if (!block){
             return;
         }
-        console.log("\nreceived block number " + block.number);
+        console.log("received block number " + block.number);
         if (!(block.number in blockTime)){
             blockTime[block.number]=ts;
             blockQueue.push(block);
@@ -100,8 +98,6 @@ filter2.watch(function(err, txHash)
             });
         })
                 
-        txCounter++;
-        process.stdout.write(txCounter + ' ');
     }
 
 });
@@ -110,20 +106,25 @@ function manageBlocks (blockNum){
     blockNum--;
     if ((blockNum % 100 === 0) && (!processing)){
         procesing = true;
-        startBlock = blockNum - 2500;
+        startBlock = blockNum - 3000;
         processStats(startBlock, blockNum);
     }
     if ((blockQueue[0]['number'] <= blockNum) && (!processing)){
-        console.log("\nblock queue length = " + blockQueue.length);
+        console.log("block queue length = " + blockQueue.length);
         processing = true;
-        var blockObj = blockQueue.shift();
-        console.log("now processing block " + blockObj.number)
-        getReceipts(0, blockObj)
+        var oldBlock = blockQueue.shift();
+        var blockObj = web3.eth.getBlock(oldBlock.number, true);
+        console.log("now processing block " + blockObj.number);
+        getReceipts(0, blockObj);
+        delete blockTime[oldBlock.number];
         if (blockQueue[0]['number'] <= blockNum){
-            console.log("\nblock queue length = " + blockQueue.length);  
-            var blockObj = blockQueue.shift();
+            console.log("block queue length = " + blockQueue.length);  
+            var oldBlock = blockQueue.shift();
+            var blockObj = web3.eth.getBlock(oldBlock.number, true);
             console.log("catching up- processing block " + blockObj.number)
             getReceipts(0, blockObj)
+            delete blockTime[oldBlock.number];
+
         }
     }
     
@@ -133,7 +134,7 @@ function manageBlocks (blockNum){
 function processStats (start, end){
     var end = end;
     commandString = 'python gascalc4.py ' + start + ' ' +  end;
-    console.log("\n"+ commandString);
+    console.log("\n"+commandString);
     const exec = require('child_process').exec;
     const child = exec(commandString, function(){
         if (end % 1000 === 0){
@@ -148,10 +149,36 @@ function processStats (start, end){
 
 function processMinerProfit (start, end){
     commandString= 'python miner4.py ' + start + ' ' + end;
-    console.log("\n"+ commandString);
+    console.log(commandString);
     const exec = require('child_process').exec;
     const child = exec(commandString, function(){
-        processing = false;
+        if (end % 3000 === 0){
+            completeBlockSnapshot();
+        }
+        else {
+            processing = false;
+        }
+        
+    });
+}
+
+function completeBlockSnapshot(){
+    commandString = 'python completeBlock.py';
+    console.log(commandString);
+    const exec = require('child_process').exec;
+    const child = exec(commandString, function(){
+            writeBlockSnapshot();   
+    });
+}
+
+function writeBlockSnapshot(){
+    block = web3.eth.blockNumber;
+    block = block-2;
+    commandString = 'python mempool6.py ' + block;
+    console.log(commandString);
+    const exec = require('child_process').exec;
+    const child = exec(commandString, function(){
+            processing = false;   
     });
 }
 
@@ -160,7 +187,7 @@ function processTxPool (blockNum){
     var blockNum = blockNum;
     time = blockTime[blockNum];
     commandString = 'python mempool5.py '+ blockNum + ' ' + time;
-    console.log("\n" + commandString);
+    console.log(commandString);
     const exec = require('child_process').exec;
     const child = exec(commandString, function(){
         manageBlocks(blockNum);
@@ -171,7 +198,7 @@ function processTxPool (blockNum){
 function getTxPool(blockNum){
     var prevBlock = blockNum - 1;
     commandString = 'python txpool2.py ' + blockNum;
-    console.log("\n" + commandString);
+    console.log(commandString);
     const exec = require('child_process').exec;
     const child = exec(commandString, function(){
         processTxPool(prevBlock);
@@ -239,7 +266,7 @@ function writeTransactions(txPost) {
             console.log(err.stack);
         }
         else{
-            console.log("\nwrote tx for block " + txPost[0][1]);
+            console.log("wrote tx for block " + txPost[0][1]);
         }
     })
 }
@@ -254,7 +281,7 @@ function writeBlock (blockMinGasPrice, numTx, blockFee, blockObj){
             console.log(err.stack);
         }
         else{
-            console.log("\nwrote block data for block " + blockObj.number);
+            console.log("wrote block data for block " + blockObj.number);
         }
     })
     if (blockObj.uncles.length > 0){
@@ -284,7 +311,7 @@ function writeUncle (uncle, cycle, blockObj){
             console.log(err.stack);
         }
         else{
-            console.log("\n wrote uncle for block " + blockObj.number);
+            console.log("wrote uncle for block " + blockObj.number);
         }
     })
     cycle += 1;

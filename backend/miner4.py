@@ -22,10 +22,10 @@ cursor.execute("DELETE FROM minedtransactions WHERE minedBlock < %(deleteBlock)s
 cnx.commit()
 cursor.execute("DELETE FROM speedo2 WHERE blockNum < %(deleteBlock2)s", {'deleteBlock2':deleteBlock2})
 cnx.commit()
-cursor.execute("DELETE FROM txDataLast10k WHERE blockNum < %(deleteBlock2)s", {'deleteBlock2':deleteBlock2})
-cnx.commit()
-cursor.execute("DELETE FROM txDataLast100b WHERE blockNum < %(deleteBlock2)s", {'deleteBlock':deleteBlock})
-cnx.commit()
+#cursor.execute("DELETE FROM txDataLast10k WHERE blockNum < %(deleteBlock2)s", {'deleteBlock2':deleteBlock2})
+#cnx.commit()
+#cursor.execute("DELETE FROM txDataLast100b WHERE blockNum < %(deleteBlock2)s", {'deleteBlock':deleteBlock})
+#cnx.commit()
 
 
 # First Query to Determine Block TIme, and Estimate Miner Policies

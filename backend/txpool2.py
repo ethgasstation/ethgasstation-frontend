@@ -4,7 +4,7 @@ import pandas as pd
 from sqlalchemy import create_engine
 
 startBlock = int(sys.argv[1])
-dblock = startBlock-25
+dblock = startBlock-15
 
 engine = create_engine('mysql+mysqlconnector://ethgas:station@127.0.0.1:3306/tx', echo=False)
 
@@ -14,8 +14,8 @@ cursor = cnx.cursor()
 out = subprocess.check_output(['geth', '--exec', 'JSON.stringify(txpool.content)', 'attach', 'http://localhost:8545'])
 
 
-dict = json.loads(out)
-dict2 = json.loads(dict)
+dict1 = json.loads(out)
+dict2 = json.loads(dict1)
 
 pendingTxList = []
 
