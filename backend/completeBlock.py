@@ -22,7 +22,7 @@ head = cursor.column_names
 predictData = pd.DataFrame(cursor.fetchall())
 predictData.columns = head
 
-predictData = predictData[predictData['waitBlocks'] < 2500]
+predictData = predictData[predictData['waitBlocks'] < 2995]
 predictData['mined'] = predictData['minedBlock'] - predictData['postedBlock']
 totalMined = predictData['mined'].count()
 totalTx = len(predictData)
