@@ -30,9 +30,9 @@ def round_gp_10gwei(gp):
 
 
 class Tx ():
-    def __init__(self, tx_obj):
+    def __init__(self, tx_obj, block):
         self.hash = [tx_obj.hash]
-        self.block_posted = [tx_obj['blockNumber']]
+        self.block_posted = [block]
         self.to_address = [tx_obj['to']]
         self.from_address = [tx_obj['from']]
         self.ts = [time.time()]
@@ -40,16 +40,18 @@ class Tx ():
         self.gas_offered = [tx_obj['gas']]
         self.gp_10gwei = [round_gp_10gwei(tx_obj['gasPrice'])]
 
+    def to_dataframe(self)
+        dataframe = pd.DataFrame(self)
+        return dataframe
 
 def new_tx_callback(tx_hash):
     global pending
     try:
+        block = web3.eth.blockNumber
         tx_obj = web3.eth.getTransaction(tx_hash)
-        clean_tx = Tx(tx_obj)
-        temp = pd.DataFrame.from_dict(clean_tx.__dict__)
-        print (temp)
+        clean_tx = Tx(tx_obj, block)
+        temp = clean_tx.to_dataframe()
         pending = pending.append(temp, ignore_index=True)
-        print(pending)
     except:
         print(e)
 
