@@ -30,7 +30,7 @@ class Tx ():
 
     def round_gp_10gwei(self):
         """Rounds the gas price to gwei"""
-        gp = self.gp/1e8
+        gp = self.gp[0]/1e8
         if gp >=1 and gp<10:
             gp = np.floor(gp)
         elif gp >= 10:
@@ -39,7 +39,7 @@ class Tx ():
             gp = gp*10
         else:
             gp = 0
-        self.gp_10gwei = gp
+        self.gp_10gwei = [gp]
 
 def new_tx_callback(tx_hash):
     try:
