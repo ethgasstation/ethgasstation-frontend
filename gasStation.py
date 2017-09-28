@@ -52,6 +52,7 @@ def new_tx_callback(tx_hash):
         clean_tx = Tx(tx_obj, block)
         temp = clean_tx.to_dataframe()
         pending = pending.append(temp, ignore_index=True)
+        print(pending)
     except:
         print(e)
 
