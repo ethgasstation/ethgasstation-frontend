@@ -13,12 +13,12 @@ engine = create_engine(
 class Tx ():
     def __init__(self, tx_obj):
         self.hash = tx_obj.hash
-        self.block_posted = tx_obj.blockNumber
-        self.to_address = tx_obj.to
-        self.from_address = tx_obj.from
+        self.block_posted = tx_obj['blockNumber']
+        self.to_address = tx_obj['to']
+        self.from_address = tx_obj['from']
         self.ts = time.time()
-        self.gp = tx_obj.gasPrice/1e6
-        self.gas_offered = tx_obj.gas
+        self.gp = tx_obj['gasPrice']/1e6
+        self.gas_offered = tx_obj['gas']
 
     
 
