@@ -31,22 +31,20 @@ def round_gp_10gwei(gp):
 
 class Tx ():
     def __init__(self, tx_obj):
-        self.hash = tx_obj.hash
-        self.block_posted = tx_obj['blockNumber']
-        self.to_address = tx_obj['to']
-        self.from_address = tx_obj['from']
-        self.ts = time.time()
-        self.gp = tx_obj['gasPrice']
-        self.gas_offered = tx_obj['gas']
-        self.gp_10gwei = round_gp_10gwei(tx_obj['gasPrice'])
+        self.hash = [tx_obj.hash]
+        self.block_posted = [tx_obj['blockNumber']]
+        self.to_address = [tx_obj['to']]
+        self.from_address = [tx_obj['from']]
+        self.ts = [time.time()]
+        self.gp = [tx_obj['gasPrice']]
+        self.gas_offered = [tx_obj['gas']]
+        self.gp_10gwei = [round_gp_10gwei(tx_obj['gasPrice'])]
 
 
 def new_tx_callback(tx_hash):
     try:
         tx_obj = web3.eth.getTransaction(tx_hash)
         clean_tx = Tx(tx_obj)
-        temp = pd.Series(clean_tx.__dict__)
-        print(temp)
         pending.append(clean_tx, ignore_index=True)
         print(pending)
     except:
