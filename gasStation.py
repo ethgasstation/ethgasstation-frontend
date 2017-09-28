@@ -54,8 +54,8 @@ def filter():
             clean_tx = Tx(tx_obj, block)
             pending = pending.append((clean_tx.to_dataframe()), ignore_index=True)
             print(pending)
-    except:
-        print(e)
+        except:
+            print(e)
 
     while True:
         tx_filter.watch(new_tx_callback)
