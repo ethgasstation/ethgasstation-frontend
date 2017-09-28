@@ -9,11 +9,16 @@ engine = create_engine(
 def new_block_callback(block_hash):
     print (block_hash)
 
-new_block_filter = web3.eth.filter('latest')
+def new_tx_callback(tx_hash):
+    print ('tx '+ tx_hash)
 
+block_filter = web3.eth.filter('latest')
+tx_filter = web3.eth.filter('pending')
 
 while True:
-    new_block_filter.watch(new_block_callback)
-    response = input("type q to quit")
-    if response == q:
+    block_filter.watch(new_block_callback)
+    tx_filter.watch(new_tx_callback)
+
+    response = input("type q to quit /n")
+    if response == 'q':
         break
