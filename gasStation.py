@@ -15,12 +15,12 @@ engine = create_engine(
 def round_gp_gwei(gp):
     """Rounds the gas price to gwei"""
     gp = gp/1e8
-    if gp >=1 and gasPrice<10:
-        gp = np.floor(gasPrice)
-    elif gp>=10
-        gp=gp/10
-        gp=np.floor(gasPrice)
-        gp=gp*10
+    if gp >=1 and gp<10:
+        gp = np.floor(gp)
+    elif gp >= 10:
+        gp = gp/10
+        gp = np.floor(gp)
+        gp = gp*10
     else:
         gp = 0
     return gp
