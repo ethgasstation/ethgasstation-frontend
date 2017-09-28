@@ -47,7 +47,7 @@ def new_tx_callback(tx_hash):
     try:
         tx_obj = web3.eth.getTransaction(tx_hash)
         clean_tx = Tx(tx_obj)
-
+        print(clean_tx.hash)
         print(clean_tx.gp_gwei)
     except:
         print(e)
