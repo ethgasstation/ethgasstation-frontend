@@ -12,7 +12,8 @@ engine = create_engine(
     'mysql+mysqlconnector://ethgas:station@127.0.0.1:3306/tx', echo=False)
 
 pending = pd.DataFrame(columns = ['hash', 'block_posted', 'to_address', 'from_address', 'ts', 'gp', 'gas_offered', 'gp_10gwei'])
-    
+
+block_time = web3.eth.blockNumber   
 
 
 class Tx ():
@@ -49,12 +50,15 @@ def filter():
 
     def new_tx_callback(tx_hash):
         global pending
+        global block_time
         try:
             block = web3.eth.blockNumber
             tx_obj = web3.eth.getTransaction(tx_hash)
             clean_tx = Tx(tx_obj, block)
             pending = pending.append((clean_tx.to_dataframe()), ignore_index=True)
-            print(pending)
+            if block > block_time:
+                print ("new block")
+
         except:
             print(e)
 
