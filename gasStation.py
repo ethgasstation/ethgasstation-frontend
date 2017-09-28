@@ -10,6 +10,9 @@ from sqlalchemy import create_engine
 web3 = Web3(HTTPProvider('http://localhost:8545'))
 engine = create_engine(
     'mysql+mysqlconnector://ethgas:station@127.0.0.1:3306/tx', echo=False)
+pending = pd.DataFrame(columns = ['hash', 'block_posted', 'to_address', 'from_address', 'ts', 'gp', 'gas_offered', 'gp_10gwei'])
+
+
 
 def round_gp_10gwei(gp):
     """Rounds the gas price to gwei"""
@@ -49,7 +52,7 @@ def new_tx_callback(tx_hash):
 
 
 def filter():
-    pending = pd.DataFrame(columns = ['hash', 'block_posted', 'to_address', 'from_address', 'ts', 'gp', 'gas_offered', 'gp_10gwei'])
+    
     tx_filter = web3.eth.filter('pending')
     while True:
         tx_filter.watch(new_tx_callback)
