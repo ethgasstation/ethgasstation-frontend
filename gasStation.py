@@ -57,6 +57,7 @@ def filter():
             clean_tx = Tx(tx_obj, block)
             pending = pending.append((clean_tx.to_dataframe()), ignore_index=True)
             if block > block_time:
+                block_time = block
                 print ("new block")
 
         except:
