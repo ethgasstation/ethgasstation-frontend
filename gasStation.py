@@ -45,7 +45,7 @@ def new_tx_callback(tx_hash):
     try:
         tx_obj = web3.eth.getTransaction(tx_hash)
         clean_tx = Tx(tx_obj)
-        temp = pd.DataFrame.from_dict(clean_tx)
+        temp = pd.DataFrame.from_dict(clean_tx.__dict__)
         pending.append(clean_tx, ignore_index=True)
         print(pending)
     except:
