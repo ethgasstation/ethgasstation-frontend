@@ -54,7 +54,7 @@ def new_tx_callback(tx_hash):
 
 
 def filter():
-    
+    print(pending)
     tx_filter = web3.eth.filter('pending')
     while True:
         tx_filter.watch(new_tx_callback)
