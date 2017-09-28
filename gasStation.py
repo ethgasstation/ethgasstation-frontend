@@ -40,7 +40,7 @@ class Tx ():
         self.gas_offered = [tx_obj['gas']]
         self.gp_10gwei = [round_gp_10gwei(tx_obj['gasPrice'])]
 
-    def to_dataframe(self)
+    def to_dataframe(self):
         dataframe = pd.DataFrame(self)
         return dataframe
 
