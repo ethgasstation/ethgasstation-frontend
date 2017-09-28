@@ -11,6 +11,8 @@ web3 = Web3(HTTPProvider('http://localhost:8545'))
 engine = create_engine(
     'mysql+mysqlconnector://ethgas:station@127.0.0.1:3306/tx', echo=False)
 
+pending = pd.DataFrame(columns = ['hash', 'block_posted', 'to_address', 'from_address', 'ts', 'gp', 'gas_offered', 'gp_10gwei'])
+    tx_filter = web3.eth.filter('pending')
 
 
 class Tx ():
@@ -43,11 +45,9 @@ class Tx ():
 
 
 def filter():
-    
-    pending = pd.DataFrame(columns = ['hash', 'block_posted', 'to_address', 'from_address', 'ts', 'gp', 'gas_offered', 'gp_10gwei'])
-    tx_filter = web3.eth.filter('pending')
 
     def new_tx_callback(tx_hash):
+        global pending
         try:
             block = web3.eth.blockNumber
             tx_obj = web3.eth.getTransaction(tx_hash)
