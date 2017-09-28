@@ -41,7 +41,7 @@ class Tx ():
         self.gp_10gwei = [round_gp_10gwei(tx_obj['gasPrice'])]
 
     def to_dataframe(self):
-        dataframe = pd.DataFrame(self)
+        dataframe = pd.DataFrame.from_dict(self.__dict__)
         return dataframe
 
 def new_tx_callback(tx_hash):
