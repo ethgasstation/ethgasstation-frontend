@@ -47,7 +47,7 @@ def new_tx_callback(tx_hash):
         clean_tx = Tx(tx_obj)
         temp = pd.DataFrame.from_dict(clean_tx.__dict__)
         print (temp)
-        pending.append(temp, ignore_index=True)
+        pending = pending.append(temp, ignore_index=True)
         print(pending)
     except:
         print(e)
