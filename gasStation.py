@@ -45,7 +45,7 @@ def new_tx_callback(tx_hash):
     try:
         tx_obj = web3.eth.getTransaction(tx_hash)
         clean_tx = Tx(tx_obj)
-        pending = pending.append(clean_tx)
+        pending.append(clean_tx)
         print(pending)
     except:
         print(e)
