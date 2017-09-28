@@ -11,4 +11,7 @@ def new_block_callback(block_hash):
     print ("New Block: {0}").format(block_hash)
 
 new_block_filter = web3.eth.filter('latest')
-new_block_filter.watch(new_block_callback)
+
+while True:
+    new_block_filter.watch(new_block_callback)
+    
