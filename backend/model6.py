@@ -56,6 +56,17 @@ predictData['gasCat2'] = ((predictData['gasOfferedPct']>transactionGas) & (predi
 predictData['gasCat3'] = ((predictData['gasOfferedPct']>quantiles[.75]) & (predictData['gasOfferedPct']<=quantiles[.9])).astype(int)
 predictData['gasCat4'] = (predictData['gasOfferedPct']> quantiles[.9]).astype(int)
 
+quantiles2 = predictData['numTo'].quantile([.5, .75, .95])
+print('quantiles2')
+print(quantiles2)
+predictData['numToCat1'] = (predictData['numTo'] <= quantiles2[.5]).astype(int)
+predictData['numToCat2'] = ((predictData['numTo'] >quantiles2[.5]) & (predictData['numTo'] <= quantiles2[.75])).astype(int)
+predictData['numToCat3'] = ((predictData['numTo'] >quantiles2[.75]) & (predictData['numTo'] <= quantiles2[.95])).astype(int)
+predictData['numToCat4'] = (predictData['numTo'] >quantiles2[.95]).astype(int)
+predictData.loc[predictData['numTo']==np.nan,'ico']=np.nan
+predictData = predictData.dropna(how='any')
+
+
 print('median gasOfferedPct')
 print(transactionGas)
 print(quantiles[.5])
@@ -123,7 +134,7 @@ print(y)
 
 print (y.loc[(y['dump']==0) & (y['gasPrice'] < 1000), ['confirmTime', 'predict', 'gasPrice']])
 
-a, B = dmatrices('confirmTime ~ hashPowerAccepting + dump + ico + txAtAbove', data = pdValidate, return_type = 'dataframe')
+a, B = dmatrices('confirmTime ~ hashPowerAccepting + dump + numToCat4 + gasCat4 + txAtAbove', data = predictData, return_type = 'dataframe')
 
 
 model = sm.GLM(a, B, family=sm.families.Poisson())

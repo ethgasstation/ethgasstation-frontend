@@ -29,7 +29,7 @@ predictData['minedBool'] = predictData['mined'].notnull().astype(int)
 
 print(predictData)
 
-quantiles= predictData['pctLimit'].quantile([.5, .75, .9, 1])
+quantiles= predictData['pctLimit'].quantile([.5, .75, .95, .98, .9])
 print(quantiles)
 
 
@@ -38,7 +38,7 @@ predictData['gasCat3'] = ((predictData['pctLimit']>quantiles[.75]) & (predictDat
 predictData['gasCat4'] = (predictData['pctLimit']> quantiles[.9]).astype(int)
 
 predictData['highGasOffered'] = (predictData['pctLimit'] > quantiles[.75]).astype(int)
-predictData['highGasOffered2'] = (predictData['pctLimit'] > quantiles[.9]).astype(int)
+predictData['highGasOffered2'] = (predictData['pctLimit'] > quantiles[.95]).astype(int)
 
 predictData['dump'] = predictData['numFrom'].apply(lambda x: 1 if x>5 else 0)
 predictData['ico'] = predictData['numTo'].apply(lambda x: 1 if x>100 else 0)
