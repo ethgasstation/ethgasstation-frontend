@@ -124,6 +124,7 @@ post['ETHpriceGBP'] = int(ethPricesTable.loc['GBP', 0])
 #Calculate Block Time
 blockTime = txData[['tsMined', 'minedBlock']]
 blockTime = blockTime.sort_values('minedBlock')
+print(blockTime)
 blockTime2 = blockTime.groupby('minedBlock', as_index=False).mean()
 blockTime2 = blockTime2.diff()
 #delete if not consecutive blocks

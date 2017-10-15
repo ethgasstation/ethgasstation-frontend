@@ -18,7 +18,7 @@
                   <li><a href="minerTable.php"><i class ="fa fa-cubes"></i>Miner Stats</a></li>
                   <li><a href="hashPowerTable.php"><i class ="fa fa-cubes"></i>Hash Power by Gas Price</a></li>
                   <li><a href="validatedTable.php"><i class ="fa fa-cubes"></i>Low Gas Price Watch List</a></li>
-                  <li><a href="minerProfits.php"><i class ="fa fa-money"></i>Gas Profits</a></li>
+                  <!--<li><a href="minerProfits.php"><i class ="fa fa-money"></i>Gas Profits</a></li>-->
                   <li><a href="gasguzzlers.php"><i class ="fa fa-car"></i>Gas Burners</a></li>
                   <!--<li><a href="minerVotes.php"><i class ="fa fa-thumbs-up"></i>Miner Gas Limit Voting</a></li>-->
                   <li><a href="txpool2.php"><i class ="fa fa-upload"></i>TxPool Monitor</a></li>

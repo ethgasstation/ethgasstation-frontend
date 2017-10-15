@@ -45,7 +45,7 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.css" rel="stylesheet">
-    <?php include 'build/php/minerT_py.php'; ?>
+    <?php include 'build/php/minerT.php'; ?>
 
    
 
@@ -66,9 +66,8 @@
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
               <ul class="nav navbar-nav navbar-right">
-              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong>Stats over last 200 blocks - Last update: Block <span style = 'color:#1ABB9C'> <?php echo($predictArray[0]['endBlock']) ?></strong></span>  
-              </p>
-            </ul>
+              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong> Beta - May not apply during periods of very high network demand</strong></p>
+              </ul>
             </nav>
           </div>
          </div>
@@ -78,34 +77,38 @@
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="row">
-              <div class="col-md-6 col-sm-12 col-xs-12">
+              <div class="col-md-8 col-sm-12 col-xs-12">
                 <div class="x_panel tile fixed_height_420">
                   <div class="x_title">
-                    <h4>Blocks Mined by Minimum Gas Price Accepted</h4>
+                    <h4>Predicted Confirm Times By Gas Price For Transactions Submitted At Block <span style = 'color:#1ABB9C'><?php echo $predictArray[0]['endBlock']?></span> <small>(not applicable to batch transactions or to high traffic contracts (e.g > 100 pending transactions))</small></h4>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
                   <table class="table table-striped">
                       <thead>
                         <tr>
-                          <th>Lowest Gas Price In Block (Gwei)</th>
-                          <!--<th>% of Total<br>Blocks</th>
-                          <th>% of Non-Empty<br>Blocks</th>-->
-                          <th>Percent of Total Blocks</th>
-                          <!--<th>Percent of<br> Non-empty Blocks</th>-->
+                          <th>Gas Price (Gwei)</th>
+                          <!--<th>% of Total<br>Blocks</th>-->
+                          <th>Mean Time To Confirm (Blocks)</th>
+                          <th>Mean Time to Confirm (Minutes)</th>
+                          <th>99% Confidence Confirm Time (Blocks)</th>
+                          <th>99% Confidence Confirm Time (Minutes)</th>
                         </tr>
                       </thead>
                       <tbody>
                       <?php
                       foreach ($predictArray as $row){
+                        if ($row['gasPrice']>=0.5){
                         echo('<tr>');
-                        $row['gasprice'] = $row['gasprice'];
-                        echo("<td>". $row['gasprice']. "</td>");
+                        $uci = $row['expectedWait'] * 2.5;
+                        $uciWait = $row['expectedTime'] * 2.5;
+                        echo("<td>". $row['gasPrice']. "</td>");
                         #echo("<td>". round($row['pctTotBlocks'],1). "</td>");
-                        #echo("<td>". round($row['pctTxBlocks'],1). "</td>");
-                        echo("<td>". round($row['hashpower_accepting'], 1). "</td>");
-                        #echo("<td>". round($row['cumPctTxBlocks'],1). "</td>");
-                        echo('</tr>');
+                        echo("<td>". round($row['expectedWait'],1). "</td>");
+                        echo("<td>". round($row['expectedTime'],1). "</td>");
+                        echo("<td>". round($uci). "</td>");
+                        echo("<td>". round($uciWait, 1). "</td>");
+                        echo('</tr>');}
 
                       }
                       ?>

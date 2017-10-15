@@ -45,7 +45,7 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.css" rel="stylesheet">
-    <?php include 'build/php/minerT_py.php'; ?>
+    <?php include 'build/php/profits.php'; ?>
 
    
 
@@ -56,7 +56,7 @@
     <div class="container body">
       <div class="main_container">
 
-   <?php include 'sidebar.php'; ?>   
+        <?php include 'sidebar.php'; ?>   
 
         <!-- top navigation -->
         <div class="top_nav">
@@ -66,7 +66,7 @@
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
               <ul class="nav navbar-nav navbar-right">
-              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong>Stats over last 200 blocks - Last update: Block <span style = 'color:#1ABB9C'> <?php echo($predictArray[0]['endBlock']) ?></strong></span>  
+              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Stats over last 5,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
               </p>
             </ul>
             </nav>
@@ -78,41 +78,39 @@
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="row">
-              <div class="col-md-6 col-sm-12 col-xs-12">
+              <div class="col-md-8 col-sm-8 col-xs-12">
                 <div class="x_panel tile fixed_height_420">
                   <div class="x_title">
-                    <h4>Blocks Mined by Minimum Gas Price Accepted</h4>
+                    <h4>Top 10 ETH Contracts By Gas Used Over Last 5,000 Blocks</h4>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
                   <table class="table table-striped">
                       <thead>
                         <tr>
-                          <th>Lowest Gas Price In Block (Gwei)</th>
-                          <!--<th>% of Total<br>Blocks</th>
-                          <th>% of Non-Empty<br>Blocks</th>-->
-                          <th>Percent of Total Blocks</th>
-                          <!--<th>Percent of<br> Non-empty Blocks</th>-->
+                          <th>Address</th>
+                          <th>ID</th>
+                          <th>Pct Total Gas Spent</th>
                         </tr>
                       </thead>
                       <tbody>
                       <?php
-                      foreach ($predictArray as $row){
+                      foreach ($gasGuzzTable as $row){
                         echo('<tr>');
-                        $row['gasprice'] = $row['gasprice'];
-                        echo("<td>". $row['gasprice']. "</td>");
-                        #echo("<td>". round($row['pctTotBlocks'],1). "</td>");
-                        #echo("<td>". round($row['pctTxBlocks'],1). "</td>");
-                        echo("<td>". round($row['hashpower_accepting'], 1). "</td>");
-                        #echo("<td>". round($row['cumPctTxBlocks'],1). "</td>");
+                        //echo("<td>".$row['toAddress']."</td>");
+                        echo("<td>"."<a href=\"https://etherscan.io/address/{$row['toAddress']}\" target=\"_blank\">{$row['toAddress']}</a>"."</td>");
+                        echo("<td>". $row['ID']). "</td>";
+                        echo("<td>". number_format($row['pcttot'], 2). "</td>");
                         echo('</tr>');
 
                       }
                       ?>
-                        </tbody>
+                      </tbody>
                     </table>
 
                  </div>
+
+        
         </div>
     </div>
                     

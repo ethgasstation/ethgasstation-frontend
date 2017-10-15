@@ -45,7 +45,7 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.css" rel="stylesheet">
-    <?php include 'build/php/minerT_py.php'; ?>
+    <?php include 'build/php/minerT.php'; ?>
 
    
 
@@ -56,7 +56,9 @@
     <div class="container body">
       <div class="main_container">
 
-   <?php include 'sidebar.php'; ?>   
+<!-- Sidebar -->
+
+         <?php include 'sidebar.php'; ?>
 
         <!-- top navigation -->
         <div class="top_nav">
@@ -66,7 +68,7 @@
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
               <ul class="nav navbar-nav navbar-right">
-              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong>Stats over last 200 blocks - Last update: Block <span style = 'color:#1ABB9C'> <?php echo($predictArray[0]['endBlock']) ?></strong></span>  
+              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Stats over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
               </p>
             </ul>
             </nav>
@@ -76,43 +78,61 @@
         <!-- /top navigation -->
 
         <!-- page content -->
+        
         <div class="right_col" role="main">
           <div class="row">
-              <div class="col-md-6 col-sm-12 col-xs-12">
+              <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel tile fixed_height_420">
                   <div class="x_title">
-                    <h4>Blocks Mined by Minimum Gas Price Accepted</h4>
+                    <h4>Miner Gas Policies and Block Stats</h4>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
                   <table class="table table-striped">
                       <thead>
                         <tr>
-                          <th>Lowest Gas Price In Block (Gwei)</th>
-                          <!--<th>% of Total<br>Blocks</th>
-                          <th>% of Non-Empty<br>Blocks</th>-->
-                          <th>Percent of Total Blocks</th>
-                          <!--<th>Percent of<br> Non-empty Blocks</th>-->
+                          <th>Miner</th>
+                          <th>Min Gas Price<br>Accepted<sup>*</sup> (Gwei)</th>
+                          <th>Total <br> Blocks</th>
+                          <th>Empty <br>Blocks</th>
+                          <th>% of Total <br>Blocks</th>
+                          <th>% of Non-empty<br> Blocks</th>
                         </tr>
                       </thead>
                       <tbody>
                       <?php
-                      foreach ($predictArray as $row){
+                      $minerNames = array(
+    '0xea674fdde714fd979de3edf0f56aa9716b898ec8'=>'Ethermine',
+    '0x1e9939daaad6924ad004c2560e90804164900341'=>'ethfans',
+    '0xb2930b35844a230f00e51431acae96fe543a0347'=>'miningpoolhub',
+    '0x4bb96091ee9d802ed039c4d1a5f6216f90f81b01'=>'Ethpool',
+    '0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5'=>'Nanopool',
+    '0x2a65aca4d5fc5b5c859090a6c34d164135398226'=>'Dwarfpool',
+    '0x61c808d82a3ac53231750dadc13c777b59310bd9'=>'f2pool',
+    '0xa42af2c70d316684e57aefcc6e393fecb1c7e84e'=>'Coinotron',
+    '0x6c7f03ddfdd8a37ca267c88630a4fee958591de0'=>'alpereum'
+
+                      );
+                      foreach ($minersArray as $row){
                         echo('<tr>');
-                        $row['gasprice'] = $row['gasprice'];
-                        echo("<td>". $row['gasprice']. "</td>");
-                        #echo("<td>". round($row['pctTotBlocks'],1). "</td>");
-                        #echo("<td>". round($row['pctTxBlocks'],1). "</td>");
-                        echo("<td>". round($row['hashpower_accepting'], 1). "</td>");
-                        #echo("<td>". round($row['cumPctTxBlocks'],1). "</td>");
+                        if(array_key_exists ($row['miner'],$minerNames)){
+                        $row['miner'] = $minerNames[$row['miner']];}
+                        echo("<td>". $row['miner']. "</td>");
+                        echo("<td>". $row['minGasPrice']. "</td>");
+                        echo("<td>". $row['totBlocks']. "</td>");
+                        echo("<td>". $row['emptyBlocks']. "</td>");
+                        echo("<td>". round($row['pctTot'],1). "</td>");
+                        echo("<td>". round($row['pctTxBlocks'],1). "</td>");
+
                         echo('</tr>');
 
                       }
                       ?>
                         </tbody>
                     </table>
-
                  </div>
+                 
+    
         </div>
     </div>
                     
@@ -145,7 +165,10 @@
     
 
 <!-- Custom Theme Scripts -->
+   <script>
 
+
+ </script>
 
 
 

@@ -45,7 +45,7 @@
 
     <!-- Custom Theme Style -->
     
-     <?php include 'build/php/data_py.php'; ?>
+     <?php include 'build/php/data2.php'; ?>
 
     <script type="text/javascript" src="speedometer/xcanvas.js"></script>
     <script type="text/javascript" src="speedometer/tbe.js"></script>
@@ -103,23 +103,23 @@
           <div class="row tile_count">
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-space-shuttle"></i>Std Cost for Transfer</span>
-              <div class="count" id="medTx"><?php $fee = round($gpRecs2['average']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee); ?></div>
+              <div class="count" id="medTx"><?php $fee = round($gpRecs2['average']*21000/1e9*$exchangeRate, 3); echo($currString . $fee); ?></div>
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-tachometer"></i> Gas Price Std (Gwei)</span>
-              <div class="count"><?php echo ($gpRecs2['average']/10) ?></div>
+              <div class="count"><?php echo ($gpRecs2['average']) ?></div>
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-tachometer"></i> SafeLow Cost for Transfer</span>
-              <div class="count green"><?php echo ($lowTransfer) ?></div>
+              <div class="count green"><?php echo "$lowTransfer" ?></div>
             </div>
             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-tachometer"></i> Gas Price SafeLow (Gwei)</span>
-              <div class="count green"><?php echo ($gpRecs2['safeLow']/10) ?></div>
+              <div class="count green"><?php echo ($gpRecs2['safeLow']) ?></div>
             </div>
              <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-clock-o"></i> Median Wait (s)</span>
-              <div class="count"><?php echo (round($medianwaitsec)) ?></div>
+              <div class="count"><?php echo "$medianwaitsec" ?></div>
             </div>
              <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
               <span class="count_top"><i class="fa fa-clock-o"></i> Median Wait (blocks)</span>
@@ -136,7 +136,7 @@
              <div class="col-md-8 col-sm-8 col-xs-12">
                  <div class="x_panel tile fixed_height_320">
                      <div class="x_title">
-                        <h4>Gas-Time-Price Estimator: <small>For transactions sent at block: <?php echo($gpRecs2['blockNum']);?></small></h4>
+                        <h4>Gas-Time-Price Estimator: <small>For transactions sent at block: <?php echo($predictTable[0]['endBlock']);?></small></h4>
                         <div class="clearfix"></div>
                      </div>
                      <div class="x_content">
@@ -169,7 +169,7 @@
                         <div class="form-group">
                           <label class="control-label col-md-3 col-sm-3 col-xs-12">Gas Price (Gwei)<span class="required">*</span></label>
                           <div class="col-md-3 col-sm-3 col-xs-12">
-                            <input type="number" class="form-control" readonly = "readonly" value=<?php echo ($gpRecs2['average']/10)?> id="gasPrice">
+                            <input type="number" class="form-control" readonly = "readonly" value=<?php echo ($gpRecs2['average'])?> id="gasPrice">
                           </div>
                           <label class="control-label col-md-3 col-sm-3 col-xs-12">95% Time (blocks)</label>
                           <div class="col-md-3 col-sm-3 col-xs-12">
@@ -179,11 +179,11 @@
                         <div class="form-group">
                           <label class="control-label col-md-3 col-sm-3 col-xs-12">Tx Fee (Fiat)</label>
                           <div class="col-md-3 col-sm-3 col-xs-12">
-                            <input type="text" class="form-control" readonly = "readonly" placeholder= <?php $fee = round($gpRecs2['average']*21000/1e10*$exchangeRate, 3); echo($currString . $fee); ?> id="fiatFee"> 
+                            <input type="text" class="form-control" readonly = "readonly" placeholder= <?php $fee = round($gpRecs2['average']*21000/1e9*$exchangeRate, 3); echo($currString . $fee); ?> id="fiatFee"> 
                           </div> 
                           <label class="control-label col-md-3 col-sm-3 col-xs-12">Tx Fee (ETH)</label>
                           <div class="col-md-3 col-sm-3 col-xs-12">
-                            <input type="number" class="form-control" readonly = "readonly" placeholder = <?php $fee = $gpRecs2['average']*21000/1e10; echo (number_format($fee, 5)); ?> id="ethFee"> 
+                            <input type="number" class="form-control" readonly = "readonly" placeholder = <?php $fee = $gpRecs2['average']*21000/1e9; echo (number_format($fee, 5)); ?> id="ethFee"> 
                           </div>  
                         </div>
                       </form>
@@ -263,17 +263,17 @@
                   <tbody>
                     <tr>
                       <td style = "color:#1ABB9C"><strong>SafeLow (<20m)</strong></td>
-                      <td style = "color:#1ABB9C" ><?php echo ($gpRecs2['safeLow']/10) ?></td>
+                      <td style = "color:#1ABB9C" ><?php echo ($gpRecs2['safeLow']) ?></td>
                       <td style = "color:#03586A" ><?php echo ($gpRecs2['safeLowWait']) ?></td>
                     </tr>
                     <tr>
                       <td style = "color:#03586A"><strong>Standard (<5m)<strong></td>
-                      <td style = "color:#03586A"><?php echo ($gpRecs2['average']/10) ?></td>
+                      <td style = "color:#03586A"><?php echo ($gpRecs2['average']) ?></td>
                       <td style = "color:#03586A" ><?php echo ($gpRecs2['avgWait']) ?></td>
                     </tr>
                     <tr>
                       <td style = "color:red"><strong>Fast (<2m)<strong></td>
-                      <td style = "color:red"><?php echo ($gpRecs2['fast']/10) ?></td>
+                      <td style = "color:red"><?php echo ($gpRecs2['fast']) ?></td>
                       <td style = "color:#03586A" ><?php echo ($gpRecs2['fastWait']) ?></td>
                     </tr>
                   </tbody>
@@ -329,7 +329,7 @@
                         $row['miner'] = $minerNames[$row['miner']];}
                         echo("<td>". $row['miner']. "</td>");
                         echo("<td>". $row['minGasPrice']. "</td>");
-                        echo("<td>". round($row['avgGasPrice']). "</td>");
+                        echo("<td>". round($row['weightedAvgGP']). "</td>");
                         echo("<td>". round($row['pctTot']). "</td>");
 
                         echo('</tr>');
@@ -349,7 +349,7 @@
             <div class="col-md-4 col-sm-4 col-xs-12">
               <div class="x_panel tile fixed_height_420">
                 <div class="x_title">
-                  <h4>Misc Stats <small> (Last 1,500 blocks)</small></h4>
+                  <h4>Misc Stats <small> (Last 2,500 blocks)</small></h4>
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -362,18 +362,6 @@
                       </thead>
                       <tbody> 
                         <tr>
-                          <td>Cheapest Gas Price (gwei)</td>
-                          <td><?php echo ($gaspricelow);?></td>
-                        </tr>
-                        <tr>
-                          <td>Highest Gas Price (gwei)</td>
-                          <td><?php echo '<a href="https://etherscan.io/tx/' .$dearestgpID.'"';echo "target=\"_blank\">$gaspricehigh</a>";?></td>
-                        </tr>
-                        <tr>
-                          <td>Median Gas Price (gwei)</td>
-                          <td><?php echo ($gaspricemedian);?></td>
-                        </tr>
-                        <tr>
                           <td>Cheapest Transfer Fee</td>
                           <td id="cheapestTransfer"><?php echo '<a href="https://etherscan.io/tx/' .$cheapestTxId.'"'; echo "target=\"_blank\">$cheapestTxDisplay</a>";?></td>
                     
@@ -384,8 +372,29 @@
                           
                         </tr>
                         <tr>
-                          <td>Total Transactions</td>
+                          <td>Highest Transaction Fee</td>
+                          <td><?php echo '<a href="https://etherscan.io/tx/' .$dearestConId.'"'."target=\"_blank\" >$dearestConDisplay</a>"?></td>
+                          
+                        </tr>
+                        <tr>
+                          <td>Contracts: Median Gas Per Call</td>
+                          <td><?php echo "$avgContractGas";?></td>
+                        </tr>
+                        <tr>
+                          <td>Contracts: Median Gas Fee</td>
+                          <td><?php echo "$avgConFeeDisplay";?></td>
+                        </tr>
+                        <tr>
+                          <td>Total Transactions (last 10k blocks)</td>
                           <td><?php echo "$totTx";?></td>
+                        </tr>
+                        <tr>
+                          <td>Total Transfers</td>
+                          <td><?php echo "$totalTransfers"; $perTr =round($totalTransfers/$totTx*100); echo " ("."$perTr"."%)"?></td>
+                        </tr>
+                        <tr>
+                          <td>Total Contract Calls</td>
+                          <td><?php echo "$totalConCalls"; $perCon =round($totalConCalls/$totTx*100); echo " ("."$perCon"."%)"?></td>
                         </tr>
                         <tr>
                           <td>% Empty Blocks</td>
@@ -470,7 +479,7 @@
 
     $(document).ready(function(){
       $.ajax({
-        url: "json/predictTable_py.json",
+        url: "json/predictTable.json",
 		    method: "GET",
         dataType: "json",
 		    success: function(data) {
@@ -485,7 +494,8 @@
         max: <?php echo($fastestRef) ?>,
         step: 1,
         slide: function(event, ui){
-          $("#gasPrice").val(predictArray[ui.value]['gasprice']/10);
+          console.log(predictArray);
+          $("#gasPrice").val(predictArray[ui.value]['gasPrice']);
           $("#timeToConfirm").val(predictArray[ui.value]['expectedTime']);
           $("#blocksToConfirm").val(predictArray[ui.value]['expectedWait']);
           $("#maxTimeToConfirm").val(predictArray[ui.value]['maxWait']);
@@ -682,7 +692,7 @@
 
           
                     $.ajax({
-		                      url: "json/ethgasAPI_py.json",
+		                      url: "json/ethgasAPI.json",
 		                      method: "GET",
                               dataType: "json",
 		                      success: function(data) {

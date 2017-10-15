@@ -45,7 +45,7 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.css" rel="stylesheet">
-    <?php include 'build/php/minerT_py.php'; ?>
+    <?php include 'build/php/mempoolload.php'; ?>
 
    
 
@@ -56,7 +56,8 @@
     <div class="container body">
       <div class="main_container">
 
-   <?php include 'sidebar.php'; ?>   
+<!-- Sidebar -->
+      <?php include 'sidebar.php'; ?>
 
         <!-- top navigation -->
         <div class="top_nav">
@@ -66,7 +67,7 @@
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
               <ul class="nav navbar-nav navbar-right">
-              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong>Stats over last 200 blocks - Last update: Block <span style = 'color:#1ABB9C'> <?php echo($predictArray[0]['endBlock']) ?></strong></span>  
+              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Last update: Block <span style = 'color:#1ABB9C'>". $gp2data['blockNum']; ?></strong></span>  
               </p>
             </ul>
             </nav>
@@ -78,41 +79,38 @@
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="row">
-              <div class="col-md-6 col-sm-12 col-xs-12">
+              <div class="col-md-12 col-sm-12 col-xs-12">
                 <div class="x_panel tile fixed_height_420">
                   <div class="x_title">
-                    <h4>Blocks Mined by Minimum Gas Price Accepted</h4>
+                    <h4>Transaction Pool Status By Gas Price</h4>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
                   <table class="table table-striped">
                       <thead>
                         <tr>
-                          <th>Lowest Gas Price In Block (Gwei)</th>
-                          <!--<th>% of Total<br>Blocks</th>
-                          <th>% of Non-Empty<br>Blocks</th>-->
-                          <th>Percent of Total Blocks</th>
-                          <!--<th>Percent of<br> Non-empty Blocks</th>-->
+                          <th>Gas Price (Gwei)</th>
+                          <th>TxPool</br>Total Gas (1e6)</th>
+                          <th>TxPool</br>Total Transactions</th>
+                          <th>Mean Time in </br>TxPool (Blocks)</th>
                         </tr>
                       </thead>
                       <tbody>
                       <?php
-                      foreach ($predictArray as $row){
+                      foreach ($memPoolArray as $row){
                         echo('<tr>');
-                        $row['gasprice'] = $row['gasprice'];
-                        echo("<td>". $row['gasprice']. "</td>");
-                        #echo("<td>". round($row['pctTotBlocks'],1). "</td>");
-                        #echo("<td>". round($row['pctTxBlocks'],1). "</td>");
-                        echo("<td>". round($row['hashpower_accepting'], 1). "</td>");
-                        #echo("<td>". round($row['cumPctTxBlocks'],1). "</td>");
-                        echo('</tr>');
-
+                        echo("<td>". $row['gasPrice']. "</td>");
+                        echo("<td>". $row['gasOffered']. "</td>");
+                        echo("<td>". $row['tx']. "</td>");
+                        echo("<td>". round($row['waitBlocks']). "</td>");
                       }
                       ?>
                         </tbody>
                     </table>
 
                  </div>
+    
+    
         </div>
     </div>
                     
@@ -145,7 +143,10 @@
     
 
 <!-- Custom Theme Scripts -->
+   <script>
 
+
+ </script>
 
 
 

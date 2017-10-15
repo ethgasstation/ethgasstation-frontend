@@ -75,12 +75,12 @@ class Block_Data(Base):
     blockhash = Column(String(75))
     includedblock = Column(Integer)
     mingasprice = Column(Integer)
-    blockfee = Column(DECIMAL(5,5))
+    blockfee = Column(DECIMAL(25,5))
     gaslimit = Column(Integer)
     gasused = Column(Integer)
     time_mined = Column(Integer)
     uncsreported = Column(Integer)
-    speed = Column(DECIMAL(3,3))
+    speed = Column(DECIMAL(4,3))
     miner = Column(String(60))
     numtx = Column(Integer)
     uncle = Column(Integer)
@@ -103,7 +103,7 @@ class Timers():
             return True
 
     def check_reportblock(self, block):
-        if (block - (self.start_block-1))%100 == 0:
+        if (block - (self.start_block-1))%3 == 0:
             print (str(block) + ' ' + str(self.start_block))
             return True
         return False
@@ -167,8 +167,14 @@ class SummaryReport():
         self.block_df = block_df
         self.post = {}
 
-        self.tx_df['minedGasPrice'] = self.tx_df['round_gp_10gwei'].apply(lambda x: x/10)
-        self.tx_df['gasCat1'] = (self.tx_df['minedGasPrice'] <= 1)
+        def get_minedgasprice(row):
+            if ~np.isnan(row['block_mined']):
+                return row['round_gp_10gwei']/10
+            else:
+                return np.nan
+        
+        self.tx_df['minedGasPrice'] = self.tx_df.apply(get_minedgasprice, axis=1)
+        self.tx_df['gasCat1'] = (self.tx_df['minedGasPrice'] <= 1) & (self.tx_df['minedGasPrice'] >=0)
         self.tx_df['gasCat2'] = (self.tx_df['minedGasPrice']>1) & (self.tx_df['minedGasPrice']<= 4)
         self.tx_df['gasCat3'] = (self.tx_df['minedGasPrice']>4) & (self.tx_df['minedGasPrice']<= 20)
         self.tx_df['gasCat4'] = (self.tx_df['minedGasPrice']>20) & (self.tx_df['minedGasPrice']<= 50)
@@ -181,27 +187,29 @@ class SummaryReport():
         self.tx_df.loc[self.tx_df['delay2'] <= 0, 'delay2'] = np.nan
 
         total_tx = len(self.tx_df)
-        self.post['latestblockNum'] = self.end_block
-        self.post['totalTx'] = total_tx
-        self.post['totalCatTx1'] = self.tx_df['gasCat1'].sum()
-        self.post['totalCatTx2'] = self.tx_df['gasCat2'].sum()
-        self.post['totalCatTx3'] = self.tx_df['gasCat3'].sum()
-        self.post['totalCatTx4'] = self.tx_df['gasCat4'].sum()
-        self.post['totalCatTx5'] = self.tx_df['gasCat5'].sum()
+        self.post['latestblockNum'] = int(self.end_block)
+        self.post['totalTx'] = int(total_tx)
+        self.post['totalCatTx1'] = int(self.tx_df['gasCat1'].sum())
+        self.post['totalCatTx2'] = int(self.tx_df['gasCat2'].sum())
+        self.post['totalCatTx3'] = int(self.tx_df['gasCat3'].sum())
+        self.post['totalCatTx4'] = int(self.tx_df['gasCat4'].sum())
+        self.post['totalCatTx5'] = int(self.tx_df['gasCat5'].sum())
         self.post['totalTransfers'] = len(self.tx_df[self.tx_df['gas_offered']==21000])
+        self.post['avgTxFee'] = self.tx_df.loc[self.tx_df['gas_offered']==21000, 'minedGasPrice'].median()
         self.post['totalConCalls'] = len(self.tx_df[self.tx_df['gas_offered']!=21000])
-        self.post['maxMinedGasPrice'] = self.tx_df['minedGasPrice'].max()
-        self.post['minMinedGasPrice'] = self.tx_df['minedGasPrice'].min()
-        self.post['medianGasPrice']= int(self.tx_df['minedGasPrice'].quantile(.5))
-        self.post['cheapestTx'] = self.tx_df.loc[self.tx_df['gas_offered']==21000, 'minedGasPrice'].min()
+        self.post['maxMinedGasPrice'] = float(self.tx_df['minedGasPrice'].max())
+        self.post['minMinedGasPrice'] = float(self.tx_df['minedGasPrice'].min())
+        self.post['medianGasPrice']= float(self.tx_df['minedGasPrice'].quantile(.5))
+        self.post['cheapestTx'] = float(self.tx_df.loc[self.tx_df['gas_offered']==21000, 'minedGasPrice'].min())
         self.post['cheapestTxID'] = self.tx_df.loc[(self.tx_df['minedGasPrice']==self.post['cheapestTx']) & (self.tx_df['gas_offered'] == 21000)].index[0]
-        self.post['dearestTx'] = self.tx_df.loc[self.tx_df['gas_offered']==21000, 'minedGasPrice'].max()
+        self.post['dearestTx'] = float(self.tx_df.loc[self.tx_df['gas_offered']==21000, 'minedGasPrice'].max())
         self.post['dearestTxID'] = self.tx_df.loc[(self.tx_df['minedGasPrice']==self.post['dearestTx']) & (self.tx_df['gas_offered'] == 21000)].index[0]
+        self.post['dearestgpID'] = self.tx_df.loc[self.tx_df['minedGasPrice']==self.post['maxMinedGasPrice']].index[0]
         self.post['emptyBlocks'] =  len(self.block_df[self.block_df['speed']==0])
         self.post['fullBlocks'] = len(self.block_df[self.block_df['speed']>=.95])
         self.post['totalBlocks'] = len(self.block_df)
-        self.post['medianDelay'] = self.tx_df['delay'].quantile(.5)
-        self.post['medianDelayTime'] = self.tx_df['delay2'].quantile(.5)
+        self.post['medianDelay'] = float(self.tx_df['delay'].quantile(.5))
+        self.post['medianDelayTime'] = float(self.tx_df['delay2'].quantile(.5))
         
         url = "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD,EUR,GBP,CNY"
         with urllib.request.urlopen(url) as response:
@@ -217,7 +225,7 @@ class SummaryReport():
         tx_grouped_price.rename(columns = {'block_posted': 'count'}, inplace = True)
         tx_grouped_price['sum'] = tx_grouped_price['count'].cumsum()
         minlow_series = tx_grouped_price[tx_grouped_price['sum']>50].index
-        self.post['minLow'] = minlow_series.min()
+        self.post['minLow'] = float(minlow_series.min())
     
         """generate table with key miner stats"""
         miner_txdata = self.tx_df[['block_posted', 'miner']].groupby('miner').count()
@@ -294,7 +302,7 @@ class SummaryReport():
         '''average block time'''
         blockinterval = self.block_df[['block_number', 'time_mined']].diff()
         blockinterval.loc[blockinterval['block_number'] > 1, 'time_mined'] = np.nan
-        blockinterval.loc[blockinterval['time_mined']< 0, 'time_mined'] = np.nan
+        blockinterval.loc[blockinterval['block_number']< -1, 'time_mined'] = np.nan
         self.avg_timemined = blockinterval['time_mined'].mean()
     
         '''median wait time by gas price for bar graph'''
@@ -304,5 +312,5 @@ class SummaryReport():
         price_wait.loc[price_wait['minedGasPrice']<1, 'minedGasPrice'] = 0
         price_wait = price_wait.groupby('minedGasPrice').median()
         price_wait.reset_index(inplace=True)
-        price_wait['delay'] = price_wait['delay']*self.avg_timemined/float(60)
+        price_wait['delay'] = price_wait['delay']* np.absolute(self.avg_timemined/float(60))
         self.price_wait = price_wait

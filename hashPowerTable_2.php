@@ -45,7 +45,7 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.css" rel="stylesheet">
-    <?php include 'build/php/minerT_py.php'; ?>
+    <?php include 'build/php/minerT.php'; ?>
 
    
 
@@ -99,11 +99,11 @@
                       <?php
                       foreach ($predictArray as $row){
                         echo('<tr>');
-                        $row['gasprice'] = $row['gasprice'];
-                        echo("<td>". $row['gasprice']. "</td>");
+                        $row['gasPrice'] = $row['gasPrice'];
+                        echo("<td>". $row['gasPrice']. "</td>");
                         #echo("<td>". round($row['pctTotBlocks'],1). "</td>");
                         #echo("<td>". round($row['pctTxBlocks'],1). "</td>");
-                        echo("<td>". round($row['hashpower_accepting'], 1). "</td>");
+                        echo("<td>". round($row['hashpPct'], 1). "</td>");
                         #echo("<td>". round($row['cumPctTxBlocks'],1). "</td>");
                         echo('</tr>');
 

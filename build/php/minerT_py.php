@@ -15,22 +15,21 @@ if(!$mysqli){
 
 //query to get data from the table
 
-$query = "SELECT * FROM txDataLast10k ORDER BY id DESC LIMIT 1";
-$result = $mysqli->query($query);
-$dataRow = $result->fetch_assoc();
-$latestblock = $dataRow['latestblockNum'];
 try{
-$minerString = file_get_contents("http://localhost/json/miners.json");
+$minerString = file_get_contents("http://localhost/json/miners_py.json");
 $minersArray = json_decode($minerString, true);
 
-$priceString = file_get_contents("http://localhost/json/price3.json");
-$priceArray = json_decode($priceString, true);
-
-$predictString = file_get_contents("http://localhost/json/predictTable.json");
+$predictString = file_get_contents("http://localhost/json/predictTable_py.json");
 $predictArray = json_decode($predictString, true);
 
-$voteString = file_get_contents("http://localhost/json/minerVotes.json");
-$voteArray = json_decode($voteString, true);
+$gpRecsString2 = file_get_contents("http://localhost/json/ethgasAPI_py.json");
+$gpRecs2 = json_decode($gpRecsString2, true);
+
+$gasGuzzRaw = file_get_contents("http://localhost/json/gasguzz_py.json");
+$gasGuzzTable = json_decode($gasGuzzRaw, true);
+
+$memPoolString = file_get_contents("http://localhost/json/memPool_py.json");
+$memPoolArray = json_decode($memPoolString, true);
 
 $validatedString = file_get_contents("http://localhost/json/validated.json");
 $validatedArray = json_decode($validatedString, true);

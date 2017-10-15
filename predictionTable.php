@@ -45,7 +45,7 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.css" rel="stylesheet">
-    <?php include 'build/php/minerT.php'; ?>
+    <?php include 'build/php/minerT_py.php'; ?>
 
    
 
@@ -80,7 +80,7 @@
               <div class="col-md-8 col-sm-12 col-xs-12">
                 <div class="x_panel tile fixed_height_420">
                   <div class="x_title">
-                    <h4>Predicted Confirm Times By Gas Price For Transactions Submitted At Block <span style = 'color:#1ABB9C'><?php echo $predictArray[0]['endBlock']?></span> <small>(not applicable to batch transactions or to high traffic contracts (e.g > 100 pending transactions))</small></h4>
+                    <h4>Predicted Confirm Times By Gas Price For Transactions Submitted At Block <span style = 'color:#1ABB9C'><?php echo $gpRecs2['blockNum']?></span> <small>(not applicable to batch transactions or to high traffic contracts (e.g > 100 pending transactions))</small></h4>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
@@ -98,11 +98,11 @@
                       <tbody>
                       <?php
                       foreach ($predictArray as $row){
-                        if ($row['gasPrice']>=0.5){
+                        if ($row['gasprice']>=0.5){
                         echo('<tr>');
                         $uci = $row['expectedWait'] * 2.5;
                         $uciWait = $row['expectedTime'] * 2.5;
-                        echo("<td>". $row['gasPrice']. "</td>");
+                        echo("<td>". $row['gasprice']. "</td>");
                         #echo("<td>". round($row['pctTotBlocks'],1). "</td>");
                         echo("<td>". round($row['expectedWait'],1). "</td>");
                         echo("<td>". round($row['expectedTime'],1). "</td>");
