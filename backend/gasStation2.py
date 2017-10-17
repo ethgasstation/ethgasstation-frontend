@@ -466,4 +466,4 @@ def filter_transactions():
             break
 
 retry = Retry(10, None, 5)
-retry(filter_transactions)
+retry(filter_transactions())
