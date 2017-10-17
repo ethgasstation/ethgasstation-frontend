@@ -458,12 +458,14 @@ def filter_transactions():
             manage_dataframes(clean_tx, block)
         except AttributeError as e:
             print(e)
-
+    
     while True:
-        tx_filter.watch(new_tx_callback)
+        try:
+            tx_filter.watch(new_tx_callback)
+        except:
+            print(traceback.format_exc())
         response = input("type q to quit \n")
         if response == 'q':
             break
 
-retry = Retry(10, None, 5)
-retry(filter_transactions())
+filter_transactions()
