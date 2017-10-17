@@ -21,6 +21,7 @@ session = Session()
 
 
 def init_dfs():
+   """load data from mysql""" 
    blockdata = pd.read_sql('SELECT * from blockdata2 order by id desc limit 2000', con=engine)
    blockdata = blockdata.drop('id', axis=1)
    postedtx = pd.read_sql('SELECT * from postedtx2 order by id desc limit 100000', con=engine)
@@ -31,7 +32,7 @@ def init_dfs():
    return(blockdata, alltx)
 
 def prune_data(blockdata, alltx, txpool, block):
-    '''keep dataframes and databases from getting too big'''
+    """keep dataframes and databases from getting too big"""
     stmt = text("DELETE FROM postedtx2 WHERE block_posted <= :block")
     stmt2 = text("DELETE FROM minedtx2 WHERE block_mined <= :block")
     deleteBlock = block-2000
@@ -44,6 +45,7 @@ def prune_data(blockdata, alltx, txpool, block):
 
 
 def write_report(report, top_miners, price_wait, miner_txdata, gasguzz, lowprice):
+    """write json data"""
     parentdir = os.path.dirname(os.getcwd())
     top_minersout = top_miners.to_json(orient='records')
     minerout = miner_txdata.to_json(orient='records')
@@ -80,6 +82,7 @@ def write_report(report, top_miners, price_wait, miner_txdata, gasguzz, lowprice
         print(e)
 
 def write_to_json(gprecs, txpool_by_gp, prediction_table):
+    """write json data"""
     try:
         txpool_by_gp = txpool_by_gp.rename(columns={'gas_price':'count'})
         txpool_by_gp['gasprice'] = txpool_by_gp['round_gp_10gwei']/10
@@ -105,16 +108,16 @@ def write_to_json(gprecs, txpool_by_gp, prediction_table):
     
 
 def get_txhases_from_txpool(block):
-        """gets list of all txhash in txpool at block and returns dataframe"""
-        hashlist = []
-        txpoolcontent = web3.txpool.content
-        txpoolpending = txpoolcontent['pending']
-        for tx_sequence in txpoolpending.values():
-            for tx_obj in tx_sequence.values():
-                hashlist.append(tx_obj['hash'])
-        txpool_current = pd.DataFrame(index = hashlist)
-        txpool_current['block'] = block
-        return txpool_current
+    """gets list of all txhash in txpool at block and returns dataframe"""
+    hashlist = []
+    txpoolcontent = web3.txpool.content
+    txpoolpending = txpoolcontent['pending']
+    for tx_sequence in txpoolpending.values():
+        for tx_obj in tx_sequence.values():
+            hashlist.append(tx_obj['hash'])
+    txpool_current = pd.DataFrame(index = hashlist)
+    txpool_current['block'] = block
+    return txpool_current
 
 def get_diff(current, prior, block):
     """gets txhashes removed from txpool at current block and returns df"""
@@ -126,27 +129,29 @@ def get_diff(current, prior, block):
 
 
 def process_block_transactions(block):
-        timemined = time.time()
-        block_df = pd.DataFrame()
-        block_obj = web3.eth.getBlock(block, True)
-        miner = block_obj.miner 
-        for transaction in block_obj.transactions:
-            clean_tx = CleanTx(transaction, None, None, miner)
-            block_df = block_df.append(clean_tx.to_dataframe(), ignore_index = False)
-        block_df['time_mined'] = timemined
-        return(block_df, block_obj)
+    """get tx data from block"""
+    timemined = time.time()
+    block_df = pd.DataFrame()
+    block_obj = web3.eth.getBlock(block, True)
+    miner = block_obj.miner 
+    for transaction in block_obj.transactions:
+        clean_tx = CleanTx(transaction, None, None, miner)
+        block_df = block_df.append(clean_tx.to_dataframe(), ignore_index = False)
+    block_df['time_mined'] = timemined
+    return(block_df, block_obj)
 
 def process_block_data(block_df, block_obj):
-        if len(block_obj.transactions)>0:
-            block_df['weighted_fee'] = block_df['round_gp_10gwei']* block_df['gas_offered']
-            block_mingasprice = block_df['round_gp_10gwei'].min()
-            block_weightedfee = block_df['weighted_fee'].sum() / block_df['gas_offered'].sum()
-        else:
-            block_mingasprice = np.nan
-        block_numtx = len(block_obj.transactions)
-        timemined = block_df['time_mined'].min()
-        clean_block = CleanBlock(block_obj, 1, 0, timemined, block_mingasprice, block_numtx, block_weightedfee)
-        return(clean_block.to_dataframe())
+    """process block to dataframe"""
+    if len(block_obj.transactions)>0:
+        block_df['weighted_fee'] = block_df['round_gp_10gwei']* block_df['gas_offered']
+        block_mingasprice = block_df['round_gp_10gwei'].min()
+        block_weightedfee = block_df['weighted_fee'].sum() / block_df['gas_offered'].sum()
+    else:
+        block_mingasprice = np.nan
+    block_numtx = len(block_obj.transactions)
+    timemined = block_df['time_mined'].min()
+    clean_block = CleanBlock(block_obj, 1, 0, timemined, block_mingasprice, block_numtx, block_weightedfee)
+    return(clean_block.to_dataframe())
 
 def get_hpa(gasprice, hashpower):
     """gets the hash power accpeting the gas price over last 200 blocks"""
@@ -366,7 +371,6 @@ def get_gasprice_recs(prediction_table, block_time, block, speed, minlow=-1):
     gprecs['speed'] = speed
     return(gprecs)
 
-@Retry(10)
 def filter_transactions():
     """filter and add to dataframe"""
     (blockdata, alltx) = init_dfs()
@@ -461,4 +465,5 @@ def filter_transactions():
         if response == 'q':
             break
 
-filter_transactions()
+retry = Retry(10, None, 5)
+retry(filter_transactions)

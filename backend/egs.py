@@ -8,14 +8,15 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 class Mined_Sql(Base):
+    """mysql schema for minedtransaction"""
     __tablename__ = 'minedtx2'
-    id = Column(Integer, primary_key = True)
+    id = Column(Integer, primary_key=True)
     index = Column(String(75))
     block_mined = Column(Integer)
     block_posted = Column(Integer)
-    expectedTime = Column(DECIMAL(5,2))
-    expectedWait = Column(DECIMAL(5,2))
-    mined_probability = Column(DECIMAL(5,3))
+    expectedTime = Column(DECIMAL(5, 2))
+    expectedWait = Column(DECIMAL(5, 2))
+    mined_probability = Column(DECIMAL(5, 3))
     highgas2 = Column(Integer)
     from_address = Column(String(60))
     gas_offered = Column(Integer)
@@ -26,8 +27,8 @@ class Mined_Sql(Base):
     num_to = Column(Integer)
     ico = Column(Integer)
     dump = Column(Integer)
-    high_gas_offered =  Column(Integer)
-    pct_limit = Column(DECIMAL(5,4))
+    high_gas_offered = Column(Integer)
+    pct_limit = Column(DECIMAL(5, 4))
     removed_block = Column(Integer)
     round_gp_10gwei = Column(Integer)
     time_posted = Column(Integer)
@@ -39,14 +40,15 @@ class Mined_Sql(Base):
     nonce = Column(Integer)
 
 class Tx_Sql(Base):
+    """mysql schema for posted transaction"""
     __tablename__ = 'postedtx2'
-    id = Column(Integer, primary_key = True)
+    id = Column(Integer, primary_key=True)
     index = Column(String(75))
     block_mined = Column(Integer)
     block_posted = Column(Integer)
-    expectedTime = Column(DECIMAL(5,2))
-    expectedWait = Column(DECIMAL(5,2))
-    mined_probability = Column(DECIMAL(5,3))
+    expectedTime = Column(DECIMAL(5, 2))
+    expectedWait = Column(DECIMAL(5, 2))
+    mined_probability = Column(DECIMAL(5, 3))
     from_address = Column(String(60))
     gas_offered = Column(Integer)
     gas_price = Column(BigInteger)
@@ -57,8 +59,8 @@ class Tx_Sql(Base):
     num_to = Column(Integer)
     ico = Column(Integer)
     dump = Column(Integer)
-    high_gas_offered =  Column(Integer)
-    pct_limit = Column(DECIMAL(5,4))
+    high_gas_offered = Column(Integer)
+    pct_limit = Column(DECIMAL(5, 4))
     removed_block = Column(Integer)
     round_gp_10gwei = Column(Integer)
     time_posted = Column(Integer)
@@ -70,17 +72,18 @@ class Tx_Sql(Base):
     chained = Column(Integer)
 
 class Block_Data(Base):
-    __tablename__= 'blockdata2'
-    id = Column(Integer, primary_key = True)
+    """mysql schema for block database"""
+    __tablename__ = 'blockdata2'
+    id = Column(Integer, primary_key=True)
     blockhash = Column(String(75))
     includedblock = Column(Integer)
     mingasprice = Column(Integer)
-    blockfee = Column(DECIMAL(25,5))
+    blockfee = Column(DECIMAL(25, 5))
     gaslimit = Column(Integer)
     gasused = Column(Integer)
     time_mined = Column(Integer)
     uncsreported = Column(Integer)
-    speed = Column(DECIMAL(4,3))
+    speed = Column(DECIMAL(4, 3))
     miner = Column(String(60))
     numtx = Column(Integer)
     uncle = Column(Integer)
@@ -88,6 +91,10 @@ class Block_Data(Base):
     block_number = Column(Integer)
 
 class Timers():
+    """
+    class to keep track of time relative to network block
+    also tracks low mined price from reports
+    """
     def __init__(self, start_block):
         self.start_block = start_block
         self.current_block = start_block
@@ -110,6 +117,7 @@ class Timers():
         return False
 
 class CleanTx():
+    """transaction object / methods for pandas"""
     def __init__(self, tx_obj, block_posted=None, time_posted=None, miner=None):
         self.hash = tx_obj.hash
         self.block_posted = block_posted
@@ -125,12 +133,12 @@ class CleanTx():
 
     def to_dataframe(self):
         data = {self.hash: {'block_posted':self.block_posted, 'block_mined':self.block_mined, 'to_address':self.to_address, 'from_address':self.from_address, 'nonce':self.nonce, 'time_posted':self.time_posted, 'time_mined': None, 'gas_price':self.gas_price, 'miner':self.miner, 'gas_offered':self.gas_offered, 'round_gp_10gwei':self.gp_10gwei}}
-        return pd.DataFrame.from_dict(data, orient = 'index')
+        return pd.DataFrame.from_dict(data, orient='index')
 
     def round_gp_10gwei(self):
         """Rounds the gas price to gwei"""
         gp = self.gas_price/1e8
-        if gp >=1 and gp<10:
+        if gp >= 1 and gp < 10:
             gp = np.floor(gp)
         elif gp >= 10:
             gp = gp/10
@@ -141,7 +149,8 @@ class CleanTx():
         self.gp_10gwei = gp
 
 class CleanBlock():
-    def __init__(self, block_obj, main, uncle, timemined, mingasprice = None, numtx = None, weightedgp = None, includedblock = None):
+    """block object/methods for pandas"""
+    def __init__(self, block_obj, main, uncle, timemined, mingasprice=None, numtx = None, weightedgp=None, includedblock=None):
         self.block_number = block_obj.number 
         self.gasused = block_obj.gasUsed
         self.miner = block_obj.miner
@@ -159,9 +168,10 @@ class CleanBlock():
     
     def to_dataframe(self):
         data = {0:{'block_number':self.block_number, 'gasused':self.gasused, 'miner':self.miner, 'gaslimit':self.gaslimit, 'numtx':self.numtx, 'blockhash':self.blockhash, 'time_mined':self.time_mined, 'mingasprice':self.mingasprice, 'uncsreported':self.uncsreported, 'blockfee':self.blockfee, 'main':self.main, 'uncle':self.uncle, 'speed':self.speed, 'includedblock':self.includedblock}}
-        return pd.DataFrame.from_dict(data, orient = 'index')
+        return pd.DataFrame.from_dict(data, orient='index')
 
 class SummaryReport():
+    """analyzes data from last x blocks to create summary stats"""
     def __init__(self, tx_df, block_df, end_block):
         self.end_block = end_block
         self.tx_df = tx_df
@@ -169,6 +179,7 @@ class SummaryReport():
         self.post = {}
 
         def get_minedgasprice(row):
+            """returns gasprice in gwei if mined otherwise nan"""
             if ~np.isnan(row['block_mined']):
                 return row['round_gp_10gwei']/10
             else:
@@ -186,7 +197,6 @@ class SummaryReport():
         self.tx_df['delay2'] = self.tx_df['time_mined'] - self.tx_df['time_posted']
         self.tx_df.loc[self.tx_df['delay'] <= 0, 'delay'] = np.nan
         self.tx_df.loc[self.tx_df['delay2'] <= 0, 'delay2'] = np.nan
-
         total_tx = len(self.tx_df)
         self.post['latestblockNum'] = int(self.end_block)
         self.post['totalTx'] = int(total_tx)
@@ -211,7 +221,8 @@ class SummaryReport():
         self.post['totalBlocks'] = len(self.block_df)
         self.post['medianDelay'] = float(self.tx_df['delay'].quantile(.5))
         self.post['medianDelayTime'] = float(self.tx_df['delay2'].quantile(.5))
-        
+
+        """ETH price data"""
         url = "https://min-api.cryptocompare.com/data/price?fsym=ETH&tsyms=USD,EUR,GBP,CNY"
         with urllib.request.urlopen(url) as response:
             pricesRaw = json.loads(response.read().decode())
@@ -239,6 +250,7 @@ class SummaryReport():
         avgprice_df = avgprice_df.rename(columns={"minedGasPrice": 'avgGasPrice'})
         miner_txdata = pd.concat([miner_txdata, minprice_df], axis = 1)
         miner_txdata = pd.concat([miner_txdata, avgprice_df], axis = 1)
+
         # Calculate Each Miners % Empty and Total Blocks
         miner_blocks = block_df[['miner','emptyBlocks','block_number']].groupby('miner').agg({'emptyBlocks':'sum', 'block_number':'count'})
         miner_txdata = pd.concat([miner_txdata, miner_blocks], axis = 1)
@@ -267,7 +279,7 @@ class SummaryReport():
         self.top_miners = top_miners
         self.price_table = price_table
 
-        '''gas guzzler table'''
+        """gas guzzler table"""
         gg = {
             '0x6090a6e47849629b7245dfa1ca21d94cd15878ef': 'ENS registrar',
             '0xcd111aa492a9c77a367c36e6d6af8e6f212e0c8e': 'Acronis',
@@ -295,20 +307,20 @@ class SummaryReport():
         gasguzz = gasguzz.reset_index()
         self.gasguzz = gasguzz
 
-        '''low gas price tx watch list'''
+        """low gas price tx watch list"""
         recent = self.end_block - 250
         lowprice = self.tx_df.loc[(self.tx_df['round_gp_10gwei'] < 10) & (self.tx_df['block_posted'] < recent), ['minedGasPrice', 'block_posted', 'mined', 'block_mined', 'round_gp_10gwei']]
         lowprice = lowprice.sort_values(['round_gp_10gwei'], ascending = True).reset_index()
         lowprice['gasprice'] = lowprice['round_gp_10gwei']/10
         self.lowprice = lowprice
     
-        '''average block time'''
+        """average block time"""
         blockinterval = self.block_df[['block_number', 'time_mined']].diff()
         blockinterval.loc[blockinterval['block_number'] > 1, 'time_mined'] = np.nan
         blockinterval.loc[blockinterval['block_number']< -1, 'time_mined'] = np.nan
         self.avg_timemined = blockinterval['time_mined'].mean()
     
-        '''median wait time by gas price for bar graph'''
+        """median wait time by gas price for bar graph"""
         price_wait = self.tx_df.loc[:, ['minedGasPrice', 'delay']]
         price_wait.loc[price_wait['minedGasPrice']>=40, 'minedGasPrice'] = 40
         price_wait = price_wait.loc[(price_wait['minedGasPrice']<=10) | (price_wait['minedGasPrice']==20) | (price_wait['minedGasPrice'] == 40), ['minedGasPrice', 'delay']]
@@ -319,14 +331,14 @@ class SummaryReport():
         self.price_wait = price_wait
 
 class Retry():
-    default_exceptions = (Exception,)
-    def __init__(self, tries, exceptions=None, delay=0):
-        """
+    """
         Decorator for retrying a function if exception occurs
         tries -- num tries 
         exceptions -- exceptions to catch
         delay -- wait between retries
-        """
+    """
+    default_exceptions = (Exception,)
+    def __init__(self, tries, exceptions=None, delay=0):
         self.tries = tries
         if exceptions is None:
             exceptions = Retry.default_exceptions
@@ -334,11 +346,11 @@ class Retry():
         self.delay = delay
 
     def __call__(self, f):
-        def fn(*args, **kwargs):
+        def fn():
             exception = None
             for _ in range(self.tries):
                 try:
-                    return f(*args, **kwargs)
+                    return f()
                 except self.exceptions as e:
                     print ("Retry, exception: "+str(e))
                     time.sleep(self.delay)
