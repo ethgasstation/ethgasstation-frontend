@@ -16,19 +16,19 @@ if(!$mysqli){
 //query to get data from the table
 
 try{
-$minerString = file_get_contents("http://localhost/json/miners_py.json");
+$minerString = file_get_contents("http://localhost/json/miners.json");
 $minersArray = json_decode($minerString, true);
 
-$predictString = file_get_contents("http://localhost/json/predictTable_py.json");
+$predictString = file_get_contents("http://localhost/json/predictTable.json");
 $predictArray = json_decode($predictString, true);
 
-$gpRecsString2 = file_get_contents("http://localhost/json/ethgasAPI_py.json");
+$gpRecsString2 = file_get_contents("http://localhost/json/ethgasAPI.json");
 $gpRecs2 = json_decode($gpRecsString2, true);
-
-$gasGuzzRaw = file_get_contents("http://localhost/json/gasguzz_py.json");
+$latestBlock = $gpRecs2['blockNum'];
+$gasGuzzRaw = file_get_contents("http://localhost/json/gasguzz.json");
 $gasGuzzTable = json_decode($gasGuzzRaw, true);
 
-$memPoolString = file_get_contents("http://localhost/json/memPool_py.json");
+$memPoolString = file_get_contents("http://localhost/json/memPool.json");
 $memPoolArray = json_decode($memPoolString, true);
 
 $validatedString = file_get_contents("http://localhost/json/validated.json");

@@ -45,7 +45,7 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.css" rel="stylesheet">
-    <?php include 'build/php/minerT.php'; ?>
+    <?php include 'build/php/minerT_py.php'; ?>
 
    
 
@@ -67,7 +67,7 @@
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
               <ul class="nav navbar-nav navbar-right">
-              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Stats over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
+              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Stats over last 10,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestBlock" ?></strong></span>  
               </p>
             </ul>
             </nav>
@@ -100,16 +100,16 @@
                       <?php
                       foreach ($validatedArray as $row){
                         echo('<tr>');
-                        echo("<td>". round(($row['gasPrice']/1000), 3). "</td>");
-                        echo("<td>". $row['txHash']. "</td>");
-                        echo("<td>". $row['postedBlock']. "</td>");
+                        echo("<td>". round(($row['gasprice']), 3). "</td>");
+                        echo("<td>". $row['index']. "</td>");
+                        echo("<td>". $row['block_posted']. "</td>");
                         if (!$row['mined']){
                             $row['mined']='False';
                         }
                         else{$row['mined']='True';}
                         echo("<td>". $row['mined']. "</td>");
-                        if (isset($row['minedBlock'])){
-                        echo("<td>". $row['minedBlock']. "</td>");}
+                        if (isset($row['block_mined'])){
+                        echo("<td>". $row['block_mined']. "</td>");}
                         else{echo("<td></td>");}
                         echo('</tr>');
 

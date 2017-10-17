@@ -43,17 +43,19 @@ def prune_data(blockdata, alltx, txpool, block):
     return (blockdata, alltx, txpool)
 
 
-def write_report(report, top_miners, price_wait, miner_txdata, gasguzz):
+def write_report(report, top_miners, price_wait, miner_txdata, gasguzz, lowprice):
     parentdir = os.path.dirname(os.getcwd())
     top_minersout = top_miners.to_json(orient='records')
     minerout = miner_txdata.to_json(orient='records')
     gasguzzout = gasguzz.to_json(orient='records')
+    lowpriceout = lowprice.to_json(orient='records')
     price_waitout = price_wait.to_json(orient='records')
-    filepath_report = parentdir + '/json/txDataLast10k_py.json'
-    filepath_tminers = parentdir + '/json/topMiners_py.json'
-    filepath_pwait = parentdir + '/json/priceWait_py.json'
-    filepath_minerout = parentdir + '/json/miners_py.json'
-    filepath_gasguzzout = parentdir + '/json/gasguzz_py.json'
+    filepath_report = parentdir + '/json/txDataLast10k.json'
+    filepath_tminers = parentdir + '/json/topMiners.json'
+    filepath_pwait = parentdir + '/json/priceWait.json'
+    filepath_minerout = parentdir + '/json/miners.json'
+    filepath_gasguzzout = parentdir + '/json/gasguzz.json'
+    filepath_lowpriceout = parentdir + '/json/validated.json'
 
     try:
         with open(filepath_report, 'w') as outfile:
@@ -70,30 +72,36 @@ def write_report(report, top_miners, price_wait, miner_txdata, gasguzz):
         
         with open(filepath_gasguzzout, 'w') as outfile:
             outfile.write(gasguzzout)
+        
+        with open(filepath_lowpriceout, 'w') as outfile:
+            outfile.write(lowpriceout)
 
     except Exception as e:
         print(e)
 
 def write_to_json(gprecs, txpool_by_gp, prediction_table):
-    txpool_by_gp = txpool_by_gp.rename(columns={'gas_price':'count'})
-    txpool_by_gp['gasprice'] = txpool_by_gp['round_gp_10gwei']/10
-    txpool_by_gp['gas_offered'] = txpool_by_gp['gas_offered']/1e6
-    prediction_table['gasprice'] = prediction_table['gasprice']/10
-    prediction_tableout = prediction_table.to_json(orient = 'records')
-    txpool_by_gpout = txpool_by_gp.to_json(orient='records')
-    parentdir = os.path.dirname(os.getcwd())
-    filepath_gprecs = parentdir + '/json/ethgasAPI_py.json'
-    filepath_txpool_gp = parentdir + '/json/memPool_py.json'
-    filepath_prediction_table = parentdir + '/json/predictTable_py.json'
+    try:
+        txpool_by_gp = txpool_by_gp.rename(columns={'gas_price':'count'})
+        txpool_by_gp['gasprice'] = txpool_by_gp['round_gp_10gwei']/10
+        txpool_by_gp['gas_offered'] = txpool_by_gp['gas_offered']/1e6
+        prediction_table['gasprice'] = prediction_table['gasprice']/10
+        prediction_tableout = prediction_table.to_json(orient = 'records')
+        txpool_by_gpout = txpool_by_gp.to_json(orient='records')
+        parentdir = os.path.dirname(os.getcwd())
+        filepath_gprecs = parentdir + '/json/ethgasAPI.json'
+        filepath_txpool_gp = parentdir + '/json/memPool.json'
+        filepath_prediction_table = parentdir + '/json/predictTable.json'
+        with open(filepath_gprecs, 'w') as outfile:
+            json.dump(gprecs, outfile)
+
+        with open(filepath_prediction_table, 'w') as outfile:
+            outfile.write(prediction_tableout)
+
+        with open(filepath_txpool_gp, 'w') as outfile:
+            outfile.write(txpool_by_gpout)
     
-    with open(filepath_gprecs, 'w') as outfile:
-        json.dump(gprecs, outfile)
-
-    with open(filepath_prediction_table, 'w') as outfile:
-        outfile.write(prediction_tableout)
-
-    with open(filepath_txpool_gp, 'w') as outfile:
-        outfile.write(txpool_by_gpout)
+    except Exception as e:
+        print(e)
     
 
 def get_txhases_from_txpool(block):
@@ -133,6 +141,8 @@ def process_block_data(block_df, block_obj):
             block_df['weighted_fee'] = block_df['round_gp_10gwei']* block_df['gas_offered']
             block_mingasprice = block_df['round_gp_10gwei'].min()
             block_weightedfee = block_df['weighted_fee'].sum() / block_df['gas_offered'].sum()
+        else:
+            block_mingasprice = np.nan
         block_numtx = len(block_obj.transactions)
         timemined = block_df['time_mined'].min()
         clean_block = CleanBlock(block_obj, 1, 0, timemined, block_mingasprice, block_numtx, block_weightedfee)
@@ -227,8 +237,7 @@ def merge_txpool_alltx(txpool, alltx, block):
     #group by gasprice
     txpool_block = txpool_block[~txpool_block.index.duplicated(keep = 'first')]
     assert txpool_block.index.duplicated().sum()==0
-    txpool_block['wait_blocks'] = txpool_block['block_posted'].apply(lambda x: block - x)
-    txpool_by_gp = txpool_block[['wait_blocks', 'gas_offered', 'gas_price', 'round_gp_10gwei']].groupby('round_gp_10gwei').agg({'wait_blocks':'median','gas_offered':'sum', 'gas_price':'count'})
+    txpool_by_gp = txpool_block[['gas_price', 'round_gp_10gwei']].groupby('round_gp_10gwei').agg({'gas_price':'count'})
     txpool_by_gp.reset_index(inplace=True, drop=False)
     return(txpool_block, txpool_by_gp)
 
@@ -253,14 +262,26 @@ def make_predictiontable(hashpower, avg_timemined, txpool_by_gp):
     txatabove_lookup = predictTable.set_index('gasprice')['tx_atabove'].to_dict()
     return(gp_lookup, txatabove_lookup, predictTable)
 
-def analyze_txpool(block, gp_lookup, txatabove_lookup, txpool_block, gaslimit, avg_timemined):
+def get_adjusted_post(row, block):
+    if row['chained'] == 1:
+        return np.nan
+    elif (row['chained']==0 and row['temp_chained']==1):
+        return block
+    elif (row['chained']==0 and row['temp_chained']==0):
+        return row['block_posted']
+    else:
+        pass
+
+def analyze_txpool(block, gp_lookup, txatabove_lookup, txpool_block, gaslimit, avg_timemined, txpool_by_gp):
     '''defines prediction parameters for all transactions in the txpool'''
     txpool_block['pct_limit'] = txpool_block['gas_offered'].apply(lambda x: x / gaslimit)
     txpool_block['hashpower_accepting'] = txpool_block['round_gp_10gwei'].apply(lambda x: gp_lookup[x] if x in gp_lookup else 100)
     txpool_block['tx_atabove'] = txpool_block['round_gp_10gwei'].apply(lambda x: txatabove_lookup[x] if x in txatabove_lookup else 1)
     txpool_block['num_from'] = txpool_block.groupby('from_address')['block_posted'].transform('count')
     txpool_block_nonce = txpool_block[['from_address', 'nonce']].groupby('from_address').agg({'nonce':'min'})
+    txpool_block['temp_chained'] = txpool_block['chained']
     txpool_block['chained'] = txpool_block.apply(check_nonce, args=(txpool_block_nonce,), axis=1)
+    txpool_block['block_posted_adj'] = txpool_block.apply(get_adjusted_post, args = (block,), axis=1)
     txpool_block['num_to'] = txpool_block.groupby('to_address')['block_posted'].transform('count')
     txpool_block['ico'] = (txpool_block['num_to'] > 90).astype(int)
     txpool_block['dump'] = (txpool_block['num_from'] > 5).astype(int)
@@ -271,22 +292,32 @@ def analyze_txpool(block, gp_lookup, txatabove_lookup, txpool_block, gaslimit, a
     txpool_block['expectedWait'] = txpool_block['expectedWait'].apply(lambda x: 2 if (x < 2) else x)
     txpool_block['expectedWait'] = txpool_block['expectedWait'].apply(lambda x: np.round(x, decimals=2))
     txpool_block['expectedTime'] = txpool_block['expectedWait'].apply(lambda x: np.round((x * avg_timemined / 60), decimals=2))
-    return(txpool_block)
+    try:
+        txpool_block['wait_blocks'] = txpool_block['block_posted_adj'].apply(lambda x: block-x)
+    except:
+        txpool_block['wait_blocks'] = np.nan
+    txpool_by_gp = txpool_block[['wait_blocks', 'gas_offered', 'gas_price', 'round_gp_10gwei']].groupby('round_gp_10gwei').agg({'wait_blocks':'median','gas_offered':'sum', 'gas_price':'count'})
+    txpool_by_gp.reset_index(inplace=True, drop=False)
+    txpool_block = txpool_block.drop(['block_posted_adj', 'temp_chained'], axis=1)
+    return(txpool_block, txpool_by_gp)
 
 def get_gasprice_recs(prediction_table, block_time, block, speed, minlow=-1):
-    def get_safelow():
-        series = prediction_table.loc[prediction_table['expectedTime'] <= 20, 'gasprice']
+    
+    def get_safelow(minlow):
+        series = prediction_table.loc[prediction_table['expectedTime'] <= 10, 'gasprice']
         safelow = series.min()
+        print('safelow1 = ' + str(safelow))
         minhash_list = prediction_table.loc[prediction_table['hashpower_accepting']>=1.5, 'gasprice']
         if (safelow < minhash_list.min()):
             safelow = minhash_list.min()
+        print('safelow2 = ' + str(safelow))
         if minlow >= 0:
             if safelow < minlow:
                 safelow = minlow
         return float(safelow)
 
     def get_average():
-        series = prediction_table.loc[prediction_table['expectedTime'] <= 5, 'gasprice']
+        series = prediction_table.loc[prediction_table['expectedTime'] <= 4, 'gasprice']
         average = series.min()
         minhash_list = prediction_table.loc[prediction_table['hashpower_accepting']>35, 'gasprice']
         if average < minhash_list.min():
@@ -294,7 +325,7 @@ def get_gasprice_recs(prediction_table, block_time, block, speed, minlow=-1):
         return float(average)
 
     def get_fast():
-        series = prediction_table.loc[prediction_table['expectedTime'] <= 2, 'gasprice']
+        series = prediction_table.loc[prediction_table['expectedTime'] <= 1, 'gasprice']
         fastest = series.min()
         minhash_list = prediction_table.loc[prediction_table['hashpower_accepting']>90, 'gasprice']
         if fastest < minhash_list.min():
@@ -313,12 +344,16 @@ def get_gasprice_recs(prediction_table, block_time, block, speed, minlow=-1):
         return float(fastest) 
 
     def get_wait(gasprice):
-        wait =  prediction_table.loc[prediction_table['gasprice']==gasprice, 'expectedWait'].values[0]
+        try:
+            wait =  prediction_table.loc[prediction_table['gasprice']==gasprice, 'expectedTime'].values[0]
+        except:
+            wait = 0
         wait = round(wait, 1)
         return float(wait)
     
+    print ('minlow = ' + str(minlow))
     gprecs = {}
-    gprecs['safeLow'] = get_safelow()
+    gprecs['safeLow'] = get_safelow(minlow)
     gprecs['safeLowWait'] = get_wait(gprecs['safeLow'])
     gprecs['average'] = get_average()
     gprecs['avgWait'] = get_wait(gprecs['average'])
@@ -331,6 +366,7 @@ def get_gasprice_recs(prediction_table, block_time, block, speed, minlow=-1):
     gprecs['speed'] = speed
     return(gprecs)
 
+@Retry(10)
 def filter_transactions():
     """filter and add to dataframe"""
     (blockdata, alltx) = init_dfs()
@@ -380,9 +416,9 @@ def filter_transactions():
                 #make prediction table
                 (gp_lookup, txatabove_lookup, predictiondf) = make_predictiontable(hashpower, block_time, txpool_by_gp)
                 #get gpRecs
-                gprecs = get_gasprice_recs (predictiondf, block_time, block, speed)
+                gprecs = get_gasprice_recs (predictiondf, block_time, block, speed, timer.minlow)
                 #analyze block transactions within txpool
-                analyzed_block = analyze_txpool(block-1, gp_lookup, txatabove_lookup, txpool_block, gaslimit, block_time)
+                (analyzed_block, txpool_by_gp) = analyze_txpool(block-1, gp_lookup, txatabove_lookup, txpool_block, gaslimit, block_time, txpool_by_gp)
                 assert analyzed_block.index.duplicated().sum()==0
                 # update tx dataframe with txpool variables and time preidctions
                 alltx = alltx.combine_first(analyzed_block)
@@ -394,7 +430,8 @@ def filter_transactions():
                     last1500b = blockdata[blockdata['block_number'] > (block-1500)].copy()
                     print('length ' +  str(len(last1500b)))
                     report = SummaryReport(last1500t, last1500b, block)
-                    write_report(report.post, report.top_miners, report.price_wait, report.miner_txdata, report.gasguzz)
+                    write_report(report.post, report.top_miners, report.price_wait, report.miner_txdata, report.gasguzz, report.lowprice)
+                    timer.minlow = report.minlow
                 write_to_json(gprecs, txpool_by_gp, predictiondf)
                 post = alltx[alltx.index.isin(mined_blockdf_seen.index)]
                 post.to_sql(con=engine, name = 'minedtx2', if_exists='append', index=True)

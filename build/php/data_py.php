@@ -1,9 +1,9 @@
 <?php
 
-$minerString = file_get_contents("http://localhost/json/topMiners_py.json");
+$minerString = file_get_contents("http://localhost/json/topMiners.json");
 $topMiners = json_decode($minerString, true);
 
-$priceWaitString = file_get_contents("http://localhost/json/priceWait_py.json");
+$priceWaitString = file_get_contents("http://localhost/json/priceWait.json");
 $priceWait = json_decode($priceWaitString, true);
 $priceWaitData = '';
 $priceWaitLabels = '';
@@ -21,13 +21,13 @@ foreach($priceWait as $row)
 $priceWaitData = rtrim($priceWaitData,',');
 $priceWaitLabels = rtrim($priceWaitLabels, ',');
 
-$gpRecsString2 = file_get_contents("http://localhost/json/ethgasAPI_py.json");
+$gpRecsString2 = file_get_contents("http://localhost/json/ethgasAPI.json");
 $gpRecs2 = json_decode($gpRecsString2, true);
 
-$predictString = file_get_contents("http://localhost/json/predictTable_py.json");
+$predictString = file_get_contents("http://localhost/json/predictTable.json");
 $predictTable = json_decode($predictString, true);
 
-$rowString = file_get_contents("http://localhost/json/txDataLast10k_py.json");
+$rowString = file_get_contents("http://localhost/json/txDataLast10k.json");
 $row = json_decode($rowString, true);
 // Get values for Misc transactions table
 
@@ -55,6 +55,9 @@ $emptyBlocks = $row['emptyBlocks'];
 $fullBlocks = $row['fullBlocks'];
 $percentEmpty = round($emptyBlocks/$totalBlocks*100);
 $percentFull = round($fullBlocks/$totalBlocks*100);
+if ($gpRecs2['safeLow'] == 0){
+    $gpRecs2['safeLow'] = 1;
+}
 
 $totTx = $row['totalTx'];
 $totalTransfers = $row['totalTransfers'];

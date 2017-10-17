@@ -87,7 +87,7 @@
                     <li id="cny"><a href="#"> CNY<?php if($currency=='cny'){echo'<span class="pull-right"><i class="fa fa-check"></i></span>';}?></a></li>
                   </ul>
                 </li>
-              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Estimates over last 5,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
+              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Estimates over last 1,500 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
               </p>
             </ul>
             </nav>
@@ -262,7 +262,7 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td style = "color:#1ABB9C"><strong>SafeLow (<20m)</strong></td>
+                      <td style = "color:#1ABB9C"><strong>SafeLow (<10m)</strong></td>
                       <td style = "color:#1ABB9C" ><?php echo ($gpRecs2['safeLow']/10) ?></td>
                       <td style = "color:#03586A" ><?php echo ($gpRecs2['safeLowWait']) ?></td>
                     </tr>
@@ -470,7 +470,7 @@
 
     $(document).ready(function(){
       $.ajax({
-        url: "json/predictTable_py.json",
+        url: "json/predictTable.json",
 		    method: "GET",
         dataType: "json",
 		    success: function(data) {
@@ -485,7 +485,7 @@
         max: <?php echo($fastestRef) ?>,
         step: 1,
         slide: function(event, ui){
-          $("#gasPrice").val(predictArray[ui.value]['gasprice']/10);
+          $("#gasPrice").val(predictArray[ui.value]['gasprice']);
           $("#timeToConfirm").val(predictArray[ui.value]['expectedTime']);
           $("#blocksToConfirm").val(predictArray[ui.value]['expectedWait']);
           $("#maxTimeToConfirm").val(predictArray[ui.value]['maxWait']);
@@ -682,12 +682,12 @@
 
           
                     $.ajax({
-		                      url: "json/ethgasAPI_py.json",
+		                      url: "json/ethgasAPI.json",
 		                      method: "GET",
                               dataType: "json",
 		                      success: function(data) {
 			                          speedArray  = data;
-                                var speed = speedArray['speed'];
+                                var speed = speedArray['speed']*100;
                                 var blockNum = speedArray['blockNum'];
                                 updateSpeedo (speed,blockNum);
                                 var out = "Last Block: " + blockNum;

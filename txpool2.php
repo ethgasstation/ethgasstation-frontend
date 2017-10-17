@@ -92,7 +92,7 @@
                           <th>Gas Price (Gwei)</th>
                           <th>TxPool</br>Total Gas (1e6)</th>
                           <th>TxPool</br>Total Transactions</th>
-                          <th>Median Time in </br>TxPool (Blocks)</th>
+                          <th>Median Time in </br>TxPool (Blocks)</br>(eligible nonces only)</th>
                         </tr>
                       </thead>
                       <tbody>

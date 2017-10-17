@@ -98,7 +98,7 @@
                       <tbody>
                       <?php
                       foreach ($predictArray as $row){
-                        if ($row['gasprice']>=0.5){
+                        if ($row['gasprice']>=0){
                         echo('<tr>');
                         $uci = $row['expectedWait'] * 2.5;
                         $uciWait = $row['expectedTime'] * 2.5;

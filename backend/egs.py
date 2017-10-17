@@ -91,6 +91,7 @@ class Timers():
     def __init__(self, start_block):
         self.start_block = start_block
         self.current_block = start_block
+        self.minlow = 10 #1 gwei
 
     def update_time(self, block):
         self.current_block = block
@@ -103,7 +104,7 @@ class Timers():
             return True
 
     def check_reportblock(self, block):
-        if (block - (self.start_block-1))%3 == 0:
+        if (block - (self.start_block-1))%10 == 0:
             print (str(block) + ' ' + str(self.start_block))
             return True
         return False
@@ -226,6 +227,7 @@ class SummaryReport():
         tx_grouped_price['sum'] = tx_grouped_price['count'].cumsum()
         minlow_series = tx_grouped_price[tx_grouped_price['sum']>50].index
         self.post['minLow'] = float(minlow_series.min())
+        self.minlow = float(minlow_series.min()*10)
     
         """generate table with key miner stats"""
         miner_txdata = self.tx_df[['block_posted', 'miner']].groupby('miner').count()
@@ -295,8 +297,9 @@ class SummaryReport():
 
         '''low gas price tx watch list'''
         recent = self.end_block - 250
-        lowprice = self.tx_df.loc[(self.tx_df['minedGasPrice'] < 1000) & (self.tx_df['block_posted'] < recent), ['minedGasPrice', 'block_posted', 'mined', 'block_mined']]
-        lowprice = lowprice.sort_values(['minedGasPrice'], ascending = True).reset_index()
+        lowprice = self.tx_df.loc[(self.tx_df['round_gp_10gwei'] < 10) & (self.tx_df['block_posted'] < recent), ['minedGasPrice', 'block_posted', 'mined', 'block_mined', 'round_gp_10gwei']]
+        lowprice = lowprice.sort_values(['round_gp_10gwei'], ascending = True).reset_index()
+        lowprice['gasprice'] = lowprice['round_gp_10gwei']/10
         self.lowprice = lowprice
     
         '''average block time'''
@@ -314,3 +317,32 @@ class SummaryReport():
         price_wait.reset_index(inplace=True)
         price_wait['delay'] = price_wait['delay']* np.absolute(self.avg_timemined/float(60))
         self.price_wait = price_wait
+
+class Retry():
+    default_exceptions = (Exception,)
+    def __init__(self, tries, exceptions=None, delay=0):
+        """
+        Decorator for retrying a function if exception occurs
+        tries -- num tries 
+        exceptions -- exceptions to catch
+        delay -- wait between retries
+        """
+        self.tries = tries
+        if exceptions is None:
+            exceptions = Retry.default_exceptions
+        self.exceptions =  exceptions
+        self.delay = delay
+
+    def __call__(self, f):
+        def fn(*args, **kwargs):
+            exception = None
+            for _ in range(self.tries):
+                try:
+                    return f(*args, **kwargs)
+                except self.exceptions as e:
+                    print ("Retry, exception: "+str(e))
+                    time.sleep(self.delay)
+                    exception = e
+            #if no success after tries, raise last exception
+            raise exception
+        return fn
