@@ -464,6 +464,7 @@ def filter_transactions():
             tx_filter.watch(new_tx_callback)
         except:
             print(traceback.format_exc())
+            tx_filter = web3.eth.filter('pending')
         response = input("type q to quit \n")
         if response == 'q':
             break
