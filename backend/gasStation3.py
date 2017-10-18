@@ -474,7 +474,7 @@ def filter_transactions():
     
     while True:
         try:
-            tx_filter
+            tx_filter.filter_id
         except Exception as e:
             print(e)
             tx_filter = web3.eth.filter('pending')
