@@ -481,6 +481,6 @@ def filter_transactions():
         print(tx_filter.filter_id)
         if not tx_filter.running:
             _thread.start_new_thread(start_filter, (tx_filter, new_tx_callback))
-        time.sleep(5)
+        time.sleep(15)
 
 filter_transactions()
