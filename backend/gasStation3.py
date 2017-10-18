@@ -474,12 +474,13 @@ def filter_transactions():
     
     while True:
         try:
-            tx_filter.filter_id
+            tx_filter.running
         except Exception as e:
             print(e)
-            tx_filter = web3.eth.filter('pending')
         print(tx_filter.filter_id)
+        print(tx_filter.running)
         if not tx_filter.running:
+             tx_filter = web3.eth.filter('pending')
             _thread.start_new_thread(start_filter, (tx_filter, new_tx_callback))
         time.sleep(15)
 
