@@ -459,11 +459,6 @@ def filter_transactions():
             manage_dataframes(clean_tx, block)
         except AttributeError as e:
             print(e)
-    
-    def monitor_filter(filter_current):
-        if filter_current.running:
-            return 1
-        return 0
 
     def start_filter(filter_current, callback):
         try:
@@ -476,14 +471,14 @@ def filter_transactions():
             print ('filter error')
             print (e)
     
-    start_filter(tx_filter, new_tx_callback)
     while True:
-        print(tx_filter.filter_id)
-        time.sleep(5)
-        check = monitor_filter(tx_filter)
-        if not check:
-            print ('stopped running')
+        try:
+            tx_filter
+        except NameError:
             tx_filter = web3.eth.filter('pending')
+        print(tx_filter.filter_id)
+        if not tx_filter.running:
             start_filter(tx_filter, new_tx_callback)
+        time.sleep(5)
 
 filter_transactions()
