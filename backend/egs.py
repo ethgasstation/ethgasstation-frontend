@@ -312,7 +312,7 @@ class SummaryReport():
         lowprice = self.tx_df.loc[(self.tx_df['round_gp_10gwei'] < 10) & (self.tx_df['block_posted'] < recent), ['minedGasPrice', 'block_posted', 'mined', 'block_mined', 'round_gp_10gwei']]
         lowprice = lowprice.sort_values(['round_gp_10gwei'], ascending = True).reset_index()
         lowprice['gasprice'] = lowprice['round_gp_10gwei']/10
-        self.lowprice = lowprice
+        self.lowprice = lowprice.sort_values('gasprice', ascending=False).head(100)
     
         """average block time"""
         blockinterval = self.block_df[['block_number', 'time_mined']].diff()
