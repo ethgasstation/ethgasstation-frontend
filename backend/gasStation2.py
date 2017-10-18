@@ -463,7 +463,7 @@ def filter_transactions():
         try:
             tx_filter.watch(new_tx_callback)
             check = tx_filter.running
-            if check==false:
+            if not check:
                 print ('stopped running')
                 tx_filter=web3.eth.filter(pending)
         except Exception as e:
