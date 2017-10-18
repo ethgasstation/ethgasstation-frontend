@@ -478,7 +478,7 @@ def filter_transactions():
     
     start_filter(tx_filter, new_tx_callback)
     while True:
-        print(tx_filter.filter_id)]
+        print(tx_filter.filter_id)
         time.sleep(5)
         check = monitor_filter(tx_filter)
         if not check:
