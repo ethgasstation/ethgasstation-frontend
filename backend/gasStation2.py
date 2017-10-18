@@ -462,8 +462,13 @@ def filter_transactions():
     while True:
         try:
             tx_filter.watch(new_tx_callback)
-        except:
-            print(traceback.format_exc())
+            check = tx_filter.running
+            if check==false:
+                print ('stopped running')
+                tx_filter=web3.eth.filter(pending)
+        except Exception as e:
+            print (e)
+            print ('filter error')
             tx_filter = web3.eth.filter('pending')
         response = input("type q to quit \n")
         if response == 'q':
