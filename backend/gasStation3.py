@@ -5,6 +5,7 @@ import math
 import traceback
 import os
 import pandas as pd
+import _thread
 import numpy as np
 from web3 import Web3, HTTPProvider
 from sqlalchemy import create_engine, Column, Integer, String, DECIMAL, BigInteger, text
@@ -478,7 +479,7 @@ def filter_transactions():
             tx_filter = web3.eth.filter('pending')
         print(tx_filter.filter_id)
         if not tx_filter.running:
-            start_filter(tx_filter, new_tx_callback)
+            _thread.start_new_thread(start_filter, (tx_filter, new_tx_callback))
         time.sleep(5)
 
 filter_transactions()
