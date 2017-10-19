@@ -445,10 +445,10 @@ def filter_transactions():
                 write_to_json(gprecs, txpool_by_gp, predictiondf)
                 post = alltx[alltx.index.isin(mined_blockdf_seen.index)]
                 post.to_sql(con=engine, name = 'minedtx2', if_exists='append', index=True)
-                print ('num mined = ' + len(post))
+                print ('num mined = ' + str(len(post)))
                 post2 = alltx.loc[alltx['block_posted']==(block-1)]
                 post2.to_sql(con=engine, name = 'postedtx2', if_exists='append', index=True)
-                print ('num posted = ' + len(post2))
+                print ('num posted = ' + str(len(post2)))
                 analyzed_block.reset_index(drop=False, inplace=True)
                 analyzed_block.to_sql(con=engine, name='txpool_current', index=False, if_exists='replace')
                 block_sumdf.to_sql(con=engine, name='blockdata2', if_exists='append', index=False)
