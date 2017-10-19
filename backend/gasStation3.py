@@ -467,8 +467,8 @@ def filter_transactions():
             while True:
                 tx_filter.watch(callback)
                 time.sleep(10)
-                time = time.time()
-                if timer.check_lostfilter(time):
+                current_time = time.time()
+                if timer.check_lostfilter(current_time):
                     print('lost filter')
                     tx_filter.stop_watching()
                     return
