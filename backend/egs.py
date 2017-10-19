@@ -99,15 +99,22 @@ class Timers():
         self.start_block = start_block
         self.current_block = start_block
         self.minlow = 10 #1 gwei
+        self.blocktime = time.time()
 
     def update_time(self, block):
         self.current_block = block
+    
+    def check_lostfilter(self, timer):
+        if (time - self.blocktime) > 300:
+            return 1
+        return 0
     
     def check_newblock(self, block):
         if self.current_block >= block:
             return False
         elif self.current_block < block:
             self.update_time(block)
+            self.blocktime = time.time()
             return True
 
     def check_reportblock(self, block):

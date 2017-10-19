@@ -393,6 +393,7 @@ def filter_transactions():
             alltx = alltx.append(clean_tx.to_dataframe(), ignore_index = False)
         if timer.check_newblock(block):
             print (block)
+            timer.blocktime = time.time()
             if block <= timer.start_block+1:
                 return
             try:
@@ -465,9 +466,12 @@ def filter_transactions():
         try:
             while True:
                 tx_filter.watch(callback)
-                response = input("type q to quit \n")
-                if response == 'q':
-                    break
+                time.sleep(10)
+                time = time.time()
+                if timer.check_lostfilter(time):
+                    print('lost filter')
+                    tx_filter.stop_watching()
+                    return
         except Exception as e:
             print ('filter error')
             print (e)
