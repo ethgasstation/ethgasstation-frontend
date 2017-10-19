@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 import json
 import urllib
+import time
 from sqlalchemy import create_engine, Column, Integer, String, DECIMAL, BigInteger
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -104,7 +105,7 @@ class Timers():
     def update_time(self, block):
         self.current_block = block
     
-    def check_lostfilter(self, timer):
+    def check_lostfilter(self, time):
         if (time - self.blocktime) > 300:
             return 1
         return 0
