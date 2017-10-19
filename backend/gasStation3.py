@@ -466,7 +466,6 @@ def filter_transactions():
         try:
             while True:
                 tx_filter.watch(callback)
-                print(str(_thread.get_ident()) + ' ' + str(tx_filter.filter_id))
         except Exception as e:
             print ('filter error')
             print (e)
