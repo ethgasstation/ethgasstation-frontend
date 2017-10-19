@@ -435,7 +435,7 @@ def filter_transactions():
                     last1500t = alltx[alltx['block_posted'] > (block-1500)].copy()
                     print('txs '+ str(len(last1500t)))
                     last1500b = blockdata[blockdata['block_number'] > (block-1500)].copy()
-                    print('length ' +  str(len(last1500b)))
+                    print('blocks ' +  str(len(last1500b)))
                     report = SummaryReport(last1500t, last1500b, block)
                     write_report(report.post, report.top_miners, report.price_wait, report.miner_txdata, report.gasguzz, report.lowprice)
                     timer.minlow = report.minlow
@@ -466,13 +466,7 @@ def filter_transactions():
         try:
             while True:
                 tx_filter.watch(callback)
-                time.sleep(10)
-                current_time = time.time()
-                if timer.check_lostfilter(current_time):
-                    print('lost filter')
-                    tx_filter.stop_watching()
-                    timer.blocktime = current_time
-                    return
+                print(_thread.get_ident() + ' ' + tx_filter.filter_id)
         except Exception as e:
             print ('filter error')
             print (e)
@@ -485,6 +479,7 @@ def filter_transactions():
         print(tx_filter.filter_id)
         print(tx_filter.running)
         current_time = time.time()
+        print(_thread.get_ident())
         if timer.check_lostfilter(current_time):
             print('lost filter')
             tx_filter.stop_watching()
