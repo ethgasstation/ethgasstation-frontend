@@ -472,6 +472,9 @@ def filter_transactions():
         try:
             while True:
                 tx_filter.watch(callback)
+                response = input("type q to quit \n")
+                if response == 'q':
+                    break
         except Exception as e:
             print ('filter error')
             print (e)
