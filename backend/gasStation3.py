@@ -287,7 +287,10 @@ def analyze_txpool(block, gp_lookup, txatabove_lookup, txpool_block, gaslimit, a
     txpool_block['num_from'] = txpool_block.groupby('from_address')['block_posted'].transform('count')
     txpool_block_nonce = txpool_block[['from_address', 'nonce']].groupby('from_address').agg({'nonce':'min'})
     txpool_block['temp_chained'] = txpool_block['chained']
-    txpool_block['chained'] = txpool_block.apply(check_nonce, args=(txpool_block_nonce,), axis=1)
+    try:
+        txpool_block['chained'] = txpool_block.apply(check_nonce, args=(txpool_block_nonce,), axis=1)
+    except Exception as e:
+        print(e)
     txpool_block['block_posted_adj'] = txpool_block.apply(get_adjusted_post, args = (block,), axis=1)
     txpool_block['num_to'] = txpool_block.groupby('to_address')['block_posted'].transform('count')
     txpool_block['ico'] = (txpool_block['num_to'] > 90).astype(int)
@@ -442,8 +445,10 @@ def filter_transactions():
                 write_to_json(gprecs, txpool_by_gp, predictiondf)
                 post = alltx[alltx.index.isin(mined_blockdf_seen.index)]
                 post.to_sql(con=engine, name = 'minedtx2', if_exists='append', index=True)
+                print ('num mined = ' + len(post))
                 post2 = alltx.loc[alltx['block_posted']==(block-1)]
                 post2.to_sql(con=engine, name = 'postedtx2', if_exists='append', index=True)
+                print ('num posted = ' + len(post2))
                 analyzed_block.reset_index(drop=False, inplace=True)
                 analyzed_block.to_sql(con=engine, name='txpool_current', index=False, if_exists='replace')
                 block_sumdf.to_sql(con=engine, name='blockdata2', if_exists='append', index=False)
@@ -478,8 +483,7 @@ def filter_transactions():
         print(tx_filter.filter_id)
         print(tx_filter.running)
         current_time = time.time()
-        print(_thread.get_ident())
-        print(current_time-timer.blocktime)
+        print('time since block ' + str(current_time-timer.blocktime))
         if timer.check_lostfilter(current_time):
             print('lost filter')
             tx_filter.stop_watching()
