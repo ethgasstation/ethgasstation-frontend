@@ -471,6 +471,7 @@ def filter_transactions():
                 if timer.check_lostfilter(current_time):
                     print('lost filter')
                     tx_filter.stop_watching()
+                    timer.blocktime = current_time
                     return
         except Exception as e:
             print ('filter error')
@@ -483,6 +484,11 @@ def filter_transactions():
             print(e)
         print(tx_filter.filter_id)
         print(tx_filter.running)
+        current_time = time.time()
+        if timer.check_lostfilter(current_time):
+            print('lost filter')
+            tx_filter.stop_watching()
+            timer.blocktime = current_time
         if not tx_filter.running:
             tx_filter = web3.eth.filter('pending')
             _thread.start_new_thread(start_filter, (tx_filter, new_tx_callback))
