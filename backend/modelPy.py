@@ -32,7 +32,7 @@ cursor.close()
 predictData['confirmTime'] = predictData['block_mined']-predictData['block_posted']
 print('pre-chained ' + str(len(predictData)))
 predictData.loc[predictData['chained']==1, 'confirmTime']=np.nan
-predictData = predictData.dropna(subset=['confirmTime'])
+predictData = predictData.dropna(subset=['confirmTime', 'tx_unchained'])
 print('post-chained ' + str(len(predictData)))
 print ('cleaned transactions: ')
 print (len(predictData))
@@ -144,8 +144,9 @@ y['highgas2'] = predictData['highgas2']
 print(y)
 '''
 print (y.loc[(y['dump']==0) & (y['gasPrice'] < 1000), ['confirmTime', 'predict', 'gasPrice']])
+'''
 
-a, B = dmatrices('confirmTime ~ hashPowerAccepting + dump + numToCat4 + gasCat4 + txAtAbove', data = predictData, return_type = 'dataframe')
+a, B = dmatrices('confirmTime ~ hashpower_accepting + ico + highgas2 + tx_unchained', data = predictData, return_type = 'dataframe')
 
 
 model = sm.GLM(a, B, family=sm.families.Poisson())
