@@ -463,6 +463,7 @@ def update_dataframes(block):
     global txpool
     global blockdata
         
+    print('updating dataframes at block '+ str(block))
     try:
         #get minedtransactions and blockdata from previous block
         (mined_blockdf, block_obj) = process_block_transactions(block - 3)
