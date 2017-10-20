@@ -38,8 +38,8 @@ def prune_data(blockdata, alltx, txpool, block):
     stmt = text("DELETE FROM postedtx2 WHERE block_posted <= :block")
     stmt2 = text("DELETE FROM minedtx2 WHERE block_mined <= :block")
     deleteBlock = block-2000
-    session.query(Tx_Sql).from_statement(stmt).params(block=deleteBlock)
-    session.query(Mined_Sql).from_statement(stmt).params(block=deleteBlock)
+    engine.execute(stmt, block=deleteBlock)
+    engine.execute(stmt2, block=deleteBlock)
     alltx = alltx.loc[alltx['block_posted'] > deleteBlock]
     blockdata = blockdata.loc[blockdata['block_number'] > deleteBlock]
     txpool = txpool.loc[txpool['block'] > (block-5)]
