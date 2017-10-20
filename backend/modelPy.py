@@ -124,7 +124,7 @@ pdValidate.loc[pdValidate['hashPowerAccepting'] < 1, 'confirmTime']= np.nan
 pdValidate = pdValidate.dropna(how='any')
 '''
 
-y, X = dmatrices('confirmTime ~ hashpower_accepting + ico + highgas2 + tx_atabove', data = predictData, return_type = 'dataframe')
+y, X = dmatrices('confirmTime ~ hashpower_accepting + highgas2 + tx_atabove', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
@@ -146,7 +146,7 @@ print(y)
 print (y.loc[(y['dump']==0) & (y['gasPrice'] < 1000), ['confirmTime', 'predict', 'gasPrice']])
 '''
 
-a, B = dmatrices('confirmTime ~ hashpower_accepting + ico + highgas2 + tx_unchained', data = predictData, return_type = 'dataframe')
+a, B = dmatrices('confirmTime ~ hashpower_accepting + highgas2 + tx_unchained', data = predictData, return_type = 'dataframe')
 
 
 model = sm.GLM(a, B, family=sm.families.Poisson())
