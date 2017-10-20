@@ -29,8 +29,10 @@ cursor.close()
 
 predictData = predictData.combine_first(postedData)
 predictData['confirmTime'] = predictData['block_mined']-predictData['block_posted']
+print('pre-chained' + str(len(predictData)))
 predictData.loc[predictData['chained']==1, 'confirmTime']=np.nan
-predictData = predictData.dropna(subset='confirmTime')
+predictData = predictData.dropna(subset=['confirmTime'])
+print('post-chained' + str(len(predictData)))
 print ('cleaned transactions: ')
 print (len(predictData))
 '''
