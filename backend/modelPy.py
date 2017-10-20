@@ -28,6 +28,11 @@ predictData = pd.DataFrame(cursor.fetchall())
 predictData.columns = head
 cursor.close()
 
+def check(row):
+    if row['tx_atabove'] < row['tx_unchained']:
+        return 1
+    return 0
+
 #predictData = predictData.combine_first(postedData)
 predictData['confirmTime'] = predictData['block_mined']-predictData['block_posted']
 print('pre-chained ' + str(len(predictData)))
@@ -35,8 +40,12 @@ predictData.loc[predictData['chained']==1, 'confirmTime']=np.nan
 predictData = predictData.dropna(subset=['confirmTime', 'tx_unchained'])
 print('post-chained ' + str(len(predictData)))
 predictData = predictData.loc[predictData['confirmTime']>0]
+print (len(predictData))
 predictData = predictData.loc[predictData['tx_atabove']>0]
+predictData['error'] = predictData.apply(check, axis=1)
 print ('cleaned transactions: ')
+print (len(predictData))
+predictData = predictData.loc[predictData['error']==0]
 print (len(predictData))
 '''
 #print(predictData)
