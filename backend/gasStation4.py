@@ -454,9 +454,7 @@ def append_new_tx(clean_tx, block):
         alltx = alltx.append(clean_tx.to_dataframe(), ignore_index = False)
     if timer.check_newblock(block):
         print (block)
-        print (timer.start_block)
-        if block <= timer.start_block+1:
-            print('hi')
+        if block > timer.start_block+1:
             update_dataframes(block)
     
 
