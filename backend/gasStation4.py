@@ -293,7 +293,7 @@ def get_adjusted_post(row, block):
 def analyze_txpool(block, gp_lookup, txatabove_lookup, txpool_block, gaslimit, avg_timemined, txpool_by_gp):
     '''defines prediction parameters for all transactions in the txpool'''
     print('txpool block length ' + str(len(txpool_block)))
-    if len(txpool_block) == 0:
+    if len(txpool_block)==0:
         return (pd.DataFrame(), pd.DataFrame())
     txpool_block['pct_limit'] = txpool_block['gas_offered'].apply(lambda x: x / gaslimit)
     txpool_block['hashpower_accepting'] = txpool_block['round_gp_10gwei'].apply(lambda x: gp_lookup[x] if x in gp_lookup else 100)
@@ -395,7 +395,7 @@ def check_filter(start_time, current_time, recent_txtime):
         last_tx = start_time - recent_txtime
         print('last tx was ' +str(last_tx)+ ' seconds ago')
         return 0
-    if (current_time - recent_txtime) > 100:
+    if (current_time - recent_txtime) > 60:
         print ('filter lost')
         return 1
     return 0
@@ -492,9 +492,9 @@ def update_dataframes(block):
         gprecs = get_gasprice_recs (predictiondf, block_time, block, speed, timer.minlow)
         #analyze block transactions within txpool
         (analyzed_block, txpool_by_gp) = analyze_txpool(block-1, gp_lookup, txatabove_lookup, txpool_block, gaslimit, block_time, txpool_by_gp)
-        if (analyzed_block.empty or txpool_by_gp.empty):
-            return
         assert analyzed_block.index.duplicated().sum()==0
+        if (analyzed_block.empty):
+            return
         analyzed_block.reset_index(drop=False, inplace=True)
         # update tx dataframe with txpool variables and time preidctions
         alltx = alltx.combine_first(analyzed_block)
