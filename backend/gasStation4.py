@@ -402,7 +402,7 @@ def check_filter(start_time, current_time, recent_txtime):
 
 
 def master_control():
-    global process_ok #flag to kill threads
+     #flag to kill threads
     start_time = time.time()
     tx_filter = web3.eth.filter('pending')
     def new_tx_callback(tx_hash):
@@ -426,7 +426,7 @@ def master_control():
             lost_filter = check_filter(start_time, current_time, recent_txtime)
             if lost_filter:
                 print('lost filter')
-                process_ok = False
+                tx_filter.stop_watching()
                 tx_filter = web3.eth.filter('pending')
             else:
                 print ('filter ok')
@@ -434,26 +434,14 @@ def master_control():
             #check if filter is running. if not, start
             if not tx_filter.running:
                 print('starting up filter')
-                filter_thread = threading.Thread(target=start_filter, args=(tx_filter, new_tx_callback), name='tx_filter')
-                filter_thread.start()
-                if not process_ok:
-                    process_ok = True
-
+                tx_filter.watch(callback)
             print('threadlist:')
             print(threading.enumerate())
             time.sleep(15)
     
     except KeyboardInterrupt:
-        process_ok = False
-
-def start_filter(filter_current, callback):
-    global process_ok
-    filter_current.watch(callback)
-    while process_ok:
-        if not filter_current.running:
-            print ('filter not watching')
-            break
-    return
+        print('ending')
+        
 
 def append_new_tx(clean_tx, block):
     global alltx
