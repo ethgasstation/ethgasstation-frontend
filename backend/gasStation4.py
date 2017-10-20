@@ -303,15 +303,16 @@ def analyze_txpool(block, gp_lookup, txatabove_lookup, txpool_block, gaslimit, a
     txpool_block['dump'] = (txpool_block['num_from'] > 5).astype(int)
     txpool_block['high_gas_offered'] = (txpool_block['pct_limit']> .037).astype(int)
     txpool_block['highgas2'] = (txpool_block['pct_limit'] > .15).astype(int)
-    txpool_block['expectedWait'] = txpool_block.apply(predict, axis=1)
-    txpool_block['mined_probability'] = txpool_block.apply(predict_mined, axis=1)
-    txpool_block['expectedWait'] = txpool_block['expectedWait'].apply(lambda x: 2 if (x < 2) else x)
-    txpool_block['expectedWait'] = txpool_block['expectedWait'].apply(lambda x: np.round(x, decimals=2))
-    txpool_block['expectedTime'] = txpool_block['expectedWait'].apply(lambda x: np.round((x * avg_timemined / 60), decimals=2))
     try:
+        txpool_block['expectedWait'] = txpool_block.apply(predict, axis=1)
+        txpool_block['mined_probability'] = txpool_block.apply(predict_mined, axis=1)
+        txpool_block['expectedWait'] = txpool_block['expectedWait'].apply(lambda x: 2 if (x < 2) else x)
+        txpool_block['expectedWait'] = txpool_block['expectedWait'].apply(lambda x: np.round(x, decimals=2))
+        txpool_block['expectedTime'] = txpool_block['expectedWait'].apply(lambda x: np.round((x * avg_timemined / 60), decimals=2))
+    
         txpool_block['wait_blocks'] = txpool_block['block_posted_adj'].apply(lambda x: block-x)
-    except:
-        txpool_block['wait_blocks'] = np.nan
+    except Exception as e:
+        print(e)
     txpool_by_gp = txpool_block[['wait_blocks', 'gas_offered', 'gas_price', 'round_gp_10gwei']].groupby('round_gp_10gwei').agg({'wait_blocks':'median','gas_offered':'sum', 'gas_price':'count'})
     txpool_by_gp.reset_index(inplace=True, drop=False)
     txpool_block = txpool_block.drop(['block_posted_adj', 'temp_chained'], axis=1)
