@@ -197,6 +197,8 @@ def predict(row):
         return np.nan
 
 def predict_mined(row):
+    print('row')
+    print(row)
     print(row['hashpower_accepting'])
     print(row['highgas2'])
     print(row['wait_blocks'])
