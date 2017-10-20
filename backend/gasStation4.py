@@ -263,7 +263,6 @@ def merge_txpool_alltx(txpool, alltx, block):
     #group by gasprice
     txpool_block = txpool_block[~txpool_block.index.duplicated(keep = 'first')]
     txpool_by_gp = txpool_block[['gas_price', 'round_gp_10gwei']].groupby('round_gp_10gwei').agg({'gas_price':'count'})
-    txpool_by_gp.reset_index(inplace=True, drop=False)
     txpool_block_unchained = txpool_block.loc[txpool_block['chained']==0]
     txpool_by_gp_unchained = txpool_block_unchained[['gas_price', 'round_gp_10gwei']].groupby('round_gp_10gwei').agg({'gas_price':'count'})
     return(txpool_block, txpool_by_gp, txpool_by_gp_unchained)
