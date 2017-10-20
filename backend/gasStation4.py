@@ -395,9 +395,9 @@ def check_filter(start_time, current_time, recent_txtime):
 
 
 def master_control():
+    global process_ok #flag to kill threads
     start_time = time.time()
     tx_filter = web3.eth.filter('pending')
-
     def new_tx_callback(tx_hash):
         try:
             block = web3.eth.blockNumber
@@ -407,41 +407,45 @@ def master_control():
             append_new_tx(clean_tx, block)
         except AttributeError as e:
             print(e)
-
-    while True:
-        current_time = time.time()
-        
-        #check for new tx from filter
-        recent_txtime = get_recent_txtime()
-        print('time since last tx ' + str(current_time - recent_txtime))
-        
-        #determine if filter is lost
-        lost_filter = check_filter(start_time, current_time, recent_txtime)
-        if lost_filter:
-            print('lost filter')
-            tx_filter.stop_watching()
-            tx_filter = web3.eth.filter('pending')
-        else:
-            print ('filter ok')
-
-        #check if filter is running. if not, start
-        if not tx_filter.running:
-            print('starting up filter')
-            filter_thread = threading.Thread(target=start_filter, args=(tx_filter, new_tx_callback), name='tx_filter')
-            filter_thread.start()
-
-        print('threadlist:')
-        print(threading.enumerate())
-        time.sleep(15)
-
-
-def start_filter(filter_current, callback):
     try:
         while True:
-            filter_current.watch(callback)
-            response = input("type q to quit \n")
-            if response == 'q':
-                break
+            current_time = time.time()
+        
+            #check for new tx from filter
+            recent_txtime = get_recent_txtime()
+            print('time since last tx ' + str(current_time - recent_txtime))
+        
+            #determine if filter is lost
+            lost_filter = check_filter(start_time, current_time, recent_txtime)
+            if lost_filter:
+                print('lost filter')
+                process_ok = False
+                tx_filter.stop_watching()
+                tx_filter = web3.eth.filter('pending')
+            else:
+                print ('filter ok')
+
+            #check if filter is running. if not, start
+            if not tx_filter.running:
+                print('starting up filter')
+                filter_thread = threading.Thread(target=start_filter, args=(tx_filter, new_tx_callback), name='tx_filter')
+                filter_thread.start()
+                if not process_ok:
+                    process_ok = True
+
+            print('threadlist:')
+            print(threading.enumerate())
+            time.sleep(15)
+    
+    except KeyboardInterrupt:
+        process_ok = False
+
+def start_filter(filter_current, callback):
+    global process_ok
+    try:
+        filter_current.watch(callback)
+        while process_ok:
+            pass
     except Exception as e:
         print ('filter error')
         print (e)
@@ -525,6 +529,6 @@ def update_dataframes(block):
 txpool = pd.DataFrame()
 print ('blocks '+ str(len(blockdata)))
 print ('txcount '+ str(len(alltx)))
-timer = Timers(web3.eth.blockNumber)    
-
+timer = Timers(web3.eth.blockNumber)
+process_ok = True    
 master_control()
