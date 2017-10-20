@@ -420,7 +420,6 @@ def master_control():
             if lost_filter:
                 print('lost filter')
                 process_ok = False
-                tx_filter.stop_watching()
                 tx_filter = web3.eth.filter('pending')
             else:
                 print ('filter ok')
@@ -442,13 +441,9 @@ def master_control():
 
 def start_filter(filter_current, callback):
     global process_ok
-    try:
-        filter_current.watch(callback)
-        while process_ok:
-            pass
-    except Exception as e:
-        print ('filter error')
-        print (e)
+    filter_current.watch(callback)
+    while process_ok:
+        pass
     return
 
 def append_new_tx(clean_tx, block):
