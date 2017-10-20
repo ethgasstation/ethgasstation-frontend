@@ -253,7 +253,6 @@ def merge_txpool_alltx(txpool, alltx, block):
     #add transactions submitted at block
     alltx_block = alltx.loc[alltx['block_posted']==block, 'block_posted']
     alltx_block = alltx_block[~alltx_block.index.isin(txpool_block.index)]
-    print ('len txpool_block ' + str(len(txpool_block)))
     txpool_block = txpool_block.join(alltx_block, how='outer')
     print ('len txpool_block ' + str(len(txpool_block)))
     txpool_block = txpool_block.drop(['block_posted', 'block'], axis=1)
@@ -335,11 +334,9 @@ def get_gasprice_recs(prediction_table, block_time, block, speed, minlow=-1):
     def get_safelow(minlow):
         series = prediction_table.loc[prediction_table['expectedTime'] <= 10, 'gasprice']
         safelow = series.min()
-        print('safelow1 = ' + str(safelow))
         minhash_list = prediction_table.loc[prediction_table['hashpower_accepting']>=1.5, 'gasprice']
         if (safelow < minhash_list.min()):
             safelow = minhash_list.min()
-        print('safelow2 = ' + str(safelow))
         if minlow >= 0:
             if safelow < minlow:
                 safelow = minlow
@@ -380,7 +377,6 @@ def get_gasprice_recs(prediction_table, block_time, block, speed, minlow=-1):
         wait = round(wait, 1)
         return float(wait)
     
-    print ('minlow = ' + str(minlow))
     gprecs = {}
     gprecs['safeLow'] = get_safelow(minlow)
     gprecs['safeLowWait'] = get_wait(gprecs['safeLow'])
@@ -491,7 +487,6 @@ def update_dataframes(block):
         prior_txpool = txpool[txpool['block']==(block-1)]
         removed_txhashes = get_diff(current_txpool.index.tolist(), prior_txpool.index.tolist(), block)
         removed_txhashes = removed_txhashes[removed_txhashes.index.isin(alltx.index)]
-        print ('removed_txhashes ' + str(len(removed_txhashes)))
         alltx = alltx.combine_first(removed_txhashes)
         #get hashpower table, block interval time, gaslimit, speed from last 200 blocks
         (hashpower, block_time, gaslimit, speed) = analyze_last200blocks(block, blockdata)
