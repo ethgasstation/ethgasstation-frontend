@@ -29,10 +29,10 @@ cursor.close()
 
 predictData = predictData.combine_first(postedData)
 predictData['confirmTime'] = predictData['block_mined']-predictData['block_posted']
-print('pre-chained' + str(len(predictData)))
+print('pre-chained ' + str(len(predictData)))
 predictData.loc[predictData['chained']==1, 'confirmTime']=np.nan
 predictData = predictData.dropna(subset=['confirmTime'])
-print('post-chained' + str(len(predictData)))
+print('post-chained ' + str(len(predictData)))
 print ('cleaned transactions: ')
 print (len(predictData))
 '''
@@ -123,7 +123,7 @@ pdValidate.loc[pdValidate['hashPowerAccepting'] < 1, 'confirmTime']= np.nan
 pdValidate = pdValidate.dropna(how='any')
 '''
 
-y, X = dmatrices('confirmTime ~ hashpower_accepting + dump + ico + high_gas_offered + tx_atabove', data = predictData, return_type = 'dataframe')
+y, X = dmatrices('confirmTime ~ hashpower_accepting + ico + highgas2 + tx_atabove', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
@@ -134,10 +134,10 @@ print (results.summary())
 
 
 y['predict'] = results.predict()
-y['round_gp_10_gwei'] = predictData['round_gp_10_gwei']
+y['round_gp_10gwei'] = predictData['round_gp_10gwei']
 y['hashpower_accepting'] = predictData['hashpower_accpeting']
 y['tx_atabove'] = predictData['tx_atabove']
-y['high_gas_offered'] = predictData['high_gas_offered']
+y['highgas2'] = predictData['highgas2']
 
 
 print(y)
