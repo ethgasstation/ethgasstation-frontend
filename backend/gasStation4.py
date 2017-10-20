@@ -184,8 +184,12 @@ def predict(row):
     ico_coef = 1.3629
     dump_coef = 1.1738
     high_gas_coef = .5317
-    sum1 = (intercept + (row['hashpower_accepting']*hpa_coef) + (row['tx_atabove']*txatabove_coef) + (row['ico']*ico_coef) + (row['dump']*dump_coef) + (row['high_gas_offered']*high_gas_coef))
-    return np.exp(sum1)
+    try:
+        sum1 = (intercept + (row['hashpower_accepting']*hpa_coef) + (row['tx_atabove']*txatabove_coef) + (row['ico']*ico_coef) + (row['dump']*dump_coef) + (row['high_gas_offered']*high_gas_coef))
+        return np.exp(sum1)
+    except Exception:
+        print(e)
+        return np.nan
 
 def predict_mined(row):
     if row['chained']==1:
@@ -467,11 +471,12 @@ def update_dataframes(block):
     print('updating dataframes at block '+ str(block))
     try:
         #get minedtransactions and blockdata from previous block
-        (mined_blockdf, block_obj) = process_block_transactions(block - 3)
+        mined_block_num = block-3
+        (mined_blockdf, block_obj) = process_block_transactions(mined_block_num)
         #add mined data to tx dataframe - only unique hashes seen by node
         mined_blockdf_seen = mined_blockdf[mined_blockdf.index.isin(alltx.index)]
-        print('num mined = ' + str(len(mined_blockdf)))
-        print('num seen = ' + str(len(mined_blockdf_seen)))
+        print('num mined in ' + str(mined_block_num)+ ' = ' + str(len(mined_blockdf)))
+        print('num seen in ' + str(mined_block_num)+ ' = ' + str(len(mined_blockdf_seen)))
         alltx = alltx.combine_first(mined_blockdf_seen)
         #process block data
         block_sumdf = process_block_data(mined_blockdf, block_obj)
