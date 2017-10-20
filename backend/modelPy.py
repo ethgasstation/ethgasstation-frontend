@@ -34,6 +34,7 @@ print('pre-chained ' + str(len(predictData)))
 predictData.loc[predictData['chained']==1, 'confirmTime']=np.nan
 predictData = predictData.dropna(subset=['confirmTime', 'tx_unchained'])
 print('post-chained ' + str(len(predictData)))
+predictData = predictData.loc[predictData['confirmTime']>0]
 print ('cleaned transactions: ')
 print (len(predictData))
 '''
