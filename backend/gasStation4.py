@@ -443,7 +443,9 @@ def start_filter(filter_current, callback):
     global process_ok
     filter_current.watch(callback)
     while process_ok:
-        pass
+        if not filter_current.running:
+            print ('filter not watching')
+            break
     return
 
 def append_new_tx(clean_tx, block):
@@ -468,6 +470,8 @@ def update_dataframes(block):
         (mined_blockdf, block_obj) = process_block_transactions(block - 3)
         #add mined data to tx dataframe - only unique hashes seen by node
         mined_blockdf_seen = mined_blockdf[mined_blockdf.index.isin(alltx.index)]
+        print('num mined = ' + str(len(mined_blockdf)))
+        print('num seen = ' + str(len(mined_blockdf_seen)))
         alltx = alltx.combine_first(mined_blockdf_seen)
         #process block data
         block_sumdf = process_block_data(mined_blockdf, block_obj)
