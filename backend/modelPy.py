@@ -21,7 +21,7 @@ head = cursor.column_names
 postedData = pd.DataFrame(cursor.fetchall())
 postedData.columns = head
 '''
-query = ("SELECT * FROM minedtx2")
+query = ("SELECT * FROM minedtx2 order by block_mined desc limit 2000")
 cursor.execute(query)
 head = cursor.column_names
 predictData = pd.DataFrame(cursor.fetchall())
