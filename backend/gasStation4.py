@@ -21,8 +21,6 @@ Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
-logging.basicConfig(filename="output.log", level=print)
-
 
 def init_dfs():
     """load data from mysql""" 
