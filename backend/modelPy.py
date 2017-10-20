@@ -14,12 +14,13 @@ from patsy import dmatrices
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
 cursor = cnx.cursor()
 
+'''
 query = ("SELECT * FROM postedtx2")
 cursor.execute(query)
 head = cursor.column_names
 postedData = pd.DataFrame(cursor.fetchall())
 postedData.columns = head
-
+'''
 query = ("SELECT * FROM minedtx2")
 cursor.execute(query)
 head = cursor.column_names
@@ -27,7 +28,7 @@ predictData = pd.DataFrame(cursor.fetchall())
 predictData.columns = head
 cursor.close()
 
-predictData = predictData.combine_first(postedData)
+#predictData = predictData.combine_first(postedData)
 predictData['confirmTime'] = predictData['block_mined']-predictData['block_posted']
 print('pre-chained ' + str(len(predictData)))
 predictData.loc[predictData['chained']==1, 'confirmTime']=np.nan
@@ -135,7 +136,7 @@ print (results.summary())
 
 y['predict'] = results.predict()
 y['round_gp_10gwei'] = predictData['round_gp_10gwei']
-y['hashpower_accepting'] = predictData['hashpower_accpeting']
+y['hashpower_accepting'] = predictData['hashpower_accepting']
 y['tx_atabove'] = predictData['tx_atabove']
 y['highgas2'] = predictData['highgas2']
 
