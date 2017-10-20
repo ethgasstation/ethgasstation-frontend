@@ -293,8 +293,6 @@ def get_adjusted_post(row, block):
 def analyze_txpool(block, gp_lookup, txatabove_lookup, txpool_block, gaslimit, avg_timemined, txpool_by_gp):
     '''defines prediction parameters for all transactions in the txpool'''
     print('txpool block length ' + str(len(txpool_block)))
-    if len(txpool_block)==0:
-        return (pd.DataFrame(), pd.DataFrame())
     txpool_block['pct_limit'] = txpool_block['gas_offered'].apply(lambda x: x / gaslimit)
     txpool_block['hashpower_accepting'] = txpool_block['round_gp_10gwei'].apply(lambda x: gp_lookup[x] if x in gp_lookup else 100)
     txpool_block['tx_atabove'] = txpool_block['round_gp_10gwei'].apply(lambda x: txatabove_lookup[x] if x in txatabove_lookup else 1)
@@ -493,8 +491,6 @@ def update_dataframes(block):
         #analyze block transactions within txpool
         (analyzed_block, txpool_by_gp) = analyze_txpool(block-1, gp_lookup, txatabove_lookup, txpool_block, gaslimit, block_time, txpool_by_gp)
         assert analyzed_block.index.duplicated().sum()==0
-        if (analyzed_block.empty):
-            return
         analyzed_block.reset_index(drop=False, inplace=True)
         # update tx dataframe with txpool variables and time preidctions
         alltx = alltx.combine_first(analyzed_block)
