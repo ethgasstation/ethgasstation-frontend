@@ -438,13 +438,14 @@ def master_control():
 def start_filter(filter_current, callback):
     try:
         while True:
-            tx_filter.watch(callback)
+            filter_current.watch(callback)
             response = input("type q to quit \n")
             if response == 'q':
                 break
     except Exception as e:
         print ('filter error')
         print (e)
+    return
 
 def append_new_tx(clean_tx, block):
     global alltx
