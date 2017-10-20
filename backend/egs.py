@@ -200,7 +200,7 @@ class SummaryReport():
         self.tx_df['delay2'] = self.tx_df['time_mined'] - self.tx_df['time_posted']
         self.tx_df.loc[self.tx_df['delay'] <= 0, 'delay'] = np.nan
         self.tx_df.loc[self.tx_df['delay2'] <= 0, 'delay2'] = np.nan
-        total_tx = len(self.tx_df.loc[tx_df['minedGasPrice'].notnull]
+        total_tx = len(self.tx_df.loc[tx_df['minedGasPrice'].notnull])
         self.post['latestblockNum'] = int(self.end_block)
         self.post['totalTx'] = int(total_tx)
         self.post['totalCatTx1'] = int(self.tx_df['gasCat1'].sum())
