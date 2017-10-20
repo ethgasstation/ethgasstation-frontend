@@ -377,7 +377,7 @@ def get_gasprice_recs(prediction_table, block_time, block, speed, minlow=-1):
     gprecs['speed'] = speed
     return(gprecs)
 
-def recent_txtime():
+def get_recent_txtime():
     global alltx
     last_time = alltx['time_posted'].max()
     return last_time
