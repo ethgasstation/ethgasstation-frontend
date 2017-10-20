@@ -23,11 +23,11 @@ postedData.columns = head
 query = ("SELECT * FROM minedtx2")
 cursor.execute(query)
 head = cursor.column_names
-minedData = pd.DataFrame(cursor.fetchall())
-minedData.columns = head
+predictData = pd.DataFrame(cursor.fetchall())
+predictData.columns = head
 cursor.close()
 
-predictData = postedData.join(minedData, how='left', on='index')
+predictData = predictData.combine_first(postedData)
 predictData['confirmTime'] = predictData['block_mined']-predictData['block_posted']
 predictData.loc[predictData['chained']==1, 'confirmTime']=np.nan
 predictData = predictData.dropna(subset='confirmTime')
@@ -132,15 +132,14 @@ print (results.summary())
 
 
 y['predict'] = results.predict()
-y['gasPrice'] = predictData['gasPrice']
-y['hashPowerAccepting'] = predictData['hashPowerAccepting']
-y['txAbove'] = predictData['txAbove']
-y['txAt'] = predictData['txAt']
-y['numFrom'] = predictData['numFrom']
-y['dump'] = predictData['dump']
+y['round_gp_10_gwei'] = predictData['round_gp_10_gwei']
+y['hashpower_accepting'] = predictData['hashpower_accpeting']
+y['tx_atabove'] = predictData['tx_atabove']
+y['high_gas_offered'] = predictData['high_gas_offered']
+
 
 print(y)
-
+'''
 print (y.loc[(y['dump']==0) & (y['gasPrice'] < 1000), ['confirmTime', 'predict', 'gasPrice']])
 
 a, B = dmatrices('confirmTime ~ hashPowerAccepting + dump + numToCat4 + gasCat4 + txAtAbove', data = predictData, return_type = 'dataframe')
@@ -168,7 +167,7 @@ print(a)
 print (a.loc[(a['dump']==0) & (a['gasPrice'] < 1000), ['confirmTime', 'predict', 'gasPrice']])
 
 
-'''
+
 c, D = dmatrices('confirmTime ~ dump + ico + txAtAbove', data = pdGp5, return_type = 'dataframe')
 
 
@@ -192,7 +191,7 @@ print (results.summary())
 e['predict'] = results.predict()
 print(e[:15])
 print(F[:15])
-'''
+
 
 y1, X1 = dmatrices('logCTime ~ hashPowerAccepting  + highGasOffered + dump + ico', data = predictData, return_type = 'dataframe')
 
@@ -247,7 +246,7 @@ print (pdValidate['lowGPnormal'].sum())
 
 print ('total validation')
 print (len(pdValidate))
-'''
+
 
 
 
