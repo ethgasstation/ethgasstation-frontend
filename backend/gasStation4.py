@@ -53,6 +53,7 @@ def write_to_sql(alltx, analyzed_block, block_sumdf, mined_blockdf_seen, block):
     post2 = alltx.loc[alltx['block_posted'] == (block-1)]
     post2.to_sql(con=engine, name='postedtx2', if_exists='append', index=True)
     print ('num posted = ' + str(len(post2)))
+    analyzed_block.reset_index(drop=False, inplace=True)
     analyzed_block.to_sql(con=engine, name='txpool_current', index=False, if_exists='replace')
     block_sumdf.to_sql(con=engine, name='blockdata2', if_exists='append', index=False)
 
@@ -491,7 +492,6 @@ def update_dataframes(block):
         #analyze block transactions within txpool
         (analyzed_block, txpool_by_gp) = analyze_txpool(block-1, gp_lookup, txatabove_lookup, txpool_block, gaslimit, block_time, txpool_by_gp)
         assert analyzed_block.index.duplicated().sum()==0
-        analyzed_block.reset_index(drop=False, inplace=True)
         with pd.option_context('display.max_columns', None,):
             print(analyzed_block)
         # update tx dataframe with txpool variables and time preidctions
