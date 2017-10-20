@@ -22,15 +22,15 @@ session = Session()
 
 
 def init_dfs():
-   """load data from mysql""" 
-   blockdata = pd.read_sql('SELECT * from blockdata2 order by id desc limit 2000', con=engine)
-   blockdata = blockdata.drop('id', axis=1)
-   postedtx = pd.read_sql('SELECT * from postedtx2 order by id desc limit 100000', con=engine)
-   minedtx = pd.read_sql('SELECT * from minedtx2 order by id desc limit 100000', con=engine)
-   minedtx.set_index('index', drop=True, inplace=True)
-   alltx = postedtx[['index', 'expectedTime', 'expectedWait', 'mined_probability', 'highgas2', 'from_address', 'gas_offered', 'gas_price', 'hashpower_accepting', 'num_from', 'num_to', 'ico', 'dump', 'high_gas_offered', 'pct_limit', 'round_gp_10gwei', 'time_posted', 'block_posted', 'to_address', 'tx_atabove', 'wait_blocks', 'chained', 'nonce']].join(minedtx[['block_mined', 'miner', 'time_mined', 'removed_block']], on='index', how='left')
-   alltx.set_index('index', drop=True, inplace=True)
-   return(blockdata, alltx)
+    """load data from mysql""" 
+    blockdata = pd.read_sql('SELECT * from blockdata2 order by id desc limit 2000', con=engine)
+    blockdata = blockdata.drop('id', axis=1)
+    postedtx = pd.read_sql('SELECT * from postedtx2 order by id desc limit 100000', con=engine)
+    minedtx = pd.read_sql('SELECT * from minedtx2 order by id desc limit 100000', con=engine)
+    minedtx.set_index('index', drop=True, inplace=True) 
+    alltx = postedtx[['index', 'expectedTime', 'expectedWait', 'mined_probability', 'highgas2', 'from_address', 'gas_offered', 'gas_price', 'hashpower_accepting', 'num_from', 'num_to', 'ico', 'dump', 'high_gas_offered', 'pct_limit', 'round_gp_10gwei', 'time_posted', 'block_posted', 'to_address', 'tx_atabove', 'wait_blocks', 'chained', 'nonce']].join(minedtx[['block_mined', 'miner', 'time_mined', 'removed_block']], on='index', how='left')
+    alltx.set_index('index', drop=True, inplace=True)
+    return(blockdata, alltx)
 
 def prune_data(blockdata, alltx, txpool, block):
     """keep dataframes and databases from getting too big"""
@@ -378,7 +378,7 @@ def get_gasprice_recs(prediction_table, block_time, block, speed, minlow=-1):
     return(gprecs)
 
 def recent_txtime():
-    nonlocal alltx
+    global alltx
     last_time = alltx['time_posted'].max()
     return last_time
 
@@ -435,7 +435,7 @@ def master_control():
 
 
 def start_filter(filter_current, callback):
-     try:
+    try:
         while True:
             tx_filter.watch(callback)
             response = input("type q to quit \n")
