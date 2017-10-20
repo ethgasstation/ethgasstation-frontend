@@ -428,6 +428,7 @@ def master_control():
         if not tx_filter.running:
             print('starting up filter')
             filter_thread = threading.Thread(target=start_filter, args=(tx_filter, new_tx_callback), name='tx_filter')
+            filter_thread.start()
 
         print('threadlist:')
         print(threading.enumerate())
