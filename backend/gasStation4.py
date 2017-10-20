@@ -183,7 +183,7 @@ def get_tx_atabove(gasprice, txpool_by_gp):
 
 def get_tx_unchained(gasprice, txpool_by_gp_unchained):
     """gets the number of nonce-filtered in the txpool at or above the given gasprice"""
-    txAtAb = txpool_by_gp_unchained.loc[txpool_by_gp.index >= gasprice, 'gas_price']
+    txAtAb = txpool_by_gp_unchained.loc[txpool_by_gp_unchained.index >= gasprice, 'gas_price']
     if gasprice > txpool_by_gp.index.max():
         txAtAb = 0
     else:
