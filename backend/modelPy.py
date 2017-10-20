@@ -35,6 +35,10 @@ def check(row):
 
 #predictData = predictData.combine_first(postedData)
 predictData['confirmTime'] = predictData['block_mined']-predictData['block_posted']
+print ('neg confirm time')
+print (len(predictData.loc[predictData['confirm_time']<0]))
+print ('zero confirm time')
+print (len(predictData.loc[predictData['confirm_time']==0]))
 print('pre-chained ' + str(len(predictData)))
 predictData.loc[predictData['chained']==1, 'confirmTime']=np.nan
 predictData = predictData.dropna(subset=['confirmTime', 'tx_unchained'])
