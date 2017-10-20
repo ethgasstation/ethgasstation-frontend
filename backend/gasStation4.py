@@ -429,7 +429,7 @@ def master_control():
         if not tx_filter.running:
             print('starting up filter')
             filter_thread = threading.Thread(target=start_filter, args=(tx_filter, new_tx_callback), name='tx_filter')
-            
+
         print('threadlist:')
         print(threading.enumerate())
         time.sleep(15)
@@ -446,7 +446,7 @@ def start_filter(filter_current, callback):
             print ('filter error')
             print (e)
 
-def append_new_tx(clean_tx, block)
+def append_new_tx(clean_tx, block):
     nonlocal alltx
     nonlocal timer
 
@@ -459,66 +459,66 @@ def append_new_tx(clean_tx, block)
     
 
 def update_dataframes(block):
-        nonlocal alltx
-        nonlocal txpool
-        nonlocal blockdata
+    nonlocal alltx
+    nonlocal txpool
+    nonlocal blockdata
         
-            try:
-                #get minedtransactions and blockdata from previous block
-                (mined_blockdf, block_obj) = process_block_transactions(block - 3)
-                #add mined data to tx dataframe - only unique hashes seen by node
-                mined_blockdf_seen = mined_blockdf[mined_blockdf.index.isin(alltx.index)]
-                alltx = alltx.combine_first(mined_blockdf_seen)
-                #process block data
-                block_sumdf = process_block_data(mined_blockdf, block_obj)
-                #add block data to block dataframe 
-                blockdata = blockdata.append(block_sumdf, ignore_index = True)
-                #get list of txhashes from txpool 
-                current_txpool = get_txhases_from_txpool(block)
-                #add txhashes to txpool dataframe
-                txpool = txpool.append(current_txpool, ignore_index = False)
-                #get txhashes removed in current blocks txpool add data to alltx
-                prior_txpool = txpool[txpool['block']==(block-1)]
-                removed_txhashes = get_diff(current_txpool.index.tolist(), prior_txpool.index.tolist(), block)
-                removed_txhashes = removed_txhashes[removed_txhashes.index.isin(alltx.index)]
-                print ('removed_txhashes ' + str(len(removed_txhashes)))
-                alltx = alltx.combine_first(removed_txhashes)
-                #get hashpower table, block interval time, gaslimit, speed from last 200 blocks
-                (hashpower, block_time, gaslimit, speed) = analyze_last200blocks(block, blockdata)
-                #make txpool block data
-                (txpool_block, txpool_by_gp) = merge_txpool_alltx(txpool, alltx, block-1)
-                #make prediction table
-                (gp_lookup, txatabove_lookup, predictiondf) = make_predictiontable(hashpower, block_time, txpool_by_gp)
-                #get gpRecs
-                gprecs = get_gasprice_recs (predictiondf, block_time, block, speed, timer.minlow)
-                #analyze block transactions within txpool
-                (analyzed_block, txpool_by_gp) = analyze_txpool(block-1, gp_lookup, txatabove_lookup, txpool_block, gaslimit, block_time, txpool_by_gp)
-                assert analyzed_block.index.duplicated().sum()==0
-                # update tx dataframe with txpool variables and time preidctions
-                alltx = alltx.combine_first(analyzed_block)
-                #with pd.option_context('display.max_columns', None,):
-                    #print(alltx)
-                if timer.check_reportblock(block):
-                    last1500t = alltx[alltx['block_posted'] > (block-1500)].copy()
-                    print('txs '+ str(len(last1500t)))
-                    last1500b = blockdata[blockdata['block_number'] > (block-1500)].copy()
-                    print('blocks ' +  str(len(last1500b)))
-                    report = SummaryReport(last1500t, last1500b, block)
-                    write_report(report.post, report.top_miners, report.price_wait, report.miner_txdata, report.gasguzz, report.lowprice)
-                    timer.minlow = report.minlow
-                write_to_json(gprecs, txpool_by_gp, predictiondf)
-                post = alltx[alltx.index.isin(mined_blockdf_seen.index)]
-                post.to_sql(con=engine, name = 'minedtx2', if_exists='append', index=True)
-                print ('num mined = ' + str(len(post)))
-                post2 = alltx.loc[alltx['block_posted']==(block-1)]
-                post2.to_sql(con=engine, name = 'postedtx2', if_exists='append', index=True)
-                print ('num posted = ' + str(len(post2)))
-                analyzed_block.reset_index(drop=False, inplace=True)
-                analyzed_block.to_sql(con=engine, name='txpool_current', index=False, if_exists='replace')
-                block_sumdf.to_sql(con=engine, name='blockdata2', if_exists='append', index=False)
-                (blockdata, alltx, txpool) = prune_data(blockdata, alltx, txpool, block)
-            except: 
-                print(traceback.format_exc())   
+    try:
+        #get minedtransactions and blockdata from previous block
+        (mined_blockdf, block_obj) = process_block_transactions(block - 3)
+        #add mined data to tx dataframe - only unique hashes seen by node
+        mined_blockdf_seen = mined_blockdf[mined_blockdf.index.isin(alltx.index)]
+        alltx = alltx.combine_first(mined_blockdf_seen)
+        #process block data
+        block_sumdf = process_block_data(mined_blockdf, block_obj)
+        #add block data to block dataframe 
+        blockdata = blockdata.append(block_sumdf, ignore_index = True)
+        #get list of txhashes from txpool 
+        current_txpool = get_txhases_from_txpool(block)
+        #add txhashes to txpool dataframe
+        txpool = txpool.append(current_txpool, ignore_index = False)
+        #get txhashes removed in current blocks txpool add data to alltx
+        prior_txpool = txpool[txpool['block']==(block-1)]
+        removed_txhashes = get_diff(current_txpool.index.tolist(), prior_txpool.index.tolist(), block)
+        removed_txhashes = removed_txhashes[removed_txhashes.index.isin(alltx.index)]
+        print ('removed_txhashes ' + str(len(removed_txhashes)))
+        alltx = alltx.combine_first(removed_txhashes)
+        #get hashpower table, block interval time, gaslimit, speed from last 200 blocks
+        (hashpower, block_time, gaslimit, speed) = analyze_last200blocks(block, blockdata)
+        #make txpool block data
+        (txpool_block, txpool_by_gp) = merge_txpool_alltx(txpool, alltx, block-1)
+        #make prediction table
+        (gp_lookup, txatabove_lookup, predictiondf) = make_predictiontable(hashpower, block_time, txpool_by_gp)
+        #get gpRecs
+        gprecs = get_gasprice_recs (predictiondf, block_time, block, speed, timer.minlow)
+        #analyze block transactions within txpool
+        (analyzed_block, txpool_by_gp) = analyze_txpool(block-1, gp_lookup, txatabove_lookup, txpool_block, gaslimit, block_time, txpool_by_gp)
+        assert analyzed_block.index.duplicated().sum()==0
+        # update tx dataframe with txpool variables and time preidctions
+        alltx = alltx.combine_first(analyzed_block)
+        #with pd.option_context('display.max_columns', None,):
+            #print(alltx)
+        if timer.check_reportblock(block):
+            last1500t = alltx[alltx['block_posted'] > (block-1500)].copy()
+            print('txs '+ str(len(last1500t)))
+            last1500b = blockdata[blockdata['block_number'] > (block-1500)].copy()
+            print('blocks ' +  str(len(last1500b)))
+            report = SummaryReport(last1500t, last1500b, block)
+            write_report(report.post, report.top_miners, report.price_wait, report.miner_txdata, report.gasguzz, report.lowprice)
+            timer.minlow = report.minlow
+        write_to_json(gprecs, txpool_by_gp, predictiondf)
+        post = alltx[alltx.index.isin(mined_blockdf_seen.index)]
+        post.to_sql(con=engine, name = 'minedtx2', if_exists='append', index=True)
+        print ('num mined = ' + str(len(post)))
+        post2 = alltx.loc[alltx['block_posted']==(block-1)]
+        post2.to_sql(con=engine, name = 'postedtx2', if_exists='append', index=True)
+        print ('num posted = ' + str(len(post2)))
+        analyzed_block.reset_index(drop=False, inplace=True)
+        analyzed_block.to_sql(con=engine, name='txpool_current', index=False, if_exists='replace')
+        block_sumdf.to_sql(con=engine, name='blockdata2', if_exists='append', index=False)
+        (blockdata, alltx, txpool) = prune_data(blockdata, alltx, txpool, block)
+    except: 
+        print(traceback.format_exc())   
     
 (blockdata, alltx) = init_dfs()
 txpool = pd.DataFrame()
