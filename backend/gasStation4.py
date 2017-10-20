@@ -395,7 +395,6 @@ def check_filter(start_time, current_time, recent_txtime):
 
 
 def master_control():
-    nonlocal alltx
     start_time = time.time()
     tx_filter = web3.eth.filter('pending')
 
@@ -436,20 +435,19 @@ def master_control():
 
 
 def start_filter(filter_current, callback):
-        try:
-            while True:
-                tx_filter.watch(callback)
-                response = input("type q to quit \n")
-                if response == 'q':
-                    break
-        except Exception as e:
-            print ('filter error')
-            print (e)
+     try:
+        while True:
+            tx_filter.watch(callback)
+            response = input("type q to quit \n")
+            if response == 'q':
+                break
+    except Exception as e:
+        print ('filter error')
+        print (e)
 
 def append_new_tx(clean_tx, block):
-    nonlocal alltx
-    nonlocal timer
-
+    global alltx
+    global timer
     if not clean_tx.hash in alltx.index:
         alltx = alltx.append(clean_tx.to_dataframe(), ignore_index = False)
     if timer.check_newblock(block):
@@ -459,9 +457,9 @@ def append_new_tx(clean_tx, block):
     
 
 def update_dataframes(block):
-    nonlocal alltx
-    nonlocal txpool
-    nonlocal blockdata
+    global alltx
+    global txpool
+    global blockdata
         
     try:
         #get minedtransactions and blockdata from previous block
