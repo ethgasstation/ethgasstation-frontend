@@ -19,7 +19,6 @@ cursor.execute(query)
 head = cursor.column_names
 postedData = pd.DataFrame(cursor.fetchall())
 postedData.columns = head
-cursor.close()
 
 query = ("SELECT * FROM minedtx2")
 cursor.execute(query)
@@ -29,10 +28,12 @@ minedData.columns = head
 cursor.close()
 
 predictData = postedData.join(minedData, how='left', on='index')
-
+predictData['confirmTime'] = predictData['block_mined']-predictData['block_posted']
+predictData.loc[predictData['chained']==1, 'confirmTime']=np.nan
+predictData = predictData.dropna(subset='confirmTime')
 print ('cleaned transactions: ')
 print (len(predictData))
-
+'''
 #print(predictData)
 avgGasLimit = predictData.loc[0, 'gasOffered'] / predictData.loc[0, 'gasOfferedPct']
 predictData.loc[predictData['gasOffered']>= (avgGasLimit/1.05), 'confirmTime'] = np.nan
@@ -110,18 +111,17 @@ predictData['gp2'] = predictData['gasPrice'].apply(lambda x: 1 if (x >=500 and x
 predictData['gp3'] = predictData['gasPrice'].apply(lambda x: 1 if (x >=1000 and x<4000) else 0)
 predictData['gp4'] = predictData['gasPrice'].apply(lambda x: 1 if (x >=4000 and x<23000) else 0)
 predictData['gp5'] = predictData['gasPrice'].apply(lambda x: 1 if x >=23000 else 0)
-
-'''  
+ 
 pdGp3 = predictData[predictData['gp3']==1]
 pdGp4 = predictData[predictData['gp4']==1]
 pdGp5 = predictData[predictData['gp5']==1]
-'''
+
 pdValidate = pd.DataFrame(predictData.loc[predictData['prediction']>0,:])
 pdValidate.loc[pdValidate['hashPowerAccepting'] < 1, 'confirmTime']= np.nan
 pdValidate = pdValidate.dropna(how='any')
+'''
 
-
-y, X = dmatrices('confirmTime ~ hashPowerAccepting + dump + ico + gasCat4 + txAtAbove', data = predictData, return_type = 'dataframe')
+y, X = dmatrices('confirmTime ~ hashpower_accepting + dump + ico + high_gas_offered + tx_atabove', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
