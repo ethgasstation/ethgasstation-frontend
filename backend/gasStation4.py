@@ -294,7 +294,7 @@ def analyze_txpool(block, gp_lookup, txatabove_lookup, txpool_block, gaslimit, a
     '''defines prediction parameters for all transactions in the txpool'''
     print('txpool block length ' + str(len(txpool_block)))
     if len(txpool_block) == 0:
-        return (None, None)
+        return (pd.DataFrame(), pd.DataFrame())
     txpool_block['pct_limit'] = txpool_block['gas_offered'].apply(lambda x: x / gaslimit)
     txpool_block['hashpower_accepting'] = txpool_block['round_gp_10gwei'].apply(lambda x: gp_lookup[x] if x in gp_lookup else 100)
     txpool_block['tx_atabove'] = txpool_block['round_gp_10gwei'].apply(lambda x: txatabove_lookup[x] if x in txatabove_lookup else 1)
@@ -492,7 +492,7 @@ def update_dataframes(block):
         gprecs = get_gasprice_recs (predictiondf, block_time, block, speed, timer.minlow)
         #analyze block transactions within txpool
         (analyzed_block, txpool_by_gp) = analyze_txpool(block-1, gp_lookup, txatabove_lookup, txpool_block, gaslimit, block_time, txpool_by_gp)
-        if not (analyzed_block or txpool_by_gp):
+        if (analyzed_block.empty or txpool_by_gp.empty):
             return
         assert analyzed_block.index.duplicated().sum()==0
         analyzed_block.reset_index(drop=False, inplace=True)
