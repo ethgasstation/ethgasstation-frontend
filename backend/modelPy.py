@@ -157,7 +157,7 @@ a['predict'] = results.predict()
 print(a[:15])
 print(B[:15])
 
-
+'''
 a['predict'] = results.predict()
 a['gasPrice'] = predictData['gasPrice']
 a['hashPowerAccepting'] = predictData['hashPowerAccepting']
