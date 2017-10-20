@@ -491,6 +491,7 @@ def update_dataframes(block):
         #analyze block transactions within txpool
         (analyzed_block, txpool_by_gp) = analyze_txpool(block-1, gp_lookup, txatabove_lookup, txpool_block, gaslimit, block_time, txpool_by_gp)
         assert analyzed_block.index.duplicated().sum()==0
+        print(analyzed_block)
         analyzed_block.reset_index(drop=False, inplace=True)
         # update tx dataframe with txpool variables and time preidctions
         alltx = alltx.combine_first(analyzed_block)
