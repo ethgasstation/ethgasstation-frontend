@@ -434,7 +434,7 @@ def master_control():
             #check if filter is running. if not, start
             if not tx_filter.running:
                 print('starting up filter')
-                tx_filter.watch(callback)
+                tx_filter.watch(new_tx_callback)
             print('threadlist:')
             print(threading.enumerate())
             time.sleep(15)
