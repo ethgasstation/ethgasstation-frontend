@@ -197,12 +197,6 @@ def predict(row):
         return np.nan
 
 def predict_mined(row):
-    print('row')
-    print(row)
-    print(row['hashpower_accepting'])
-    print(row['highgas2'])
-    print(row['wait_blocks'])
-    print(row['chained'])
     if row['chained']==1:
         return np.nan
     intercept = -.1104
@@ -290,6 +284,8 @@ def get_adjusted_post(row, block):
     elif (row['chained']==0 and row['temp_chained']==1):
         return block
     elif (row['chained']==0 and row['temp_chained']==0):
+        return row['block_posted']
+    elif (row['chained']==0 and row['temp_chained']==np.nan):
         return row['block_posted']
     else:
         pass
