@@ -312,6 +312,7 @@ def analyze_txpool(block, gp_lookup, txatabove_lookup, txpool_block, gaslimit, a
     
         txpool_block['wait_blocks'] = txpool_block['block_posted_adj'].apply(lambda x: block-x)
     except Exception as e:
+        print(txpool_block)
         print(e)
     txpool_by_gp = txpool_block[['wait_blocks', 'gas_offered', 'gas_price', 'round_gp_10gwei']].groupby('round_gp_10gwei').agg({'wait_blocks':'median','gas_offered':'sum', 'gas_price':'count'})
     txpool_by_gp.reset_index(inplace=True, drop=False)
