@@ -492,8 +492,8 @@ def update_dataframes(block):
         #analyze block transactions within txpool
         (analyzed_block, txpool_by_gp) = analyze_txpool(block-1, gp_lookup, txatabove_lookup, txpool_block, gaslimit, block_time, txpool_by_gp)
         assert analyzed_block.index.duplicated().sum()==0
-        with pd.option_context('display.max_columns', None,):
-            print(analyzed_block)
+        #with pd.option_context('display.max_columns', None,):
+            #print(analyzed_block)
         # update tx dataframe with txpool variables and time preidctions
         alltx = alltx.combine_first(analyzed_block)
         #with pd.option_context('display.max_columns', None,):
