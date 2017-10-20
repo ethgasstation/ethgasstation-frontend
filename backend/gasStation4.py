@@ -385,7 +385,7 @@ def get_gasprice_recs(prediction_table, block_time, block, speed, minlow=-1):
 
 def get_recent_txtime():
     global alltx
-    last_time = alltx['time_posted'].tail(10).max()
+    last_time = alltx['time_posted'].max()
     return last_time
 
 def check_filter(start_time, current_time, recent_txtime):
