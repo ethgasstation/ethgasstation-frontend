@@ -289,6 +289,7 @@ def make_predictiontable(hashpower, avg_timemined, txpool_by_gp, txpool_by_gp_un
     gp_lookup = predictTable.set_index('gasprice')['hashpower_accepting'].to_dict()
     txatabove_lookup = predictTable.set_index('gasprice')['tx_atabove'].to_dict()
     tx_unchained_lookup = predictTable.set_index('gasprice')['tx_atabove_unchained'].to_dict()
+    print(predictTable)
     return(gp_lookup, txatabove_lookup, tx_unchained_lookup, predictTable)
 
 def get_adjusted_post(row, block):
