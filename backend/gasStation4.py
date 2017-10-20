@@ -179,7 +179,6 @@ def txAtAbove(gasprice, txpool_by_gp):
     return txAtAb
 
 def predict(row):
-    logging.debug(row)
     if row['chained'] == 1:
         return np.nan
     intercept = 2.6697
