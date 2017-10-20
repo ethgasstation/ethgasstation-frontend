@@ -140,6 +140,7 @@ y['predict'] = results.predict()
 y['round_gp_10gwei'] = predictData['round_gp_10gwei']
 y['hashpower_accepting'] = predictData['hashpower_accepting']
 y['tx_atabove'] = predictData['tx_atabove']
+y['tx_unchained'] = predictData['tx_unchained']
 y['highgas2'] = predictData['highgas2']
 
 
@@ -156,20 +157,19 @@ results = model.fit()
 print (results.summary())
 
 a['predict'] = results.predict()
-print(a[:15])
-print(B[:15])
 
-'''
+
+
 a['predict'] = results.predict()
-a['gasPrice'] = predictData['gasPrice']
-a['hashPowerAccepting'] = predictData['hashPowerAccepting']
-a['txAbove'] = predictData['txAbove']
-a['txAt'] = predictData['txAt']
-a['numFrom'] = predictData['numFrom']
-a['dump'] = predictData['dump']
+a['round_gp_10gwei'] = predictData['round_gp_10gwei']
+a['hashpower_accepting'] = predictData['hashpower_accepting']
+a['tx_atabove'] = predictData['tx_atabove']
+a['tx_unchained'] = predictData['tx_unchained']
+a['highgas2'] = predictData['highgas2']
 
 print(a)
 
+'''
 print (a.loc[(a['dump']==0) & (a['gasPrice'] < 1000), ['confirmTime', 'predict', 'gasPrice']])
 
 
