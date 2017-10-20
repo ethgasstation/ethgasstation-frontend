@@ -45,7 +45,7 @@ def prune_data(blockdata, alltx, txpool, block):
     txpool = txpool.loc[txpool['block'] > (block-5)]
     return (blockdata, alltx, txpool)
 
-def write_to_sql(alltx, analyzed_block, block_sumdf):
+def write_to_sql(alltx, analyzed_block, block_sumdf, mined_blockdf_seen):
     """write data to mysql for analysis"""
     post = alltx[alltx.index.isin(mined_blockdf_seen.index)]
     post.to_sql(con=engine, name='minedtx2', if_exists='append', index=True)
@@ -491,7 +491,8 @@ def update_dataframes(block):
         #analyze block transactions within txpool
         (analyzed_block, txpool_by_gp) = analyze_txpool(block-1, gp_lookup, txatabove_lookup, txpool_block, gaslimit, block_time, txpool_by_gp)
         assert analyzed_block.index.duplicated().sum()==0
-        print(analyzed_block)
+        with pd.option_context('display.max_columns', None,):
+            print(analyzed_block)
         analyzed_block.reset_index(drop=False, inplace=True)
         # update tx dataframe with txpool variables and time preidctions
         alltx = alltx.combine_first(analyzed_block)
@@ -506,7 +507,7 @@ def update_dataframes(block):
             write_report(report.post, report.top_miners, report.price_wait, report.miner_txdata, report.gasguzz, report.lowprice)
             timer.minlow = report.minlow
         write_to_json(gprecs, txpool_by_gp, predictiondf)
-        write_to_sql(alltx, analyzed_block, block_sumdf)
+        write_to_sql(alltx, analyzed_block, block_sumdf, mined_blockdf_seen)
         (blockdata, alltx, txpool) = prune_data(blockdata, alltx, txpool, block)
     except: 
         print(traceback.format_exc())   
