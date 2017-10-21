@@ -186,7 +186,7 @@ print(a)
 
 
 
-c, D = dmatrices('confirmTime ~ hashpower_accepting + gascat2 + gascat3 + gascat4 + gascat5 + tx_atabove', data = predictData, return_type = 'dataframe')
+c, D = dmatrices('confirmTime ~ hashpower_accepting + gasCat2 + gasCat3 + gasCat4 + gasCat5 + tx_atabove', data = predictData, return_type = 'dataframe')
 
 
 
