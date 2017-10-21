@@ -212,7 +212,7 @@ class SummaryReport():
         self.post['avgTxFee'] = self.tx_df.loc[self.tx_df['gas_offered']==21000, 'minedGasPrice'].median()
         self.post['totalConCalls'] = len(self.tx_df[self.tx_df['gas_offered']!=21000])
         self.post['maxMinedGasPrice'] = float(self.tx_df['minedGasPrice'].max())
-        self.post['minMinedGasPrice'] = float(self.tx_df['minedGasPrice'].min())
+        self.post['minMinedGasPrice'] = float(self.tx_df['gas_price'].min()/1e9)
         self.post['medianGasPrice']= float(self.tx_df['minedGasPrice'].quantile(.5))
         self.post['cheapestTx'] = float(self.tx_df.loc[self.tx_df['gas_offered']==21000, 'minedGasPrice'].min())
         self.post['cheapestTxID'] = self.tx_df.loc[(self.tx_df['minedGasPrice']==self.post['cheapestTx']) & (self.tx_df['gas_offered'] == 21000)].index[0]
