@@ -418,7 +418,6 @@ def master_control():
     start_time = time.time()
     tx_filter = web3.eth.filter('pending')
     def new_tx_callback(tx_hash):
-        nonlocal block_timer
         try:
             block = web3.eth.blockNumber
             tx_obj = web3.eth.getTransaction(tx_hash)
