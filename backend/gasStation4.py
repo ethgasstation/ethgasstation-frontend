@@ -193,12 +193,12 @@ def get_tx_unchained(gasprice, txpool_by_gp_unchained):
 def predict(row):
     if row['chained'] == 1:
         return np.nan
-    intercept = 1.9671
-    hpa_coef = -0.0148
+    intercept = 1.9611
+    hpa_coef = -0.0147
     txatabove_coef= 0.0007
     ico_coef = 0
     dump_coef = 0
-    high_gas_coef = .2597
+    high_gas_coef = .2592
     try:
         sum1 = (intercept + (row['hashpower_accepting']*hpa_coef) + (row['tx_atabove']*txatabove_coef) + (row['ico']*ico_coef) + (row['dump']*dump_coef) + (row['highgas2']*high_gas_coef))
         if row['gas_offered'] > 2000000:
