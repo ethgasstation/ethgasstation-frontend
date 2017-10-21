@@ -471,7 +471,7 @@ def update_dataframes(block, block_time):
     try:
         #get minedtransactions and blockdata from previous block
         mined_block_num = block-3
-        (mined_blockdf, block_obj) = process_block_transactions(mined_block_num)
+        (mined_blockdf, block_obj) = process_block_transactions(mined_block_num, block_time)
         #add mined data to tx dataframe - only unique hashes seen by node
         mined_blockdf_seen = mined_blockdf[mined_blockdf.index.isin(alltx.index)]
         print('num mined in ' + str(mined_block_num)+ ' = ' + str(len(mined_blockdf)))
