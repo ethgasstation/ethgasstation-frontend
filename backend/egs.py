@@ -319,7 +319,7 @@ class SummaryReport():
         grouped_lowprice.reset_index(inplace=True)
         print(grouped_lowprice)
         print(type(grouped_lowprice))
-        self.lowprice = lowprice_out.sort_values('gasprice', ascending=False)
+        self.lowprice = grouped_lowprice.sort_values('gasprice', ascending=False)
     
         """average block time"""
         blockinterval = self.block_df[['block_number', 'time_mined']].diff()
