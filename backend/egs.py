@@ -330,7 +330,7 @@ class SummaryReport():
         price_wait.loc[price_wait['minedGasPrice']>=40, 'minedGasPrice'] = 40
         price_wait = price_wait.loc[(price_wait['minedGasPrice']<=10) | (price_wait['minedGasPrice']==20) | (price_wait['minedGasPrice'] == 40), ['minedGasPrice', 'delay2']]
         price_wait.loc[price_wait['minedGasPrice']<1, 'minedGasPrice'] = 0
-        price_wait = price_wait.groupby('minedGasPrice').median()
+        price_wait = price_wait.groupby('minedGasPrice').median()/60
         price_wait.reset_index(inplace=True)
         self.price_wait = price_wait
 
