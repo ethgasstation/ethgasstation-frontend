@@ -318,7 +318,8 @@ class SummaryReport():
         grouped_lowprice = lowprice.groupby('gasprice')
         lowprice_out = pd.DataFrame()
         for name, group in grouped_lowprice:
-            gpsample = grouped_lowprice.get_group(group).head(n=10).reset_index(keep=True)
+            gpsample = grouped_lowprice.get_group(group).head(n=10)
+            gpsample.reset_index(inplace=True, keep=True)
             lowprice_out = lowprice_out.append(gpsample)
         self.lowprice = lowprice_out.sort_values('gasprice', ascending=False)
     
