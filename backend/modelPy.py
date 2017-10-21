@@ -72,16 +72,15 @@ print (predictData['numTo'].quantile(.95))
 
 
 
-quantiles= predictData['gas_offered'].quantile([.5, .75, .9, .95, .99])
+quantiles= predictData['gas_offered'].quantile([.5, .75, .95, .99])
 print(quantiles)
 
 #dep['gasCat1'] = (txData2['gasused'] == 21000).astype(int)
 predictData['gasCat1'] = ((predictData['gas_offered']<=quantiles[.5])).astype(int)
 predictData['gasCat2'] = ((predictData['gas_offered']>quantiles[.5]) & (predictData['gas_offered']<=quantiles[.75])).astype(int)
-predictData['gasCat3'] = ((predictData['gas_offered']>quantiles[.75]) & (predictData['gas_offered']<=quantiles[.9])).astype(int)
-predictData['gasCat4'] = ((predictData['gas_offered']>quantiles[.9]) & (predictData['gas_offered']<=quantiles[.95])).astype(int)
-predictData['gasCat5'] = ((predictData['gas_offered']>quantiles[.95]) & (predictData['gas_offered']<quantiles[.99])).astype(int)
-predictData['gasCat6'] = (predictData['gas_offered']>=quantiles[.99]).astype(int)
+predictData['gasCat3'] = ((predictData['gas_offered']>quantiles[.75]) & (predictData['gas_offered']<=quantiles[.95])).astype(int)
+predictData['gasCat4'] = ((predictData['gas_offered']>quantiles[.95]) & (predictData['gas_offered']<quantiles[.99])).astype(int)
+predictData['gasCat5'] = (predictData['gas_offered']>=quantiles[.99]).astype(int)
 
 
 
@@ -187,7 +186,7 @@ print(a)
 
 
 
-c, D = dmatrices('confirmTime ~ confirmTime ~ hashpower_accepting + gascat2 + gascat3 + gascat4 + gascat5 + gascat6 + tx_unchained', data = predictData, return_type = 'dataframe')
+c, D = dmatrices('confirmTime ~ hashpower_accepting + gascat2 + gascat3 + gascat4 + gascat5 + tx_atabove', data = predictData, return_type = 'dataframe')
 
 
 
