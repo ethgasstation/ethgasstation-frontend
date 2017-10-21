@@ -68,22 +68,25 @@ print (predictData['numTo'].quantile(.5))
 print ('numTo 75%')
 print (predictData['numTo'].quantile(.95))
 
+'''
 
 
 
-avgGasLimit = predictData.loc[0, 'gasOffered'] / predictData.loc[0, 'gasOfferedPct']
-transactionGas = float(21000)/avgGasLimit
-
-
-quantiles= predictData['gasOfferedPct'].quantile([.5, .75, .9, 1])
-print (transactionGas)
+quantiles= predictData['gas_offered'].quantile([.5, .75, .9, .95, .99])
 print(quantiles)
 
 #dep['gasCat1'] = (txData2['gasused'] == 21000).astype(int)
-predictData['gasCat2'] = ((predictData['gasOfferedPct']>transactionGas) & (predictData['gasOfferedPct']<=quantiles[.75])).astype(int)
-predictData['gasCat3'] = ((predictData['gasOfferedPct']>quantiles[.75]) & (predictData['gasOfferedPct']<=quantiles[.9])).astype(int)
-predictData['gasCat4'] = (predictData['gasOfferedPct']> quantiles[.9]).astype(int)
+predictData['gasCat1'] = ((predictData['gas_offered']<=quantiles[.5])).astype(int)
+predictData['gasCat2'] = ((predictData['gas_offered']>quantiles[.5]) & (predictData['gasOfferedPct']<=quantiles[.75])).astype(int)
+predictData['gasCat3'] = ((predictData['gas_offered']>quantiles[.75]) & (predictData['gasOfferedPct']<=quantiles[.9])).astype(int)
+predictData['gasCat4'] = ((predictData['gas_offered']>quantiles[.9]) & (predictData['gasOfferedPct']<=quantiles[.95])).astype(int)
+predictData['gasCat5'] = ((predictData['gas_offered']>quantiles[.95]) & (predictData['gasOfferedPct']<quantiles[.99])).astype(int)
+predictData['gasCat6'] = (predictData['gas_offered']>=quantiles[.99]).astype(int)
 
+
+
+
+'''
 quantiles2 = predictData['numTo'].quantile([.5, .75, .95])
 print('quantiles2')
 print(quantiles2)
@@ -182,12 +185,9 @@ a['highgas2'] = predictData['highgas2']
 
 print(a)
 
-'''
-print (a.loc[(a['dump']==0) & (a['gasPrice'] < 1000), ['confirmTime', 'predict', 'gasPrice']])
 
 
-
-c, D = dmatrices('confirmTime ~ dump + ico + txAtAbove', data = pdGp5, return_type = 'dataframe')
+c, D = dmatrices('confirmTime ~ confirmTime ~ hashpower_accepting + gascat2 + gascat3 + gascat4 + gascat5 + gascat6 + tx_unchained', data = predictData, return_type = 'dataframe')
 
 
 
@@ -199,6 +199,8 @@ c['predict'] = results.predict()
 print(c[:15])
 print(D[:15])
 
+
+'''
 e, F = dmatrices('confirmTime ~ gp1+ gp2+ gp3 + gp4 + dump + ico + txAtAbove', data = predictData, return_type = 'dataframe')
 
 
