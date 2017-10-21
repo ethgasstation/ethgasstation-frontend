@@ -278,7 +278,7 @@ def make_predictiontable(hashpower, avg_timemined, txpool_by_gp, txpool_by_gp_un
     predictTable['tx_atabove_unchained'] = predictTable['gasprice'].apply(get_tx_unchained, args=(txpool_by_gp_unchained,))
     predictTable['ico'] = 0
     predictTable['dump'] = 0
-    predictTable['high_gas_offered'] = 0
+    predictTable['gas_offered'] = 0
     predictTable['wait_blocks'] = 0
     predictTable['highgas2'] = 0
     predictTable['chained'] = 0
