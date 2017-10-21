@@ -16,7 +16,7 @@ foreach($priceWait as $row)
         $row['minedGasPrice'] = '>40';
     }
     $priceWaitLabels = $priceWaitLabels. "'". $row['minedGasPrice']."'".',';
-    $priceWaitData = $priceWaitData. round($row['delay'],1). ',';
+    $priceWaitData = $priceWaitData. round($row['delay2'],1). ',';
 }
 $priceWaitData = rtrim($priceWaitData,',');
 $priceWaitLabels = rtrim($priceWaitLabels, ',');

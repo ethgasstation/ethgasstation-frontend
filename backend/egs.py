@@ -317,8 +317,6 @@ class SummaryReport():
         lowprice['gasprice'] = lowprice['round_gp_10gwei']/10
         grouped_lowprice = lowprice.groupby('gasprice', as_index=False).head(10)
         grouped_lowprice.reset_index(inplace=True)
-        print(grouped_lowprice)
-        print(type(grouped_lowprice))
         self.lowprice = grouped_lowprice.sort_values('gasprice', ascending=False)
     
         """average block time"""
