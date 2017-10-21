@@ -53,7 +53,7 @@ predictData = predictData.loc[predictData['error']==0]
 print (len(predictData))
 '''
 #print(predictData)
-avgGasLimit = predictData.loc[0, 'gasOffered'] / predictData.loc[0, 'gasOfferedPct']
+avgGasLimit = predictData.loc[0, 'gasOffered'] / predictData.loc[0, 'gas_offered']
 predictData.loc[predictData['gasOffered']>= (avgGasLimit/1.05), 'confirmTime'] = np.nan
 predictData = predictData.dropna(how='any')
 
@@ -77,10 +77,10 @@ print(quantiles)
 
 #dep['gasCat1'] = (txData2['gasused'] == 21000).astype(int)
 predictData['gasCat1'] = ((predictData['gas_offered']<=quantiles[.5])).astype(int)
-predictData['gasCat2'] = ((predictData['gas_offered']>quantiles[.5]) & (predictData['gasOfferedPct']<=quantiles[.75])).astype(int)
-predictData['gasCat3'] = ((predictData['gas_offered']>quantiles[.75]) & (predictData['gasOfferedPct']<=quantiles[.9])).astype(int)
-predictData['gasCat4'] = ((predictData['gas_offered']>quantiles[.9]) & (predictData['gasOfferedPct']<=quantiles[.95])).astype(int)
-predictData['gasCat5'] = ((predictData['gas_offered']>quantiles[.95]) & (predictData['gasOfferedPct']<quantiles[.99])).astype(int)
+predictData['gasCat2'] = ((predictData['gas_offered']>quantiles[.5]) & (predictData['gas_offered']<=quantiles[.75])).astype(int)
+predictData['gasCat3'] = ((predictData['gas_offered']>quantiles[.75]) & (predictData['gas_offered']<=quantiles[.9])).astype(int)
+predictData['gasCat4'] = ((predictData['gas_offered']>quantiles[.9]) & (predictData['gas_offered']<=quantiles[.95])).astype(int)
+predictData['gasCat5'] = ((predictData['gas_offered']>quantiles[.95]) & (predictData['gas_offered']<quantiles[.99])).astype(int)
 predictData['gasCat6'] = (predictData['gas_offered']>=quantiles[.99]).astype(int)
 
 
@@ -98,11 +98,11 @@ predictData.loc[predictData['numTo']==np.nan,'ico']=np.nan
 predictData = predictData.dropna(how='any')
 
 
-print('median gasOfferedPct')
+print('median gas_offered')
 print(transactionGas)
 print(quantiles[.5])
 
-predictData['highGasOffered'] = (predictData['gasOfferedPct'] > 0.022).astype(int)
+predictData['highGasOffered'] = (predictData['gas_offered'] > 0.022).astype(int)
 
 print('confirmTImes')
 print(predictData['confirmTime'].min())
