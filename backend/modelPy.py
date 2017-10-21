@@ -71,7 +71,10 @@ print (predictData['numTo'].quantile(.95))
 '''
 
 print('gas offered data')
+max_gasoffered = predictData['gas_offered'].max()
 print('max :'+str(predictData['gas_offered'].max()))
+print('delat at max')
+print(predictData.loc[predictData['gas_offered'] == max_gasoffered, 'confirmTime'].values[0])
 quantiles= predictData['gas_offered'].quantile([.5, .75, .95, .99])
 print(quantiles)
 
