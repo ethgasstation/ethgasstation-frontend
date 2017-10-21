@@ -21,6 +21,7 @@ Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 session = Session()
 
+   
 
 def init_dfs():
     """load data from mysql"""
@@ -135,7 +136,7 @@ def get_diff(current, prior, block):
     return removed_df
 
 
-def process_block_transactions(block, block_time):
+def process_block_transactions(block, timer):
     """get tx data from block"""
     block_df = pd.DataFrame()
     block_obj = web3.eth.getBlock(block, True)
@@ -143,7 +144,7 @@ def process_block_transactions(block, block_time):
     for transaction in block_obj.transactions:
         clean_tx = CleanTx(transaction, None, None, miner)
         block_df = block_df.append(clean_tx.to_dataframe(), ignore_index = False)
-    block_df['time_mined'] = block_time
+    block_df['time_mined'] = timer.read_block_time(block)
     return(block_df, block_obj)
 
 def process_block_data(block_df, block_obj):
@@ -417,6 +418,7 @@ def master_control():
     start_time = time.time()
     tx_filter = web3.eth.filter('pending')
     def new_tx_callback(tx_hash):
+        nonlocal block_timer
         try:
             block = web3.eth.blockNumber
             tx_obj = web3.eth.getTransaction(tx_hash)
@@ -461,12 +463,13 @@ def append_new_tx(clean_tx, block):
         alltx = alltx.append(clean_tx.to_dataframe(), ignore_index = False)
     if timer.check_newblock(block):
         print (block)
-        block_time = time.time()
+        timer.add_block(block, time.time())
+        print(timer.block_store)
         if block > timer.start_block+1:
-            update_dataframes(block, block_time)
+            update_dataframes(block, timer)
     
 
-def update_dataframes(block, block_time):
+def update_dataframes(block, timer):
     global alltx
     global txpool
     global blockdata
@@ -475,7 +478,7 @@ def update_dataframes(block, block_time):
     try:
         #get minedtransactions and blockdata from previous block
         mined_block_num = block-3
-        (mined_blockdf, block_obj) = process_block_transactions(mined_block_num, block_time)
+        (mined_blockdf, block_obj) = process_block_transactions(mined_block_num, timer)
         #add mined data to tx dataframe - only unique hashes seen by node
         mined_blockdf_seen = mined_blockdf[mined_blockdf.index.isin(alltx.index)]
         print('num mined in ' + str(mined_block_num)+ ' = ' + str(len(mined_blockdf)))

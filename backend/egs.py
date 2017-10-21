@@ -102,6 +102,7 @@ class Timers():
         self.start_block = start_block
         self.current_block = start_block
         self.minlow = 10 #1 gwei
+        self.block_store = {}
 
     def update_time(self, block):
         self.current_block = block
@@ -118,6 +119,12 @@ class Timers():
             print (str(block) + ' ' + str(self.start_block))
             return True
         return False
+    
+    def add_block(self, block_number, block_time):
+        self.block_store[block_number] = block_time
+    
+    def read_block_time(self, block_number):
+        return self.block_store.pop(block_number, None)
 
 class CleanTx():
     """transaction object / methods for pandas"""
