@@ -70,8 +70,8 @@ print (predictData['numTo'].quantile(.95))
 
 '''
 
-
-
+print('gas offered data')
+print('max :'+str(predictData['gas_offered'].max()))
 quantiles= predictData['gas_offered'].quantile([.5, .75, .95, .99])
 print(quantiles)
 
