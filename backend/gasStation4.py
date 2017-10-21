@@ -135,16 +135,15 @@ def get_diff(current, prior, block):
     return removed_df
 
 
-def process_block_transactions(block):
+def process_block_transactions(block, block_time):
     """get tx data from block"""
-    timemined = time.time()
     block_df = pd.DataFrame()
     block_obj = web3.eth.getBlock(block, True)
     miner = block_obj.miner 
     for transaction in block_obj.transactions:
         clean_tx = CleanTx(transaction, None, None, miner)
         block_df = block_df.append(clean_tx.to_dataframe(), ignore_index = False)
-    block_df['time_mined'] = timemined
+    block_df['time_mined'] = block_time
     return(block_df, block_obj)
 
 def process_block_data(block_df, block_obj):
@@ -304,6 +303,8 @@ def get_adjusted_post(row, block):
 def analyze_txpool(block, gp_lookup, txatabove_lookup, txpool_block, gaslimit, avg_timemined, txpool_by_gp, txpool_by_gp_unchained, tx_unchained_lookup):
     '''defines prediction parameters for all transactions in the txpool'''
     print('txpool block length ' + str(len(txpool_block)))
+    if (len(txpool_block)==0):
+        return(pd.DataFrame(), pd.DataFrame())
     txpool_block['pct_limit'] = txpool_block['gas_offered'].apply(lambda x: x / gaslimit)
     txpool_block['hashpower_accepting'] = txpool_block['round_gp_10gwei'].apply(lambda x: gp_lookup[x] if x in gp_lookup else 100)
     txpool_block['num_from'] = txpool_block.groupby('from_address')['block_posted'].transform('count')
@@ -393,7 +394,7 @@ def get_gasprice_recs(prediction_table, block_time, block, speed, minlow=-1):
 
 def get_recent_txtime():
     global alltx
-    last_time = alltx['time_posted'].max()
+    last_time = alltx['time_posted'].tail(n=25).max()
     return last_time
 
 def check_filter(start_time, current_time, recent_txtime):
@@ -456,11 +457,12 @@ def append_new_tx(clean_tx, block):
         alltx = alltx.append(clean_tx.to_dataframe(), ignore_index = False)
     if timer.check_newblock(block):
         print (block)
+        block_time = time.time()
         if block > timer.start_block+1:
-            update_dataframes(block)
+            update_dataframes(block, block_time)
     
 
-def update_dataframes(block):
+def update_dataframes(block, block_time):
     global alltx
     global txpool
     global blockdata
@@ -498,6 +500,8 @@ def update_dataframes(block):
         gprecs = get_gasprice_recs (predictiondf, block_time, block, speed, timer.minlow)
         #analyze block transactions within txpool
         (analyzed_block, txpool_by_gp) = analyze_txpool(block-1, gp_lookup, txatabove_lookup, txpool_block, gaslimit, block_time, txpool_by_gp, txpool_by_gp_unchained, tx_unchained_lookup)
+        if analyzed_block.empty:
+            return
         assert analyzed_block.index.duplicated().sum()==0
         #with pd.option_context('display.max_columns', None,):
             #print(analyzed_block)
