@@ -264,7 +264,7 @@ def get_adjusted_post(row, block):
     else:
         pass
 
-def merge_txpool_alltx(txpool, alltx, block, hashpower, avg_timemined, gaslimit):
+def analyze_txpool(txpool, alltx, block, hashpower, avg_timemined, gaslimit):
     """gets txhash from all transactions in txpool at block and merges the data from alltx"""
     #get txpool hashes at block
     txpool_block = txpool.loc[txpool['block']==block]
@@ -419,7 +419,7 @@ def master_control():
                 timer.add_block(block, timestamp)
                 print(timer.block_store)
                 if block > timer.start_block+1:
-                    update_data = threading.Thread(target=update_dataframes, name='updater', args=(block, timer, alltx, blockdata, txpool))
+                    update_data = threading.Thread(target=update_dataframes, args=(block, timer, alltx, blockdata, txpool))
                     update_data.start()
                     print(threading.enumerate())
             for new_tx in new_tx_list:
