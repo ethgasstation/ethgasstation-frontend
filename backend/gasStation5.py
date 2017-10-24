@@ -417,7 +417,7 @@ def master_control():
                 timer.add_block(block, timestamp)
                 print(timer.block_store)
                 if block > timer.start_block+1:
-                    update_data = threading.Thread(target=update_dataframes, args=(block, timer, alltx, blockdata, txpool))
+                    update_data = threading.Thread(target=update_dataframes, args=(block,))
                     update_data.start()
                     print(threading.enumerate())
             for new_tx in new_tx_list:
