@@ -398,13 +398,10 @@ def get_gasprice_recs(prediction_table, block_time, block, speed, minlow=-1):
 
 
 def master_control():
-    (blockdata, alltx) = init_dfs()
-    txpool = pd.DataFrame()
-    print ('blocks '+ str(len(blockdata)))
-    print ('txcount '+ str(len(alltx)))
-    timer = Timers(web3.eth.blockNumber)  
-    start_time = time.time()
-    tx_filter = web3.eth.filter('pending')
+    global alltx
+    global blockdata
+    global txpool
+    global timer
         
     try:
         while True:
@@ -437,8 +434,12 @@ def master_control():
         
     
 
-def update_dataframes(block, timer, alltx, blockdata, txpool):
-        
+def update_dataframes(block):
+    global alltx
+    global blockdata
+    global txpool
+    global timer
+
     print('updating dataframes at block '+ str(block))
     try:
         #get minedtransactions and blockdata from previous block
@@ -487,6 +488,14 @@ def update_dataframes(block, timer, alltx, blockdata, txpool):
         (blockdata, alltx, txpool) = prune_data(blockdata, alltx, txpool, block)
     except: 
         print(traceback.format_exc())   
-    
+
+
+(blockdata, alltx) = init_dfs()
+txpool = pd.DataFrame()
+print ('blocks '+ str(len(blockdata)))
+print ('txcount '+ str(len(alltx)))
+timer = Timers(web3.eth.blockNumber)  
+start_time = time.time()
+tx_filter = web3.eth.filter('pending')    
 
 master_control()
