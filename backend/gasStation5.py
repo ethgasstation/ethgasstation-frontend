@@ -268,6 +268,8 @@ def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit):
     """gets txhash from all transactions in txpool at block and merges the data from alltx"""
     #get txpool hashes at block
     txpool_block = txpool.loc[txpool['block']==block]
+    if (len(txpool_block)==0):
+        return(pd.DataFrame(), pd.DataFrame(), alltx, None)
     txpool_block = txpool_block.drop(['block'], axis=1)
     #merge transaction data for txpool transactions
     #txpool_block only has transactions received by filter
@@ -278,7 +280,6 @@ def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit):
     txpool_block['num_to'] = txpool_block.groupby('to_address')['block_posted'].transform('count')
     txpool_block['ico'] = (txpool_block['num_to'] > 90).astype(int)
     txpool_block['dump'] = (txpool_block['num_from'] > 5).astype(int)
-
     #group by gasprice
     #todo: rename gas_price to count after grouping
     txpool_by_gp = txpool_block[['gas_price', 'round_gp_10gwei']].groupby('round_gp_10gwei').agg({'gas_price':'count'})
