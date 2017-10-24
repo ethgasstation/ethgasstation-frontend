@@ -274,9 +274,7 @@ def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit):
     #merge transaction data for txpool transactions
     #txpool_block only has transactions received by filter
     txpool_block = txpool_block.join(alltx, how='inner')
-    print('len')
-    print(len(txpool_block.index.duplicated(keep='first')))
-    assert len(txpool_block.index.duplicated(keep='first')) == 0
+    assert txpool_block.index.duplicated(keep='first').sum() == 0
     #txpool_block = txpool_block[~txpool_block.index.duplicated(keep = 'first')]
     txpool_block['num_from'] = txpool_block.groupby('from_address')['block_posted'].transform('count')
     txpool_block['num_to'] = txpool_block.groupby('to_address')['block_posted'].transform('count')
