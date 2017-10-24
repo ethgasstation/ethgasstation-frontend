@@ -461,11 +461,12 @@ def update_dataframes(block, timer, alltx, blockdata, txpool):
         (hashpower, block_time, gaslimit, speed) = analyze_last200blocks(block, blockdata)
         #make txpool block data
         (analyzed_block, txpool_by_gp, alltx, predictiondf) = analyze_txpool(block-1, txpool, alltx, hashpower, block_time, gaslimit)
+        if analyzed_block.empty:
+            print("txpool block is empty - returning")
+            return
         #get gpRecs
         gprecs = get_gasprice_recs (predictiondf, block_time, block, speed, timer.minlow)
         #analyze block transactions within txpool
-        if analyzed_block.empty:
-            return
         assert analyzed_block.index.duplicated().sum()==0
         #with pd.option_context('display.max_columns', None,):
             #print(analyzed_block)
