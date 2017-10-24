@@ -201,9 +201,12 @@ def predict(row):
     high_gas_coef = .2592
     try:
         sum1 = (intercept + (row['hashpower_accepting']*hpa_coef) + (row['tx_atabove']*txatabove_coef) + (row['ico']*ico_coef) + (row['dump']*dump_coef) + (row['highgas2']*high_gas_coef))
+        prediction = np.exp(sum1)
+        if prediction < 2:
+            prediction = 2
         if row['gas_offered'] > 2000000:
-            return (np.exp(sum1) + 100)
-        return np.exp(sum1)
+            prediction = prediction + 100
+        return np.round(prediction, decimals=2)
     except Exception as e:
         print(e)
         return np.nan
@@ -249,26 +252,48 @@ def analyze_last200blocks(block, blockdata):
         avg_timemined = 30
     return(hashpower, avg_timemined, gaslimit, speed)
 
-def merge_txpool_alltx(txpool, alltx, block):
+def get_adjusted_post(row, block):
+    if row['chained'] == 1:
+        return np.nan
+    elif (row['chained']==0 and row['temp_chained']==1):
+        return block
+    elif (row['chained']==0 and row['temp_chained']==0):
+        return row['block_posted']
+    elif (row['chained']==0 and row['temp_chained']==np.nan):
+        return row['block_posted']
+    else:
+        pass
+
+def merge_txpool_alltx(txpool, alltx, block, hashpower, avg_timemined, gaslimit):
+    """gets txhash from all transactions in txpool at block and merges the data from alltx"""
     #get txpool hashes at block
     txpool_block = txpool.loc[txpool['block']==block]
-    #add transactions submitted at block
-    alltx_block = alltx.loc[alltx['block_posted']==block, 'block_posted']
-    alltx_block = alltx_block[~alltx_block.index.isin(txpool_block.index)]
-    txpool_block = txpool_block.join(alltx_block, how='outer')
-    print ('len txpool_block ' + str(len(txpool_block)))
-    txpool_block = txpool_block.drop(['block_posted', 'block'], axis=1)
+    txpool_block = txpool_block.drop(['block'], axis=1)
     #merge transaction data for txpool transactions
     #txpool_block only has transactions received by filter
     txpool_block = txpool_block.join(alltx, how='inner')
+    assert len(txpool_block.index.duplicated(keep='first')) == 0
+    #txpool_block = txpool_block[~txpool_block.index.duplicated(keep = 'first')]
+    txpool_block['num_from'] = txpool_block.groupby('from_address')['block_posted'].transform('count')
+    txpool_block['num_to'] = txpool_block.groupby('to_address')['block_posted'].transform('count')
+    txpool_block['ico'] = (txpool_block['num_to'] > 90).astype(int)
+    txpool_block['dump'] = (txpool_block['num_from'] > 5).astype(int)
+
     #group by gasprice
-    txpool_block = txpool_block[~txpool_block.index.duplicated(keep = 'first')]
+    #todo: rename gas_price to count after grouping
     txpool_by_gp = txpool_block[['gas_price', 'round_gp_10gwei']].groupby('round_gp_10gwei').agg({'gas_price':'count'})
+    txpool_block_nonce = txpool_block[['from_address', 'nonce']].groupby('from_address').agg({'nonce':'min'})
+
+    #when multiple tx from same from address, finds tx with lowest nonce (unchained) - others are 'chained' - groups by gas price
+    #block_posted used for counting number of tx from from_address
+    #record when previously chained to enable adjusted block posted
+    txpool_block['temp_chained'] = txpool_block['chained']
+    txpool_block['chained'] = txpool_block.apply(check_nonce, args=(txpool_block_nonce,), axis=1)
+    #now group unchained transactions by gas price for analysis of tx_atabove-unchained
     txpool_block_unchained = txpool_block.loc[txpool_block['chained']==0]
     txpool_by_gp_unchained = txpool_block_unchained[['gas_price', 'round_gp_10gwei']].groupby('round_gp_10gwei').agg({'gas_price':'count'})
-    return(txpool_block, txpool_by_gp, txpool_by_gp_unchained)
 
-def make_predictiontable(hashpower, avg_timemined, txpool_by_gp, txpool_by_gp_unchained):
+    #predictiontable
     predictTable = pd.DataFrame({'gasprice' :  range(10, 1010, 10)})
     ptable2 = pd.DataFrame({'gasprice' : range(0, 10, 1)})
     predictTable = predictTable.append(ptable2).reset_index(drop=True)
@@ -283,55 +308,30 @@ def make_predictiontable(hashpower, avg_timemined, txpool_by_gp, txpool_by_gp_un
     predictTable['highgas2'] = 0
     predictTable['chained'] = 0
     predictTable['expectedWait'] = predictTable.apply(predict, axis=1)
-    predictTable['expectedWait'] = predictTable['expectedWait'].apply(lambda x: 2 if (x < 2) else x)
-    predictTable['expectedWait'] = predictTable['expectedWait'].apply(lambda x: np.round(x, decimals=2))
     predictTable['expectedTime'] = predictTable['expectedWait'].apply(lambda x: np.round((x * avg_timemined / 60), decimals=2))  
     gp_lookup = predictTable.set_index('gasprice')['hashpower_accepting'].to_dict()
     txatabove_lookup = predictTable.set_index('gasprice')['tx_atabove'].to_dict()
     tx_unchained_lookup = predictTable.set_index('gasprice')['tx_atabove_unchained'].to_dict()
-    return(gp_lookup, txatabove_lookup, tx_unchained_lookup, predictTable)
 
-def get_adjusted_post(row, block):
-    if row['chained'] == 1:
-        return np.nan
-    elif (row['chained']==0 and row['temp_chained']==1):
-        return block
-    elif (row['chained']==0 and row['temp_chained']==0):
-        return row['block_posted']
-    elif (row['chained']==0 and row['temp_chained']==np.nan):
-        return row['block_posted']
-    else:
-        pass
-
-def analyze_txpool(block, gp_lookup, txatabove_lookup, txpool_block, gaslimit, avg_timemined, txpool_by_gp, txpool_by_gp_unchained, tx_unchained_lookup):
-    '''defines prediction parameters for all transactions in the txpool'''
+    #finally, analyze txpool transactions
     print('txpool block length ' + str(len(txpool_block)))
     if (len(txpool_block)==0):
         return(pd.DataFrame(), pd.DataFrame())
     txpool_block['pct_limit'] = txpool_block['gas_offered'].apply(lambda x: x / gaslimit)
+    txpool_block['high_gas_offered'] = (txpool_block['pct_limit']> .037).astype(int)
+    txpool_block['highgas2'] = (txpool_block['pct_limit'] > .15).astype(int)
     txpool_block['hashpower_accepting'] = txpool_block['round_gp_10gwei'].apply(lambda x: gp_lookup[x] if x in gp_lookup else 100)
-    txpool_block['num_from'] = txpool_block.groupby('from_address')['block_posted'].transform('count')
-    txpool_block_nonce = txpool_block[['from_address', 'nonce']].groupby('from_address').agg({'nonce':'min'})
-    txpool_block['temp_chained'] = txpool_block['chained']
-    txpool_block['chained'] = txpool_block.apply(check_nonce, args=(txpool_block_nonce,), axis=1)
     txpool_block['tx_atabove'] = txpool_block['round_gp_10gwei'].apply(lambda x: txatabove_lookup[x] if x in txatabove_lookup else 1)
     txpool_block['tx_unchained'] = txpool_block['round_gp_10gwei'].apply(lambda x: tx_unchained_lookup[x] if x in tx_unchained_lookup else 1)
     txpool_block['block_posted_adj'] = txpool_block.apply(get_adjusted_post, args = (block,), axis=1)
-    txpool_block['num_to'] = txpool_block.groupby('to_address')['block_posted'].transform('count')
-    txpool_block['ico'] = (txpool_block['num_to'] > 90).astype(int)
-    txpool_block['dump'] = (txpool_block['num_from'] > 5).astype(int)
-    txpool_block['high_gas_offered'] = (txpool_block['pct_limit']> .037).astype(int)
-    txpool_block['highgas2'] = (txpool_block['pct_limit'] > .15).astype(int)
     txpool_block['expectedWait'] = txpool_block.apply(predict, axis=1)
-    txpool_block['expectedWait'] = txpool_block['expectedWait'].apply(lambda x: 2 if (x < 2) else x)
-    txpool_block['expectedWait'] = txpool_block['expectedWait'].apply(lambda x: np.round(x, decimals=2))
     txpool_block['expectedTime'] = txpool_block['expectedWait'].apply(lambda x: np.round((x * avg_timemined / 60), decimals=2))
     txpool_block['wait_blocks'] = txpool_block['block_posted_adj'].apply(lambda x: block-x)
     txpool_block['mined_probability'] = txpool_block.apply(predict_mined, axis=1)
     txpool_by_gp = txpool_block[['wait_blocks', 'gas_offered', 'gas_price', 'round_gp_10gwei']].groupby('round_gp_10gwei').agg({'wait_blocks':'median','gas_offered':'sum', 'gas_price':'count'})
     txpool_by_gp.reset_index(inplace=True, drop=False)
     txpool_block = txpool_block.drop(['block_posted_adj', 'temp_chained'], axis=1)
-    return(txpool_block, txpool_by_gp)
+    return(txpool_block, txpool_by_gp, alltx, predictiondf)
 
 def get_gasprice_recs(prediction_table, block_time, block, speed, minlow=-1):
     
@@ -395,85 +395,47 @@ def get_gasprice_recs(prediction_table, block_time, block, speed, minlow=-1):
     gprecs['speed'] = speed
     return(gprecs)
 
-def get_recent_txtime():
-    global alltx
-    try:
-        last_time = alltx['time_posted'].max()
-        return last_time
-    except IndexError:
-        print('time posted error')
-        return time.time()-10
-
-def check_filter(start_time, current_time, recent_txtime):
-    if (start_time > recent_txtime):
-        print('starting up')
-        last_tx = start_time - recent_txtime
-        print('last tx was ' +str(last_tx)+ ' seconds ago')
-        return 0
-    if (current_time - recent_txtime) > 60:
-        print ('filter lost')
-        return 1
-    return 0
-
 
 def master_control():
+    (blockdata, alltx) = init_dfs()
+    txpool = pd.DataFrame()
+    print ('blocks '+ str(len(blockdata)))
+    print ('txcount '+ str(len(alltx)))
+    timer = Timers(web3.eth.blockNumber)  
     start_time = time.time()
     tx_filter = web3.eth.filter('pending')
-    def new_tx_callback(tx_hash):
-        try:
-            block = web3.eth.blockNumber
-            tx_obj = web3.eth.getTransaction(tx_hash)
-            timestamp = time.time()
-            clean_tx = CleanTx(tx_obj, block, timestamp)
-            append_new_tx(clean_tx, block)
-        except AttributeError as e:
-            print(e)
+        
     try:
         while True:
-            current_time = time.time()
-        
-            #check for new tx from filter
-            recent_txtime = get_recent_txtime()
-            print('time since last tx ' + str(current_time - recent_txtime))
-        
-            #determine if filter is lost
-            lost_filter = check_filter(start_time, current_time, recent_txtime)
-            if lost_filter:
-                print('lost filter')
-                tx_filter.stop_watching()
-                tx_filter = web3.eth.filter('pending')
-            else:
-                print ('filter ok')
+            try:
+                new_tx_list = web3.eth.getFilterChanges(tx_filter.filter_id)
+            except Exception as e:
+                print(e)
+                break
+            block = web3.eth.blockNumber
+            timestamp = time.time()
+            if timer.check_newblock(block):
+                print (block)
+                timer.add_block(block, timestamp)
+                print(timer.block_store)
+                if block > timer.start_block+1:
+                    update_data = threading.Thread(target=update_dataframes, name='updater', args=(block, timer, alltx, blockdata, txpool))
+                    print(threading.enumerate())
+            for new_tx in new_tx_list:
+                try:         
+                    tx_obj = web3.eth.getTransaction(new_tx)
+                    clean_tx = CleanTx(tx_obj, block, timestamp)
+                    if not clean_tx.hash in alltx.index:
+                        alltx = alltx.append(clean_tx.to_dataframe(), ignore_index = False)
+                except AttributeError as e:
+                    print(e)
 
-            #check if filter is running. if not, start
-            if not tx_filter.running:
-                print('starting up filter')
-                tx_filter.watch(new_tx_callback)
-            print('threadlist:')
-            print(threading.enumerate())
-            time.sleep(15)
-    
     except KeyboardInterrupt:
         print('ending')
         
-
-def append_new_tx(clean_tx, block):
-    global alltx
-    global timer
-    if not clean_tx.hash in alltx.index:
-        alltx = alltx.append(clean_tx.to_dataframe(), ignore_index = False)
-    if timer.check_newblock(block):
-        print (block)
-        timer.add_block(block, time.time())
-        print(timer.block_store)
-        if block > timer.start_block+1:
-            update_dataframes(block, timer)
     
 
-def update_dataframes(block, timer):
-    global alltx
-    global txpool
-    global blockdata
+def update_dataframes(block, timer, alltx, blockdata, txpool):
         
     print('updating dataframes at block '+ str(block))
     try:
@@ -493,21 +455,13 @@ def update_dataframes(block, timer):
         current_txpool = get_txhases_from_txpool(block)
         #add txhashes to txpool dataframe
         txpool = txpool.append(current_txpool, ignore_index = False)
-        #get txhashes removed in current blocks txpool add data to alltx
-        prior_txpool = txpool[txpool['block']==(block-1)]
-        removed_txhashes = get_diff(current_txpool.index.tolist(), prior_txpool.index.tolist(), block)
-        removed_txhashes = removed_txhashes[removed_txhashes.index.isin(alltx.index)]
-        alltx = alltx.combine_first(removed_txhashes)
         #get hashpower table, block interval time, gaslimit, speed from last 200 blocks
         (hashpower, block_time, gaslimit, speed) = analyze_last200blocks(block, blockdata)
         #make txpool block data
-        (txpool_block, txpool_by_gp, txpool_by_gp_unchained) = merge_txpool_alltx(txpool, alltx, block-1)
-        #make prediction table
-        (gp_lookup, txatabove_lookup, tx_unchained_lookup, predictiondf) = make_predictiontable(hashpower, block_time, txpool_by_gp, txpool_by_gp_unchained)
+        (analyzed_block, txpool_by_gp, alltx, predictiondf) = analyze_txpool(block-1, txpool, alltx, hashpower, block_time, gaslimit)
         #get gpRecs
         gprecs = get_gasprice_recs (predictiondf, block_time, block, speed, timer.minlow)
         #analyze block transactions within txpool
-        (analyzed_block, txpool_by_gp) = analyze_txpool(block-1, gp_lookup, txatabove_lookup, txpool_block, gaslimit, block_time, txpool_by_gp, txpool_by_gp_unchained, tx_unchained_lookup)
         if analyzed_block.empty:
             return
         assert analyzed_block.index.duplicated().sum()==0
@@ -531,9 +485,5 @@ def update_dataframes(block, timer):
     except: 
         print(traceback.format_exc())   
     
-(blockdata, alltx) = init_dfs()
-txpool = pd.DataFrame()
-print ('blocks '+ str(len(blockdata)))
-print ('txcount '+ str(len(alltx)))
-timer = Timers(web3.eth.blockNumber)  
+
 master_control()
