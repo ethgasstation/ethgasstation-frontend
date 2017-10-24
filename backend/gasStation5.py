@@ -264,7 +264,7 @@ def get_adjusted_post(row, block):
     else:
         pass
 
-def analyze_txpool(txpool, alltx, block, hashpower, avg_timemined, gaslimit):
+def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit):
     """gets txhash from all transactions in txpool at block and merges the data from alltx"""
     #get txpool hashes at block
     txpool_block = txpool.loc[txpool['block']==block]
