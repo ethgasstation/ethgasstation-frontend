@@ -328,7 +328,7 @@ def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit):
     txpool_block['tx_atabove'] = txpool_block['round_gp_10gwei'].apply(lambda x: txatabove_lookup[x] if x in txatabove_lookup else 1)
     txpool_block['tx_unchained'] = txpool_block['round_gp_10gwei'].apply(lambda x: tx_unchained_lookup[x] if x in tx_unchained_lookup else 1)
     txpool_block['block_posted_adj'] = txpool_block.apply(get_adjusted_post, args = (block,), axis=1)
-    print(txpool_block)
+    print(txpool_block.loc[txpool_block['chained']==0])
     txpool_block['expectedWait'] = txpool_block.apply(predict, axis=1)
     txpool_block['expectedTime'] = txpool_block['expectedWait'].apply(lambda x: np.round((x * avg_timemined / 60), decimals=2))
     txpool_block['wait_blocks'] = txpool_block['block_posted_adj'].apply(lambda x: block-x)
