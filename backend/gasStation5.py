@@ -259,7 +259,7 @@ def get_adjusted_post(row, block):
         return block
     elif (row['chained']==0) and (row['temp_chained']==0):
         return row['block_posted']
-    elif (row['chained']==0) and (row['temp_chained'].isnull()):
+    elif (row['chained']==0) and (row['temp_chained'] not in [0,1]):
         return row['block_posted']
     else:
         print(row['chained'])
