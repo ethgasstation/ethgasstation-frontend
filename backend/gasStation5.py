@@ -255,14 +255,17 @@ def analyze_last200blocks(block, blockdata):
 def get_adjusted_post(row, block):
     if row['chained'] == 1:
         return np.nan
-    if (row['chained']==0) and (row['temp_chained']==1):
+    elif ((row['chained']==0) and (row['temp_chained']==1)):
         return block
-    if (row['chained']==0) and (row['temp_chained']==0):
+    elif ((row['chained']==0) and (row['temp_chained']==0)):
         return row['block_posted']
-    if (row['chained']==0) and (row['temp_chained'] is None):
+    elif ((row['chained']==0) and (row['temp_chained'] is None)):
         return row['block_posted']
     else:
-        print(row)
+        print(row['chained']
+        print(row['temp_chained'])
+        print(row['block_posted'])
+        print(block)
 
 
 def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit):
