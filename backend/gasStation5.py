@@ -262,7 +262,7 @@ def get_adjusted_post(row, block):
     elif ((row['chained']==0) and (row['temp_chained'] is None)):
         return row['block_posted']
     else:
-        print(row['chained']
+        print(row['chained'])
         print(row['temp_chained'])
         print(row['block_posted'])
         print(block)
