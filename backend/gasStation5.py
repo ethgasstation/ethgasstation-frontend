@@ -411,14 +411,6 @@ def master_control():
                 break
             block = web3.eth.blockNumber
             timestamp = time.time()
-            if timer.check_newblock(block):
-                print (block)
-                timer.add_block(block, timestamp)
-                print(timer.block_store)
-                if block > timer.start_block+1:
-                    update_data = threading.Thread(target=update_dataframes, args=(block,))
-                    update_data.start()
-                    print(threading.enumerate())
             for new_tx in new_tx_list:
                 try:         
                     tx_obj = web3.eth.getTransaction(new_tx)
@@ -427,6 +419,15 @@ def master_control():
                         alltx = alltx.append(clean_tx.to_dataframe(), ignore_index = False)
                 except AttributeError as e:
                     print(e)
+            if timer.check_newblock(block):
+                print (block)
+                timer.add_block(block, timestamp)
+                print(timer.block_store)
+                if block > timer.start_block+1:
+                    update_data = threading.Thread(target=update_dataframes, args=(block,))
+                    update_data.start()
+                    print(threading.enumerate())
+            
 
     except KeyboardInterrupt:
         print('ending')
