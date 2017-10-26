@@ -101,11 +101,13 @@ class Timers():
     def __init__(self, start_block):
         self.start_block = start_block
         self.current_block = start_block
+        self.process_block = start_block
         self.minlow = 10 #1 gwei
         self.block_store = {}
 
     def update_time(self, block):
         self.current_block = block
+        self.process_block = self.process_block + 1
     
     def check_newblock(self, block):
         if self.current_block >= block:
