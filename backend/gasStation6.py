@@ -418,6 +418,7 @@ def check_filter(start_time, current_time, recent_txtime):
 
 
 def master_control():
+    global timer
     start_time = time.time()
     tx_filter = web3.eth.filter('pending')
     def new_tx_callback(tx_hash):
@@ -449,6 +450,9 @@ def master_control():
             #check if filter is running. if not, start
             if not tx_filter.running:
                 print('starting up filter')
+                current_block = web3.eth.blockNumber
+                timer.current_block = current_block
+                timer.process_block = current_block
                 tx_filter.watch(new_tx_callback)
             print('threadlist:')
             print(threading.enumerate())
