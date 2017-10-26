@@ -447,7 +447,6 @@ def master_control():
                     print('one block behind - catching up')
                     print("current block " + str(timer.current_block))
                     print("process block " + str(timer.process_block))
-                    update_dataframes(timer.process_block)
                     timer.process_block = timer.process_block + 1
                     print('catching up')
                     update_dataframes(block, take_snap, read_snap)
