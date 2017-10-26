@@ -476,6 +476,7 @@ def append_new_tx(clean_tx, block):
                 timer.process_block = timer.process_block + 1
                 print('catching up')
                 update_dataframes(block)
+                return True
             update_dataframes(block)
     
 
