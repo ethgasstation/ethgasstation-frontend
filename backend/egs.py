@@ -103,8 +103,8 @@ class Timers():
         self.current_block = start_block
         self.process_block = start_block
         self.minlow = 10 #1 gwei
-        self.snapshot_start = start_block + 20
-        self.snapshot_end = start_block + 40
+        self.snapshot_start = start_block + 3
+        self.snapshot_end = start_block + 8
         self.block_store = {}
 
     def update_time(self, block):
