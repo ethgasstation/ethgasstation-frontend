@@ -519,7 +519,7 @@ def master_control():
                 snapstore = snapstore.drop(['block_mined', 'time_mined'], axis=1)
             elif read_snap:
                 snapstore = snapstore.join(alltx[['block_mined', 'time_mined']], how='inner')
-                snapstore['stillin_txpool'] = snapstore.index.isin(txpool_current.index)
+                snapstore['stillin_txpool'] = snapstore.index.isin(current_txpool.index)
                 snapstore.reset_index(inplace=True, drop=False)
                 snapstore.to_sql(con=engine, name='snapstore', index=False, if_exists='append') 
             #with pd.option_context('display.max_columns', None,):
