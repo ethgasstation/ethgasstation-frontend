@@ -54,7 +54,6 @@ def write_to_sql(alltx, analyzed_block, block_sumdf, mined_blockdf_seen, block):
     post2 = alltx.loc[alltx['block_posted'] == (block-1)]
     post2.to_sql(con=engine, name='postedtx2', if_exists='append', index=True)
     print ('num posted = ' + str(len(post2)))
-    analyzed_block.reset_index(drop=False, inplace=True)
     analyzed_block.to_sql(con=engine, name='txpool_current', index=False, if_exists='replace')
     block_sumdf.to_sql(con=engine, name='blockdata2', if_exists='append', index=False)
 
@@ -97,7 +96,6 @@ def write_to_json(gprecs, txpool_by_gp, prediction_table, analyzed_block):
         txpool_by_gp['gasprice'] = txpool_by_gp['round_gp_10gwei']/10
         txpool_by_gp['gas_offered'] = txpool_by_gp['gas_offered']/1e6
         prediction_table['gasprice'] = prediction_table['gasprice']/10
-        analyzed_block.reset_index(drop=False, inplace=True)
         analyzed_block_show  = analyzed_block.loc[analyzed_block['chained']==0].copy()
         analyzed_block_show['gasprice'] = analyzed_block_show['round_gp_10gwei']/10
         analyzed_block_show['gas_offered'] = analyzed_block_show['gas_offered']/1e6
@@ -525,6 +523,7 @@ def master_control():
                 print("txpool block is empty - returning")
                 return
             assert analyzed_block.index.duplicated().sum()==0
+            analyzed_block.reset_index(drop=False, inplace=True)
 
             #store snapshot of txpool for prediction model
             if take_snap:
