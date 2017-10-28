@@ -98,7 +98,6 @@ def write_to_json(gprecs, txpool_by_gp, prediction_table, analyzed_block):
         prediction_table['gasprice'] = prediction_table['gasprice']/10
         analyzed_block_show  = analyzed_block.loc[analyzed_block['chained']==0].copy()
         analyzed_block_show['gasprice'] = analyzed_block_show['round_gp_10gwei']/10
-        analyzed_block_show['gas_offered'] = analyzed_block_show['gas_offered']/1e6
         analyzed_block_show = analyzed_block_show[['index', 'block_posted', 'gas_offered', 'gasprice', 'hashpower_accepting', 'tx_atabove', 'mined_probability', 'expectedWait', 'wait_blocks']].sort_values('wait_blocks', ascending=False)
         analyzed_blockout = analyzed_block_show.to_json(orient='records')
         prediction_tableout = prediction_table.to_json(orient='records')

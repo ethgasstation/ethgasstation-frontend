@@ -95,7 +95,7 @@
                           <th>Block Posted</th>
                           <th>Gas Offered</th>
                           <th>Gas Price (Gwei)</th>
-                          <th>Hashpower</th>
+                          <th>Hashpower %</th>
                           <th>#Tx AtAbove</th>
                           <th>Mined Probability</th>
                           <th>Expected Wait</th>
