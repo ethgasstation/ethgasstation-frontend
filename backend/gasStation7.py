@@ -90,19 +90,25 @@ def write_report(report, top_miners, price_wait, miner_txdata, gasguzz, lowprice
     except Exception as e:
         print(e)
 
-def write_to_json(gprecs, txpool_by_gp, prediction_table):
+def write_to_json(gprecs, txpool_by_gp, prediction_table, analyzed_block):
     """write json data"""
     try:
         txpool_by_gp = txpool_by_gp.rename(columns={'gas_price':'count'})
         txpool_by_gp['gasprice'] = txpool_by_gp['round_gp_10gwei']/10
         txpool_by_gp['gas_offered'] = txpool_by_gp['gas_offered']/1e6
         prediction_table['gasprice'] = prediction_table['gasprice']/10
+        analyzed_block  = analyzed_block.loc[analyzed_block['chained']==0]
+        analyzed_block['gasprice'] = analyzed_block['round_gp_10gwei']/10
+        analyzed_block['gas_offered'] = analyzed_block['gas_offered']/1e6
+        analyzed_block = analyzed_block[['index', 'block_posted', 'gas_offered', 'gasprice', 'hashpower_accepting', 'tx_atabove', 'mined_probability', 'expected_wait', 'wait_blocks']]
+        analyzed_blockout = analyzed_block.to_json(orient='records')
         prediction_tableout = prediction_table.to_json(orient='records')
         txpool_by_gpout = txpool_by_gp.to_json(orient='records')
         parentdir = os.path.dirname(os.getcwd())
         filepath_gprecs = parentdir + '/json/ethgasAPI.json'
         filepath_txpool_gp = parentdir + '/json/memPool.json'
         filepath_prediction_table = parentdir + '/json/predictTable.json'
+        filepath_analyzedblock = parentdir + '/json/txpoolblock.json'
         with open(filepath_gprecs, 'w') as outfile:
             json.dump(gprecs, outfile)
 
@@ -111,6 +117,9 @@ def write_to_json(gprecs, txpool_by_gp, prediction_table):
 
         with open(filepath_txpool_gp, 'w') as outfile:
             outfile.write(txpool_by_gpout)
+
+        with open(filepath_analyzedblock, 'w') as outfile:
+            outfile.write(analyzed_blockout)
     
     except Exception as e:
         print(e)
@@ -214,11 +223,12 @@ def predict(row):
 def predict_mined(row):
     if row['chained']==1:
         return np.nan
-    intercept = -.1104
-    hpa = .0364
-    hgo = -1.8213
-    wb = -0.0006
-    sum1 = intercept + (row['hashpower_accepting']*hpa) + (row['highgas2']*hgo) + (row['wait_blocks']*wb)
+    intercept = 4.2794
+    hpa = .0329
+    hgo = -3.2836
+    wb = -0.0048
+    tx = -0.004
+    sum1 = intercept + (row['hashpower_accepting']*hpa) + (row['highgas2']*hgo) + (row['wait_blocks']*wb) + (row['tx_atabove']*tx)
     factor = np.exp(-1*sum1)
     prob = 1 / (1+factor)
     return prob 
@@ -309,8 +319,10 @@ def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit):
     predictTable['wait_blocks'] = 0
     predictTable['highgas2'] = 0
     predictTable['chained'] = 0
+    predictTable['wait_blocks'] = 0
     predictTable['expectedWait'] = predictTable.apply(predict, axis=1)
-    predictTable['expectedTime'] = predictTable['expectedWait'].apply(lambda x: np.round((x * avg_timemined / 60), decimals=2))  
+    predictTable['expectedTime'] = predictTable['expectedWait'].apply(lambda x: np.round((x * avg_timemined / 60), decimals=2))
+    predictTable['mined_probability'] = predictTable.apply(predict_mined, axis=1)  
     gp_lookup = predictTable.set_index('gasprice')['hashpower_accepting'].to_dict()
     txatabove_lookup = predictTable.set_index('gasprice')['tx_atabove'].to_dict()
     tx_unchained_lookup = predictTable.set_index('gasprice')['tx_atabove_unchained'].to_dict()
@@ -541,7 +553,7 @@ def master_control():
                 timer.minlow = report.minlow
 
             #every block, write gprecs, predictions, txpool by gasprice
-            write_to_json(gprecs, txpool_by_gp, predictiondf)
+            write_to_json(gprecs, txpool_by_gp, predictiondf, analyzed_block)
             write_to_sql(alltx, analyzed_block, block_sumdf, mined_blockdf_seen, block)
 
             #keep from getting too large
