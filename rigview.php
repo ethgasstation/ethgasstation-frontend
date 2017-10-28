@@ -106,7 +106,7 @@
                       <?php
                       foreach ($txpoolArray as $row){
                         echo('<tr>');
-                        echo("<td>". $row['id']. "</td>");
+                        echo("<td>". $row['index']. "</td>");
                         echo("<td>". $row['block_posted']. "</td>");
                         echo("<td>". $row['gas_offered']. "</td>");
                         echo("<td>". $row['gasprice']. "</td>");
