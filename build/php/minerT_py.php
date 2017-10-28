@@ -31,6 +31,9 @@ $gasGuzzTable = json_decode($gasGuzzRaw, true);
 $memPoolString = file_get_contents("http://localhost/json/memPool.json");
 $memPoolArray = json_decode($memPoolString, true);
 
+$txpoolString = file_get_contents("http://localhost/json/txpoolblock.json");
+$txpoolArray = json_decode($memPoolString, true);
+
 $validatedString = file_get_contents("http://localhost/json/validated.json");
 $validatedArray = json_decode($validatedString, true);
 } catch (Exception $e){
