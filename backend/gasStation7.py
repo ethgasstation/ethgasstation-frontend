@@ -99,7 +99,7 @@ def write_to_json(gprecs, txpool_by_gp, prediction_table, analyzed_block):
         analyzed_block_show  = analyzed_block.loc[analyzed_block['chained']==0].copy()
         analyzed_block_show['gasprice'] = analyzed_block_show['round_gp_10gwei']/10
         analyzed_block_show['gas_offered'] = analyzed_block_show['gas_offered']/1e6
-        analyzed_block_show = analyzed_block_show[['index', 'block_posted', 'gas_offered', 'gasprice', 'hashpower_accepting', 'tx_atabove', 'mined_probability', 'expectedWait', 'wait_blocks']]
+        analyzed_block_show = analyzed_block_show[['index', 'block_posted', 'gas_offered', 'gasprice', 'hashpower_accepting', 'tx_atabove', 'mined_probability', 'expectedWait', 'wait_blocks']].sort_values('wait_blocks', ascending=False)
         analyzed_blockout = analyzed_block_show.to_json(orient='records')
         prediction_tableout = prediction_table.to_json(orient='records')
         txpool_by_gpout = txpool_by_gp.to_json(orient='records')
@@ -226,7 +226,7 @@ def predict_mined(row):
     hpa = .0329
     hgo = -3.2836
     wb = -0.0048
-    tx = -0.004
+    tx = -0.0004
     sum1 = intercept + (row['hashpower_accepting']*hpa) + (row['highgas2']*hgo) + (row['wait_blocks']*wb) + (row['tx_atabove']*tx)
     factor = np.exp(-1*sum1)
     prob = 1 / (1+factor)
@@ -525,7 +525,7 @@ def master_control():
             assert analyzed_block.index.duplicated().sum()==0
             alltx = alltx.combine_first(analyzed_block)
             analyzed_block.reset_index(drop=False, inplace=True)
-            
+
             #store snapshot of txpool for prediction model
             if take_snap:
                 snapstore = analyzed_block
