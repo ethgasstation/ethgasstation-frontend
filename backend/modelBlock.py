@@ -50,7 +50,7 @@ predictData['ico'] = predictData['numTo'].apply(lambda x: 1 if x>100 else 0)
 
 newSubmit = predictData[predictData['waitBlocks']==0]
 '''
-y, X = dmatrices('minedBool ~ hashpower_accepting + ico + highgas2 + wait_blocks + tx_atabove', data = predictData, return_type = 'dataframe')
+y, X = dmatrices('minedBool ~ hashpower_accepting + highgas2 + wait_blocks + tx_atabove', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
