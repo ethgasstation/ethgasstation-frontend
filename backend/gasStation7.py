@@ -97,11 +97,11 @@ def write_to_json(gprecs, txpool_by_gp, prediction_table, analyzed_block):
         txpool_by_gp['gasprice'] = txpool_by_gp['round_gp_10gwei']/10
         txpool_by_gp['gas_offered'] = txpool_by_gp['gas_offered']/1e6
         prediction_table['gasprice'] = prediction_table['gasprice']/10
-        analyzed_block  = analyzed_block.loc[analyzed_block['chained']==0]
-        analyzed_block['gasprice'] = analyzed_block['round_gp_10gwei']/10
-        analyzed_block['gas_offered'] = analyzed_block['gas_offered']/1e6
-        analyzed_block = analyzed_block[['index', 'block_posted', 'gas_offered', 'gasprice', 'hashpower_accepting', 'tx_atabove', 'mined_probability', 'expected_wait', 'wait_blocks']]
-        analyzed_blockout = analyzed_block.to_json(orient='records')
+        analyzed_block_show  = analyzed_block.loc[analyzed_block['chained']==0]
+        analyzed_block_show['gasprice'] = analyzed_block_show['round_gp_10gwei']/10
+        analyzed_block_show['gas_offered'] = analyzed_block_show['gas_offered']/1e6
+        analyzed_block_show = analyzed_block_show[['index', 'block_posted', 'gas_offered', 'gasprice', 'hashpower_accepting', 'tx_atabove', 'mined_probability', 'expected_wait', 'wait_blocks']]
+        analyzed_blockout = analyzed_block_show.to_json(orient='records')
         prediction_tableout = prediction_table.to_json(orient='records')
         txpool_by_gpout = txpool_by_gp.to_json(orient='records')
         parentdir = os.path.dirname(os.getcwd())
