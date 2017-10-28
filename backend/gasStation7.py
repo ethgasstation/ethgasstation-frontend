@@ -523,8 +523,9 @@ def master_control():
                 print("txpool block is empty - returning")
                 return
             assert analyzed_block.index.duplicated().sum()==0
+            alltx = alltx.combine_first(analyzed_block)
             analyzed_block.reset_index(drop=False, inplace=True)
-
+            
             #store snapshot of txpool for prediction model
             if take_snap:
                 snapstore = analyzed_block
@@ -537,7 +538,6 @@ def master_control():
             #with pd.option_context('display.max_columns', None,):
                 #print(analyzed_block)
             # update tx dataframe with txpool variables and time preidctions
-            alltx = alltx.combine_first(analyzed_block)
 
             #get gpRecs
             gprecs = get_gasprice_recs (predictiondf, block_time, block, speed, timer.minlow)
