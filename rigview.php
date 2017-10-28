@@ -112,7 +112,7 @@
                         echo("<td>". $row['gasprice']. "</td>");
                         echo("<td>". $row['hashpower_accepting']. "</td>");
                         echo("<td>". $row['tx_atabove']. "</td>");
-                        echo("<td>". $row['mined_probability']. "</td>");
+                        echo("<td>". round($row['mined_probability'], 2). "</td>");
                         echo("<td>". $row['expectedWait']. "</td>");
                         echo("<td>". $row['wait_blocks']. "</td>");
                         echo('</tr>');
