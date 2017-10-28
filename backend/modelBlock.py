@@ -14,7 +14,7 @@ from patsy import dmatrices
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
 cursor = cnx.cursor()
 
-query = ("SELECT * FROM blockSnapshotComplete")
+query = ("SELECT * FROM snapstore")
 cursor.execute(query)
 head = cursor.column_names
 predictData = pd.DataFrame(cursor.fetchall())
@@ -25,7 +25,12 @@ print ('cleaned transactions: ')
 print (len(predictData))
 
 
-predictData['minedBool'] = predictData['mined'].notnull().astype(int)
+predictData['failed'] = (predictData['stillin_txpool'] = 1).astype.int
+predictData['minedBool'] = predictData['block_mined'].notnull().astype(int)
+
+predictData = predictData.loc[predictData['unchained']==0]
+
+predictData = predictData.loc[(predictData['minedBool'] == 1) or (predictData['failed']==1)]
 
 print(predictData)
 
@@ -45,7 +50,7 @@ predictData['ico'] = predictData['numTo'].apply(lambda x: 1 if x>100 else 0)
 
 newSubmit = predictData[predictData['waitBlocks']==0]
 
-y, X = dmatrices('minedBool ~ hashPowerAccepting + dump + ico + highGasOffered + waitBlocks + txAtAbove', data = predictData, return_type = 'dataframe')
+y, X = dmatrices('minedBool ~ hashPowerAccepting + ico + highGasOffered + waitBlocks + txAtAbove', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
@@ -56,7 +61,7 @@ print (results.summary())
 
 predictData['predict'] = results.predict()
 
-y1, X1 = dmatrices('mined ~ hashPowerAccepting + dump + ico + highGasOffered2  + txAtAbove', data = newSubmit, return_type = 'dataframe')
+y1, X1 = dmatrices('mined ~ hashPowerAccepting + ico + highGasOffered2  + txAtAbove', data = newSubmit, return_type = 'dataframe')
 
 model = sm.GLM(y1, X1, family=sm.families.Poisson())
 results = model.fit()
