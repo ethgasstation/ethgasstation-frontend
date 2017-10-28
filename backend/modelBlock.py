@@ -25,7 +25,7 @@ print ('cleaned transactions: ')
 print (len(predictData))
 
 
-predictData['failed'] = (predictData['stillin_txpool'] = 1).astype.(int)
+predictData['failed'] = (predictData['stillin_txpool'] == 1).astype.(int)
 predictData['minedBool'] = predictData['block_mined'].notnull().astype(int)
 
 predictData = predictData.loc[predictData['unchained']==0]
