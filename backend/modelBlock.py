@@ -33,7 +33,7 @@ predictData = predictData.loc[predictData['chained']==0]
 predictData = predictData.loc[(predictData['minedBool'] == 1) | (predictData['failed']==1)]
 
 print(predictData)
-
+'''
 quantiles= predictData['pctLimit'].quantile([.5, .75, .95, .98, .9])
 print(quantiles)
 
@@ -49,7 +49,7 @@ predictData['dump'] = predictData['numFrom'].apply(lambda x: 1 if x>5 else 0)
 predictData['ico'] = predictData['numTo'].apply(lambda x: 1 if x>100 else 0)
 
 newSubmit = predictData[predictData['waitBlocks']==0]
-
+'''
 y, X = dmatrices('minedBool ~ hashPowerAccepting + ico + highGasOffered + waitBlocks + txAtAbove', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
