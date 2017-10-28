@@ -28,7 +28,7 @@ print (len(predictData))
 predictData['failed'] = predictData['stillin_txpool'] == 1
 predictData['minedBool'] = predictData['block_mined'].notnull().astype(int)
 
-predictData = predictData.loc[predictData['unchained']==0]
+predictData = predictData.loc[predictData['chained']==0]
 
 predictData = predictData.loc[(predictData['minedBool'] == 1) or (predictData['failed']==1)]
 
