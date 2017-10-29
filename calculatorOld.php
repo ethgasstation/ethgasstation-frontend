@@ -45,7 +45,7 @@
 
     <!-- Custom Theme Style -->
     <link href="build/css/custom.css" rel="stylesheet">
-     <?php include 'build/php/datacalc.php'; ?>
+     <?php include 'build/php/minerT_py.php'; ?>
 
    
 
@@ -117,17 +117,17 @@
                         <div class="checkbox">
                           <label>
                           <input type="checkbox" class="flat" id="fast"> Fastest
-                          <?php echo ("(".$gasPriceRecs['Fastest']." Gwei)") ?></label>
+                          <?php echo ("(".($gpRecs2['fast']/10)." Gwei)") ?></label>
                         </div>
                       <div class="checkbox">
                         <label>
                         <input type="checkbox" class="flat" checked="checked" id="avg"> Average
-                        <?php echo ("(".$gasPriceRecs['Average']." Gwei)") ?></label>
+                        <?php echo ("(".($gpRecs2['average']/10)." Gwei)") ?></label>
                     </div>
                     <div class="checkbox">
                         <label>
                         <input type="checkbox" class="flat" id="cheap"> Cheap
-                        <?php echo ("(".$gasPriceRecs['safeLow']." Gwei)") ?></label>
+                        <?php if ($gpRecs2['safeLow'] ==0){$gpRecs2['safeLow']=1;} echo ("(".($gpRecs2['safeLow']/10)." Gwei)") ?></label>
                     </div>
                      <div class="checkbox">
                         <label>
@@ -344,7 +344,7 @@
                 $("#gas_used").parent().next(".validation").remove();
                 txGasUsed = 21000;
               }
-              else if ($('#gas_used').val() > 4000000){
+              else if ($('#gas_used').val() > 6700000){
                 if ($("#gas_used").parent().next(".validation").length == 0){
                   $string = "<div class='validation' style='color:red;margin-bottom: 20px;'>Please enter gas used less than 4,000,000 (block limit)";
                   $("#gas_used").parent().after($string);

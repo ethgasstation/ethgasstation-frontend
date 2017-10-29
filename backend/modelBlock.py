@@ -61,9 +61,11 @@ print (results.summary())
 
 predictData['predict'] = results.predict()
 
-y1, X1 = dmatrices('mined ~ hashPowerAccepting + ico + highGasOffered2  + txAtAbove', data = newSubmit, return_type = 'dataframe')
+print(predictData)
 
-model = sm.GLM(y1, X1, family=sm.families.Poisson())
+y1, X1 = dmatrices('minedBool ~ hashpower_accepting + highgas2 + wait_blocks + tx_atabove + ico', data = predictData, return_type = 'dataframe')
+
+model = sm.GLM(y1, X1, family=sm.families.Binomial())
 results = model.fit()
 print (results.summary())
 
@@ -86,7 +88,7 @@ with pd.option_context('display.max_rows', None, 'display.max_columns', None, 'd
 
 print(mined.loc[mined['predict']<.15, 'mined'])
 print(len(notMined.loc[(notMined['waitBlocks']<10) & (notMined['highGasOffered']==0)]))
-
+'''
 def calc (row):
     intercept = 1.2910
     hpa = .0321
@@ -103,3 +105,5 @@ def calc (row):
 
 predictData['calc'] = predictData.apply(calc, axis=1)
 print (predictData.loc[:, ['calc', 'predict']])
+
+'''

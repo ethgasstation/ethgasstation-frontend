@@ -298,7 +298,7 @@ class SummaryReport():
             '0x6090a6e47849629b7245dfa1ca21d94cd15878ef': 'ENS registrar',
             '0xcd111aa492a9c77a367c36e6d6af8e6f212e0c8e': 'Acronis',
             '0x209c4784ab1e8183cf58ca33cb740efbf3fc18ef': 'Poloniex',
-            '0xece701c76bd00d1c3f96410a0c69ea8dfcf5f34e': 'Etheroll',
+            '0xd91e45416bfbbec6e2d1ae4ac83b788a21acf583': 'Etheroll',
             '0xa74476443119a942de498590fe1f2454d7d4ac0d': 'Golem',
             '0xedce883162179d4ed5eb9bb2e7dccf494d75b3a0': 'Bittrex',
             '0x70faa28a6b8d6829a4b1e649d26ec9a2a39ba413': 'Shapeshift',
