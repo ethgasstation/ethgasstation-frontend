@@ -164,7 +164,7 @@
                           <td id="go"></td>
                         </tr>
                         <tr>
-                          <td>%Hashpower Accepting This Gas Price</td>
+                          <td>% of last 200 blocks accpeting this gas price</td>
                           <td id="hp"></td>
                         </tr>
                         <tr>
@@ -234,22 +234,34 @@
       //Curency Support
       
             $("#eur").click(function(){     
-                location = "http://ethgasstation.info/calculator.php?curr=eur";                              
+                location = "http://ethgasstation.info/pendingTxReport.php?curr=eur";                              
             });
             
             $("#usd").click(function(){
-                location = "http://ethgasstation.info/calculator.php?curr=usd";
+                location = "http://ethgasstation.info/pendingTxReport?curr=usd";
             });
           
             $("#cny").click(function(){
-                location = "http://ethgasstation.info/calculator.php?curr=cny";                                      
+                location = "http://ethgasstation.info/pendingTxReport?curr=cny";                                      
             });
 
             $("#gbp").click(function(){
-                location = "http://ethgasstation.info/calculator.php?curr=gbp";                       
+                location = "http://ethgasstation.info/pendingTxReport?curr=gbp";                       
             });
             $('#reset').click(function(){
               $('#txhash').html("");
+              $('#bp').html("");
+              $('#blockswaiting').html("");
+              $('#meanBlocks').html("");
+              $('#minedprob').html("");
+              $('#gp').html("");
+              $('#go').html("");
+              $('#hp').html("");
+              $('#txatabove').html("");
+              $('#txEth').html("");
+              $('#txFiat').html("");
+              $('#txArgs').html("Pending Transaction Report:")
+
               $('#txhash').focus();
             })
   
@@ -302,11 +314,6 @@
               expectedWait = pdValues[6];
               blocksWait = pdValues[7];
 
-              if (blockposted == ""){
-                  blockposted = "Not Found";
-                  $('#bp').html(blockposted);
-              }
-
               currency = '<?php echo ($currency) ?>';
               console.log(currency);
               exchangeRate =<?php echo ($exchangeRate) ?>;
@@ -320,6 +327,15 @@
               txFeeFiat = txFeeEth * exchangeRate;
               txFeeFiat = Number(txFeeFiat.toFixed(5));
 
+              if (blockposted == ""){
+                  blockposted = "Not Found";
+                  txFeeEth = "";
+                  txFeeFiat = "";
+                  reportString = "<small><span style='color:red'> Not found: This tx may not bave been received by our node, it may have already been mined, or there may be another tx with a lower nonce pending from this account</small></span>";
+                  $('#txArgs').html(reportString);
+
+              }
+              
 
               $('#bp').html(blockposted);
               $('#hp').html(hashpower);
@@ -330,6 +346,9 @@
               $('#minedprob').html(minedprob);
               $('#go').html(gasoffered);
               $('#txEth').html(txFeeEth);
+              if (blockposted == "Not Found"){
+                return;
+              }
               if (currency=='usd'){
                 string="$"+txFeeFiat
               $('#txFiat').html(string);

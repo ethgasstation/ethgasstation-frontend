@@ -80,7 +80,7 @@
                     <li id="cny"><a href="#"> CNY<?php if($currency=='cny'){echo'<span class="pull-right"><i class="fa fa-check"></i></span>';}?></a></li>
                   </ul>
                 </li>
-                <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Estimates over last 5,000 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
+                <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
               </p>
             </ul>
             </nav>
@@ -168,7 +168,7 @@
                       </thead>
                       <tbody>
                         <tr>
-                          <td>%Hashpower Accepting This Gas Price</td>
+                          <td>% of last 200 blocks accpeting this gas price</td>
                           <td id="hp"></td>
                         </tr>
                         <tr>
@@ -249,19 +249,19 @@
       //Curency Support
       
             $("#eur").click(function(){     
-                location = "http://ethgasstation.info/calculator.php?curr=eur";                              
+                location = "http://ethgasstation.info/calculatorTxV.php?curr=eur";                              
             });
             
             $("#usd").click(function(){
-                location = "http://ethgasstation.info/calculator.php?curr=usd";
+                location = "http://ethgasstation.info/calculatorTxV.php?curr=usd";
             });
           
             $("#cny").click(function(){
-                location = "http://ethgasstation.info/calculator.php?curr=cny";                                      
+                location = "http://ethgasstation.info/calculatorTxV.php?curr=cny";                                      
             });
 
             $("#gbp").click(function(){
-                location = "http://ethgasstation.info/calculator.php?curr=gbp";                       
+                location = "http://ethgasstation.info/calculatorTxV.php?curr=gbp";                       
             });
 
             $('input.flat').change(function(){
@@ -316,7 +316,7 @@
                 factor = Math.exp(-1*sum1);
                 prob = 1 / (1+factor);
                 if (prob > .95){
-                  minedProb = 'High';
+                  minedProb = 'Very High';
                 }
                 else if (prob > .9 && prob <=.95){
                   minedProb = 'Medium'

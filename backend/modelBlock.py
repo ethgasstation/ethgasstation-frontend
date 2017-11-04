@@ -30,7 +30,16 @@ predictData['minedBool'] = predictData['block_mined'].notnull().astype(int)
 
 predictData = predictData.loc[predictData['chained']==0]
 
+print('unchained')
+print(len(predictData))
+
 predictData = predictData.loc[(predictData['minedBool'] == 1) | (predictData['failed']==1)]
+
+print('inpool or mined')
+print(len(predictData))
+
+print(predictData['block_mined'].max())
+print(predictData['block_posted'].max())
 
 print(predictData)
 '''
@@ -84,11 +93,11 @@ print (notMined['predict'].quantile(.95))
 '''
 with pd.option_context('display.max_rows', None, 'display.max_columns', None, 'display.max_colwidth', 75):
     print notMined[['txHash', 'fromAddress', 'blockss', 'postedBlock']][notMined['predict']>.15]
-'''
+
 
 print(mined.loc[mined['predict']<.15, 'mined'])
 print(len(notMined.loc[(notMined['waitBlocks']<10) & (notMined['highGasOffered']==0)]))
-'''
+
 def calc (row):
     intercept = 1.2910
     hpa = .0321

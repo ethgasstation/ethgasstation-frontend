@@ -200,12 +200,12 @@ def get_tx_unchained(gasprice, txpool_by_gp_unchained):
 def predict(row):
     if row['chained'] == 1:
         return np.nan
-    intercept = 1.9611
-    hpa_coef = -0.0147
-    txatabove_coef= 0.0007
+    intercept = 3.0154
+    hpa_coef = -0.0265
+    txatabove_coef= 0.0002
     ico_coef = 0
     dump_coef = 0
-    high_gas_coef = .2592
+    high_gas_coef = .8126
     try:
         sum1 = (intercept + (row['hashpower_accepting']*hpa_coef) + (row['tx_atabove']*txatabove_coef) + (row['ico']*ico_coef) + (row['dump']*dump_coef) + (row['highgas2']*high_gas_coef))
         prediction = np.exp(sum1)
@@ -523,14 +523,18 @@ def master_control():
                 return
             assert analyzed_block.index.duplicated().sum()==0
             alltx = alltx.combine_first(analyzed_block)
-            analyzed_block.reset_index(drop=False, inplace=True)
 
             #store snapshot of txpool for prediction model
             if take_snap:
-                snapstore = analyzed_block
+                print('recording analyzed_block in snapstore')
+                snapstore = analyzed_block.copy()
+                print(len(snapstore))
                 snapstore = snapstore.drop(['block_mined', 'time_mined'], axis=1)
             elif read_snap:
+                print('writing snapstore to mysql')
+                print(len(snapstore))
                 snapstore = snapstore.join(alltx[['block_mined', 'time_mined']], how='inner')
+                print(len(snapstore))
                 snapstore['stillin_txpool'] = snapstore.index.isin(current_txpool.index)
                 snapstore.reset_index(inplace=True, drop=False)
                 snapstore.to_sql(con=engine, name='snapstore', index=False, if_exists='append') 
@@ -552,6 +556,7 @@ def master_control():
                 timer.minlow = report.minlow
 
             #every block, write gprecs, predictions, txpool by gasprice
+            analyzed_block.reset_index(drop=False, inplace=True)
             write_to_json(gprecs, txpool_by_gp, predictiondf, analyzed_block)
             write_to_sql(alltx, analyzed_block, block_sumdf, mined_blockdf_seen, block)
 
