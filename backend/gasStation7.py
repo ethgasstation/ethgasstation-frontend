@@ -200,14 +200,13 @@ def get_tx_unchained(gasprice, txpool_by_gp_unchained):
 def predict(row):
     if row['chained'] == 1:
         return np.nan
-    intercept = 3.0154
-    hpa_coef = -0.0265
-    txatabove_coef= 0.0002
-    ico_coef = 0
-    dump_coef = 0
-    high_gas_coef = .8126
+    intercept = 1.9751
+    hpa_coef = -0.0147
+    txatabove_coef= 0.0005
+    interact_coef = -.0372
+    high_gas_coef = 2.9533
     try:
-        sum1 = (intercept + (row['hashpower_accepting']*hpa_coef) + (row['tx_atabove']*txatabove_coef) + (row['ico']*ico_coef) + (row['dump']*dump_coef) + (row['highgas2']*high_gas_coef))
+        sum1 = (intercept + (row['hashpower_accepting']*hpa_coef) + (row['tx_atabove']*txatabove_coef) + (row['hgXhpa']*interact_coef) + (row['highgas2']*high_gas_coef))
         prediction = np.exp(sum1)
         if prediction < 2:
             prediction = 2
@@ -317,6 +316,7 @@ def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit):
     predictTable['wait_blocks'] = 0
     predictTable['highgas2'] = 0
     predictTable['chained'] = 0
+    predictTable['hgXhpa'] = 0
     predictTable['wait_blocks'] = 0
     predictTable['expectedWait'] = predictTable.apply(predict, axis=1)
     predictTable['expectedTime'] = predictTable['expectedWait'].apply(lambda x: np.round((x * avg_timemined / 60), decimals=2))
@@ -331,6 +331,7 @@ def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit):
     txpool_block['high_gas_offered'] = (txpool_block['pct_limit']> .037).astype(int)
     txpool_block['highgas2'] = (txpool_block['pct_limit'] > .15).astype(int)
     txpool_block['hashpower_accepting'] = txpool_block['round_gp_10gwei'].apply(lambda x: gp_lookup[x] if x in gp_lookup else 100)
+    txpool_block['hgXhpa'] = txpool_block['highgas2']*txpool_block['hashpower_accepting']
     txpool_block['tx_atabove'] = txpool_block['round_gp_10gwei'].apply(lambda x: txatabove_lookup[x] if x in txatabove_lookup else 1)
     txpool_block['tx_unchained'] = txpool_block['round_gp_10gwei'].apply(lambda x: tx_unchained_lookup[x] if x in tx_unchained_lookup else 1)
     txpool_block['block_posted_adj'] = txpool_block.apply(get_adjusted_post, args = (block,), axis=1)

@@ -13,14 +13,9 @@ from patsy import dmatrices
 
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
 cursor = cnx.cursor()
+engine = create_engine(
+    'mysql+mysqlconnector://ethgas:station@127.0.0.1:3306/tx', echo=False)
 
-'''
-query = ("SELECT * FROM postedtx2")
-cursor.execute(query)
-head = cursor.column_names
-postedData = pd.DataFrame(cursor.fetchall())
-postedData.columns = head
-'''
 query = ("SELECT * FROM minedtx2")
 cursor.execute(query)
 head = cursor.column_names
@@ -88,63 +83,8 @@ predictData['gasCat5'] = (predictData['gas_offered']>=quantiles[.99]).astype(int
 predictData['hpa2'] = predictData['hashpower_accepting']*predictData['hashpower_accepting']
 
 
-'''
-quantiles2 = predictData['numTo'].quantile([.5, .75, .95])
-print('quantiles2')
-print(quantiles2)
-predictData['numToCat1'] = (predictData['numTo'] <= quantiles2[.5]).astype(int)
-predictData['numToCat2'] = ((predictData['numTo'] >quantiles2[.5]) & (predictData['numTo'] <= quantiles2[.75])).astype(int)
-predictData['numToCat3'] = ((predictData['numTo'] >quantiles2[.75]) & (predictData['numTo'] <= quantiles2[.95])).astype(int)
-predictData['numToCat4'] = (predictData['numTo'] >quantiles2[.95]).astype(int)
-predictData.loc[predictData['numTo']==np.nan,'ico']=np.nan
-predictData = predictData.dropna(how='any')
 
-
-print('median gas_offered')
-print(transactionGas)
-print(quantiles[.5])
-
-predictData['highGasOffered'] = (predictData['gas_offered'] > 0.022).astype(int)
-
-print('confirmTImes')
-print(predictData['confirmTime'].min())
-print(predictData['confirmTime'].max())
-
-print('hashPowerAccepting')
-print(predictData['hashPowerAccepting'].min())
-print(predictData['hashPowerAccepting'].max())
-
-print('gas above mean: ')
-print(predictData['pctLimitGasAbove'].mean())
-
-print('gas at mean: ')
-print(predictData['pctLimitGasAt'].mean())
-
-print('tx above mean: ')
-print(predictData['txAbove'].mean())
-
-print ('mean confirm low gas price : ')
-lowMean = predictData.loc[(predictData['dump']==0) & (predictData['gasPrice'] < 1000), 'confirmTime']
-print(lowMean.mean())
-print('count:')
-print(lowMean.count())
-
-predictData['gp1'] = predictData['gasPrice'].apply(lambda x: 1 if x <500 else 0)
-predictData['gp2'] = predictData['gasPrice'].apply(lambda x: 1 if (x >=500 and x<1000) else 0)
-predictData['gp3'] = predictData['gasPrice'].apply(lambda x: 1 if (x >=1000 and x<4000) else 0)
-predictData['gp4'] = predictData['gasPrice'].apply(lambda x: 1 if (x >=4000 and x<23000) else 0)
-predictData['gp5'] = predictData['gasPrice'].apply(lambda x: 1 if x >=23000 else 0)
- 
-pdGp3 = predictData[predictData['gp3']==1]
-pdGp4 = predictData[predictData['gp4']==1]
-pdGp5 = predictData[predictData['gp5']==1]
-
-pdValidate = pd.DataFrame(predictData.loc[predictData['prediction']>0,:])
-pdValidate.loc[pdValidate['hashPowerAccepting'] < 1, 'confirmTime']= np.nan
-pdValidate = pdValidate.dropna(how='any')
-'''
-
-y, X = dmatrices('confirmTime ~ hashpower_accepting + highgas2 + tx_atabove', data = predictData, return_type = 'dataframe')
+y, X = dmatrices('confirmTime ~ hashpower_accepting + highgas2 + tx_atabove + hgXhpa', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
@@ -167,7 +107,7 @@ print(y)
 print (y.loc[(y['dump']==0) & (y['gasPrice'] < 1000), ['confirmTime', 'predict', 'gasPrice']])
 '''
 
-a, B = dmatrices('confirmTime ~ hashpower_accepting + highgas2 + tx_atabove + hpa2', data = predictData, return_type = 'dataframe')
+a, B = dmatrices('confirmTime ~ hashpower_accepting + highgas2 + tx_atabove + hpa2 + hgXhpa', data = predictData, return_type = 'dataframe')
 
 
 model = sm.GLM(a, B, family=sm.families.Poisson())
@@ -202,9 +142,24 @@ print(c[:15])
 print(D[:15])
 
 
-'''
-e, F = dmatrices('confirmTime ~ gp1+ gp2+ gp3 + gp4 + dump + ico + txAtAbove', data = predictData, return_type = 'dataframe')
+pdLowGas = predictData.loc[(predictData['round_gp_10gwei'] < 5) & (predictData['highgas2']==0)]
+pdRegGas = predictData.loc[(predictData['round_gp_10gwei'] >= 5) & (predictData['round_gp_10gwei'] < 20) & (predictData['highgas2']==0)]
+pdHighGas = predictData.loc[(predictData['round_gp_10gwei'] >=20) & (predictData['highgas2']==0)]
+pdHgo = predictData.loc[predictData['highgas2'] == 1]
 
+print('low Gp tx')
+print(len(pdLowGas))
+low_tx_count = len(pdLowGas)
+pdRegGas = pdRegGas.sample(n=low_tx_count)
+pdHighGas =pdHighGas.sample(n=low_tx_count)
+
+weightedPd = pdLowGas.append(pdRegGas)
+weightedPd = weightedPd.append(pdHighGas)
+weightedPd = weightedPd.append(pdHgo)
+print (len(weightedPd))
+
+
+e, F = dmatrices('confirmTime ~ hashpower_accepting + highgas2 + hgXhpa+ tx_atabove + hgXhpa', data = weightedPd, return_type = 'dataframe')
 
 
 model = sm.GLM(e, F, family=sm.families.Poisson())
@@ -214,6 +169,15 @@ print (results.summary())
 e['predict'] = results.predict()
 print(e[:15])
 print(F[:15])
+
+response = input("save data (1=y) \n")
+if int(response) == 1:
+    weightedPd.to_sql(con=engine, name='storedPredict', if_exists='append', index=False)
+
+
+
+'''
+
 
 
 y1, X1 = dmatrices('logCTime ~ hashPowerAccepting  + highGasOffered + dump + ico', data = predictData, return_type = 'dataframe')
@@ -233,73 +197,4 @@ y2, X2 = dmatrices('logCTime ~ hashPowerAccepting + txAtAbove + dump + ico', dat
 
 print(y[:5])
 print(X[:5])
-
-model = sm.OLS(y2, X2)
-results = model.fit()
-print (results.summary())
-
-pdValidate['outlier'] = pdValidate['confirmTime'] / pdValidate['prediction']
-pdValidate['outlier2'] = pdValidate['outlier'].apply(lambda x: 1 if x>2.5 else 0)
-#pdValidate.loc[(pdValidate['outlier']<=3) & (pdValidate['gasPrice']<4000), 'outlier2'] = 0
-pdValidate['normalTx']= (pdValidate['ico']==0) & (pdValidate['dump']==0)
-pdValidate['lowGPnormal'] = (pdValidate['normalTx']==1) & (pdValidate['gasPrice']<4000) & (pdValidate['gasPrice']>=1000)
-
-
-print ('mean diff')
-print (pdValidate['outlier'].mean())
-
-print ('>2.5 diff')
-print (pdValidate['outlier2'].sum())
-
-print ('>2.5 diff no dump no ico')
-print (pdValidate.loc[pdValidate['normalTx']==1, 'outlier2'].sum())
-
-print ('total no dump no ico')
-print (pdValidate['normalTx'].sum())
-
-print ('total no dump no ico low gas price outliers')
-print (pdValidate.loc[pdValidate['lowGPnormal']==1, 'outlier2'].sum())
-
-print ('total no dump no ico low gas price')
-print (pdValidate['lowGPnormal'].sum())
-
-
-#with pd.option_context('display.max_rows', None, 'display.max_columns', None):
-    #print(pdValidate.loc[pdValidate['lowGPnormal']==1, ['prediction', 'confirmTime', 'outlier2']])
-
-print ('total validation')
-print (len(pdValidate))
-
-
-
-
-y3, X3 = dmatrices('logCTime ~ hashPowerAccepting + txAtAbove + dump', data = predictData, return_type = 'dataframe')
-
-print(y[:5])
-print(X[:5])
-
-model = sm.OLS(y3, X3)
-results = model.fit()
-print (results.summary())
-
-
-y4, X4 = dmatrices('logCTime ~ hashPowerAccepting + gasOffered', data = predictData, return_type = 'dataframe')
-
-print(y[:5])
-print(X[:5])
-
-model = sm.OLS(y4, X4)
-results = model.fit()
-print (results.summary())
-
-
-
-
-
-with pd.option_context('display.max_rows', 500, 'display.max_columns', None):
-
-    print(y.loc[(y['gasPrice']==1000) & (y['transfer']==1),:])
-    print(y.loc[(y['gasPrice']>=50000) & (y['transfer']==1),:])
- 
 '''
-

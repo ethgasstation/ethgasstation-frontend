@@ -38,10 +38,11 @@ predictData = predictData.loc[(predictData['minedBool'] == 1) | (predictData['fa
 print('inpool or mined')
 print(len(predictData))
 
+print('most recent blocks included')
 print(predictData['block_mined'].max())
 print(predictData['block_posted'].max())
 
-print(predictData)
+
 '''
 quantiles= predictData['pctLimit'].quantile([.5, .75, .95, .98, .9])
 print(quantiles)
@@ -72,7 +73,7 @@ predictData['predict'] = results.predict()
 
 print(predictData)
 
-y1, X1 = dmatrices('minedBool ~ hashpower_accepting + highgas2 + wait_blocks + tx_atabove + ico', data = predictData, return_type = 'dataframe')
+y1, X1 = dmatrices('minedBool ~ hashpower_accepting + highgas2 + wait_blocks + tx_atabove + hgXhpa', data = predictData, return_type = 'dataframe')
 
 model = sm.GLM(y1, X1, family=sm.families.Binomial())
 results = model.fit()
