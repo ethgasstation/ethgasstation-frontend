@@ -121,7 +121,7 @@ class Timers():
             return True
 
     def check_reportblock(self, block):
-        if (block - (self.start_block-1))%10 == 0:
+        if (block - (self.start_block-1))%50 == 0:
             print (str(block) + ' ' + str(self.start_block))
             return True
         return False
@@ -308,7 +308,8 @@ class SummaryReport():
             '0x8d12a197cb00d4747a1fe03395095ce2a5cc6819': 'Etherdelta',
             '0xe94b04a0fed112f3664e45adb2b8915693dd5ff3': 'Bittrex Safe Split',
             '0xace62f87abe9f4ee9fd6e115d91548df24ca0943': 'Monaco',
-            '0xb9e7f8568e08d5659f5d29c4997173d84cdf2607': 'Swarm City'
+            '0xb9e7f8568e08d5659f5d29c4997173d84cdf2607': 'Swarm City',
+            '0x06012c8cf97bead5deae237070f9587f8e7a266d': 'Cryptokitties'
         }
         gasguzz = self.tx_df.groupby('to_address').count()
         gasguzz = gasguzz.sort_values('block_posted', ascending = False)

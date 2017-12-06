@@ -151,7 +151,7 @@ def process_block_transactions(block, timer):
     for transaction in block_obj.transactions:
         clean_tx = CleanTx(transaction, None, None, miner)
         block_df = block_df.append(clean_tx.to_dataframe(), ignore_index = False)
-    block_df['time_mined'] = timer.read_block_time(block)
+    block_df['time_mined'] = block_obj.timestamp
     return(block_df, block_obj)
 
 def process_block_data(block_df, block_obj):
@@ -282,8 +282,10 @@ def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit):
     #merge transaction data for txpool transactions
     #txpool_block only has transactions received by filter
     txpool_block = txpool_block.join(alltx, how='inner')
+    
+    txpool_block = txpool_block[~txpool_block.index.duplicated(keep = 'first')]
     assert txpool_block.index.duplicated(keep='first').sum() == 0
-    #txpool_block = txpool_block[~txpool_block.index.duplicated(keep = 'first')]
+
     txpool_block['num_from'] = txpool_block.groupby('from_address')['block_posted'].transform('count')
     txpool_block['num_to'] = txpool_block.groupby('to_address')['block_posted'].transform('count')
     txpool_block['ico'] = (txpool_block['num_to'] > 90).astype(int)
@@ -430,58 +432,12 @@ def master_control():
     tx_filter = web3.eth.filter('pending')
 
     
-    def append_new_tx(clean_tx, block):
+    def append_new_tx(clean_tx):
         nonlocal alltx
-        nonlocal timer
-
         if not clean_tx.hash in alltx.index:
             alltx = alltx.append(clean_tx.to_dataframe(), ignore_index = False)
-        if timer.check_newblock(block):
-            print (block)
-            timer.add_block(block, time.time())
-            print(timer.block_store)
-            if block >= timer.snapshot_start:
-                print('taking snapshot')
-                take_snap = True
-                read_snap = False
-                timer.snapshot_start = timer.snapshot_start + 300
-            elif block >= timer.snapshot_end:
-                print('reading snapshot')
-                take_snap = False
-                read_snap = True
-                timer.snapshot_end = timer.snapshot_end + 300
-            else:
-                take_snap = False
-                read_snap = False
-            if block > timer.start_block+1:
-                if timer.process_block < timer.current_block:
-                    print('one block behind - catching up')
-                    print("current block " + str(timer.current_block))
-                    print("process block " + str(timer.process_block))
-                    timer.process_block = timer.process_block + 1
-                    print('catching up')
-                    update_dataframes(block, take_snap, read_snap)
-                    return True
-                update_dataframes(block, take_snap, read_snap)
-
-    def new_tx_callback(tx_hash):
-        try:
-            block = web3.eth.blockNumber
-            tx_obj = web3.eth.getTransaction(tx_hash)
-            timestamp = time.time()
-            clean_tx = CleanTx(tx_obj, block, timestamp)
-            append_new_tx(clean_tx, block)
-        except AttributeError as e:
-            print(e)
     
-    def get_recent_txtime():
-        nonlocal alltx
-        try:
-            last_time = alltx['time_posted'].max()
-            return last_time
-        except IndexError:
-            print('time posted error')
-            return time.time()-10
+
 
     def update_dataframes(block, take_snap, read_snap):
         nonlocal alltx
@@ -563,40 +519,50 @@ def master_control():
 
             #keep from getting too large
             (blockdata, alltx, txpool) = prune_data(blockdata, alltx, txpool, block)
+            return True
 
         except: 
             print(traceback.format_exc())    
 
-    try:
-        while True:
-            current_time = time.time()
-        
-            #check for new tx from filter
-            recent_txtime = get_recent_txtime()
-            print('time since last tx ' + str(current_time - recent_txtime))
-        
-            #determine if filter is lost
-            lost_filter = check_filter(start_time, current_time, recent_txtime)
-            if lost_filter:
-                print('lost filter')
-                tx_filter.stop_watching()
-                tx_filter = web3.eth.filter('pending')
-            else:
-                print ('filter ok')
-
-            #check if filter is running. if not, start
-            if not tx_filter.running:
-                print('starting up filter')
-                current_block = web3.eth.blockNumber
-                timer.current_block = current_block
-                timer.process_block = current_block
-                tx_filter.watch(new_tx_callback)
-            print('threadlist:')
-            print(threading.enumerate())
-            time.sleep(15)
     
-    except KeyboardInterrupt:
-        print('ending')
+    while True:
+        try:
+            new_tx_list = web3.eth.getFilterChanges(tx_filter.filter_id)
+        except:
+            tx_filter = web3.eth.filter('pending')
+            new_tx_list = web3.eth.getFilterChanges(tx_filter.filter_id)
+        block = web3.eth.blockNumber
+        timestamp = time.time()
+        if (timer.process_block > (block - 5)):
+            for new_tx in new_tx_list:    
+                try:        
+                    tx_obj = web3.eth.getTransaction(new_tx)
+                    clean_tx = CleanTx(tx_obj, block, timestamp)
+                    append_new_tx(clean_tx)
+                except Exception as e:
+                    pass
+        if (timer.process_block < block):
+            if block >= timer.snapshot_start:
+                print('taking snapshot')
+                take_snap = True
+                read_snap = False
+                timer.snapshot_start = timer.snapshot_start + 300
+            elif block >= timer.snapshot_end:
+                print('reading snapshot')
+                take_snap = False
+                read_snap = True
+                timer.snapshot_end = timer.snapshot_end + 300
+            else:
+                take_snap = False
+                read_snap = False
+                if block > timer.start_block+1:
+                    print('current block ' +str(block))
+                    print ('processing block ' + str(timer.process_block))
+                    updated = update_dataframes(timer.process_block, take_snap, read_snap)
+                    print('finished processing')
+                    timer.process_block = timer.process_block + 1
+    
+    
             
 
 master_control()

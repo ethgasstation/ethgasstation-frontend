@@ -36,6 +36,8 @@ print ('zero confirm time')
 print (len(predictData.loc[predictData['confirmTime']==0]))
 print('pre-chained ' + str(len(predictData)))
 predictData.loc[predictData['chained']==1, 'confirmTime']=np.nan
+print('num with confirm times')
+print (predictData['confirmTime'].count())
 predictData = predictData.dropna(subset=['confirmTime', 'tx_unchained'])
 print('post-chained ' + str(len(predictData)))
 predictData = predictData.loc[predictData['confirmTime']>0]
@@ -80,11 +82,16 @@ predictData['gasCat3'] = ((predictData['gas_offered']>quantiles[.75]) & (predict
 predictData['gasCat4'] = ((predictData['gas_offered']>quantiles[.95]) & (predictData['gas_offered']<quantiles[.99])).astype(int)
 predictData['gasCat5'] = (predictData['gas_offered']>=quantiles[.99]).astype(int)
 
+predictData['highgas3'] = (predictData['gas_offered']>=570000).astype(int)
+predictData['hg3Xhpa'] = predictData['highgas3']*predictData['hashpower_accepting']
+
 predictData['hpa2'] = predictData['hashpower_accepting']*predictData['hashpower_accepting']
 
+predictData['cryptocat']= (predictData['to_address']=='0x06012c8cf97bead5deae237070f9587f8e7a266d')
 
 
-y, X = dmatrices('confirmTime ~ hashpower_accepting + highgas2 + tx_atabove + hgXhpa', data = predictData, return_type = 'dataframe')
+
+y, X = dmatrices('confirmTime ~ hashpower_accepting + highgas2 + tx_atabove', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
@@ -107,7 +114,7 @@ print(y)
 print (y.loc[(y['dump']==0) & (y['gasPrice'] < 1000), ['confirmTime', 'predict', 'gasPrice']])
 '''
 
-a, B = dmatrices('confirmTime ~ hashpower_accepting + highgas2 + tx_atabove + hpa2 + hgXhpa', data = predictData, return_type = 'dataframe')
+a, B = dmatrices('confirmTime ~ hashpower_accepting + highgas2 + tx_atabove + cryptocat', data = predictData, return_type = 'dataframe')
 
 
 model = sm.GLM(a, B, family=sm.families.Poisson())
@@ -142,24 +149,21 @@ print(c[:15])
 print(D[:15])
 
 
-pdLowGas = predictData.loc[(predictData['round_gp_10gwei'] < 5) & (predictData['highgas2']==0)]
-pdRegGas = predictData.loc[(predictData['round_gp_10gwei'] >= 5) & (predictData['round_gp_10gwei'] < 20) & (predictData['highgas2']==0)]
-pdHighGas = predictData.loc[(predictData['round_gp_10gwei'] >=20) & (predictData['highgas2']==0)]
+pdLowGas = predictData.loc[(predictData['round_gp_10gwei'] <= 1) & (predictData['highgas2']==0)]
+pdRegGas = predictData.loc[(predictData['round_gp_10gwei'] > 1) & (predictData['highgas2']==0)]
 pdHgo = predictData.loc[predictData['highgas2'] == 1]
 
 print('low Gp tx')
 print(len(pdLowGas))
 low_tx_count = len(pdLowGas)
 pdRegGas = pdRegGas.sample(n=low_tx_count)
-pdHighGas =pdHighGas.sample(n=low_tx_count)
 
 weightedPd = pdLowGas.append(pdRegGas)
-weightedPd = weightedPd.append(pdHighGas)
 weightedPd = weightedPd.append(pdHgo)
 print (len(weightedPd))
 
 
-e, F = dmatrices('confirmTime ~ hashpower_accepting + highgas2 + hgXhpa+ tx_atabove + hgXhpa', data = weightedPd, return_type = 'dataframe')
+e, F = dmatrices('confirmTime ~ hashpower_accepting + highgas2 + tx_atabove + hgXhpa', data = weightedPd, return_type = 'dataframe')
 
 
 model = sm.GLM(e, F, family=sm.families.Poisson())
@@ -198,3 +202,31 @@ y2, X2 = dmatrices('logCTime ~ hashPowerAccepting + txAtAbove + dump + ico', dat
 print(y[:5])
 print(X[:5])
 '''
+
+cursor = cnx.cursor()
+query = ("SELECT * FROM storedPredict")
+cursor.execute(query)
+head = cursor.column_names
+predictData = pd.DataFrame(cursor.fetchall())
+predictData.columns = head
+cursor.close()
+
+y, X = dmatrices('confirmTime ~ hashpower_accepting + highgas2 + tx_atabove', data = predictData, return_type = 'dataframe')
+
+print(y[:5])
+print(X[:5])
+
+model = sm.GLM(y, X, family=sm.families.Poisson())
+results = model.fit()
+print (results.summary())
+
+
+y['predict'] = results.predict()
+y['round_gp_10gwei'] = predictData['round_gp_10gwei']
+y['hashpower_accepting'] = predictData['hashpower_accepting']
+y['tx_atabove'] = predictData['tx_atabove']
+y['tx_unchained'] = predictData['tx_unchained']
+y['highgas2'] = predictData['highgas2']
+
+
+print(y)
