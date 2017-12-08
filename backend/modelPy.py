@@ -82,12 +82,9 @@ predictData['gasCat3'] = ((predictData['gas_offered']>quantiles[.75]) & (predict
 predictData['gasCat4'] = ((predictData['gas_offered']>quantiles[.95]) & (predictData['gas_offered']<quantiles[.99])).astype(int)
 predictData['gasCat5'] = (predictData['gas_offered']>=quantiles[.99]).astype(int)
 
-predictData['highgas3'] = (predictData['gas_offered']>=570000).astype(int)
-predictData['hg3Xhpa'] = predictData['highgas3']*predictData['hashpower_accepting']
+
 
 predictData['hpa2'] = predictData['hashpower_accepting']*predictData['hashpower_accepting']
-
-predictData['cryptocat']= (predictData['to_address']=='0x06012c8cf97bead5deae237070f9587f8e7a266d')
 
 
 
@@ -114,7 +111,7 @@ print(y)
 print (y.loc[(y['dump']==0) & (y['gasPrice'] < 1000), ['confirmTime', 'predict', 'gasPrice']])
 '''
 
-a, B = dmatrices('confirmTime ~ hashpower_accepting + highgas2 + tx_atabove + cryptocat', data = predictData, return_type = 'dataframe')
+a, B = dmatrices('confirmTime ~ hashpower_accepting + highgas2 + tx_atabove', data = predictData, return_type = 'dataframe')
 
 
 model = sm.GLM(a, B, family=sm.families.Poisson())
