@@ -10,7 +10,7 @@ from web3 import Web3, HTTPProvider
 from sqlalchemy import create_engine, Column, Integer, String, DECIMAL, BigInteger, text
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
-from egs import *
+from egs_ref import *
 
 web3 = Web3(HTTPProvider('http://localhost:8545'))
 engine = create_engine(
@@ -146,15 +146,6 @@ def get_tx_atabove(gasprice, txpool_by_gp):
         txAtAb = txAtAb.sum()
     return txAtAb
 
-def get_tx_unchained(gasprice, txpool_by_gp_unchained):
-    """gets the number of nonce-filtered in the txpool at or above the given gasprice"""
-    txAtAb = txpool_by_gp_unchained.loc[txpool_by_gp_unchained.index >= gasprice, 'gas_price']
-    if gasprice > txpool_by_gp_unchained.index.max():
-        txAtAb = 0
-    else:
-        txAtAb = txAtAb.sum()
-    return txAtAb
-
 def predict(row):
     if row['chained'] == 1:
         return np.nan
@@ -175,14 +166,6 @@ def predict(row):
         print(e)
         return np.nan
 
-def check_nonce(row, txpool_block_nonce):
-    if row['num_from']>1:
-        if row['nonce'] > txpool_block_nonce.loc[row['from_address'],'nonce']:
-            return 1
-        if row['nonce'] == txpool_block_nonce.loc[row['from_address'], 'nonce']:
-            return 0
-    else:
-        return 0
 
 def analyze_last200blocks(block, blockdata):
     recent_blocks = blockdata.loc[blockdata['block_number'] > (block-200), ['mingasprice', 'block_number', 'gaslimit', 'time_mined', 'speed']]
