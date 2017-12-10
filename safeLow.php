@@ -56,8 +56,7 @@
     <div class="container body">
       <div class="main_container">
 
-<!-- Sidebar -->
-      <?php include 'sidebar.php'; ?>
+   <?php include 'sidebar.php'; ?>   
 
         <!-- top navigation -->
         <div class="top_nav">
@@ -67,9 +66,8 @@
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
               <ul class="nav navbar-nav navbar-right">
-              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Last update: Block <span style = 'color:#1ABB9C'>". $gpRecs2['blockNum']; ?></strong></span>  
-              </p>
-            </ul>
+              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong></strong></p>
+              </ul>
             </nav>
           </div>
          </div>
@@ -79,34 +77,38 @@
         <!-- page content -->
         <div class="right_col" role="main">
           <div class="row">
-              <div class="col-md-12 col-sm-12 col-xs-12">
+              <div class="col-md-8 col-sm-12 col-xs-12">
                 <div class="x_panel tile fixed_height_420">
                   <div class="x_title">
-                    <h4>Transaction Pool Status By Gas Price</h4>
+                    <h4>Percent of submitted transactions remaining in txpool for more than ~ 1 hour <br> at block <span style = 'color:#1ABB9C'><?php echo $gpRecs2['blockNum']?></h4>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
                   <table class="table table-striped">
                       <thead>
                         <tr>
-                          <th>Gas Price (Gwei)</th>
-                          <th>TxPool</br>Total Transactions <br> Eligible Nonces Only</th>
+                          <th>Gas Price (Gwei) <br> (> 5 transactions seen)</th>
+                          <th>Total tx submitted ~ 1 hour ago </th>
+                          <th>Number remaining in txpool</th>
+                          <th>Percent remaining in txpool</th>
                         </tr>
                       </thead>
                       <tbody>
                       <?php
-                      foreach ($memPoolArray as $row){
+                      foreach ($safeLowArray as $row){
+                        if ($row['total']>=3){
                         echo('<tr>');
-                        echo("<td>". $row['gasprice']. "</td>");
-                        echo("<td>". $row['count']. "</td>");
+                        echo("<td>". ($row['round_gp_10gwei']/10). "</td>");
+                        echo("<td>". $row['total']. "</td>");
+                        echo("<td>". $row['still_here']. "</td>");
+                        echo("<td>". round($row['pct_unmined'],3). "</td>");
+                        echo('</tr>');}
                       }
                       ?>
                         </tbody>
                     </table>
 
                  </div>
-    
-    
         </div>
     </div>
                     
@@ -139,10 +141,7 @@
     
 
 <!-- Custom Theme Scripts -->
-   <script>
 
-
- </script>
 
 
 

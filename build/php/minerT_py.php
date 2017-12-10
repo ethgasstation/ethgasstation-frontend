@@ -22,6 +22,9 @@ $minersArray = json_decode($minerString, true);
 $predictString = file_get_contents("http://localhost/json/predictTable.json");
 $predictArray = json_decode($predictString, true);
 
+$safeLowString = file_get_contents("http://localhost/json/hourago.json");
+$safeLowArray = json_decode($safeLowString, true);
+
 $gpRecsString2 = file_get_contents("http://localhost/json/ethgasAPI.json");
 $gpRecs2 = json_decode($gpRecsString2, true);
 $latestBlock = $gpRecs2['blockNum'];

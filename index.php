@@ -262,7 +262,7 @@
                   </thead>
                   <tbody>
                     <tr>
-                      <td style = "color:#1ABB9C"><strong>SafeLow (<10m)</strong></td>
+                      <td style = "color:#1ABB9C"><strong>SafeLow (<60m)</strong></td>
                       <td style = "color:#1ABB9C" ><?php echo ($gpRecs2['safeLow']/10) ?></td>
                       <td style = "color:#03586A" ><?php echo ($gpRecs2['safeLowWait']) ?></td>
                     </tr>
