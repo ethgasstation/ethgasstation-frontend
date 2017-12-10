@@ -11,6 +11,7 @@ from sqlalchemy import create_engine, Column, Integer, String, DECIMAL, BigInteg
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from egs import *
+import modelparams
 
 web3 = Web3(HTTPProvider('http://localhost:8545'))
 engine = create_engine(
@@ -189,13 +190,10 @@ def get_tx_atabove(gasprice, txpool_by_gp):
 def predict(row):
     if row['chained'] == 1:
         return np.nan
-    intercept = 6.2703
-    hpa_coef = -0.0596
-    txatabove_coef= 0.0007
-    interact_coef = 0
-    high_gas_coef = 1.0267
+
+    #set in modelparams
     try:
-        sum1 = (intercept + (row['hashpower_accepting']*hpa_coef) + (row['tx_atabove']*txatabove_coef) + (row['hgXhpa']*interact_coef) + (row['highgas2']*high_gas_coef))
+        sum1 = (modelparams.INTERCEPT + (row['hashpower_accepting'] * modelparams.HPA_COEF) + (row['tx_atabove'] * modelparams.TXATABOVE_COEF) + (row['hgXhpa'] * modelparams.INTERACT_COEF) + (row['highgas2'] *  modelparams.HIGHGAS_COEF))
         prediction = np.exp(sum1)
         if prediction < 2:
             prediction = 2
@@ -255,13 +253,12 @@ def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit):
     txpool_block['num_to'] = txpool_block.groupby('to_address')['block_posted'].transform('count')
     txpool_block['ico'] = (txpool_block['num_to'] > 90).astype(int)
     txpool_block['dump'] = (txpool_block['num_from'] > 5).astype(int)
-    #group by gasprice
-    #todo: rename gas_price to count after grouping
+    
+    #new dfs grouped by gasprice and nonce
     txpool_by_gp = txpool_block[['gas_price', 'round_gp_10gwei']].groupby('round_gp_10gwei').agg({'gas_price':'count'})
     txpool_block_nonce = txpool_block[['from_address', 'nonce']].groupby('from_address').agg({'nonce':'min'})
 
-    #when multiple tx from same from address, finds tx with lowest nonce (unchained) - others are 'chained' - groups by gas price
-
+    #when multiple tx from same from address, finds tx with lowest nonce (unchained) - others are 'chained' 
     txpool_block['chained'] = txpool_block.apply(check_nonce, args=(txpool_block_nonce,), axis=1)
 
     #predictiontable
@@ -285,10 +282,11 @@ def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit):
     txatabove_lookup = predictTable.set_index('gasprice')['tx_atabove'].to_dict()
 
     #finally, analyze txpool transactions
+
     print('txpool block length ' + str(len(txpool_block)))
     txpool_block['pct_limit'] = txpool_block['gas_offered'].apply(lambda x: x / gaslimit)
-    txpool_block['high_gas_offered'] = (txpool_block['pct_limit']> .037).astype(int)
-    txpool_block['highgas2'] = (txpool_block['pct_limit'] > .15).astype(int)
+    txpool_block['high_gas_offered'] = (txpool_block['pct_limit'] > modelparams.HIGHGAS1).astype(int)
+    txpool_block['highgas2'] = (txpool_block['pct_limit'] > modelparams.HIGHGAS2).astype(int)
     txpool_block['hashpower_accepting'] = txpool_block['round_gp_10gwei'].apply(lambda x: gp_lookup[x] if x in gp_lookup else 100)
     txpool_block['hgXhpa'] = txpool_block['highgas2']*txpool_block['hashpower_accepting']
     txpool_block['tx_atabove'] = txpool_block['round_gp_10gwei'].apply(lambda x: txatabove_lookup[x] if x in txatabove_lookup else 1)
@@ -301,7 +299,7 @@ def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit):
 def get_gasprice_recs(prediction_table, block_time, block, speed, minlow=-1, submitted_hourago=None):
     
     def get_safelow(minlow, submitted_hourago):
-        series = prediction_table.loc[prediction_table['expectedTime'] <= 10, 'gasprice']
+        series = prediction_table.loc[prediction_table['expectedTime'] <= 20, 'gasprice']
         model_safelow = series.min()
         minhash_list = prediction_table.loc[prediction_table['hashpower_accepting']>=1.5, 'gasprice']
         if (model_safelow < minhash_list.min()):
@@ -311,21 +309,27 @@ def get_gasprice_recs(prediction_table, block_time, block, speed, minlow=-1, sub
                 model_safelow = minlow
         print('modelled safelow ' + str(model_safelow))
         if not submitted_hourago.empty:
-            series = submitted_hourago.loc[(submitted_hourago['total']>=5) & (submitted_hourago['pct_unmined']>=.1) & (submitted_hourago['still_here']>2)]
+            series = submitted_hourago.loc[(submitted_hourago['total']>=5) & (submitted_hourago['pct_unmined']>=.1) & (submitted_hourago['still_here']>=2)]
             if not series.empty:
                 unsafe = series.index.max()
             else:
-                unsafe = submitted_hourago.index.min()
+                unsafe = 0
             print('unsafe = ' + str(unsafe))
-            series1 = submitted_hourago.loc[(submitted_hourago['total']>=5) & (submitted_hourago['pct_unmined']<.1)]
+            series1 = submitted_hourago.loc[(submitted_hourago['total']>=3) & ((submitted_hourago['pct_unmined']<.1) | (submitted_hourago['still_here'] <=1 ))]
             observed_safelow = series1.loc[series1.index > unsafe]
-            observed_safelow = observed_safelow.index.min()
-            print('observed safelow = ' + str(observed_safelow))
-            if observed_safelow > model_safelow:
-                safelow = observed_safelow
+            if not observed_safelow.empty:
+                observed_safelow = observed_safelow.index.min()
             else:
-                safelow = model_safelow
-            print('safelow ' + str(safelow))
+                observed_safelow = unsafe + 10
+            print('observed safelow = ' + str(observed_safelow))
+        else:
+            observed_safelow = 0
+
+        if unsafe > model_safelow :
+            safelow = observed_safelow
+        else:
+            safelow = model_safelow
+        print('safelow ' + str(safelow))
         return float(safelow)
 
     def get_average():

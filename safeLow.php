@@ -80,14 +80,14 @@
               <div class="col-md-8 col-sm-12 col-xs-12">
                 <div class="x_panel tile fixed_height_420">
                   <div class="x_title">
-                    <h4>Percent of submitted transactions remaining in txpool for more than ~ 1 hour <br> at block <span style = 'color:#1ABB9C'><?php echo $gpRecs2['blockNum']?></h4>
+                    <h4>Percent of submitted eligible transactions remaining in txpool for more than ~ 1 hour at block <span style = 'color:#1ABB9C'><?php echo $gpRecs2['blockNum']?></h4>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
                   <table class="table table-striped">
                       <thead>
                         <tr>
-                          <th>Gas Price (Gwei) <br> (> 5 transactions seen)</th>
+                          <th>Gas Price (Gwei)</th>
                           <th>Total tx submitted ~ 1 hour ago </th>
                           <th>Number remaining in txpool</th>
                           <th>Percent remaining in txpool</th>
