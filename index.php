@@ -488,7 +488,7 @@
           $("#gasPrice").val(predictArray[ui.value]['gasprice']);
           $("#timeToConfirm").val(predictArray[ui.value]['expectedTime']);
           $("#blocksToConfirm").val(predictArray[ui.value]['expectedWait']);
-          var maxtime = Math.round(predictArray[ui.value]['expectedTime']*2.5, -1)
+          var maxtime = Math.round(predictArray[ui.value]['expectedTime']*2.5)
           $("#maxTimeToConfirm").val(maxtime);
           var maxblocks = Math.round(predictArray[ui.value]['expectedWait']*2.5)
           $("#maxBlocksToConfirm").val(maxblocks);
