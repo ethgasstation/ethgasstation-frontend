@@ -488,8 +488,10 @@
           $("#gasPrice").val(predictArray[ui.value]['gasprice']);
           $("#timeToConfirm").val(predictArray[ui.value]['expectedTime']);
           $("#blocksToConfirm").val(predictArray[ui.value]['expectedWait']);
-          $("#maxTimeToConfirm").val(predictArray[ui.value]['maxWait']);
-          $("#maxBlocksToConfirm").val(predictArray[ui.value]['maxBlocks']);
+          var maxtime = Math.round(predictArray[ui.value]['expectedTime']*2.5, -1)
+          $("#maxTimeToConfirm").val(maxtime);
+          var maxblocks = Math.round(predictArray[ui.value]['expectedWait']*2.5)
+          $("#maxBlocksToConfirm").val(maxblocks);
           var fiatFee = Math.round(exchangeRate * $("#gasPrice").val() * $("#gas_used").val()/ 1e9 *1000)/1000;
           fiatString = currSymbol+fiatFee;
           var ethFee = Math.round($("#gasPrice").val() * $("#gas_used").val()/ 1e9 *100000)/100000;

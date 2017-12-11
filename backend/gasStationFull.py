@@ -325,19 +325,21 @@ def get_gasprice_recs(prediction_table, block_time, block, speed, minlow=-1, sub
         else:
             observed_safelow = 0
 
-        if unsafe > model_safelow :
+        if unsafe >= model_safelow :
             safelow = observed_safelow
         else:
             safelow = model_safelow
         print('safelow ' + str(safelow))
         return float(safelow)
 
-    def get_average():
+    def get_average(safelow):
         series = prediction_table.loc[prediction_table['expectedTime'] <= 4, 'gasprice']
         average = series.min()
         minhash_list = prediction_table.loc[prediction_table['hashpower_accepting']>35, 'gasprice']
         if average < minhash_list.min():
-            average= minhash_list.min()
+            average = minhash_list.min()
+        if average < safelow:
+            average = safelow
         return float(average)
 
     def get_fast():
