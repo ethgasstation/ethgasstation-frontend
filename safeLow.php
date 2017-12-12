@@ -101,7 +101,7 @@
                         echo("<td>". ($row['round_gp_10gwei']/10). "</td>");
                         echo("<td>". $row['total']. "</td>");
                         echo("<td>". $row['still_here']. "</td>");
-                        echo("<td>". round($row['pct_unmined'],3). "</td>");
+                        echo("<td>". round($row['pct_unmined']*100). "</td>");
                         echo('</tr>');}
                       }
                       ?>

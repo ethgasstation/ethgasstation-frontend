@@ -26,14 +26,14 @@ cursor.close()
 
 #predictData = predictData.combine_first(postedData)
 predictData['confirmTime'] = predictData['block_mined']-predictData['block_posted']
+print('num with confirm times')
+print (predictData['confirmTime'].count())
 print ('neg confirm time')
 print (len(predictData.loc[predictData['confirmTime']<0]))
 print ('zero confirm time')
 print (len(predictData.loc[predictData['confirmTime']==0]))
 print('pre-chained ' + str(len(predictData)))
 predictData.loc[predictData['chained']==1, 'confirmTime']=np.nan
-print('num with confirm times')
-print (predictData['confirmTime'].count())
 predictData = predictData.dropna(subset=['confirmTime'])
 print('post-chained ' + str(len(predictData)))
 predictData = predictData.loc[predictData['confirmTime']>0]
