@@ -292,7 +292,7 @@ def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit):
     txpool_block['tx_atabove'] = txpool_block['round_gp_10gwei'].apply(lambda x: txatabove_lookup[x] if x in txatabove_lookup else 1)
     txpool_block['expectedWait'] = txpool_block.apply(predict, axis=1)
     txpool_block['expectedTime'] = txpool_block['expectedWait'].apply(lambda x: np.round((x * avg_timemined / 60), decimals=2))
-    txpool_by_gp = txpool_block.loc[txpool_block['chained']==0, ['gas_price', 'round_gp_10gwei']].groupby('round_gp_10gwei').agg({'gas_price':'count'})
+    txpool_by_gp = txpool_block[['gas_price', 'round_gp_10gwei']].groupby('round_gp_10gwei').agg({'gas_price':'count'})
     txpool_by_gp.reset_index(inplace=True, drop=False)
     return(txpool_block, txpool_by_gp, predictTable)
 
@@ -324,6 +324,7 @@ def get_gasprice_recs(prediction_table, block_time, block, speed, minlow=-1, sub
             print('observed safelow = ' + str(observed_safelow))
         else:
             observed_safelow = 0
+            unsafe = 0
 
         if unsafe >= model_safelow :
             safelow = observed_safelow
