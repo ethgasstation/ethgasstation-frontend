@@ -139,8 +139,8 @@ print(c[:15])
 print(D[:15])
 
 
-pdLowGas = predictData.loc[(predictData['round_gp_10gwei'] <= 1) & (predictData['highgas2']==0)]
-pdRegGas = predictData.loc[(predictData['round_gp_10gwei'] > 1) & (predictData['highgas2']==0)]
+pdLowGas = predictData.loc[(predictData['hashpower_accepting'] <= 15) & (predictData['highgas2']==0)]
+pdRegGas = predictData.loc[(predictData['hashpower_accepting'] > 15) & (predictData['highgas2']==0)]
 pdHgo = predictData.loc[predictData['highgas2'] == 1]
 
 print('low Gp tx')
@@ -215,8 +215,9 @@ y['predict'] = results.predict()
 y['round_gp_10gwei'] = predictData['round_gp_10gwei']
 y['hashpower_accepting'] = predictData['hashpower_accepting']
 y['tx_atabove'] = predictData['tx_atabove']
-y['tx_unchained'] = predictData['tx_unchained']
 y['highgas2'] = predictData['highgas2']
+y = y.loc[y['round_gp_10gwei'] > 0]
+y = y.sort_values('hashpower_accepting')
 
-
-print(y)
+with pd.option_context('display.max_rows', None,):
+    print(y)
