@@ -413,6 +413,7 @@
         <footer>
           <div class="tip-button">
              <button type="button" class="btn btn-round btn-success">ETH Tips - Thank you!</button>
+             <p>0x446fa0c8EaD753c7ABf0B821f90D4338e72De380</p>
           </div>
           <div class="message"></div>
           
@@ -427,7 +428,7 @@
           web3.eth.sendTransaction({
           to: '0x446fa0c8EaD753c7ABf0B821f90D4338e72De380',
           from: user_address,
-          value: web3.toWei('.01', 'ether'),
+          value: web3.toWei('.002', 'ether'),
             }, function (err, transactionHash) {
               if (err) return renderMessage('Oh no!: ' + err.message)
 

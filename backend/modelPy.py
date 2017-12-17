@@ -34,31 +34,15 @@ print ('zero confirm time')
 print (len(predictData.loc[predictData['confirmTime']==0]))
 print('pre-chained ' + str(len(predictData)))
 predictData.loc[predictData['chained']==1, 'confirmTime']=np.nan
-predictData = predictData.dropna(subset=['confirmTime'])
+predictData = predictData.dropna(subset=['confirmTime', 'gp10th'])
 print('post-chained ' + str(len(predictData)))
 predictData = predictData.loc[predictData['confirmTime']>0]
 predictData = predictData.loc[predictData['tx_atabove']>0]
 print ('cleaned transactions: ')
 print (len(predictData))
 
-'''
-#print(predictData)
-avgGasLimit = predictData.loc[0, 'gasOffered'] / predictData.loc[0, 'gas_offered']
-predictData.loc[predictData['gasOffered']>= (avgGasLimit/1.05), 'confirmTime'] = np.nan
-predictData = predictData.dropna(how='any')
+predictData = predictData.dropna(subset=['gp10th'])
 
-print ('cleaned transactions: ')
-print (len(predictData))
-
-
-
-print ('numTo median:')
-print (predictData['numTo'].quantile(.5))
-
-print ('numTo 75%')
-print (predictData['numTo'].quantile(.95))
-
-'''
 
 print('gas offered data')
 max_gasoffered = predictData['gas_offered'].max()
@@ -74,12 +58,12 @@ predictData['gasCat2'] = ((predictData['gas_offered']>quantiles[.5]) & (predictD
 predictData['gasCat3'] = ((predictData['gas_offered']>quantiles[.75]) & (predictData['gas_offered']<=quantiles[.95])).astype(int)
 predictData['gasCat4'] = ((predictData['gas_offered']>quantiles[.95]) & (predictData['gas_offered']<quantiles[.99])).astype(int)
 predictData['gasCat5'] = (predictData['gas_offered']>=quantiles[.99]).astype(int)
-
-
-
 predictData['hpa2'] = predictData['hashpower_accepting']*predictData['hashpower_accepting']
 
+predictData['gp10th'] = predictData['gp10th'].astype(int)
 
+
+#### First Model
 
 y, X = dmatrices('confirmTime ~ hashpower_accepting + highgas2 + tx_atabove', data = predictData, return_type = 'dataframe')
 
@@ -95,39 +79,71 @@ y['predict'] = results.predict()
 y['round_gp_10gwei'] = predictData['round_gp_10gwei']
 y['hashpower_accepting'] = predictData['hashpower_accepting']
 y['tx_atabove'] = predictData['tx_atabove']
-y['tx_unchained'] = predictData['tx_unchained']
 y['highgas2'] = predictData['highgas2']
 
-
 print(y)
-'''
-print (y.loc[(y['dump']==0) & (y['gasPrice'] < 1000), ['confirmTime', 'predict', 'gasPrice']])
-'''
 
-a, B = dmatrices('confirmTime ~ hashpower_accepting + highgas2 + tx_atabove', data = predictData, return_type = 'dataframe')
+y['diff'] = y['confirmTime'] / y['predict']
+y['bad'] = ((y['diff'] > 2.5) & (y['confirmTime']>5) & (y['predict'] < 500))
 
+y['too_high'] = ((y['diff'] < 0.25) & (y['predict'] > 5))
+y['eligible'] = 1
+
+print ('eligible = ' + str(y['eligible'].sum()))
+print ('too high = ' + str(y['too_high'].sum()))
+print ('%too high = ' + str(y['too_high'].sum()*100/y['eligible'].sum()))
+
+print ('violations : ' + str(y['bad'].sum()))
+print ('violations % = ' +str(y['bad'].sum()*100/float(len(y))))
+
+# Print outliers
+print('violations')
+print(y.loc[y['bad']==1])
+
+
+### Second model
+
+print(predictData['gp10th'].max())
+print(predictData['gp10th'].min())
+print(predictData['gp10th'].count())
+
+predictData.loc[predictData['gp10th'] > 100, 'gp10th'] = 100
+
+
+a, B = dmatrices('confirmTime ~ hashpower_accepting + highgas2 + tx_atabove + gp10th + num_to', data = predictData, return_type = 'dataframe')
 
 model = sm.GLM(a, B, family=sm.families.Poisson())
 results = model.fit()
 print (results.summary())
 
 a['predict'] = results.predict()
-
-
-
-a['predict'] = results.predict()
 a['round_gp_10gwei'] = predictData['round_gp_10gwei']
 a['hashpower_accepting'] = predictData['hashpower_accepting']
 a['tx_atabove'] = predictData['tx_atabove']
-a['tx_unchained'] = predictData['tx_unchained']
 a['highgas2'] = predictData['highgas2']
-
+a['gp10th'] = predictData['gp10th']
 print(a)
 
+a['diff'] = a['confirmTime'] / a['predict']
+a['bad'] = ((a['diff'] > 2.5) & (a['confirmTime']>5) & (a['predict'] < 500))
 
+a['too_high'] = ((a['diff'] < 0.25) & (a['predict'] > 5))
+a['eligible'] = 1
+
+print ('eligible = ' + str(a['eligible'].sum()))
+print ('too high = ' + str(a['too_high'].sum()))
+print ('%too high = ' + str(a['too_high'].sum()*100/a['eligible'].sum()))
+
+
+print ('violations : ' + str(a['bad'].sum()))
+print ('violations % = ' +str(a['bad'].sum()*100/float(len(a))))
+
+print('violations')
+print(a.loc[a['bad']==1])
+
+### High gas offerred model
 
 c, D = dmatrices('confirmTime ~ hashpower_accepting + gasCat2 + gasCat3 + gasCat4 + gasCat5 + tx_atabove', data = predictData, return_type = 'dataframe')
-
 
 
 model = sm.GLM(c, D, family=sm.families.Poisson())
@@ -139,8 +155,10 @@ print(c[:15])
 print(D[:15])
 
 
-pdLowGas = predictData.loc[(predictData['hashpower_accepting'] <= 15) & (predictData['highgas2']==0)]
-pdRegGas = predictData.loc[(predictData['hashpower_accepting'] > 15) & (predictData['highgas2']==0)]
+### Select transactions for long term storage
+
+pdLowGas = predictData.loc[(predictData['hashpower_accepting'] <= 20) & (predictData['highgas2']==0)]
+pdRegGas = predictData.loc[(predictData['hashpower_accepting'] > 20) & (predictData['highgas2']==0)]
 pdHgo = predictData.loc[predictData['highgas2'] == 1]
 
 print('low Gp tx')
@@ -152,9 +170,9 @@ weightedPd = pdLowGas.append(pdRegGas)
 weightedPd = weightedPd.append(pdHgo)
 print (len(weightedPd))
 
+### model with sampled transactions
 
-e, F = dmatrices('confirmTime ~ hashpower_accepting + highgas2 + tx_atabove + hgXhpa', data = weightedPd, return_type = 'dataframe')
-
+e, F = dmatrices('confirmTime ~ hashpower_accepting + highgas2 + tx_atabove + gp10th', data = weightedPd, return_type = 'dataframe')
 
 model = sm.GLM(e, F, family=sm.families.Poisson())
 results = model.fit()
@@ -168,30 +186,6 @@ response = input("save data (1=y) \n")
 if int(response) == 1:
     weightedPd.to_sql(con=engine, name='storedPredict', if_exists='append', index=False)
 
-
-
-'''
-
-
-
-y1, X1 = dmatrices('logCTime ~ hashPowerAccepting  + highGasOffered + dump + ico', data = predictData, return_type = 'dataframe')
-
-print(y[:5])
-print(X[:5])
-
-model = sm.OLS(y1, X1)
-results = model.fit()
-print (results.summary())
-y1['predict'] = results.predict()
-y1['confirmTime'] = predictData['confirmTime']
-y1['predictTime'] = y1['predict'].apply(lambda x: np.exp(x))
-
-
-y2, X2 = dmatrices('logCTime ~ hashPowerAccepting + txAtAbove + dump + ico', data = pdValidate, return_type = 'dataframe')
-
-print(y[:5])
-print(X[:5])
-'''
 
 cursor = cnx.cursor()
 query = ("SELECT * FROM storedPredict")
@@ -219,5 +213,28 @@ y['highgas2'] = predictData['highgas2']
 y = y.loc[y['round_gp_10gwei'] > 0]
 y = y.sort_values('hashpower_accepting')
 
-with pd.option_context('display.max_rows', None,):
-    print(y)
+#with pd.option_context('display.max_rows', None,):
+
+print(y)
+
+
+
+'''
+y1, X1 = dmatrices('logCTime ~ hashPowerAccepting  + highGasOffered + dump + ico', data = predictData, return_type = 'dataframe')
+
+print(y[:5])
+print(X[:5])
+
+model = sm.OLS(y1, X1)
+results = model.fit()
+print (results.summary())
+y1['predict'] = results.predict()
+y1['confirmTime'] = predictData['confirmTime']
+y1['predictTime'] = y1['predict'].apply(lambda x: np.exp(x))
+
+
+y2, X2 = dmatrices('logCTime ~ hashPowerAccepting + txAtAbove + dump + ico', data = pdValidate, return_type = 'dataframe')
+
+print(y[:5])
+print(X[:5])
+'''
