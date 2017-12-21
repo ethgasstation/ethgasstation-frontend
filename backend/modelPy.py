@@ -117,7 +117,7 @@ print(predictData['gp10th'].count())
 predictData.loc[predictData['gp10th'] > 100, 'gp10th'] = 100
 
 
-a, B = dmatrices('confirmBlocks ~ hashpower_accepting + highgas2 + s5mago + s1hago', data = predictData, return_type = 'dataframe')
+a, B = dmatrices('confirmBlocks ~ hashpower_accepting + highgas2 + tx_atabove', data = predictData, return_type = 'dataframe')
 
 model = sm.GLM(a, B, family=sm.families.Poisson())
 results = model.fit()

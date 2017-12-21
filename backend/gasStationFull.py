@@ -247,11 +247,15 @@ def predict(row):
 
     #set in modelparams
     try:
+        sum1 = (modelparams.INTERCEPT + (row['hashpower_accepting'] * modelparams.HPA_COEF) + (row['tx_atabove'] * modelparams.TXATABOVE_COEF) + (row['hgXhpa'] * modelparams.INTERACT_COEF) + (row['highgas2'] *  modelparams.HIGHGAS_COEF))
+
+        '''
         if not np.isnan(row['s5mago']):
             sum1 = (modelparams.INT2 + (row['hashpower_accepting'] * modelparams.HPA2) + (row['tx_atabove'] * modelparams.TXATAB2) + (row['s5mago'] * modelparams.S5MAGO) + (row['highgas2'] *  modelparams.HIGHGAS2))
 
         else:
-            sum1 = (modelparams.INTERCEPT + (row['hashpower_accepting'] * modelparams.HPA_COEF) + (row['tx_atabove'] * modelparams.TXATABOVE_COEF) + (row['hgXhpa'] * modelparams.INTERACT_COEF) + (row['highgas2'] *  modelparams.HIGHGAS_COEF))
+        '''
+            
 
         prediction = np.exp(sum1)
         if prediction < 2:
@@ -515,7 +519,9 @@ def master_control():
                 submitted_hourago.rename(columns={'gas_price':'total'}, inplace=True)
                 submitted_hourago['pct_unmined'] = submitted_hourago['still_here']/submitted_hourago['total']
                 submitted_hourago['pct_unmined'] = submitted_hourago[['still_here', 'total']].apply(roundresult, axis=1)
-            
+            else:
+                submitted_hourago = pd.dataframe()
+
             submitted_5mago = alltx.loc[(alltx['block_posted'] < (block-20)) & (alltx['block_posted'] > (block-70)) & (alltx['chained']==0) & (alltx['gas_offered'] < 500000)].copy()
             print(len(submitted_5mago))
 
@@ -524,6 +530,8 @@ def master_control():
                 submitted_5mago = submitted_5mago[['gas_price', 'round_gp_10gwei', 'still_here']].groupby('round_gp_10gwei').agg({'gas_price':'count', 'still_here':'sum'})
                 submitted_5mago.rename(columns={'gas_price':'total'}, inplace=True)
                 submitted_5mago['pct_unmined'] = submitted_5mago[['still_here', 'total']].apply(roundresult, axis=1)
+            else:
+                submitted_hourago = pd.dataframe()
 
             #make txpool block data
             (analyzed_block, txpool_by_gp, predictiondf) = analyze_txpool(block-1, txpool, alltx, hashpower, block_time, gaslimit, gp_mined_10th, submitted_5mago, submitted_hourago)
