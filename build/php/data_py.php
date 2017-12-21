@@ -64,7 +64,7 @@ $totalTransfers = $row['totalTransfers'];
 $totalConCalls = $row['totalConCalls'];
 
 settype($medianfeeusd, "float");
-$medianwaitsec = $row['medianDelayTime'];
+$medianwaitsec = $row['medianDelay'] * $gpRecs2['block_time'];
 $medianwaitblock = $row['medianDelay'];
 $gaspricehigh = $row['maxMinedGasPrice'];
 $gaspricelow = $row['minMinedGasPrice'];
