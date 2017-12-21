@@ -26,11 +26,13 @@ def init_dfs():
     """load data from mysql"""
     blockdata = pd.read_sql('SELECT * from blockdata2 order by id desc limit 2000', con=engine)
     blockdata = blockdata.drop('id', axis=1)
-    #postedtx = pd.read_sql('SELECT * from postedtx2 order by id desc limit 100000', con=engine)
+    postedtx = pd.read_sql('SELECT * from postedtx2 order by id desc limit 100000', con=engine)
+    minedtx = pd.read_sql('SELECT * from minedtx2 order by id desc limit 100000', con=engine)
+    minedtx.set_index('index', drop=True, inplace=True)
     alltx = pd.read_sql('SELECT * from minedtx2 order by id desc limit 100000', con=engine)
     alltx.set_index('index', drop=True, inplace=True)
-    #alltx = postedtx[['index', 'expectedTime', 'expectedWait', 'mined_probability', 'highgas2', 'from_address', 'gas_offered', 'gas_price', 'hashpower_accepting', 'num_from', 'num_to', 'ico', 'dump', 'high_gas_offered', 'pct_limit', 'round_gp_10gwei', 'time_posted', 'block_posted', 'to_address', 'tx_atabove', 'wait_blocks', 'chained', 'nonce']].join(minedtx[['block_mined', 'miner', 'time_mined', 'removed_block']], on='index', how='left')
-    #alltx.set_index('index', drop=True, inplace=True)
+    alltx = postedtx[['index', 'expectedTime', 'expectedWait', 'mined_probability', 'highgas2', 'from_address', 'gas_offered', 'gas_price', 'hashpower_accepting', 'num_from', 'num_to', 'ico', 'dump', 'high_gas_offered', 'pct_limit', 'round_gp_10gwei', 'time_posted', 'block_posted', 'to_address', 'tx_atabove', 'wait_blocks', 'chained', 'nonce']].join(minedtx[['block_mined', 'miner', 'time_mined', 'removed_block']], on='index', how='left')
+    alltx.set_index('index', drop=True, inplace=True)
     return(blockdata, alltx)
 
 def prune_data(blockdata, alltx, txpool, block):
@@ -44,7 +46,7 @@ def prune_data(blockdata, alltx, txpool, block):
     engine.execute(stmt2, block=deleteBlock_sql)
     alltx = alltx.loc[(alltx['block_posted'] > deleteBlock_posted) | (alltx['block_mined'] > deleteBlock_mined)]
     blockdata = blockdata.loc[blockdata['block_number'] > deleteBlock_posted]
-    txpool = txpool.loc[txpool['block'] > (block-5)]
+    txpool = txpool.loc[txpool['block'] > (block-10)]
     return (blockdata, alltx, txpool)
 
 def write_to_sql(alltx, analyzed_block, block_sumdf, mined_blockdf, block):
@@ -194,6 +196,50 @@ def check_10th(gasprice, gp_mined_10th):
     x = x / 10
     return x
 
+def check_5mago(gasprice, submitted_5mago):
+     
+    submitted_5mago.loc[(submitted_5mago['still_here'] >= 1) & (submitted_5mago['still_here'] <= 2) & (submitted_5mago['total'] < 4), 'pct_unmined'] = np.nan
+
+    maxval = submitted_5mago.loc[submitted_5mago.index > gasprice, 'pct_unmined'].max()
+    
+    if gasprice in submitted_5mago.index:
+        stillh = submitted_5mago.get_value(gasprice, 'still_here')
+        if stillh > 2:
+            rval =  submitted_5mago.get_value(gasprice, 'pct_unmined')
+        else:
+            rval = maxval
+    else:
+        rval = maxval
+    
+    if gasprice >= 1000:
+        rval = 0
+
+    if (rval > maxval) or (gasprice >= 1000) :
+        return rval
+    return maxval
+
+def check_hourago(gasprice, submitted_hourago):
+     
+    submitted_hourago.loc[(submitted_hourago['still_here'] >= 1) & (submitted_hourago['still_here'] <= 2) & (submitted_hourago['total'] <= 5), 'pct_unmined'] = np.nan
+
+    maxval = submitted_hourago.loc[submitted_hourago.index > gasprice, 'pct_unmined'].max()
+    
+    if gasprice in submitted_hourago.index:
+        stillh = submitted_hourago.get_value(gasprice, 'still_here')
+        if stillh > 2:
+            rval =  submitted_hourago.get_value(gasprice, 'pct_unmined')
+        else:
+            rval = maxval
+    else:
+        rval = maxval
+    
+    if gasprice >= 1000:
+        rval = 0
+
+    if (rval > maxval) or (gasprice >= 1000) :
+        return rval
+    return maxval
+
 
 def predict(row):
     if row['chained'] == 1:
@@ -201,7 +247,12 @@ def predict(row):
 
     #set in modelparams
     try:
-        sum1 = (modelparams.INTERCEPT + (row['hashpower_accepting'] * modelparams.HPA_COEF) + (row['tx_atabove'] * modelparams.TXATABOVE_COEF) + (row['hgXhpa'] * modelparams.INTERACT_COEF) + (row['highgas2'] *  modelparams.HIGHGAS_COEF))
+        if not np.isnan(row['s5mago']):
+            sum1 = (modelparams.INT2 + (row['hashpower_accepting'] * modelparams.HPA2) + (row['tx_atabove'] * modelparams.TXATAB2) + (row['s5mago'] * modelparams.S5MAGO) + (row['highgas2'] *  modelparams.HIGHGAS2))
+
+        else:
+            sum1 = (modelparams.INTERCEPT + (row['hashpower_accepting'] * modelparams.HPA_COEF) + (row['tx_atabove'] * modelparams.TXATABOVE_COEF) + (row['hgXhpa'] * modelparams.INTERACT_COEF) + (row['highgas2'] *  modelparams.HIGHGAS_COEF))
+
         prediction = np.exp(sum1)
         if prediction < 2:
             prediction = 2
@@ -248,7 +299,7 @@ def analyze_last5blocks(block, alltx):
     print (gp_mined_10th/1e8)
     return gp_mined_10th/1e8
 
-def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit, gp_mined_10th):
+def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit, gp_mined_10th, submitted_5mago, submitted_hourago):
     """gets txhash from all transactions in txpool at block and merges the data from alltx"""
     #get txpool hashes at block
     txpool_block = txpool.loc[txpool['block']==block]
@@ -282,6 +333,16 @@ def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit, gp_
     predictTable['hashpower_accepting'] = predictTable['gasprice'].apply(get_hpa, args=(hashpower,))
     predictTable['tx_atabove'] = predictTable['gasprice'].apply(get_tx_atabove, args=(txpool_by_gp,))
     predictTable['gp10th'] = predictTable['gasprice'].apply(check_10th, args=(gp_mined_10th,))
+    if not submitted_5mago.empty:
+        predictTable['s5mago'] = predictTable['gasprice'].apply(check_5mago, args= (submitted_5mago,))
+        s5mago_lookup = predictTable.set_index('gasprice')['s5mago'].to_dict()
+    else:
+        s5mago_lookup = None
+    if not submitted_hourago.empty:
+        predictTable['s1hago'] = predictTable['gasprice'].apply(check_hourago, args= (submitted_hourago,))
+        s1hago_lookup = predictTable.set_index('gasprice')['s1hago'].to_dict()
+    else:
+        s1hago_lookup = None
     predictTable['ico'] = 0
     predictTable['dump'] = 0
     predictTable['gas_offered'] = 0
@@ -305,6 +366,16 @@ def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit, gp_
     txpool_block['hgXhpa'] = txpool_block['highgas2']*txpool_block['hashpower_accepting']
     txpool_block['gp10th'] = txpool_block['round_gp_10gwei'].apply(check_10th, args=(gp_mined_10th,))
     txpool_block['tx_atabove'] = txpool_block['round_gp_10gwei'].apply(lambda x: txatabove_lookup[x] if x in txatabove_lookup else 1)
+    if not s5mago_lookup is None:
+        txpool_block['s5mago'] = txpool_block['round_gp_10gwei'].apply(lambda x: s5mago_lookup[x] if x in s5mago_lookup else np.nan)
+        txpool_block.loc[txpool_block['round_gp_10gwei'] >= 100, 's5mago'] = 0
+    else:
+        txpool_block['s5mago'] = np.nan
+    if not s1hago_lookup is None:
+        txpool_block['s1hago'] = txpool_block['round_gp_10gwei'].apply(lambda x: s1hago_lookup[x] if x in s1hago_lookup else np.nan)
+        txpool_block.loc[txpool_block['round_gp_10gwei'] >= 100, 's1hago'] = 0
+    else:
+        txpool_block['s1hago'] = np.nan
     txpool_block['expectedWait'] = txpool_block.apply(predict, axis=1)
     txpool_block['expectedTime'] = txpool_block['expectedWait'].apply(lambda x: np.round((x * avg_timemined / 60), decimals=2))
     txpool_by_gp = txpool_block[['gas_price', 'round_gp_10gwei']].groupby('round_gp_10gwei').agg({'gas_price':'count'})
@@ -314,48 +385,26 @@ def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit, gp_
 def get_gasprice_recs(prediction_table, block_time, block, speed, minlow=-1, submitted_hourago=None):
     
     def get_safelow(minlow, submitted_hourago):
-        series = prediction_table.loc[prediction_table['expectedTime'] <= 20, 'gasprice']
-        model_safelow = series.min()
+        series = prediction_table.loc[prediction_table['expectedTime'] <= 30, 'gasprice']
+        safelow = series.min()
         minhash_list = prediction_table.loc[prediction_table['hashpower_accepting']>=1.5, 'gasprice']
-        if (model_safelow < minhash_list.min()):
-            model_safelow = minhash_list.min()
+        if (safelow < minhash_list.min()):
+            safelow = minhash_list.min()
         if minlow >= 0:
-            if model_safelow < minlow:
-                model_safelow = minlow
-        print('modelled safelow ' + str(model_safelow))
-        if not submitted_hourago.empty:
-            series = submitted_hourago.loc[(submitted_hourago['total']>=5) & (submitted_hourago['pct_unmined']>=.1) & (submitted_hourago['still_here']>=2)]
-            if not series.empty:
-                unsafe = series.index.max()
-            else:
-                unsafe = 0
-            print('unsafe = ' + str(unsafe))
-            series1 = submitted_hourago.loc[(submitted_hourago['total']>=3) & ((submitted_hourago['pct_unmined']<.1) | (submitted_hourago['still_here'] <=1 ))]
-            observed_safelow = series1.loc[series1.index > unsafe]
-            if not observed_safelow.empty:
-                observed_safelow = observed_safelow.index.min()
-            else:
-                observed_safelow = unsafe + 10
-            print('observed safelow = ' + str(observed_safelow))
-        else:
-            observed_safelow = 0
-            unsafe = 0
-
-        if unsafe >= model_safelow :
-            safelow = observed_safelow
-        else:
-            safelow = model_safelow
-        print('safelow ' + str(safelow))
+            if safelow < minlow:
+                safelow = minlow
         return float(safelow)
 
     def get_average(safelow):
-        series = prediction_table.loc[prediction_table['expectedTime'] <= 4, 'gasprice']
+        series = prediction_table.loc[prediction_table['expectedTime'] <= 5, 'gasprice']
         average = series.min()
-        minhash_list = prediction_table.loc[prediction_table['hashpower_accepting']>35, 'gasprice']
+        minhash_list = prediction_table.loc[prediction_table['hashpower_accepting']>20, 'gasprice']
         if average < minhash_list.min():
             average = minhash_list.min()
         if average < safelow:
             average = safelow
+        if np.isnan(average):
+            average = 500
         return float(average)
 
     def get_fast():
@@ -399,6 +448,9 @@ def get_gasprice_recs(prediction_table, block_time, block, speed, minlow=-1, sub
     gprecs['speed'] = speed
     return(gprecs)
 
+def roundresult(row):
+    x = row[0] / row[1] * 100
+    return np.round(x)
 
 def master_control():
     (blockdata, alltx) = init_dfs()
@@ -454,22 +506,34 @@ def master_control():
             #get 10th percentile of mined gas prices of last 5 blocks
             gp_mined_10th = analyze_last5blocks(block, alltx)
 
+            submitted_hourago = alltx.loc[(alltx['block_posted'] < (block-130)) & (alltx['block_posted'] > (block-260)) & (alltx['chained']==0) & (alltx['gas_offered'] < 500000)].copy()
+            print(len(submitted_hourago))
+
+            if len(submitted_hourago > 50):
+                submitted_hourago['still_here'] = submitted_hourago.index.isin(current_txpool.index).astype(int)
+                submitted_hourago = submitted_hourago[['gas_price', 'round_gp_10gwei', 'still_here']].groupby('round_gp_10gwei').agg({'gas_price':'count', 'still_here':'sum'})
+                submitted_hourago.rename(columns={'gas_price':'total'}, inplace=True)
+                submitted_hourago['pct_unmined'] = submitted_hourago['still_here']/submitted_hourago['total']
+                submitted_hourago['pct_unmined'] = submitted_hourago[['still_here', 'total']].apply(roundresult, axis=1)
+            
+            submitted_5mago = alltx.loc[(alltx['block_posted'] < (block-20)) & (alltx['block_posted'] > (block-70)) & (alltx['chained']==0) & (alltx['gas_offered'] < 500000)].copy()
+            print(len(submitted_5mago))
+
+            if len(submitted_5mago > 50):
+                submitted_5mago['still_here'] = submitted_5mago.index.isin(current_txpool.index).astype(int)
+                submitted_5mago = submitted_5mago[['gas_price', 'round_gp_10gwei', 'still_here']].groupby('round_gp_10gwei').agg({'gas_price':'count', 'still_here':'sum'})
+                submitted_5mago.rename(columns={'gas_price':'total'}, inplace=True)
+                submitted_5mago['pct_unmined'] = submitted_5mago[['still_here', 'total']].apply(roundresult, axis=1)
+
             #make txpool block data
-            (analyzed_block, txpool_by_gp, predictiondf) = analyze_txpool(block-1, txpool, alltx, hashpower, block_time, gaslimit, gp_mined_10th)
+            (analyzed_block, txpool_by_gp, predictiondf) = analyze_txpool(block-1, txpool, alltx, hashpower, block_time, gaslimit, gp_mined_10th, submitted_5mago, submitted_hourago)
             if analyzed_block.empty:
                 print("txpool block is empty - returning")
                 return
             assert analyzed_block.index.duplicated().sum()==0
             alltx = alltx.combine_first(analyzed_block)
 
-            submitted_hourago = alltx.loc[(alltx['block_posted'] < (block-130)) & (alltx['block_posted'] > (block-260)) & (alltx['chained']==0) & (alltx['gas_offered'] < 500000)].copy()
-            print(len(submitted_hourago))
-
-            if len(submitted_hourago > 50):
-                submitted_hourago['still_here'] = submitted_hourago.index.isin(current_txpool.index)
-                submitted_hourago = submitted_hourago[['gas_price', 'round_gp_10gwei', 'still_here']].groupby('round_gp_10gwei').agg({'gas_price':'count', 'still_here':'sum'})
-                submitted_hourago.rename(columns={'gas_price':'total'}, inplace=True)
-                submitted_hourago['pct_unmined'] = submitted_hourago['still_here']/submitted_hourago['total']
+            
 
             #with pd.option_context('display.max_columns', None,):
                 #print(analyzed_block)
@@ -479,7 +543,7 @@ def master_control():
 
             #make summary report every x blocks
             if timer.check_reportblock(block):
-                last1500t = alltx[alltx['block_posted'] > (block-1500)].copy()
+                last1500t = alltx[alltx['block_mined'] > (block-1500)].copy()
                 print('txs '+ str(len(last1500t)))
                 last1500b = blockdata[blockdata['block_number'] > (block-1500)].copy()
                 print('blocks ' +  str(len(last1500b)))
@@ -526,6 +590,7 @@ def master_control():
                 print('current block ' +str(block))
                 print ('processing block ' + str(timer.process_block))
                 updated = update_dataframes(timer.process_block)
+                print ('finished ' + str(timer.process_block))
                 timer.process_block = timer.process_block + 1
     
             

@@ -411,7 +411,7 @@
               blocksWait = Number(blocksWait.toFixed(1));
       
               
-              txFeeEth = txGasPrice/1e10 * txGasUsed;
+              txFeeEth = txGasPrice/1e9 * txGasUsed;
               txFeeEth = Number((txFeeEth).toFixed(7))
               txFeeFiat = txFeeEth * exchangeRate;
               txFeeFiat = Number(txFeeFiat.toFixed(5));

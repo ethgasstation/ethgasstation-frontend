@@ -16,17 +16,15 @@
                 <ul class="nav side-menu">
                   <li><a href="index.php"><i class ="fa fa-home"></i>Main Page</a></li>
                   <li><a href="calculatorTxV.php"><i class ="fa fa-calculator"></i>Tx Calculator</a></li>
-                  <li><a href="rigview.php"><i class ="fa fa-eye"></i>TxPool "RigView"</a></li>
+                  <li><a href="txPoolReport.php"><i class ="fa fa-eye"></i>TxPool Vision</a></li>
+                  <!--<li><a href="minerTable.php"><i class ="fa fa-cubes"></i>Miner Stats</a></li>
                   <li><a href="pendingTxReport.php"><i class ="fa fa-flag"></i>Pending Tx Report</a></li>
-                  <li><a href="minerTable.php"><i class ="fa fa-cubes"></i>Miner Stats</a></li>
                   <li><a href="hashPowerTable.php"><i class ="fa fa-cubes"></i>Hash Power by Gas Price</a></li>
                   <li><a href="safeLow.php"><i class ="fa fa-clock-o"></i>Safe Low</a></li>
-                  <li><a href="validatedTable.php"><i class ="fa fa-cubes"></i>Low Gas Price Watch List</a></li>
-                  <!--<li><a href="minerProfits.php"><i class ="fa fa-money"></i>Gas Profits</a></li>-->
-                  <li><a href="gasguzzlers.php"><i class ="fa fa-car"></i>Gas Burners</a></li>
-                  <!--<li><a href="minerVotes.php"><i class ="fa fa-thumbs-up"></i>Miner Gas Limit Voting</a></li>-->
                   <li><a href="txpool2.php"><i class ="fa fa-upload"></i>TxPool Monitor</a></li>
-                  <li><a href="predictionTable.php"><i class ="fa fa-cubes"></i>Predict Confirm Time</a></li>
+                  <li><a href="predictionTable.php"><i class ="fa fa-cubes"></i>Predict Confirm Time</a></li>-->
+                  <li><a href="validatedTable.php"><i class ="fa fa-cubes"></i>Low Gas Price Watch List</a></li>
+                  <li><a href="gasguzzlers.php"><i class ="fa fa-car"></i>Gas Burners</a></li>
                   <li><a><i class="fa fa-bookmark-o"></i>FAQ<span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="about.php">What Is This Site?</a></li>
