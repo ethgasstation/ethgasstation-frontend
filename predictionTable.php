@@ -66,7 +66,6 @@
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
               <ul class="nav navbar-nav navbar-right">
-              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong> Beta - May not apply during periods of very high network demand</strong></p>
               </ul>
             </nav>
           </div>
@@ -80,7 +79,7 @@
               <div class="col-md-8 col-sm-12 col-xs-12">
                 <div class="x_panel tile fixed_height_420">
                   <div class="x_title">
-                    <h4>Predicted Confirm Times By Gas Price For Transactions Submitted At Block <span style = 'color:#1ABB9C'><?php echo $gpRecs2['blockNum']?></span> <small>(not applicable to batch transactions or to high traffic contracts (e.g > 100 pending transactions))</small></h4>
+                    <h4>Txpool Data At Block <span style = 'color:#1ABB9C'><?php echo $gpRecs2['blockNum']?></h4>
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
@@ -88,11 +87,12 @@
                       <thead>
                         <tr>
                           <th>Gas Price (Gwei)</th>
-                          <!--<th>% of Total<br>Blocks</th>-->
-                          <th>Mean Time To Confirm (Blocks)</th>
+                          <th>% of Last 200 Blocks Accepting </th>
+                          <th>#Tx at/above in txpool</th>
+                          <th>% of Tx Unmined > 5min</th>
+                          <th>% of Tx Unmined > 60min</th>
                           <th>Mean Time to Confirm (Minutes)</th>
-                          <th>99% Confidence Confirm Time (Blocks)</th>
-                          <th>99% Confidence Confirm Time (Minutes)</th>
+                          <th>95% Confidence Confirm Time (Minutes)</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -100,14 +100,23 @@
                       foreach ($predictArray as $row){
                         if ($row['gasprice']>=0){
                         echo('<tr>');
-                        $uci = $row['expectedWait'] * 2.5;
                         $uciWait = $row['expectedTime'] * 2.5;
                         echo("<td>". $row['gasprice']. "</td>");
-                        #echo("<td>". round($row['pctTotBlocks'],1). "</td>");
-                        echo("<td>". round($row['expectedWait'],1). "</td>");
-                        echo("<td>". round($row['expectedTime'],1). "</td>");
-                        echo("<td>". round($uci). "</td>");
-                        echo("<td>". round($uciWait, 1). "</td>");
+                        echo("<td>". round($row['hashpower_accepting'], 1) ."</td>");
+                        echo("<td>". $row['tx_atabove']."</td>");
+                        echo("<td>". $row['s5mago']. "</td>");
+                        echo("<td>". $row['s1hago']. "</td>");
+                        if ($row['expectedTime'] > 120){
+                          echo("<td>". "> 2 hours". "</td>");
+                        }
+                        else {
+                        echo("<td>". round($row['expectedTime'],1). "</td>");}
+                        if ($uciWait > 120){
+                          echo("<td>". "> 2 hours". "</td>");
+                        }
+                        else{
+                        echo("<td>". round($uciWait, 1). "</td>");}
+                        
                         echo('</tr>');}
 
                       }
