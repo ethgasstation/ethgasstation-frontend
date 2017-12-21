@@ -531,7 +531,7 @@ def master_control():
                 submitted_5mago.rename(columns={'gas_price':'total'}, inplace=True)
                 submitted_5mago['pct_unmined'] = submitted_5mago[['still_here', 'total']].apply(roundresult, axis=1)
             else:
-                submitted_hourago = pd.dataframe()
+                submitted_5mago = pd.dataframe()
 
             #make txpool block data
             (analyzed_block, txpool_by_gp, predictiondf) = analyze_txpool(block-1, txpool, alltx, hashpower, block_time, gaslimit, gp_mined_10th, submitted_5mago, submitted_hourago)
