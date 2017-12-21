@@ -109,20 +109,11 @@ class Timers():
         self.current_block = start_block
         self.process_block = start_block
         self.minlow = 10 #1 gwei
-        self.snapshot_start = start_block + 20
-        self.snapshot_end = start_block + 270
         self.block_store = {}
 
     def update_time(self, block):
         self.current_block = block
         self.process_block = self.process_block + 1
-    
-    def check_newblock(self, block):
-        if self.current_block >= block:
-            return False
-        elif self.current_block < block:
-            self.update_time(block)
-            return True
 
     def check_reportblock(self, block):
         if (block - (self.start_block-1))%50 == 0:
