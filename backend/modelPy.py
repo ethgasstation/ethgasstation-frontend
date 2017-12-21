@@ -1,5 +1,6 @@
 #analysis:  Run poission regression models
-
+import matplotlib
+matplotlib.use('Agg')
 import mysql.connector
 import pandas as pd
 import numpy as np 
@@ -69,6 +70,16 @@ predictData['viol2'] = ((predictData['violations']>2.5) & (predictData['confirmB
 print (predictData['viol2'].sum())
 print (predictData['viol2'].count())
 print ('%violations = ' + str(predictData['viol2'].sum()/float(predictData['viol2'].count())))
+'''
+scatter = predictData.loc[(predictData['expectedWait'] < 300) & (predictData['confirmBlocks']<500) & (predictData['expectedWait'] > 2)]
+scatter = scatter.sample(n=500)
+scatter['actual_blocks_waited'] = scatter['confirmBlocks']
+scatter['predicted_blocks_waited'] = scatter['expectedWait']
+fig = scatter.plot.scatter(x='actual_blocks_waited', y='predicted_blocks_waited')
+sfig = fig.get_figure()
+sfig.savefig('scatter.pdf')
+'''
+
 
 #### First Model
 
@@ -237,6 +248,7 @@ a['tx_atabove'] = predictData['tx_atabove']
 a['highgas2'] = predictData['highgas2']
 
 print(a)
+
 
 
 '''

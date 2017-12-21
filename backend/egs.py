@@ -308,7 +308,7 @@ class SummaryReport():
             '0xb1690c08e213a35ed9bab7b318de14420fb57d8c': 'Cryptokitties Auction'
         }
         gasguzz = self.tx_df.groupby('to_address').count()
-        gasguzz = gasguzz.sort_values('block_posted', ascending = False)
+        gasguzz = gasguzz.sort_values('block_mined', ascending = False)
         tottx = len(self.tx_df)
         gasguzz['pcttot'] = gasguzz['block_posted']/tottx*100
         gasguzz = gasguzz.head(n=10)
