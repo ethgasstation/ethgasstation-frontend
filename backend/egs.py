@@ -310,7 +310,7 @@ class SummaryReport():
         gasguzz = self.tx_df.groupby('to_address').count()
         gasguzz = gasguzz.sort_values('block_mined', ascending = False)
         tottx = len(self.tx_df)
-        gasguzz['pcttot'] = gasguzz['block_posted']/tottx*100
+        gasguzz['pcttot'] = gasguzz['block_mined']/tottx*100
         gasguzz = gasguzz.head(n=10)
         for index, row in gasguzz.iterrows():
             if index in gg.keys():
