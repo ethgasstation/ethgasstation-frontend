@@ -39,7 +39,7 @@ def prune_data(blockdata, alltx, txpool, block):
     """keep dataframes and databases from getting too big"""
     stmt = text("DELETE FROM postedtx2 WHERE block_posted <= :block")
     stmt2 = text("DELETE FROM minedtx2 WHERE block_mined <= :block")
-    deleteBlock_sql = block - 5500
+    deleteBlock_sql = block - 3500
     deleteBlock_mined = block - 1700
     deleteBlock_posted = block - 5500
     engine.execute(stmt, block=deleteBlock_sql)
@@ -182,6 +182,17 @@ def get_hpa(gasprice, hashpower):
         hpa = hpa.max()
     return int(hpa)
 
+def get_hpa2(gasprice, hashpower):
+    """gets the hash power accpeting the gas price over last 200 blocks"""
+    hpa = hashpower.loc[gasprice >= hashpower.index, 'hashp_pct']
+    if gasprice > hashpower.index.max():
+        hpa = 100
+    elif gasprice < hashpower.index.min():
+        hpa = 0
+    else:
+        hpa = hpa.max()
+    return int(hpa)
+
 def get_tx_atabove(gasprice, txpool_by_gp):
     """gets the number of transactions in the txpool at or above the given gasprice"""
     txAtAb = txpool_by_gp.loc[txpool_by_gp.index >= gasprice, 'gas_price']
@@ -191,17 +202,11 @@ def get_tx_atabove(gasprice, txpool_by_gp):
         txAtAb = txAtAb.sum()
     return txAtAb
 
-def check_10th(gasprice, gp_mined_10th):
-    x = np.round((gasprice - gp_mined_10th))
-    x = x / 10
-    return x
 
 def check_5mago(gasprice, submitted_5mago):
-     
+    """gets the %of transactions unmined submitted in ~last 5min"""
     submitted_5mago.loc[(submitted_5mago['still_here'] >= 1) & (submitted_5mago['still_here'] <= 2) & (submitted_5mago['total'] < 4), 'pct_unmined'] = np.nan
-
-    maxval = submitted_5mago.loc[submitted_5mago.index > gasprice, 'pct_unmined'].max()
-    
+    maxval = submitted_5mago.loc[submitted_5mago.index > gasprice, 'pct_unmined'].max()    
     if gasprice in submitted_5mago.index:
         stillh = submitted_5mago.get_value(gasprice, 'still_here')
         if stillh > 2:
@@ -209,17 +214,16 @@ def check_5mago(gasprice, submitted_5mago):
         else:
             rval = maxval
     else:
-        rval = maxval
-    
+        rval = maxval  
     if gasprice >= 1000:
         rval = 0
-
     if (rval > maxval) or (gasprice >= 1000) :
         return rval
     return maxval
 
 def check_hourago(gasprice, submitted_hourago):
-     
+    """gets the %of transactions unmined submitted in ~last 60min"""
+    
     submitted_hourago.loc[(submitted_hourago['still_here'] >= 1) & (submitted_hourago['still_here'] <= 2) & (submitted_hourago['total'] <= 5), 'pct_unmined'] = np.nan
 
     maxval = submitted_hourago.loc[submitted_hourago.index > gasprice, 'pct_unmined'].max()
@@ -231,11 +235,9 @@ def check_hourago(gasprice, submitted_hourago):
         else:
             rval = maxval
     else:
-        rval = maxval
-    
+        rval = maxval   
     if gasprice >= 1000:
         rval = 0
-
     if (rval > maxval) or (gasprice >= 1000) :
         return rval
     return maxval
@@ -244,19 +246,15 @@ def check_hourago(gasprice, submitted_hourago):
 def predict(row):
     if row['chained'] == 1:
         return np.nan
-
     #set in modelparams
     try:
         sum1 = (modelparams.INTERCEPT + (row['hashpower_accepting'] * modelparams.HPA_COEF) + (row['tx_atabove'] * modelparams.TXATABOVE_COEF) + (row['hgXhpa'] * modelparams.INTERACT_COEF) + (row['highgas2'] *  modelparams.HIGHGAS_COEF))
-
         '''
         if not np.isnan(row['s5mago']):
             sum1 = (modelparams.INT2 + (row['hashpower_accepting'] * modelparams.HPA2) + (row['tx_atabove'] * modelparams.TXATAB2) + (row['s5mago'] * modelparams.S5MAGO) + (row['highgas2'] *  modelparams.HIGHGAS2))
 
         else:
         '''
-            
-
         prediction = np.exp(sum1)
         if prediction < 2:
             prediction = 2
@@ -297,13 +295,22 @@ def analyze_last200blocks(block, blockdata):
         avg_timemined = 30
     return(hashpower, avg_timemined, gaslimit, speed)
 
+def analyze_last100blocks(block, alltx):
+    recent_blocks = alltx.loc[alltx['block_mined'] > (block-100), ['block_mined', 'round_gp_10gwei']].copy()
+    hpower = recent_blocks.groupby('round_gp_10gwei').count()
+    hpower = hpower.rename(columns={'block_mined':'count'})
+    totaltx  = len(recent_blocks)
+    hpower['cum_tx'] = hpower['count'].cumsum()
+    hpower['hashp_pct'] = hpower['cum_tx']/totaltx*100
+    return(hpower)
+
 def analyze_last5blocks(block, alltx):
     recent_blocks= alltx.loc[(alltx['block_mined'] >= (block-5)) & (alltx['block_mined'] <= (block))]
     gp_mined_10th = recent_blocks['gas_price'].quantile(.1)
     print (gp_mined_10th/1e8)
     return gp_mined_10th/1e8
 
-def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit, gp_mined_10th, submitted_5mago, submitted_hourago):
+def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit,submitted_5mago, submitted_hourago, hpower):
     """gets txhash from all transactions in txpool at block and merges the data from alltx"""
     #get txpool hashes at block
     txpool_block = txpool.loc[txpool['block']==block]
@@ -335,8 +342,9 @@ def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit, gp_
     predictTable = predictTable.append(ptable2).reset_index(drop=True)
     predictTable = predictTable.sort_values('gasprice').reset_index(drop=True)
     predictTable['hashpower_accepting'] = predictTable['gasprice'].apply(get_hpa, args=(hashpower,))
+    predictTable['hashpower_accepting2'] = predictTable['gasprice'].apply(get_hpa2, args=(hpower,))
+    
     predictTable['tx_atabove'] = predictTable['gasprice'].apply(get_tx_atabove, args=(txpool_by_gp,))
-    predictTable['gp10th'] = predictTable['gasprice'].apply(check_10th, args=(gp_mined_10th,))
     if not submitted_5mago.empty:
         predictTable['s5mago'] = predictTable['gasprice'].apply(check_5mago, args= (submitted_5mago,))
         s5mago_lookup = predictTable.set_index('gasprice')['s5mago'].to_dict()
@@ -358,6 +366,7 @@ def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit, gp_
     predictTable['expectedWait'] = predictTable.apply(predict, axis=1)
     predictTable['expectedTime'] = predictTable['expectedWait'].apply(lambda x: np.round((x * avg_timemined / 60), decimals=2)) 
     gp_lookup = predictTable.set_index('gasprice')['hashpower_accepting'].to_dict()
+    gp_lookup2 = predictTable.set_index('gasprice')['hashpower_accepting2'].to_dict()
     txatabove_lookup = predictTable.set_index('gasprice')['tx_atabove'].to_dict()
 
     #finally, analyze txpool transactions
@@ -367,8 +376,8 @@ def analyze_txpool(block, txpool, alltx, hashpower, avg_timemined, gaslimit, gp_
     txpool_block['high_gas_offered'] = (txpool_block['pct_limit'] > modelparams.HIGHGAS1).astype(int)
     txpool_block['highgas2'] = (txpool_block['pct_limit'] > modelparams.HIGHGAS2).astype(int)
     txpool_block['hashpower_accepting'] = txpool_block['round_gp_10gwei'].apply(lambda x: gp_lookup[x] if x in gp_lookup else 100)
+    txpool_block['hashpower_accepting2'] = txpool_block['round_gp_10gwei'].apply(lambda x: gp_lookup2[x] if x in gp_lookup2 else 100)
     txpool_block['hgXhpa'] = txpool_block['highgas2']*txpool_block['hashpower_accepting']
-    txpool_block['gp10th'] = txpool_block['round_gp_10gwei'].apply(check_10th, args=(gp_mined_10th,))
     txpool_block['tx_atabove'] = txpool_block['round_gp_10gwei'].apply(lambda x: txatabove_lookup[x] if x in txatabove_lookup else 1)
     if not s5mago_lookup is None:
         txpool_block['s5mago'] = txpool_block['round_gp_10gwei'].apply(lambda x: s5mago_lookup[x] if x in s5mago_lookup else np.nan)
@@ -506,9 +515,7 @@ def master_control():
 
             #get hashpower table, block interval time, gaslimit, speed from last 200 blocks
             (hashpower, block_time, gaslimit, speed) = analyze_last200blocks(block, blockdata)
-
-            #get 10th percentile of mined gas prices of last 5 blocks
-            gp_mined_10th = analyze_last5blocks(block, alltx)
+            hpower2 = analyze_last100blocks(block, alltx)
 
             submitted_hourago = alltx.loc[(alltx['block_posted'] < (block-130)) & (alltx['block_posted'] > (block-260)) & (alltx['chained']==0) & (alltx['gas_offered'] < 500000)].copy()
             print(len(submitted_hourago))
@@ -520,7 +527,7 @@ def master_control():
                 submitted_hourago['pct_unmined'] = submitted_hourago['still_here']/submitted_hourago['total']
                 submitted_hourago['pct_unmined'] = submitted_hourago[['still_here', 'total']].apply(roundresult, axis=1)
             else:
-                submitted_hourago = pd.dataframe()
+                submitted_hourago = pd.DataFrame()
 
             submitted_5mago = alltx.loc[(alltx['block_posted'] < (block-20)) & (alltx['block_posted'] > (block-70)) & (alltx['chained']==0) & (alltx['gas_offered'] < 500000)].copy()
             print(len(submitted_5mago))
@@ -531,10 +538,10 @@ def master_control():
                 submitted_5mago.rename(columns={'gas_price':'total'}, inplace=True)
                 submitted_5mago['pct_unmined'] = submitted_5mago[['still_here', 'total']].apply(roundresult, axis=1)
             else:
-                submitted_5mago = pd.dataframe()
+                submitted_5mago = pd.DataFrame()
 
             #make txpool block data
-            (analyzed_block, txpool_by_gp, predictiondf) = analyze_txpool(block-1, txpool, alltx, hashpower, block_time, gaslimit, gp_mined_10th, submitted_5mago, submitted_hourago)
+            (analyzed_block, txpool_by_gp, predictiondf) = analyze_txpool(block-1, txpool, alltx, hashpower, block_time, gaslimit, submitted_5mago, submitted_hourago, hpower2)
             if analyzed_block.empty:
                 print("txpool block is empty - returning")
                 return

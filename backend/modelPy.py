@@ -35,16 +35,17 @@ print ('zero confirm time')
 print (len(predictData.loc[predictData['confirmBlocks']==0]))
 print('pre-chained ' + str(len(predictData)))
 predictData.loc[predictData['chained']==1, 'confirmBlocks']=np.nan
-predictData = predictData.dropna(subset=['confirmBlocks', 'gp10th'])
+predictData = predictData.dropna(subset=['confirmBlocks'])
 print('post-chained ' + str(len(predictData)))
 predictData = predictData.loc[predictData['confirmBlocks']>0]
 predictData = predictData.loc[predictData['tx_atabove']>0]
 print ('cleaned transactions: ')
 print (len(predictData))
 
-predictData = predictData.dropna(subset=['gp10th', 's5mago', 's1hago'])
+predictData = predictData.dropna(subset=['hashpower_accepting2'])
+print (len(predictData))
 
-
+'''
 print('gas offered data')
 max_gasoffered = predictData['gas_offered'].max()
 print('max :'+str(predictData['gas_offered'].max()))
@@ -71,6 +72,7 @@ print (predictData['viol2'].sum())
 print (predictData['viol2'].count())
 print ('%violations = ' + str(predictData['viol2'].sum()/float(predictData['viol2'].count())))
 '''
+'''
 scatter = predictData.loc[(predictData['expectedWait'] < 300) & (predictData['confirmBlocks']<500) & (predictData['expectedWait'] > 2)]
 scatter = scatter.sample(n=500)
 scatter['actual_blocks_waited'] = scatter['confirmBlocks']
@@ -83,7 +85,7 @@ sfig.savefig('scatter.pdf')
 
 #### First Model
 
-y, X = dmatrices('confirmBlocks ~ hashpower_accepting + highgas2 + s5mago', data = predictData, return_type = 'dataframe')
+y, X = dmatrices('confirmBlocks ~ hashpower_accepting + highgas2 + tx_atabove', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
@@ -128,7 +130,7 @@ print(predictData['gp10th'].count())
 predictData.loc[predictData['gp10th'] > 100, 'gp10th'] = 100
 
 
-a, B = dmatrices('confirmBlocks ~ hashpower_accepting + highgas2 + tx_atabove', data = predictData, return_type = 'dataframe')
+a, B = dmatrices('confirmBlocks ~ hashpower_accepting2 + highgas2 + tx_atabove', data = predictData, return_type = 'dataframe')
 
 model = sm.GLM(a, B, family=sm.families.Poisson())
 results = model.fit()

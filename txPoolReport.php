@@ -88,6 +88,7 @@
                         <tr>
                           <th>Gas Price (Gwei)</th>
                           <th>% of Last 200 Blocks Accepting </th>
+                          <th>% of total transactions mined in last 200 blocks </th>
                           <th>#Tx at/above in txpool</th>
                           <th>% of Tx Unmined > 5min</th>
                           <th>% of Tx Unmined > 60min</th>
@@ -103,6 +104,7 @@
                         $uciWait = $row['expectedTime'] * 2.5;
                         echo("<td>". $row['gasprice']. "</td>");
                         echo("<td>". round($row['hashpower_accepting'], 1) ."</td>");
+                        echo("<td>". round($row['hashpower_accepting2'], 1) ."</td>");
                         echo("<td>". $row['tx_atabove']."</td>");
                         echo("<td>". $row['s5mago']. "</td>");
                         echo("<td>". $row['s1hago']. "</td>");
