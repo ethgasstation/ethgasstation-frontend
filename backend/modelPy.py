@@ -45,7 +45,7 @@ print (len(predictData))
 predictData = predictData.dropna(subset=['hashpower_accepting2'])
 print (len(predictData))
 
-'''
+
 print('gas offered data')
 max_gasoffered = predictData['gas_offered'].max()
 print('max :'+str(predictData['gas_offered'].max()))
@@ -62,7 +62,6 @@ predictData['gasCat4'] = ((predictData['gas_offered']>quantiles[.95]) & (predict
 predictData['gasCat5'] = (predictData['gas_offered']>=quantiles[.99]).astype(int)
 predictData['hpa2'] = predictData['hashpower_accepting']*predictData['hashpower_accepting']
 
-predictData['gp10th'] = predictData['gp10th'].astype(int)
 
 print ("violations: ")
 predictData['violations'] = predictData['expectedWait'] / predictData['confirmBlocks']
@@ -71,7 +70,7 @@ predictData['viol2'] = ((predictData['violations']>2.5) & (predictData['confirmB
 print (predictData['viol2'].sum())
 print (predictData['viol2'].count())
 print ('%violations = ' + str(predictData['viol2'].sum()/float(predictData['viol2'].count())))
-'''
+
 '''
 scatter = predictData.loc[(predictData['expectedWait'] < 300) & (predictData['confirmBlocks']<500) & (predictData['expectedWait'] > 2)]
 scatter = scatter.sample(n=500)
@@ -123,9 +122,6 @@ print(y.loc[y['bad']==1])
 
 ### Second model
 
-print(predictData['gp10th'].max())
-print(predictData['gp10th'].min())
-print(predictData['gp10th'].count())
 
 predictData.loc[predictData['gp10th'] > 100, 'gp10th'] = 100
 
@@ -192,7 +188,7 @@ print (len(weightedPd))
 
 ### model with sampled transactions
 
-e, F = dmatrices('confirmBlocks ~ hashpower_accepting + highgas2 + tx_atabove + gp10th', data = weightedPd, return_type = 'dataframe')
+e, F = dmatrices('confirmBlocks ~ hashpower_accepting + highgas2 + tx_atabove', data = weightedPd, return_type = 'dataframe')
 
 model = sm.GLM(e, F, family=sm.families.Poisson())
 results = model.fit()

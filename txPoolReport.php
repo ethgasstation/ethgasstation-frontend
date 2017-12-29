@@ -106,8 +106,14 @@
                         echo("<td>". round($row['hashpower_accepting'], 1) ."</td>");
                         echo("<td>". round($row['hashpower_accepting2'], 1) ."</td>");
                         echo("<td>". $row['tx_atabove']."</td>");
-                        echo("<td>". $row['s5mago']. "</td>");
-                        echo("<td>". $row['s1hago']. "</td>");
+                        if (isset($row['s5mago'])){
+                          echo("<td>". $row['s5mago']. "</td>");}
+                          else{
+                            echo("<td>". 'NaN'."</td>");} 
+                        if (isset($row['s1hago'])){
+                        echo("<td>". $row['s1hago']. "</td>");}
+                        else{
+                          echo("<td>". 'NaN'."</td>");}                    
                         if ($row['expectedTime'] > 120){
                           echo("<td>". "> 2 hours". "</td>");
                         }

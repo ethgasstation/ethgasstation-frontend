@@ -11,11 +11,11 @@ You should have about >20k transactions in the database to fit the model accurat
 #interaction term with highgas offered and hashpower. not currently using
 #highgas offefred coefficient
 
-INTERCEPT = 7.5980
-HPA_COEF = -0.0811
+INTERCEPT = 7.5375
+HPA_COEF = -0.0801
 TXATABOVE_COEF = 0.0003 
 INTERACT_COEF = 0 
-HIGHGAS_COEF = 0.4085
+HIGHGAS_COEF = 0.3532
 
 
 #a second model when data from past 5 min is available

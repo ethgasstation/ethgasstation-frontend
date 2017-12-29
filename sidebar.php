@@ -16,7 +16,7 @@
                 <ul class="nav side-menu">
                   <li><a href="index.php"><i class ="fa fa-home"></i>Main Page</a></li>
                   <li><a href="calculatorTxV.php"><i class ="fa fa-calculator"></i>Tx Calculator</a></li>
-                  <li><a href="txPoolReport.php"><i class ="fa fa-eye"></i>TxPool Vision</a></li>
+                  <li><a href="txPoolReport2.php"><i class ="fa fa-eye"></i>TxPool Vision</a></li>
                   <!--<li><a href="minerTable.php"><i class ="fa fa-cubes"></i>Miner Stats</a></li>
                   <li><a href="pendingTxReport.php"><i class ="fa fa-flag"></i>Pending Tx Report</a></li>
                   <li><a href="hashPowerTable.php"><i class ="fa fa-cubes"></i>Hash Power by Gas Price</a></li>
