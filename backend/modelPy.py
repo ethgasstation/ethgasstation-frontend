@@ -45,6 +45,8 @@ print (len(predictData))
 predictData = predictData.dropna(subset=['hashpower_accepting2'])
 print (len(predictData))
 
+with pd.option_context('display.max_columns', None,):
+    print(predictData)
 
 print('gas offered data')
 max_gasoffered = predictData['gas_offered'].max()
@@ -211,7 +213,11 @@ predictData = pd.DataFrame(cursor.fetchall())
 predictData.columns = head
 cursor.close()
 
-y, X = dmatrices('confirmBlocks ~ hashpower_accepting + highgas2 + s5mago', data = predictData, return_type = 'dataframe')
+predictData['waiting1'] = (predictData['s5mago'] > 0)
+predictData['waiting2'] = (predictData['s1hago'] > 0)
+predictData['waiting3'] = ((predictData['waiting1']==1) | (predictData['waiting2']==1))
+
+y, X = dmatrices('confirmBlocks ~ hashpower_accepting + highgas2 + tx_atabove', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
@@ -233,7 +239,7 @@ y = y.sort_values('hashpower_accepting')
 
 print(y)
 
-a, B = dmatrices('confirmBlocks ~ hashpower_accepting + highgas2 + tx_atabove', data = predictData, return_type = 'dataframe')
+a, B = dmatrices('confirmBlocks ~ hashpower_accepting + highgas2 + tx_atabove + waiting1', data = predictData, return_type = 'dataframe')
 
 model = sm.GLM(a, B, family=sm.families.Poisson())
 results = model.fit()
@@ -247,7 +253,33 @@ a['highgas2'] = predictData['highgas2']
 
 print(a)
 
+a, B = dmatrices('confirmBlocks ~ hashpower_accepting + highgas2 + tx_atabove + waiting2', data = predictData, return_type = 'dataframe')
 
+model = sm.GLM(a, B, family=sm.families.Poisson())
+results = model.fit()
+print (results.summary())
+
+a['predict'] = results.predict()
+a['round_gp_10gwei'] = predictData['round_gp_10gwei']
+a['hashpower_accepting'] = predictData['hashpower_accepting']
+a['tx_atabove'] = predictData['tx_atabove']
+a['highgas2'] = predictData['highgas2']
+
+print(a)
+
+a, B = dmatrices('confirmBlocks ~ hashpower_accepting + highgas2 + tx_atabove + waiting3', data = predictData, return_type = 'dataframe')
+
+model = sm.GLM(a, B, family=sm.families.Poisson())
+results = model.fit()
+print (results.summary())
+
+a['predict'] = results.predict()
+a['round_gp_10gwei'] = predictData['round_gp_10gwei']
+a['hashpower_accepting'] = predictData['hashpower_accepting']
+a['tx_atabove'] = predictData['tx_atabove']
+a['highgas2'] = predictData['highgas2']
+
+print(a)
 
 '''
 y1, X1 = dmatrices('logCTime ~ hashPowerAccepting  + highGasOffered + dump + ico', data = predictData, return_type = 'dataframe')

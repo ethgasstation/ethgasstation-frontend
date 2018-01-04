@@ -338,37 +338,9 @@ class SummaryReport():
         """median wait time by gas price for bar graph"""
         price_wait = self.tx_df.loc[:, ['minedGasPrice', 'delay2']]
         price_wait.loc[price_wait['minedGasPrice']>=40, 'minedGasPrice'] = 40
-        price_wait = price_wait.loc[(price_wait['minedGasPrice']<=10) | (price_wait['minedGasPrice']==20) | (price_wait['minedGasPrice'] == 40), ['minedGasPrice', 'delay2']]
+        price_wait = price_wait.loc[(price_wait['minedGasPrice']<=10) | (price_wait['minedGasPrice']==20) | (price_wait['minedGasPrice']==21) |(price_wait['minedGasPrice'] == 40), ['minedGasPrice', 'delay2']]
         price_wait.loc[price_wait['minedGasPrice']<1, 'minedGasPrice'] = 0
         price_wait = price_wait.groupby('minedGasPrice').median()/60
         price_wait.reset_index(inplace=True)
         self.price_wait = price_wait
 
-class Retry():
-    """
-        Decorator for retrying a function if exception occurs
-        tries -- num tries 
-        exceptions -- exceptions to catch
-        delay -- wait between retries
-    """
-    default_exceptions = (Exception,)
-    def __init__(self, tries, exceptions=None, delay=0):
-        self.tries = tries
-        if exceptions is None:
-            exceptions = Retry.default_exceptions
-        self.exceptions =  exceptions
-        self.delay = delay
-
-    def __call__(self, f):
-        def fn():
-            exception = None
-            for _ in range(self.tries):
-                try:
-                    return f()
-                except self.exceptions as e:
-                    print ("Retry, exception: "+str(e))
-                    time.sleep(self.delay)
-                    exception = e
-            #if no success after tries, raise last exception
-            raise exception
-        return fn

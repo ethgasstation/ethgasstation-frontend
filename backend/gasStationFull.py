@@ -4,6 +4,7 @@ import json
 import math
 import traceback
 import os
+import random
 import pandas as pd
 import numpy as np
 from web3 import Web3, HTTPProvider
@@ -518,7 +519,7 @@ def master_control():
             hpower2 = analyze_last100blocks(block, alltx)
 
             submitted_hourago = alltx.loc[(alltx['block_posted'] < (block-130)) & (alltx['block_posted'] > (block-260)) & (alltx['chained']==0) & (alltx['gas_offered'] < 500000)].copy()
-            print(len(submitted_hourago))
+            print("# of tx submitted ~ an hour ago: " + str((len(submitted_hourago))))
 
             if len(submitted_hourago > 50):
                 submitted_hourago['still_here'] = submitted_hourago.index.isin(current_txpool.index).astype(int)
@@ -530,7 +531,7 @@ def master_control():
                 submitted_hourago = pd.DataFrame()
 
             submitted_5mago = alltx.loc[(alltx['block_posted'] < (block-20)) & (alltx['block_posted'] > (block-70)) & (alltx['chained']==0) & (alltx['gas_offered'] < 500000)].copy()
-            print(len(submitted_5mago))
+            print("# of tx submitted ~ 5m ago: " + str((len(submitted_5mago))))
 
             if len(submitted_5mago > 50):
                 submitted_5mago['still_here'] = submitted_5mago.index.isin(current_txpool.index).astype(int)
@@ -590,23 +591,44 @@ def master_control():
             new_tx_list = web3.eth.getFilterChanges(tx_filter.filter_id)
         block = web3.eth.blockNumber
         timestamp = time.time()
-        if (timer.process_block > (block - 5)):
-            for new_tx in new_tx_list:    
-                try:        
-                    tx_obj = web3.eth.getTransaction(new_tx)
-                    clean_tx = CleanTx(tx_obj, block, timestamp)
-                    append_new_tx(clean_tx)
-                except Exception as e:
-                    pass
+
+        
+        if timer.process_block <= (block-5) and len(new_tx_list) > 10:
+            print("sampling 10 from " + str(len(new_tx_list)) + " new tx")
+            new_tx_list = random.sample(new_tx_list, 10)
+        elif timer.process_block == (block-4) and len(new_tx_list) > 25:
+            print("sampling 25 from " + str(len(new_tx_list)) + " new tx")
+            new_tx_list = random.sample(new_tx_list, 25)
+        elif timer.process_block == (block-3) and len(new_tx_list) > 50:
+            print("sampling 50 from " + str(len(new_tx_list)) + " new tx")
+            new_tx_list = random.sample(new_tx_list, 50)
+        elif timer.process_block == (block-2) and len(new_tx_list) > 100:
+            print("sampling 100 from " + str(len(new_tx_list)) + " new tx")
+            new_tx_list = random.sample(new_tx_list, 100)
+        elif timer.process_block == (block-1) and len(new_tx_list) > 200:
+            print("sampling 200 from " + str(len(new_tx_list)) + " new tx")
+            new_tx_list = random.sample(new_tx_list, 200)
+       
+        for new_tx in new_tx_list:    
+            try:        
+                tx_obj = web3.eth.getTransaction(new_tx)
+                clean_tx = CleanTx(tx_obj, block, timestamp)
+                append_new_tx(clean_tx)
+            except Exception as e:
+                pass
         
         if (timer.process_block < block):
-
             if block > timer.start_block+1:
                 print('current block ' +str(block))
                 print ('processing block ' + str(timer.process_block))
                 updated = update_dataframes(timer.process_block)
-                print ('finished ' + str(timer.process_block))
+                print ('finished ' + str(timer.process_block) + "\n")
                 timer.process_block = timer.process_block + 1
+        '''
+        if (timer.process_block < (block - 5)):
+                print("skipping ahead \n")
+                timer.process_block = (block-1)
+        '''       
     
             
 
