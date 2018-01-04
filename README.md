@@ -10,5 +10,9 @@ It requires the following:
   4) A local geth node 
 
 Add a user 'ethgas' with password 'station' to your local mysql database and create a database 'tx' to allow it to add the tables. 
- 
+
+requirements: pip3 install -r requirements.txt
+
+usage: backend/python3 gasStationFull.py
+
  
