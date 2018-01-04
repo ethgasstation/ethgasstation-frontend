@@ -5,8 +5,8 @@ and estimates miner policies with respect to gas prices and formats the data for
 
 It requires the following:
   1) LAMP set up if you want to use the webpage
-  2) Python for the scripts that analyze data.
-  3) Mysql database with tables created using the commands in /backend/txtables.sql 
+  2) Python for the scripts that analyze data from the geth node.
+  3) Mysql database
   4) A local geth node 
 
 Add a user 'ethgas' with password 'station' to your local mysql database and create a database 'tx' to allow it to add the tables. 
