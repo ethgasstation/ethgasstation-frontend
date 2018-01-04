@@ -5,15 +5,10 @@ and estimates miner policies with respect to gas prices and formats the data for
 
 It requires the following:
   1) LAMP set up if you want to use the webpage
-  2) Node.js for running the scripts to monitor a local ETH node
-  3) Python for the scripts that analyze data.
-  4) Mysql database with tables created using the commands in /backend/txtables.sql 
-  5) A local ethereum node 
- 
-Once the mysql tables are created:
- 
-You can run:  node gasStation.js
- 
-This script monitors the  node and calls gasStationAnalyze.js and gascalc.py periodically to update the analyses for the webpage and calculate the gas price recommendations
+  2) Python for the scripts that analyze data.
+  3) Mysql database with tables created using the commands in /backend/txtables.sql 
+  4) A local geth node 
+
+Add a user 'ethgas' with password 'station' to your local mysql database and create a database 'tx' to allow it to add the tables. 
  
  
