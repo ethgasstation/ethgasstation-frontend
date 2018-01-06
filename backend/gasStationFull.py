@@ -624,11 +624,11 @@ def master_control():
                 updated = update_dataframes(timer.process_block)
                 print ('finished ' + str(timer.process_block) + "\n")
                 timer.process_block = timer.process_block + 1
-        '''
-        if (timer.process_block < (block - 5)):
+        
+        if (timer.process_block < (block - 8)):
                 print("skipping ahead \n")
                 timer.process_block = (block-1)
-        '''       
+              
     
             
 
