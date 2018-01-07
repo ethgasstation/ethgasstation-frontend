@@ -134,7 +134,7 @@
                         </label>
                     </div>
                     <div>
-                      <input type="number" class="form-control" placeholder="(Gwei)" id="oth_val">
+                      <input type="number step=.1" class="form-control" placeholder="(Gwei)" id="oth_val">
                     </div>
                   </div>
                 </div>
@@ -174,10 +174,6 @@
                         <tr>
                           <td>Transactions At or Above in Current Txpool</td>
                           <td id="txatabove"></td>
-                        </tr>
-                        <tr>
-                          <td>Probability mined in less than 1 hour</td>
-                          <td id="minedprob"></td>
                         </tr>
                         <tr>
                           <td>Mean Time to Confirm (Blocks)</td>
@@ -297,10 +293,10 @@
                 wb = -0.0048;
                 tx = -0.0004;
 
-                intercept2 = 1.9611;
-                hpa_coef = -0.0147;
-                txatabove_coef= 0.0007;
-                high_gas_coef = .2592;
+                intercept2 = 7.5375;
+                hpa_coef = -0.0801;
+                txatabove_coef= 0.0003;
+                high_gas_coef = .3532;
 
                 if (gasoffered > 1000000){    
                   sum1 = intercept + (predictArray[i]['hashpower_accepting'] * hpa) + hgo  + (predictArray[i]['tx_atabove'] * tx);
@@ -360,10 +356,10 @@
               //Gas Used Set - Now find Gas Price
               if($('#other').prop('checked')===true){
                 otherGasPrice = $('#oth_val').val();
-                if (!otherGasPrice || otherGasPrice < <?php echo($gpRecs2['safeLow']/10) ?>)
+                if (!otherGasPrice || otherGasPrice < 0.1)
                 {
                     if ($("#oth_val").parent().next(".validation").length == 0){ // only add if not added
-                      $("#oth_val").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;'>Please enter gas price >= <?php echo($gpRecs2['safeLow']/10)?> gwei</div>");
+                      $("#oth_val").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;'>Please enter gas price >= 0.1 gwei</div>");
                     }
                     event.preventDefault(); // prevent form from POST to server
                     $('#oth_val').focus();
@@ -419,7 +415,6 @@
               $('#meanBlocks').html(blocksWait);
               $('#hp').html(hashpower);
               $('#txatabove').html(txatabove);
-              $('#minedprob').html(minedprob);
               $('#meanSecs').html(txMeanSecs);
               $('#txEth').html(txFeeEth);
               if (currency=='usd'){

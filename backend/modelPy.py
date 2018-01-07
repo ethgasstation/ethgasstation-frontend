@@ -45,8 +45,8 @@ print (len(predictData))
 predictData = predictData.dropna(subset=['hashpower_accepting2'])
 print (len(predictData))
 
-with pd.option_context('display.max_columns', None,):
-    print(predictData)
+#with pd.option_context('display.max_columns', None,):
+    #print(predictData)
 
 print('gas offered data')
 max_gasoffered = predictData['gas_offered'].max()
@@ -71,7 +71,25 @@ predictData['viol2'] = ((predictData['violations']>2.5) & (predictData['confirmB
 
 print (predictData['viol2'].sum())
 print (predictData['viol2'].count())
-print ('%violations = ' + str(predictData['viol2'].sum()/float(predictData['viol2'].count())))
+print ('%violations = ' + str(predictData['viol2'].sum()*100/float(predictData['viol2'].count())))
+
+viol10 = predictData.loc[predictData['round_gp_10gwei'] <=100, 'viol2'].sum()
+count10 = predictData.loc[predictData['round_gp_10gwei'] <=100, 'viol2'].count()
+
+viol20 = predictData.loc[(predictData['round_gp_10gwei'] <=400) &  (predictData['round_gp_10gwei'] > 100), 'viol2'].sum()
+count20 = predictData.loc[(predictData['round_gp_10gwei'] <=400) &  (predictData['round_gp_10gwei'] > 100), 'viol2'].count()
+
+viol50 = predictData.loc[predictData['round_gp_10gwei'] > 400, 'viol2'].sum()
+count50 = predictData.loc[predictData['round_gp_10gwei'] > 400, 'viol2'].count()
+
+print(viol10)
+print(count10)
+print(viol20)
+print(count20)
+print(viol50)
+print(count50)
+
+xxx
 
 '''
 scatter = predictData.loc[(predictData['expectedWait'] < 300) & (predictData['confirmBlocks']<500) & (predictData['expectedWait'] > 2)]
@@ -213,9 +231,10 @@ predictData = pd.DataFrame(cursor.fetchall())
 predictData.columns = head
 cursor.close()
 
-predictData['waiting1'] = (predictData['s5mago'] > 0)
-predictData['waiting2'] = (predictData['s1hago'] > 0)
+predictData['waiting1'] = (predictData['s5mago'] > 50)
+predictData['waiting2'] = (predictData['s1hago'] > 30)
 predictData['waiting3'] = ((predictData['waiting1']==1) | (predictData['waiting2']==1))
+predictData2 = predictData.loc[(predictData['hashpower_accepting']>20) & (predictData['hashpower_accepting'] < 40) ]
 
 y, X = dmatrices('confirmBlocks ~ hashpower_accepting + highgas2 + tx_atabove', data = predictData, return_type = 'dataframe')
 
@@ -239,7 +258,7 @@ y = y.sort_values('hashpower_accepting')
 
 print(y)
 
-a, B = dmatrices('confirmBlocks ~ hashpower_accepting + highgas2 + tx_atabove + waiting1', data = predictData, return_type = 'dataframe')
+a, B = dmatrices('confirmBlocks ~ highgas2 + tx_atabove', data = predictData2, return_type = 'dataframe')
 
 model = sm.GLM(a, B, family=sm.families.Poisson())
 results = model.fit()
@@ -253,7 +272,7 @@ a['highgas2'] = predictData['highgas2']
 
 print(a)
 
-a, B = dmatrices('confirmBlocks ~ hashpower_accepting + highgas2 + tx_atabove + waiting2', data = predictData, return_type = 'dataframe')
+a, B = dmatrices('confirmBlocks ~ highgas2 + tx_atabove + s5mago', data = predictData2, return_type = 'dataframe')
 
 model = sm.GLM(a, B, family=sm.families.Poisson())
 results = model.fit()
@@ -267,7 +286,7 @@ a['highgas2'] = predictData['highgas2']
 
 print(a)
 
-a, B = dmatrices('confirmBlocks ~ hashpower_accepting + highgas2 + tx_atabove + waiting3', data = predictData, return_type = 'dataframe')
+a, B = dmatrices('confirmBlocks ~ highgas2 + tx_atabove + s1hago', data = predictData2, return_type = 'dataframe')
 
 model = sm.GLM(a, B, family=sm.families.Poisson())
 results = model.fit()
