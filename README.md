@@ -13,6 +13,8 @@ Add a user 'ethgas' with password 'station' to your local mysql database and cre
 
 requirements: pip3 install -r requirements.txt
 
-usage: python3 backend/gasStationFull.py
+usage: python3 backend/gasStationFull.py 
+
+options: -r 'makes report for website data'
 
  
