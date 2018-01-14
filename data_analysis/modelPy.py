@@ -228,8 +228,9 @@ print(F[:15])
 response = input("save data? \n")
 if int(response) == 1:
     weightedPd.to_sql(con=engine, name='storedPredict', if_exists='append', index=False)
+    print ('done storing')
 
-
+print ('loading')
 cursor = cnx.cursor()
 query = ("SELECT * FROM storedPredict")
 cursor.execute(query)
@@ -238,6 +239,9 @@ predictData = pd.DataFrame(cursor.fetchall())
 predictData.columns = head
 cursor.close()
 predictData['hp2'] = predictData['hashpower_accepting']*predictData['hashpower_accepting']
+
+predictData.loc[predictData['hashpower_accepting'] < 10, 'hashpower_accepting'] = np.nan
+predictData = predictData.dropna(subset=['hashpower_accepting'])
 
 
 y, X = dmatrices('confirmBlocks ~ hashpower_accepting + hp2', data = predictData, return_type = 'dataframe')
