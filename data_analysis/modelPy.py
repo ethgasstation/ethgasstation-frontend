@@ -68,7 +68,7 @@ predictData['hpa2'] = predictData['hashpower_accepting']*predictData['hashpower_
 
 print ("violations: ")
 predictData['violations'] = predictData['expectedWait'] / predictData['confirmBlocks']
-predictData['viol2'] = ((predictData['violations']>2.5) & (predictData['confirmBlocks'] > 5) & (predictData['expectedWait'] < 500))
+predictData['viol2'] = ((predictData['violations']>3.5) & (predictData['confirmBlocks'] > 5) & (predictData['expectedWait'] < 500))
 
 print (predictData['viol2'].sum())
 print (predictData['viol2'].count())
@@ -83,14 +83,20 @@ count20 = predictData.loc[(predictData['round_gp_10gwei'] <=400) &  (predictData
 viol50 = predictData.loc[predictData['round_gp_10gwei'] > 400, 'viol2'].sum()
 count50 = predictData.loc[predictData['round_gp_10gwei'] > 400, 'viol2'].count()
 
+print ("violations under 10gwei")
 print(viol10)
+print ("total under 10 gwei")
 print(count10)
+print ("violations under 40gwei")
 print(viol20)
+print ("total under 40 gwei")
 print(count20)
+print ("violations > 40gwei")
 print(viol50)
+print ("total > 40 gwei")
 print(count50)
 
-xxx
+
 
 '''
 scatter = predictData.loc[(predictData['expectedWait'] < 300) & (predictData['confirmBlocks']<500) & (predictData['expectedWait'] > 2)]
@@ -147,7 +153,7 @@ print(y.loc[y['bad']==1])
 predictData.loc[predictData['gp10th'] > 100, 'gp10th'] = 100
 
 
-a, B = dmatrices('confirmBlocks ~ hashpower_accepting2 + highgas2 + tx_atabove', data = predictData, return_type = 'dataframe')
+a, B = dmatrices('confirmBlocks ~ hashpower_accepting', data = predictData, return_type = 'dataframe')
 
 model = sm.GLM(a, B, family=sm.families.Poisson())
 results = model.fit()

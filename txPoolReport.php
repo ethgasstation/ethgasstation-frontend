@@ -91,9 +91,7 @@
                           <th>% of total transactions mined in last 200 blocks </th>
                           <th>#Tx at/above in txpool</th>
                           <th>% of Tx Unmined > 5min</th>
-                          <th>% of Tx Unmined > 60min</th>
-                          <th>Predicted Average Time to Confirm (Minutes)</th>
-                          <th>95% Limit Predicted Confirm Time (Minutes)</th>
+                          <th>% of Tx Unmined > 20min</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -114,16 +112,6 @@
                         echo("<td>". $row['s1hago']. "</td>");}
                         else{
                           echo("<td>". 'NaN'."</td>");}                    
-                        if ($row['expectedTime'] > 120){
-                          echo("<td>". "> 2 hours". "</td>");
-                        }
-                        else {
-                        echo("<td>". round($row['expectedTime'],1). "</td>");}
-                        if ($uciWait > 120){
-                          echo("<td>". "> 2 hours". "</td>");
-                        }
-                        else{
-                        echo("<td>". round($uciWait, 1). "</td>");}
                         
                         echo('</tr>');}
 

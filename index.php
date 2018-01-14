@@ -257,24 +257,20 @@
                     <tr>
                       <th>Speed</th>
                       <th>Gas Price </br> (gwei)</th>
-                      <th>Predicted Wait </br> (minutes)</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
-                      <td style = "color:#1ABB9C"><strong>SafeLow (<60m)</strong></td>
+                      <td style = "color:#1ABB9C"><strong>SafeLow (<30m)</strong></td>
                       <td style = "color:#1ABB9C" ><?php echo ($gpRecs2['safeLow']/10) ?></td>
-                      <td style = "color:#03586A" ><?php echo ($gpRecs2['safeLowWait']) ?></td>
                     </tr>
                     <tr>
                       <td style = "color:#03586A"><strong>Standard (<5m)<strong></td>
                       <td style = "color:#03586A"><?php echo ($gpRecs2['average']/10) ?></td>
-                      <td style = "color:#03586A" ><?php echo ($gpRecs2['avgWait']) ?></td>
                     </tr>
                     <tr>
                       <td style = "color:red"><strong>Fast (<2m)<strong></td>
                       <td style = "color:red"><?php echo ($gpRecs2['fast']/10) ?></td>
-                      <td style = "color:#03586A" ><?php echo ($gpRecs2['fastWait']) ?></td>
                     </tr>
                   </tbody>
                 </table>
