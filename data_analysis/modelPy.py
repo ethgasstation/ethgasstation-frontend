@@ -200,8 +200,8 @@ print(D[:15])
 
 ### Select transactions for long term storage
 
-pdLowGas = predictData.loc[(predictData['hashpower_accepting'] <= 50) & (predictData['highgas2']==0)]
-pdRegGas = predictData.loc[(predictData['hashpower_accepting'] > 50) & (predictData['highgas2']==0)]
+pdLowGas = predictData.loc[(predictData['hashpower_accepting'] <= 65) & (predictData['highgas2']==0)]
+pdRegGas = predictData.loc[(predictData['hashpower_accepting'] > 65) & (predictData['highgas2']==0)]
 pdHgo = predictData.loc[predictData['highgas2'] == 1]
 
 print('low Gp tx')
@@ -215,7 +215,7 @@ print (len(weightedPd))
 
 ### model with sampled transactions
 
-e, F = dmatrices('confirmBlocks ~ hashpower_accepting + highgas2 + tx_atabove', data = weightedPd, return_type = 'dataframe')
+e, F = dmatrices('confirmBlocks ~ hashpower_accepting', data = weightedPd, return_type = 'dataframe')
 
 model = sm.GLM(e, F, family=sm.families.Poisson())
 results = model.fit()
@@ -237,13 +237,10 @@ head = cursor.column_names
 predictData = pd.DataFrame(cursor.fetchall())
 predictData.columns = head
 cursor.close()
+predictData['hp2'] = predictData['hashpower_accepting']*predictData['hashpower_accepting']
 
-predictData['waiting1'] = (predictData['s5mago'] > 50)
-predictData['waiting2'] = (predictData['s1hago'] > 30)
-predictData['waiting3'] = ((predictData['waiting1']==1) | (predictData['waiting2']==1))
-predictData2 = predictData.loc[(predictData['hashpower_accepting']>20) & (predictData['hashpower_accepting'] < 40) ]
 
-y, X = dmatrices('confirmBlocks ~ hashpower_accepting + highgas2 + tx_atabove', data = predictData, return_type = 'dataframe')
+y, X = dmatrices('confirmBlocks ~ hashpower_accepting + hp2', data = predictData, return_type = 'dataframe')
 
 print(y[:5])
 print(X[:5])
@@ -265,47 +262,6 @@ y = y.sort_values('hashpower_accepting')
 
 print(y)
 
-a, B = dmatrices('confirmBlocks ~ highgas2 + tx_atabove', data = predictData2, return_type = 'dataframe')
-
-model = sm.GLM(a, B, family=sm.families.Poisson())
-results = model.fit()
-print (results.summary())
-
-a['predict'] = results.predict()
-a['round_gp_10gwei'] = predictData['round_gp_10gwei']
-a['hashpower_accepting'] = predictData['hashpower_accepting']
-a['tx_atabove'] = predictData['tx_atabove']
-a['highgas2'] = predictData['highgas2']
-
-print(a)
-
-a, B = dmatrices('confirmBlocks ~ highgas2 + tx_atabove + s5mago', data = predictData2, return_type = 'dataframe')
-
-model = sm.GLM(a, B, family=sm.families.Poisson())
-results = model.fit()
-print (results.summary())
-
-a['predict'] = results.predict()
-a['round_gp_10gwei'] = predictData['round_gp_10gwei']
-a['hashpower_accepting'] = predictData['hashpower_accepting']
-a['tx_atabove'] = predictData['tx_atabove']
-a['highgas2'] = predictData['highgas2']
-
-print(a)
-
-a, B = dmatrices('confirmBlocks ~ highgas2 + tx_atabove + s1hago', data = predictData2, return_type = 'dataframe')
-
-model = sm.GLM(a, B, family=sm.families.Poisson())
-results = model.fit()
-print (results.summary())
-
-a['predict'] = results.predict()
-a['round_gp_10gwei'] = predictData['round_gp_10gwei']
-a['hashpower_accepting'] = predictData['hashpower_accepting']
-a['tx_atabove'] = predictData['tx_atabove']
-a['highgas2'] = predictData['highgas2']
-
-print(a)
 
 '''
 y1, X1 = dmatrices('logCTime ~ hashPowerAccepting  + highGasOffered + dump + ico', data = predictData, return_type = 'dataframe')
