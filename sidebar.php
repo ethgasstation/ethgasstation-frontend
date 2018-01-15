@@ -4,7 +4,7 @@
           <div class="left_col scroll-view">
 
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.php" class="site_title"><img src="images/ETHgas.png" style="height:32px;width:32px"> <span>ETH Gas Station</span></a>
+              <a href="index.php" class="site_title"><img src="images/ETHgas.png" style="height:32px;width:32px"> <span><?php echo EGS_TITLE; ?></span></a>
             </div>
             
             <div class="clearfix"></div>

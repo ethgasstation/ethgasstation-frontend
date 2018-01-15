@@ -1,10 +1,6 @@
 <?php
 
-//database
-define('DB_HOST', '127.0.0.1');
-define('DB_USERNAME', 'ethgas');
-define('DB_PASSWORD', 'station');
-define('DB_NAME', 'tx');
+require_once 'common.php';
 
 //get connection
 $mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
@@ -48,12 +44,12 @@ elseif ($currency == 'gbp'){
 }
 
 try{
-    $calcParamString = file_get_contents("http://localhost/json/calc.json");
+    $calcParamString = get_json_file("calc.json");
     $calcParams = json_decode($calcParamString, true);
 
 
 
-    $gasPriceRecString = file_get_contents("http://localhost/json/ethgas.json");
+    $gasPriceRecString = get_json_file("ethgas.json");
     $gasPriceRecs = json_decode($gasPriceRecString, true);
 } catch (Exception $e) {
     echo 'waith for tables to be populated';

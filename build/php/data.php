@@ -2,11 +2,7 @@
 //setting header to json
 //header('Content-Type: application/json');
 
-//database
-define('DB_HOST', '127.0.0.1');
-define('DB_USERNAME', 'ethgas');
-define('DB_PASSWORD', 'station');
-define('DB_NAME', 'tx');
+require_once 'common.php';
 
 //get connection
 $mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
@@ -180,10 +176,10 @@ else{
 
 //Data for miner ranking table
 try{
-    $minerString = file_get_contents("http://localhost/json/topMiners.json");
+    $minerString = get_json_file("topMiners.json");
     $topMiners = json_decode($minerString, true);
 
-    $priceWaitString = file_get_contents("http://localhost/json/priceWait.json");
+    $priceWaitString = get_json_file("priceWait.json");
     $priceWait = json_decode($priceWaitString, true);
     $priceWaitData = '';
     $priceWaitLabels = '';
@@ -201,13 +197,13 @@ try{
     $priceWaitData = rtrim($priceWaitData,',');
     $priceWaitLabels = rtrim($priceWaitLabels, ',');
     
-    $gpRecsString = file_get_contents("http://localhost/json/ethgas.json");
+    $gpRecsString = get_json_file("ethgas.json");
     $gpRecs = json_decode($gpRecsString, true);
 
-    $gpRecsString2 = file_get_contents("http://localhost/json/ethgasAPI.json");
+    $gpRecsString2 = get_json_file("ethgasAPI.json");
     $gpRecs2 = json_decode($gpRecsString2, true);
 
-    $predictString = file_get_contents("http://localhost/json/predictTable.json");
+    $predictString = get_json_file("predictTable.json");
     $predictTable = json_decode($predictString, true);
 
     function sliderValue ($gasPrice){
@@ -223,7 +219,7 @@ try{
     $minRef = sliderValue($gpRecs2['safeLow']);
 
 
-    $calcParamString = file_get_contents("http://localhost/json/calc.json");
+    $calcParamString = get_json_file("calc.json");
     $calcParams = json_decode($calcParamString, true);
 
     $sWait = exp($calcParams['Intercept'] + $calcParams['priceCat1']);

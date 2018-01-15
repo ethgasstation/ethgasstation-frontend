@@ -1,9 +1,9 @@
 <?php
 
-$minerString = file_get_contents("http://localhost/json/topMiners.json");
+$minerString = get_json_file("topMiners.json");
 $topMiners = json_decode($minerString, true);
 
-$priceWaitString = file_get_contents("http://localhost/json/priceWait.json");
+$priceWaitString = get_json_file("priceWait.json");
 $priceWait = json_decode($priceWaitString, true);
 $priceWaitData = '';
 $priceWaitLabels = '';
@@ -21,16 +21,16 @@ foreach($priceWait as $row)
 $priceWaitData = rtrim($priceWaitData,',');
 $priceWaitLabels = rtrim($priceWaitLabels, ',');
     
-$gpRecsString = file_get_contents("http://localhost/json/ethgas.json");
+$gpRecsString = get_json_file("ethgas.json");
 $gpRecs = json_decode($gpRecsString, true);
 
-$gpRecsString2 = file_get_contents("http://localhost/json/ethgasAPI.json");
+$gpRecsString2 = get_json_file("ethgasAPI.json");
 $gpRecs2 = json_decode($gpRecsString2, true);
 
-$predictString = file_get_contents("http://localhost/json/predictTable.json");
+$predictString = get_json_file("predictTable.json");
 $predictTable = json_decode($predictString, true);
 
-$rowString = file_get_contents("http://localhost/json/txData10k.json");
+$rowString = get_json_file("txData10k.json");
 $row = json_decode($rowString, true);
 
 // Get values for Misc transactions table
@@ -148,7 +148,7 @@ $fastestRef = sliderValue($gpRecs2['fastest']);
 $minRef = sliderValue($gpRecs2['safeLow']);
 
 
-$calcParamString = file_get_contents("http://localhost/json/calc.json");
+$calcParamString = get_json_file("calc.json");
 $calcParams = json_decode($calcParamString, true);
 
 $sWait = exp($calcParams['Intercept'] + $calcParams['priceCat1']);
