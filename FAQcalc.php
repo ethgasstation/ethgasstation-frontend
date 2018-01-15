@@ -1,3 +1,4 @@
+<?php require_once 'build/php/common.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>ETH Gas Station | FAQ </title>
+    <title><?php echo EGS_TITLE; ?> | FAQ </title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -42,6 +43,7 @@
   </head>
 
   <body class="nav-md">
+  <?php include 'unofficial.php'; ?>
     <div class="container body">
       <div class="main_container">
         <?php include 'sidebar.php'; ?>

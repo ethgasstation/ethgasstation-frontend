@@ -9,7 +9,7 @@ It requires the following:
   3) Mysql database
   4) A local geth node 
 
-Add a user 'ethgas' with password 'station' to your local mysql database and create a database 'tx' to allow it to add the tables. 
+Once done, configure your settings at build/php/common.php.
 
 requirements: pip3 install -r requirements.txt
 

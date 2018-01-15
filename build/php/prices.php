@@ -1,10 +1,6 @@
 <?php
 
-//database
-define('DB_HOST', '127.0.0.1');
-define('DB_USERNAME', 'ethgas');
-define('DB_PASSWORD', 'station');
-define('DB_NAME', 'tx');
+require_once 'common.php';
 
 //get connection
 $mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);

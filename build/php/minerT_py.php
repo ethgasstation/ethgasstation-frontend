@@ -1,10 +1,6 @@
 <?php
 
-//database
-define('DB_HOST', '127.0.0.1');
-define('DB_USERNAME', 'ethgas');
-define('DB_PASSWORD', 'station');
-define('DB_NAME', 'tx');
+require_once 'common.php';
 
 //get connection
 $mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
@@ -16,32 +12,32 @@ if(!$mysqli){
 //query to get data from the table
 
 try{
-$minerString = file_get_contents("http://localhost/json/miners.json");
+$minerString = get_json_file("miners.json");
 $minersArray = json_decode($minerString, true);
 
-$predictString = file_get_contents("http://localhost/json/predictTable.json");
+$predictString = get_json_file("predictTable.json");
 $predictArray = json_decode($predictString, true);
 
-$safeLowString = file_get_contents("http://localhost/json/hourago.json");
+$safeLowString = get_json_file("hourago.json");
 $safeLowArray = json_decode($safeLowString, true);
 
-$gpRecsString2 = file_get_contents("http://localhost/json/ethgasAPI.json");
+$gpRecsString2 = get_json_file("ethgasAPI.json");
 $gpRecs2 = json_decode($gpRecsString2, true);
 $latestBlock = $gpRecs2['blockNum'];
 $bnum = $gpRecs2['blockNum'];
-$gasGuzzRaw = file_get_contents("http://localhost/json/gasguzz.json");
+$gasGuzzRaw = get_json_file("gasguzz.json");
 $gasGuzzTable = json_decode($gasGuzzRaw, true);
 
-$memPoolString = file_get_contents("http://localhost/json/memPool.json");
+$memPoolString = get_json_file("memPool.json");
 $memPoolArray = json_decode($memPoolString, true);
 
-$rowString = file_get_contents("http://localhost/json/txDataLast10k.json");
+$rowString = get_json_file("txDataLast10k.json");
 $row = json_decode($rowString, true);
 
-$txpoolString = file_get_contents("http://localhost/json/txpoolblock.json");
+$txpoolString = get_json_file("txpoolblock.json");
 $txpoolArray = json_decode($txpoolString, true);
 
-$validatedString = file_get_contents("http://localhost/json/validated.json");
+$validatedString = get_json_file("validated.json");
 $validatedArray = json_decode($validatedString, true);
 } catch (Exception $e){
 	echo 'keep waiting';

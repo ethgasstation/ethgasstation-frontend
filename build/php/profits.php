@@ -1,10 +1,6 @@
 <?php
 
-//database
-define('DB_HOST', '127.0.0.1');
-define('DB_USERNAME', 'ethgas');
-define('DB_PASSWORD', 'station');
-define('DB_NAME', 'tx');
+require_once 'common.php';
 
 //get connection
 $mysqli = new mysqli(DB_HOST, DB_USERNAME, DB_PASSWORD, DB_NAME);
@@ -65,11 +61,11 @@ else {
 
 
 try{
-    $profitRaw = file_get_contents("http://localhost/json/profit.json");
+    $profitRaw = get_json_file("profit.json");
     $profitTable = json_decode($profitRaw, true);
-    $gasGuzzRaw = file_get_contents("http://localhost/json/gasguzz.json");
+    $gasGuzzRaw = get_json_file("gasguzz.json");
     $gasGuzzTable = json_decode($gasGuzzRaw, true);
-    $uncGraphRaw = file_get_contents("http://localhost/json/uncGraph.json");
+    $uncGraphRaw = get_json_file("uncGraph.json");
     $uncGraphData = json_decode($uncGraphRaw, true);
 
 } catch (Exception $e) {

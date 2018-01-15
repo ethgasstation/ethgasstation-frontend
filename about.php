@@ -1,3 +1,4 @@
+<?php require_once 'build/php/common.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>ETH Gas Station | FAQ </title>
+    <title><?php echo EGS_TITLE; ?> | FAQ </title>
 
     <!-- Bootstrap -->
     <link href="vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -42,6 +43,7 @@
   </head>
 
   <body class="nav-md">
+    <?php include 'unofficial.php'; ?>
     <div class="container body">
       <div class="main_container">
         <?php include 'sidebar.php'; ?>
@@ -73,12 +75,8 @@
                   </div>
                  <div class="blog_content">
 
-                  <p>ETH Gas Station aims to increase the transparency of gas prices, transaction confirmation times, and miner policies on the Ethereum network. The long term success of Ethereum depends on a healthy and efficient market for the price of gas. We hope this site will help people get the best gas price.</p></br>
-                  <p> The information on this site is gathered from a single Ethereum node located in the US. Therefore, the numbers may not always be accurate or match the experience of all users globally.</p> 
-                  <p><br></p>
-                  <p> We run simple scripts that monitor a standard Ethereum node (geth or parity).  The scripts record when a transaction is broadcast to the node as a pending transaction and when the transaction is later mined.  These times as well as other standard information about the transaction are recorded in a database.  Automated queries are then run every 100 blocks to update this webpage based on the information from the past 10,000 blocks (about 2 days).  The speedometer is updated every 5 seconds and reflects the percent gas used of the block gas limit from the prior 10 blocks.</p>
-                 
-                 
+                  <p><?php echo EGS_TITLE; ?> aims to increase the transparency of gas prices, transaction confirmation times, and miner policies on the Ethereum network. The long term success of Ethereum depends on a healthy and efficient market for the price of gas. We hope this site will help people get the best gas price.</p></br>
+                  <p>This is an open source project and this node is not an official Eth Gas Station node. The real EthGasStation exists at <a href="//ethgasstation.info">ethgasstation.info</a>.
                   </div>
                   <div class="clearfix"></div>
                 </div>

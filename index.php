@@ -1,3 +1,4 @@
+<?php require_once 'build/php/common.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -7,15 +8,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>ETH Gas Station | Consumer oriented metrics for the Ethereum gas market </title>
+    <title><?php echo EGS_TITLE; ?> | Consumer oriented metrics for the Ethereum gas market </title>
 
     <meta name="keywords" content="Ethereum ETH gas blockchain market price transactions miners users">
-    <meta name="description" content="User oriented, real-time metrics on gas price, wait times, and miner policies on the Ethereum netowrk">
+    <meta name="description" content="<?php echo EGS_DESCRIPTION; ?>">
     
-    <meta property="og:title" content="ETH Gas Station" />
+    <meta property="og:title" content="<?php echo EGS_TITLE; ?>" />
     <meta property="og:type" content="website" />
     <meta property="og:image" content="images/ETHGasStation.png" />
-    <meta property="og:url" content="http://ethgasstation.info" />
+    <meta property="og:url" content="https://<?php echo EGS_HOSTNAME; ?>" />
 
 
     <!-- Bootstrap -->
@@ -44,7 +45,7 @@
 
 
     <!-- Custom Theme Style -->
-    
+
      <?php include 'build/php/data_py.php'; ?>
 
     <script type="text/javascript" src="speedometer/xcanvas.js"></script>
@@ -62,6 +63,7 @@
   </head>
 
   <body class="nav-md">
+  <?php include 'unofficial.php'; ?>
     <div class="container body">
       <div class="main_container">
       <?php include 'sidebar.php'; ?>
@@ -717,21 +719,21 @@
       
             $("#eur").click(function(){
                  
-                location = "http://ethgasstation.info/index.php?curr=eur";
+                location = "http://<?php echo EGS_HOSTNAME; ?>/index.php?curr=eur";
 			          
                                                                      
             });
             
             $("#usd").click(function(){
                  
-                location = "http://ethgasstation.info/index.php?curr=usd";
+                location = "http://<?php echo EGS_HOSTNAME; ?>/index.php?curr=usd";
 			          
                                                                      
             });
           
             $("#cny").click(function(){
 
-                location = "http://ethgasstation.info/index.php?curr=cny";
+                location = "http://<?php echo EGS_HOSTNAME; ?>/index.php?curr=cny";
                                
 			        
                                                                      
@@ -739,7 +741,7 @@
 
             $("#gbp").click(function(){
                  
-                location = "http://ethgasstation.info/index.php?curr=gbp";
+                location = "http://<?php echo EGS_HOSTNAME; ?>/index.php?curr=gbp";
 
 			  
                                                                      

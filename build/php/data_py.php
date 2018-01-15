@@ -1,9 +1,9 @@
 <?php
 
-$minerString = file_get_contents("http://localhost/json/topMiners.json");
+$minerString = get_json_file("topMiners.json");
 $topMiners = json_decode($minerString, true);
 
-$priceWaitString = file_get_contents("http://localhost/json/priceWait.json");
+$priceWaitString = get_json_file("priceWait.json");
 $priceWait = json_decode($priceWaitString, true);
 $priceWaitData = '';
 $priceWaitLabels = '';
@@ -21,13 +21,13 @@ foreach($priceWait as $row)
 $priceWaitData = rtrim($priceWaitData,',');
 $priceWaitLabels = rtrim($priceWaitLabels, ',');
 
-$gpRecsString2 = file_get_contents("http://localhost/json/ethgasAPI.json");
+$gpRecsString2 = get_json_file("ethgasAPI.json");
 $gpRecs2 = json_decode($gpRecsString2, true);
 
-$predictString = file_get_contents("http://localhost/json/predictTable.json");
+$predictString = get_json_file("predictTable.json");
 $predictTable = json_decode($predictString, true);
 
-$rowString = file_get_contents("http://localhost/json/txDataLast10k.json");
+$rowString = get_json_file("txDataLast10k.json");
 $row = json_decode($rowString, true);
 // Get values for Misc transactions table
 
