@@ -21,7 +21,7 @@ define('EGS_DESCRIPTION', 'Unofficial ethgasstation.info node run by a volunteer
 // no point in abstraction, all of this is going away
 function path_to_json(string $json_file) {
     $path = realpath(JSON_LOCATION . '/' . $json_file);
-    if (file_exists($path)) {
+    if ($path) {
         return $path;
     } else {
         return false;
