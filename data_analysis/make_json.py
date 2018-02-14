@@ -22,6 +22,13 @@ import time
 from redis import StrictRedis
 import redis.exceptions
 
+
+"""
+    WARNING!
+
+    Move this file outside of this folder before adding credentials. If you have
+    poor access rules set, this file may leak these credentials.
+"""
 REDIS_INFO = {
     'host': 'localhost',
     'port': 6379,
@@ -94,7 +101,7 @@ def main():
                                 f.write(json.dumps(jsondata, ensure_ascii=True, allow_nan=False))
                                 json_hashes[filename] = json_hash
 
-                        except json.JSONDecodeError:
+                        except (json.JSONDecodeError, ValueError) as e:
                             print("Redis data retrieved for %s is invalid JSON, skipping write." % redis_key, file=sys.stderr)
             time.sleep(15)
         except KeyboardInterrupt:
