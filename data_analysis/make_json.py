@@ -94,7 +94,7 @@ def main():
                                 f.write(json.dumps(jsondata, ensure_ascii=True, allow_nan=False))
                                 json_hashes[filename] = json_hash
 
-                        except json.JSONDecodeError:
+                        except (json.JSONDecodeError, ValueError) as e:
                             print("Redis data retrieved for %s is invalid JSON, skipping write." % redis_key, file=sys.stderr)
             time.sleep(15)
         except KeyboardInterrupt:
