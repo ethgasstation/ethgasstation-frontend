@@ -22,6 +22,13 @@ import time
 from redis import StrictRedis
 import redis.exceptions
 
+
+"""
+    WARNING!
+
+    Move this file outside of this folder before adding credentials. If you have
+    poor access rules set, this file may leak these credentials.
+"""
 REDIS_INFO = {
     'host': 'localhost',
     'port': 6379,

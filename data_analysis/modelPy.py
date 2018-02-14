@@ -13,6 +13,14 @@ import urllib,json
 from sqlalchemy import create_engine 
 from patsy import dmatrices
 
+
+"""
+    WARNING!
+
+    Move this file outside of this folder before adding credentials. If you have
+    poor access rules set, this file may leak these credentials.
+"""
+
 cnx = mysql.connector.connect(user='ethgas', password='station', host='127.0.0.1', database='tx')
 cursor = cnx.cursor()
 engine = create_engine(
