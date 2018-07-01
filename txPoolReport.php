@@ -92,7 +92,11 @@
                           <th>% of Last 200 Blocks Accepting </th>
                           <th>% of total transactions mined in last 200 blocks </th>
                           <th>#Tx at/above in txpool</th>
+                          <th>Total Seen 5m</th>
+                          <th>Pct Mined 5m</th>
                           <th>% of Tx Unmined > 5min</th>
+                          <th>Total Seen 30m</th>
+                          <th>Pct Mined 30m</th>
                           <th>% of Tx Unmined > 20min</th>
                         </tr>
                       </thead>
@@ -106,14 +110,31 @@
                         echo("<td>". round($row['hashpower_accepting'], 1) ."</td>");
                         echo("<td>". round($row['hashpower_accepting2'], 1) ."</td>");
                         echo("<td>". $row['tx_atabove']."</td>");
-                        if (isset($row['s5mago'])){
-                          echo("<td>". $row['s5mago']. "</td>");}
+                        if (isset($row['total_seen_5m'])){
+                          echo("<td>". $row['total_seen_5m']. "</td>");}
                           else{
                             echo("<td>". 'NaN'."</td>");} 
-                        if (isset($row['s1hago'])){
-                        echo("<td>". $row['s1hago']. "</td>");}
+                        }
+                        if (isset($row['pct_mined_5m'])){
+                          echo("<td>". $row['pct_mined_5m']. "</td>");}
+                          else{
+                            echo("<td>". 'NaN'."</td>");} 
+                        if (isset($row['pct_remaining5m'])){
+                          echo("<td>". $row['pct_remaining5m']. "</td>");}
+                          else{
+                            echo("<td>". 'NaN'."</td>");} 
+                        if (isset($row['total_seen_30m'])){
+                        echo("<td>". $row['total_seen_30m']. "</td>");}
                         else{
-                          echo("<td>". 'NaN'."</td>");}                    
+                          echo("<td>". 'NaN'."</td>");}
+                        if (isset($row['pct_mined_30m'])){
+                          echo("<td>". $row['pct_mined_30m']. "</td>");}
+                            else{
+                              echo("<td>". 'NaN'."</td>");} 
+                        if (isset($row['pct_remaining30m'])){
+                          echo("<td>". $row['pct_remaining30m']. "</td>");}
+                            else{
+                              echo("<td>". 'NaN'."</td>");}                     
                         
                         echo('</tr>');}
 
