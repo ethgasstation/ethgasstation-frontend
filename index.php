@@ -597,75 +597,7 @@
 			  
 			} 
 
-      //Data for Network Activity Graph
-      /*			 
-			if ($('#lineChart').length ){	
-			
-			  var ctx = document.getElementById("lineChart");
-			  var lineChart = new Chart(ctx, {
-				type: 'line',
-				data: {
-				  labels: <?php echo '[' . $x1. ',' . ' ' . ','. ' '. ','. ' ' . ',' . ' '. ','. $x6 . ',' . ' ' . ','. ' '. ','. ' ' . ',' . ' '. ','. $x11.']'; ?>,
-				  datasets: [{
-					label: "Avg Tx Fees Per Block (ETH)",
-					yAxisID: 'A',
-					backgroundColor: "rgba(38, 185, 154, 0.31)",
-					borderColor: "rgba(38, 185, 154, 0.7)",
-					pointBorderColor: "rgba(38, 185, 154, 0.7)",
-					pointBackgroundColor: "rgba(38, 185, 154, 0.7)",
-					pointHoverBackgroundColor: "#fff",
-					pointHoverBorderColor: "rgba(220,220,220,1)",
-					pointBorderWidth: 1,
-					pointHoverRadius:5,
-					pointHitRadius:10,
-					data:  <?php echo '[' . $ya1. ',' . $ya2 . ',' . $ya3 . ',' . $ya4 . ',' . $ya5 . ',' . $ya6 . ',' . $ya7 .',' . $ya8 . ',' . $ya9 . ',' . $ya10. ',' .$ya11. ']'; ?>
-				  }, {
-					label: "Median Confirm Time (s)",
-					yAxisID: 'B',
-					backgroundColor: "rgba(3, 88, 106, 0.3)",
-					borderColor: "rgba(3, 88, 106, 0.70)",
-					pointBorderColor: "rgba(3, 88, 106, 0.70)",
-					pointBackgroundColor: "rgba(3, 88, 106, 0.70)",
-					pointHoverBackgroundColor: "#fff",
-					pointHoverBorderColor: "rgba(151,187,205,1)",
-					pointBorderWidth: 1,
-					data: <?php echo '[' . $yb1. ',' . $yb2 . ',' . $yb3 . ',' . $yb4 . ',' . $yb5 . ',' . $yb6 . ',' . $yb7 .',' . $yb8 . ',' . $yb9 . ',' . $yb10. ','. $yb11. ']'; ?>
-				  }]
-				},
-				options: {
-                    legend: {
-                        display: false
-                    },
-    			scales: {
-      			yAxes: [{
-       			 id: 'A',
-        		 type: 'linear',
-       			 position: 'left',
-             ticks: {
-							beginAtZero: false },
-						 scaleLabel: {
-							display:true,
-							labelString: 'Avg Tx Fees Per Block (ETH)'	
-						 }
-      }, {
-        		id: 'B',
-        		type: 'linear',
-       			position: 'right',
-						ticks: {
-							beginAtZero: false },
-						scaleLabel: {
-							display:true,
-							labelString: 'Time to confirm (s)'	
-						 }
-					
-        		
-      }]
-    }
-  }
-});
-
-			
-};*/
+      
 
     //Speedometer
 			  
@@ -683,7 +615,7 @@
 
           
                     $.ajax({
-		                      url: "json/ethgasAPI.json",
+		    url: "json/ethgasAPI.json",
 		                      method: "GET",
                               dataType: "json",
 		                      success: function(data) {

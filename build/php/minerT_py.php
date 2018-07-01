@@ -18,9 +18,6 @@ $minersArray = json_decode($minerString, true);
 $predictString = get_json_file("predictTable.json");
 $predictArray = json_decode($predictString, true);
 
-$safeLowString = get_json_file("hourago.json");
-$safeLowArray = json_decode($safeLowString, true);
-
 $gpRecsString2 = get_json_file("ethgasAPI.json");
 $gpRecs2 = json_decode($gpRecsString2, true);
 $latestBlock = $gpRecs2['blockNum'];
@@ -28,14 +25,8 @@ $bnum = $gpRecs2['blockNum'];
 $gasGuzzRaw = get_json_file("gasguzz.json");
 $gasGuzzTable = json_decode($gasGuzzRaw, true);
 
-$memPoolString = get_json_file("memPool.json");
-$memPoolArray = json_decode($memPoolString, true);
-
 $rowString = get_json_file("txDataLast10k.json");
 $row = json_decode($rowString, true);
-
-$txpoolString = get_json_file("txpoolblock.json");
-$txpoolArray = json_decode($txpoolString, true);
 
 $validatedString = get_json_file("validated.json");
 $validatedArray = json_decode($validatedString, true);

@@ -10,7 +10,7 @@ define('DB_HOST', 'localhost');
 define('DB_USERNAME', 'ethgas');
 define('DB_PASSWORD', 'station');
 define('DB_NAME', 'tx');
-define('JSON_LOCATION', '/tmp/json');
+define('JSON_LOCATION', '/var/www/html/egs/ethgasstation-frontend/json');
 
 // hostname to put in template links
 define('EGS_HOSTNAME', 'localhost');
