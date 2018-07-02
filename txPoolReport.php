@@ -113,28 +113,28 @@
                         if (isset($row['total_seen_5m'])){
                           echo("<td>". $row['total_seen_5m']. "</td>");}
                           else{
-                            echo("<td>". 'NaN'."</td>");} 
+                            echo("<td>". '---'."</td>");} 
                         }
                         if (isset($row['pct_mined_5m'])){
                           echo("<td>". $row['pct_mined_5m']. "</td>");}
                           else{
-                            echo("<td>". 'NaN'."</td>");} 
+                            echo("<td>". '---'."</td>");} 
                         if (isset($row['pct_remaining5m'])){
                           echo("<td>". $row['pct_remaining5m']. "</td>");}
                           else{
-                            echo("<td>". 'NaN'."</td>");} 
+                            echo("<td>". '---'."</td>");} 
                         if (isset($row['total_seen_30m'])){
                         echo("<td>". $row['total_seen_30m']. "</td>");}
                         else{
-                          echo("<td>". 'NaN'."</td>");}
+                          echo("<td>". '---'."</td>");}
                         if (isset($row['pct_mined_30m'])){
                           echo("<td>". $row['pct_mined_30m']. "</td>");}
                             else{
-                              echo("<td>". 'NaN'."</td>");} 
+                              echo("<td>". '---'."</td>");} 
                         if (isset($row['pct_remaining30m'])){
                           echo("<td>". $row['pct_remaining30m']. "</td>");}
                             else{
-                              echo("<td>". 'NaN'."</td>");}                     
+                              echo("<td>". '---'."</td>");}                     
                         
                         echo('</tr>');}
 
