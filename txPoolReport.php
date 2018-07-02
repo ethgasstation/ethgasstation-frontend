@@ -138,7 +138,7 @@
                         
                         echo('</tr>');}
 
-                      }
+                      
                       ?>
                         </tbody>
                     </table>
