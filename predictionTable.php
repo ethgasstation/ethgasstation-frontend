@@ -91,8 +91,6 @@
                           <th>Gas Price (Gwei)</th>
                           <th>% of Last 200 Blocks Accepting </th>
                           <th>#Tx at/above in txpool</th>
-                          <th>% of Tx Unmined > 5min</th>
-                          <th>% of Tx Unmined > 60min</th>
                           <th>Mean Time to Confirm (Minutes)</th>
                           <th>95% Confidence Confirm Time (Minutes)</th>
                         </tr>
@@ -106,8 +104,6 @@
                         echo("<td>". $row['gasprice']. "</td>");
                         echo("<td>". round($row['hashpower_accepting'], 1) ."</td>");
                         echo("<td>". $row['tx_atabove']."</td>");
-                        echo("<td>". $row['s5mago']. "</td>");
-                        echo("<td>". $row['s1hago']. "</td>");
                         if ($row['expectedTime'] > 120){
                           echo("<td>". "> 2 hours". "</td>");
                         }
