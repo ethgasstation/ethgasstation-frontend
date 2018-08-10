@@ -91,7 +91,8 @@
                           <th>Gas Price (Gwei)</th>
                           <th>% of Last 200 Blocks Accepting </th>
                           <th>% of total transactions mined in last 200 blocks </th>
-                          <th>#Tx at/above in txpool</th>
+			  <th>#Tx at/above in txpool</th>
+			  <th>Median Age (blocks)</th>
                           <th>Total Seen 5m</th>
                           <th>Pct Mined 5m</th>
                           <th>% of Tx Unmined > 5min</th>
@@ -109,7 +110,8 @@
                         echo("<td>". $row['gasprice']. "</td>");
                         echo("<td>". round($row['hashpower_accepting'], 1) ."</td>");
                         echo("<td>". round($row['hashpower_accepting2'], 1) ."</td>");
-                        echo("<td>". $row['tx_atabove']."</td>");
+			echo("<td>". $row['tx_atabove']."</td>");
+			echo("<td>". $row['age']."</td>");
                         if (isset($row['total_seen_5m'])){
                           echo("<td>". $row['total_seen_5m']. "</td>");}
                           else{
