@@ -166,7 +166,7 @@
                           <td id="go"></td>
                         </tr>
                         <tr>
-                          <td>% of last 200 blocks accpeting this gas price</td>
+                          <td>% of last 200 blocks accepting this gas price</td>
                           <td id="hp"></td>
                         </tr>
                         <tr>
