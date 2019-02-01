@@ -3,7 +3,8 @@ set -e
 
 # before starting this script:
 # cd /usr/local/SettleFinance/ethgasstation-frontend
-# git pull
+# git fetch --all
+# git reset --hard origin/master
 # chmod -R 777 /usr/local/SettleFinance/ethgasstation-frontend/upgrade.sh
 
 echo "####################################"
@@ -17,6 +18,7 @@ cp /var/www/ethgasstation.settle.host/public_html/build/php/common.php /usr/loca
 
 echo "Stopping Apache..."
 apachectl stop
+systemctl stop ethgassbackend
 
 rm -r -f -v /var/www/ethgasstation.settle.host/public_html/*
 
@@ -37,7 +39,7 @@ echo "Startting Apache..."
 
 echo "Restarting Backend..."
 
-systemctl restart ethgassbackend
+systemctl start ethgassbackend
 
 
 
