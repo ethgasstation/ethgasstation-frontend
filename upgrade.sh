@@ -2,23 +2,21 @@
 set -e
 
 # before starting this script:
-# cd /usr/local/SettleFinance/ethgasstation-frontend
-# git fetch --all
-# git reset --hard origin/master
-# chmod -R 777 /usr/local/SettleFinance/ethgasstation-frontend/upgrade.sh
+# cd /usr/local/SettleFinance/ethgasstation-frontend && git fetch --all && git reset --hard origin/master && git pull && chmod -R 777 /usr/local/SettleFinance/ethgasstation-frontend/upgrade.sh
 
 echo "####################################"
 echo "# ETH GAS STARTION FRONEND UPGRADE #"
 echo "####################################"
 
+echo "Stopping Apache and Backend..."
+systemctl stop apache2
+systemctl stop ethgassbackend
 
 rm -v /usr/local/SettleFinance/common.php || echo "Backup common file was probably already removed.";
+rm -r -f -v /usr/local/SettleFinance/json || echo "Backup json files were probably already removed.";
 
 cp /var/www/ethgasstation.settle.host/public_html/build/php/common.php /usr/local/SettleFinance/common.php
-
-echo "Stopping Apache..."
-apachectl stop
-systemctl stop ethgassbackend
+cp /var/www/ethgasstation.settle.host/public_html/json/* /usr/local/SettleFinance/json
 
 rm -r -f -v /var/www/ethgasstation.settle.host/public_html/*
 
@@ -29,18 +27,15 @@ rm -f -v /var/www/ethgasstation.settle.host/public_html/build/php/common.php
 cp -v /usr/local/SettleFinance/common.php /var/www/ethgasstation.settle.host/public_html/build/php/common.php
 
 mkdir -p -v /var/www/ethgasstation.settle.host/public_html/json
+cp /usr/local/SettleFinance/json/* /var/www/ethgasstation.settle.host/public_html/json
 
 chmod -R 777 /var/www/ethgasstation.settle.host/public_html/json
 
-echo "Startting Apache..."
+echo "Startting Apache and Backend..."
 
-/etc/init.d/apache2 start
-/etc/init.d/apache2 reload
-
-echo "Restarting Backend..."
-
+systemctl start apache2
 systemctl start ethgassbackend
-
+systemctl daemon-reload
 
 
 
