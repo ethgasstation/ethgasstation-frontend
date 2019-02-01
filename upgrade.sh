@@ -29,6 +29,7 @@ rm -f -v /var/www/ethgasstation.settle.host/public_html/build/php/common.php
 
 cp -v /usr/local/SettleFinance/common.php /var/www/ethgasstation.settle.host/public_html/build/php/common.php
 
+mkdir -p -v /var/www/ethgasstation.settle.host/public_html/json
 cp /usr/local/SettleFinance/json/* /var/www/ethgasstation.settle.host/public_html/json
 
 chmod -R 777 /var/www/ethgasstation.settle.host/public_html/json
