@@ -15,9 +15,9 @@
     }
 </style>
 <div id="unofficialWarning">
-    <p>
+    <!--<p>
         <strong>This is an unofficial ethgasstation node.</strong>
         The canonical EthGasStation is at <a href="https://ethgasstation.info/">ethgasstation.info</a>.
-        If you want to run your own EthGasStation, <a href="https://github.com/ethgasstation/ethgasstation">see the code on GitHub</a>.
-    </p>
+        If you want to run your own EthGasStation, <a href="https://github.com/SettleFinance/ethgasstation-frontend">see the code on GitHub</a>.
+    </p>-->
 </div>
