@@ -5,8 +5,7 @@ set -e
 # cd /usr/local/SettleFinance/ethgasstation-frontend && git fetch --all && git reset --hard origin/master && git pull && chmod -R 777 /usr/local/SettleFinance/ethgasstation-frontend/upgrade.sh && ./upgrade.sh
 
 #For Initial Setup
-#	mkdir -p -v /usr/local/SettleFinance
-#	cd /usr/local/SettleFinance
+#	mkdir -p -v /usr/local/SettleFinance && cd /usr/local/SettleFinance
 #	git clone https://github.com/SettleFinance/ethgasstation-frontend.git
 #	git clone https://github.com/SettleFinance/ethgasstation-backend.git
 #	cd ethgasstation-frontend
@@ -26,7 +25,7 @@ mkdir -p -v /usr/local/SettleFinance/json
 cp /var/www/ethgasstation.settle.host/public_html/build/php/common.php /usr/local/SettleFinance/common.php
 cp /var/www/ethgasstation.settle.host/public_html/json/* /usr/local/SettleFinance/json
 
-echo "Stopping Apache and Backend..."
+echo "Stopping Frontend And Backend..."
 systemctl stop apache2
 systemctl stop ethgassbackend
 
@@ -43,13 +42,15 @@ cp /usr/local/SettleFinance/json/* /var/www/ethgasstation.settle.host/public_htm
 
 chmod -R 777 /var/www/ethgasstation.settle.host/public_html/json
 
-echo "Startting Apache and Backend..."
-
-systemctl start apache2
+echo "Starting Frontend And Backend..."
 systemctl start ethgassbackend
+systemctl start apache2
 
 echo "Checking Disk Space"
 df
+
+echo "Last GETH Startus: "
+journalctl --unit=geth -n 3 --no-pager
 
 #PRO TIP's:
 
@@ -67,11 +68,17 @@ df
 #geth status verify command:
 #journalctl --unit=geth -n 100 --no-pager
 
-#to edit geth service
+#to edit geth service (use following command after applying changes: systemctl daemon-reload)
 #nano /lib/systemd/system/geth.service
+
+#to edit frontend config
+#nano /var/www/ethgasstation.settle.host/public_html/build/php/common.php
+
+#backed output json location:
+#/var/www/ethgasstation.settle.host/public_html/json
 
 #backend status verify
 #journalctl --unit=ethgassbackend -n 100 --no-pager
 
-#ExecStart=/usr/local/go-ethereum/build/bin/geth --syncmode "fast" --rpc --rpcapi="db,eth,net,web3,personal,txpool" --cache 1024 --rpcport 8545 --rpcaddr 127.0.0.1 --rpccorsdomain "*" --rpcvhosts "*"
+#ExecStart=/usr/local/go-ethereum/build/bin/geth --syncmode "fast" --rpc --rpcapi="db,eth,net,web3,personal,txpool" --cache 4096 --verbosity 3 --rpcport 8545 --rpcaddr 127.0.0.1 --rpccorsdomain "*" --rpcvhosts "*"
 
