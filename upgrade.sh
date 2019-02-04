@@ -54,6 +54,9 @@ df
 echo "Last GETH Startus: "
 journalctl --unit=geth -n 3 --no-pager
 
+echo "Last Backend Startus: "
+journalctl --unit=ethgassbackend -n 6 --no-pager
+
 #PRO TIP's:
 
 #echo "Geth Upgrade..."
