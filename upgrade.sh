@@ -43,8 +43,10 @@ cp /usr/local/SettleFinance/json/* /var/www/ethgasstation.settle.host/public_htm
 chmod -R 777 /var/www/ethgasstation.settle.host/public_html/json
 
 echo "Starting Frontend And Backend..."
-systemctl start ethgassbackend
-systemctl start apache2
+
+systemctl start ethgassbackend && systemctl restart apache2
+sleep 3
+systemctl start apache2 && systemctl restart apache2
 
 echo "Checking Disk Space"
 df
@@ -76,6 +78,9 @@ journalctl --unit=geth -n 3 --no-pager
 
 #backed output json location:
 #/var/www/ethgasstation.settle.host/public_html/json
+
+#backed output cleanup & reboot
+#rm -r -f -v /var/www/ethgasstation.settle.host/public_html/json/* && chmod -R 777 /var/www/ethgasstation.settle.host/public_html/json && systemctl restart ethgassbackend && systemctl restart geth
 
 #backend status verify
 #journalctl --unit=ethgassbackend -n 100 --no-pager
