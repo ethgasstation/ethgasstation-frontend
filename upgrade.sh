@@ -59,7 +59,7 @@ echo "Last GETH Startus: "
 journalctl --unit=geth -n 3 --no-pager
 
 echo "Last Backend Startus: "
-journalctl --unit=ethgassbackend -n 6 --no-pager
+journalctl --unit=ethgassbackend -n 25 --no-pager
 
 #PRO TIP's:
 
