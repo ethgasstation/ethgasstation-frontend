@@ -45,7 +45,7 @@ chmod -R 777 /var/www/ethgasstation.settle.host/public_html/json
 echo "Starting Frontend And Backend..."
 
 systemctl start ethgassbackend
-sleep 3
+sleep 60
 systemctl restart ethgassbackend
 sleep 3
 systemctl start apache2
