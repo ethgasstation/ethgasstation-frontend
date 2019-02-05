@@ -65,4 +65,4 @@ profit off of the ETH Gas Station without making their own modifications availab
 to the Ethereum community or supporting the ETH Gas Station project.
 
 If you are interested in commercially licensing ETH Gas Station technology for
-closed-source use, please reach out to ethgasstation AT protonmail {dot} com.
+closed-source use, please reach out to ethgasstation AT protonmail {dot} com. 
