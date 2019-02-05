@@ -25,9 +25,9 @@ mkdir -p -v /usr/local/SettleFinance/json
 cp /var/www/ethgasstation.settle.host/public_html/build/php/common.php /usr/local/SettleFinance/common.php
 cp /var/www/ethgasstation.settle.host/public_html/json/* /usr/local/SettleFinance/json
 
-echo "Stopping Frontend And Backend..."
+echo "Stopping Frontend..."
 systemctl stop apache2
-systemctl stop ethgassbackend
+#systemctl stop ethgassbackend
 
 rm -r -f -v /var/www/ethgasstation.settle.host/public_html/*
 
@@ -42,12 +42,12 @@ cp /usr/local/SettleFinance/json/* /var/www/ethgasstation.settle.host/public_htm
 
 chmod -R 777 /var/www/ethgasstation.settle.host/public_html/json
 
-echo "Starting Frontend And Backend..."
+echo "Starting Frontend..."
 
-systemctl start ethgassbackend
-sleep 60
-systemctl restart ethgassbackend
-sleep 3
+#systemctl start ethgassbackend
+#sleep 60
+#systemctl restart ethgassbackend
+#sleep 3
 systemctl start apache2
 sleep 3
 systemctl restart apache2
