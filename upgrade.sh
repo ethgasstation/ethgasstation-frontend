@@ -26,6 +26,7 @@ cp /var/www/ethgasstation.settle.host/public_html/json/* /usr/local/SettleFinanc
 
 echo "Stopping Frontend..."
 systemctl stop apache2
+systemctl stop ethgassbackend
 
 rm -r -f -v /var/www/ethgasstation.settle.host/public_html/*
 
@@ -42,6 +43,8 @@ chmod -R 777 /var/www/ethgasstation.settle.host/public_html/json
 
 echo "Starting Frontend..."
 
+systemctl start ethgassbackend
+sleep 3
 systemctl start apache2
 
 echo "Checking Disk Space"
