@@ -14,7 +14,6 @@ echo "####################################"
 echo "# ETH GAS STARTION FRONEND UPGRADE #"
 echo "####################################"
 
-
 rm -v /usr/local/SettleFinance/common.php || echo "Backup common file was probably already removed.";
 rm -r -f -v /usr/local/SettleFinance/json || echo "Backup json files were probably already removed.";
 
@@ -27,7 +26,6 @@ cp /var/www/ethgasstation.settle.host/public_html/json/* /usr/local/SettleFinanc
 
 echo "Stopping Frontend..."
 systemctl stop apache2
-#systemctl stop ethgassbackend
 
 rm -r -f -v /var/www/ethgasstation.settle.host/public_html/*
 
@@ -44,13 +42,7 @@ chmod -R 777 /var/www/ethgasstation.settle.host/public_html/json
 
 echo "Starting Frontend..."
 
-#systemctl start ethgassbackend
-#sleep 60
-#systemctl restart ethgassbackend
-#sleep 3
 systemctl start apache2
-sleep 3
-systemctl restart apache2
 
 echo "Checking Disk Space"
 df
@@ -93,4 +85,9 @@ journalctl --unit=ethgassbackend -n 25 --no-pager
 #journalctl --unit=ethgassbackend -n 100 --no-pager
 
 #ExecStart=/usr/local/go-ethereum/build/bin/geth --syncmode "fast" --rpc --rpcapi="db,eth,net,web3,personal,txpool" --cache 4096 --verbosity 3 --rpcport 8545 --rpcaddr 127.0.0.1 --rpccorsdomain "*" --rpcvhosts "*"
+
+#create backup file
+#
+
+
 
