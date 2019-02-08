@@ -50,8 +50,8 @@ systemctl start apache2
 echo "Checking Disk Space"
 df
 
-echo "Last GETH Startus: "
-journalctl --unit=geth -n 3 --no-pager
+#echo "Last GETH Startus: "
+#journalctl --unit=geth -n 3 --no-pager
 
 echo "Last Backend Startus: "
 journalctl --unit=ethgassbackend -n 25 --no-pager
@@ -87,10 +87,5 @@ journalctl --unit=ethgassbackend -n 25 --no-pager
 #backend status verify
 #journalctl --unit=ethgassbackend -n 100 --no-pager
 
-#ExecStart=/usr/local/go-ethereum/build/bin/geth --syncmode "fast" --rpc --rpcapi="db,eth,net,web3,personal,txpool" --cache 4096 --verbosity 3 --rpcport 8545 --rpcaddr 127.0.0.1 --rpccorsdomain "*" --rpcvhosts "*"
-
-#create backup file
-#
-
-
+#ExecStart=/usr/local/go-ethereum/build/bin/geth --syncmode "fast" --rpc --rpcapi="db,eth,net,web3,personal,txpool" --cache 4096 --maxpeers 50 --verbosity 3 --rpcport 8545 --rpcaddr "127.0.0.1" --rpccorsdomain "*" --rpcvhosts "*"
 
