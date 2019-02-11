@@ -17,16 +17,19 @@ echo "####################################"
 rm -v /usr/local/SettleFinance/common.php || echo "Backup common file was probably already removed.";
 rm -r -f -v /usr/local/SettleFinance/json || echo "Backup json files were probably already removed.";
 
-mkdir -p /var/www/ethgasstation.settle.host/public_html/json
-touch /var/www/ethgasstation.settle.host/public_html/json/test
+mkdir -p -v $json_output
+touch $json_output/test
 mkdir -p -v /usr/local/SettleFinance/json
 
 cp /var/www/ethgasstation.settle.host/public_html/build/php/common.php /usr/local/SettleFinance/common.php
-cp /var/www/ethgasstation.settle.host/public_html/json/* /usr/local/SettleFinance/json
+cp $json_output/* /usr/local/SettleFinance/json
 
 echo "Stopping Frontend..."
+touch $json_output/haltFile
 systemctl stop apache2
+echo 'Awaiting safety backend halt...' && sleep 200
 systemctl stop ethgassbackend
+rm -f -v $json_output/haltFile
 
 rm -r -f -v /var/www/ethgasstation.settle.host/public_html/*
 
@@ -36,12 +39,12 @@ rm -f -v /var/www/ethgasstation.settle.host/public_html/build/php/common.php
 
 cp -v /usr/local/SettleFinance/common.php /var/www/ethgasstation.settle.host/public_html/build/php/common.php
 
-mkdir -p -v /var/www/ethgasstation.settle.host/public_html/json
-cp /usr/local/SettleFinance/json/* /var/www/ethgasstation.settle.host/public_html/json
+mkdir -p -v $json_output
+cp /usr/local/SettleFinance/json/* $json_output
 
-chmod -R 777 /var/www/ethgasstation.settle.host/public_html/json
+chmod -R 777 $json_output
 
-echo "Starting Frontend And Backend..."
+echo "Starting Frontend..."
 
 systemctl start ethgassbackend
 sleep 3
@@ -49,9 +52,6 @@ systemctl start apache2
 
 echo "Checking Disk Space"
 df
-
-echo "Last GETH Startus: "
-journalctl --unit=geth -n 3 --no-pager
 
 echo "Last Backend Startus: "
 journalctl --unit=ethgassbackend -n 25 --no-pager
@@ -87,10 +87,5 @@ journalctl --unit=ethgassbackend -n 25 --no-pager
 #backend status verify
 #journalctl --unit=ethgassbackend -n 100 --no-pager
 
-#ExecStart=/usr/local/go-ethereum/build/bin/geth --syncmode "fast" --rpc --rpcapi="db,eth,net,web3,personal,txpool" --cache 4096 --verbosity 3 --rpcport 8545 --rpcaddr 127.0.0.1 --rpccorsdomain "*" --rpcvhosts "*"
-
-#create backup file
-#
-
-
+#ExecStart=/usr/local/go-ethereum/build/bin/geth --syncmode "fast" --rpc --rpcapi="db,eth,net,web3,personal,txpool" --cache 4096 --maxpeers 50 --verbosity 3 --rpcport 8545 --rpcaddr "127.0.0.1" --rpccorsdomain "*" --rpcvhosts "*"
 
