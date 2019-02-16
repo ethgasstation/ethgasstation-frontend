@@ -10,7 +10,9 @@ $priceWaitLabels = '';
 foreach($priceWait as $row)
 {
     if ($row['minedGasPrice']==0){
-        $row['minedGasPrice']= '<1';
+        //$row['minedGasPrice']= '<1';
+        continue;
+
     }
     if ($row['minedGasPrice']==40){
         $row['minedGasPrice'] = '>40';
