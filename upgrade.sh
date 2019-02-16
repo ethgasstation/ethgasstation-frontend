@@ -13,6 +13,8 @@ set -e
 echo "####################################"
 echo "# ETH GAS STARTION FRONEND UPGRADE #"
 echo "####################################"
+echo "Replica PUBLIC IP Address:"
+dig +short myip.opendns.com @resolver1.opendns.com
 
 rm -v /usr/local/SettleFinance/common.php || echo "Backup common file was probably already removed.";
 rm -r -f -v /usr/local/SettleFinance/json || echo "Backup json files were probably already removed.";
