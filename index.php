@@ -412,7 +412,7 @@
       <div class="col-md-4 col-sm-4 col-xs-12">
         <div class="x_panel tile fixed_height_320">
           <div class="x_title">
-            <h4>Real Time Gas Use: <small>% Block Limit (last 10)</small></h4>
+            <h4>Real Time Gas Use: <small> Block Limit (last 10)</small></h4>
             <div class="clearfix"></div>
           </div>
           <div class="x_content">
