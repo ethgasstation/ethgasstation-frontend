@@ -113,31 +113,61 @@
 
           <!-- top tiles -->
           <div class="row tile_count">
-            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-space-shuttle"></i>Std Cost for Transfer</span>
-              <div class="count" id="medTx"><?php $fee = round($gpRecs2['average']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee); ?></div>
-            </div>
-            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-tachometer"></i> Gas Price Std (Gwei)</span>
-              <div class="count"><?php echo ($gpRecs2['average']/10) ?></div>
-            </div>
-            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-tachometer"></i> SafeLow Cost for Transfer</span>
-              <div class="count green"><?php echo ($lowTransfer) ?></div>
-            </div>
-            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-tachometer"></i> Gas Price SafeLow (Gwei)</span>
-              <div class="count green"><?php echo ($gpRecs2['safeLow']/10) ?></div>
-            </div>
-             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-clock-o"></i> Median Wait (s)</span>
-              <div class="count"><?php echo (round($medianwaitsec)) ?></div>
-            </div>
-             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-clock-o"></i> Median Wait (blocks)</span>
-              <div class="count"><?php echo "$medianwaitblock" ?></div>
-            </div>
+            <div>
+              <h2>Recommended Gas Prices in Gwei</h2>
+              <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                <div class="count" id="medTx">
+                  <?php echo ($gpRecs2['safeLow']/10) ?>
+                </div>
+                <div class="text-container">
+                  <div class="count_top">safe low</div>
+                  <div class="count_top">
+                    <?php $fee = round($gpRecs2['safeLow']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee . '/transfer'); ?>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                <div class="count">
+                  <?php echo ($gpRecs2['average']/10) ?>
+                </div>
+                <div class="text-container">
+                  <div class="count_top">standard</div>
+                  <div class="count_top">
+                    <?php $fee = round($gpRecs2['average']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee . '/transfer'); ?>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                <div class="count">
+                  <?php echo ($gpRecs2['fast']/10) ?>
+                </div>
+                <div class="text-container">
+                  <div class="count_top">fast</div>
+                  <div class="count_top">
+                    <?php $fee = round($gpRecs2['fast']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee . '/transfer'); ?>
+                  </div>
+                </div>
+              </div>
             
+            <div>
+              <h2>Media Wait Times</h2>
+              <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                <div class="count"><?php echo (round($medianwaitsec)) ?></div>
+                <div class="text-container">
+                  <div class="count_top">seconds</div>
+                </div>
+              </div>
+               <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                <div class="count">
+                  <?php echo "$medianwaitblock" ?>
+                </div>
+                <div class="text-container">
+                  <div class="count_top">blocks</div>
+                </div>
+              </div>
+            </div>
             
           </div>
           <!-- /top tiles -->
@@ -205,21 +235,19 @@
             </div>
           <!-- /network activity graph -->
 
-          <!-- Speedometer -->
+          <!-- blogpost -->
             <div class="col-md-4 col-sm-4 col-xs-12">
               <div class="x_panel tile fixed_height_320">
                 <div class="x_title">
-                  <h4>Real Time Gas Use: <small>% Block Limit (last 10)</small></h4>
+                  <p>Operator's Blog</p>
                   <div class="clearfix"></div>
                 </div>
-                <div class="x_content">
-                    <div id="speedometer" class="speedometer"></div>
-                    <p id="blockNum">Last Block: </p> 
+                <div class="x_content" id="blogPost">
+                 <?php require('./blogPost.php'); ?>
                 </div>
               </div>
             </div>
-          <!--/Speedometer -->
-
+          <!--/blogpost -->
        </div>
 
        <!-- Transactions by Gas Price -->
@@ -304,7 +332,7 @@
             <div class="col-md-8 col-sm-12 col-xs-12">
               <div class="x_panel tile fixed_height_420">
                 <div class="x_title">
-                  <h4>Top 10 Miners by Blocks Mined: <small> Support for user transactions</small></h4>
+                  <h4>Top 10 Miners by Blocks Mined</h4>
                   <div class="clearfix"></div>
                 </div>
                 <div class="x_content">
@@ -356,10 +384,6 @@
 
             <div class="col-md-4 col-sm-4 col-xs-12">
               <div class="x_panel tile fixed_height_420">
-                <div class="x_title">
-                  <h4>Misc Stats <small> (Last 1,500 blocks)</small></h4>
-                  <div class="clearfix"></div>
-                </div>
                 <div class="x_content">
                   <table class="table table-bordered">
                       <thead>
@@ -412,6 +436,22 @@
 
     <!-- /misc transactions -->
 
+  </div class="row">
+    <div>
+    <!-- Speedometer -->
+      <div class="col-md-4 col-sm-4 col-xs-12">
+        <div class="x_panel tile fixed_height_320">
+          <div class="x_title">
+            <h4>Real Time Gas Use: <small> Block Limit (last 10)</small></h4>
+            <div class="clearfix"></div>
+          </div>
+          <div class="x_content">
+              <div id="speedometer" class="speedometer"></div>
+              <p id="blockNum">Last Block: </p> 
+          </div>
+        </div>
+      </div>
+    <!--/Speedometer -->
   </div>
 </div>
              
