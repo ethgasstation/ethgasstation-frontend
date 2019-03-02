@@ -113,31 +113,61 @@
 
           <!-- top tiles -->
           <div class="row tile_count">
-            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-space-shuttle"></i>Std Cost for Transfer</span>
-              <div class="count" id="medTx"><?php $fee = round($gpRecs2['average']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee); ?></div>
-            </div>
-            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-tachometer"></i> Gas Price Std (Gwei)</span>
-              <div class="count"><?php echo ($gpRecs2['average']/10) ?></div>
-            </div>
-            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-tachometer"></i> SafeLow Cost for Transfer</span>
-              <div class="count green"><?php echo ($lowTransfer) ?></div>
-            </div>
-            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-tachometer"></i> Gas Price SafeLow (Gwei)</span>
-              <div class="count green"><?php echo ($gpRecs2['safeLow']/10) ?></div>
-            </div>
-             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-clock-o"></i> Median Wait (s)</span>
-              <div class="count"><?php echo (round($medianwaitsec)) ?></div>
-            </div>
-             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-clock-o"></i> Median Wait (blocks)</span>
-              <div class="count"><?php echo "$medianwaitblock" ?></div>
-            </div>
+            <div>
+              <h2>Recommended Gas Prices in Gwei</h2>
+              <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                <div class="count" id="medTx">
+                  <?php echo ($gpRecs2['safeLow']/10) ?>
+                </div>
+                <div class="text-container">
+                  <div class="count_top">safe low</div>
+                  <div class="count_top">
+                    <?php $fee = round($gpRecs2['safeLow']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee . '/transfer'); ?>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                <div class="count">
+                  <?php echo ($gpRecs2['average']/10) ?>
+                </div>
+                <div class="text-container">
+                  <div class="count_top">standard</div>
+                  <div class="count_top">
+                    <?php $fee = round($gpRecs2['average']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee . '/transfer'); ?>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                <div class="count">
+                  <?php echo ($gpRecs2['fast']/10) ?>
+                </div>
+                <div class="text-container">
+                  <div class="count_top">fast</div>
+                  <div class="count_top">
+                    <?php $fee = round($gpRecs2['fast']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee . '/transfer'); ?>
+                  </div>
+                </div>
+              </div>
             
+            <div>
+              <h2>Media Wait Times</h2>
+              <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                <div class="count"><?php echo (round($medianwaitsec)) ?></div>
+                <div class="text-container">
+                  <div class="count_top">seconds</div>
+                </div>
+              </div>
+               <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
+                <div class="count">
+                  <?php echo "$medianwaitblock" ?>
+                </div>
+                <div class="text-container">
+                  <div class="count_top">blocks</div>
+                </div>
+              </div>
+            </div>
             
           </div>
           <!-- /top tiles -->
