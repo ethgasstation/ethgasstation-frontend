@@ -531,7 +531,7 @@ body {
     margin: 10px 0
 }
 .fixed_height_320 {
-    height: 320px
+    /*height: 320px*/
 }
 .fixed_height_390 {
     height: 390px
@@ -955,7 +955,7 @@ footer {
     margin-bottom: 0
 }
 .tile {
-    overflow: auto 
+    /*overflow: auto */
 }
 .top_tiles {
     margin-bottom: 0
@@ -4315,9 +4315,10 @@ ul.notifications {
   .positionable {
   position: absolute;
   display: block;
-  left: 70px;
+  left: 40px;
   top: 20px;
   margin: 20px;
+  width: 90%;
   background-color: #F2F5F7;
   text-align: center;
 }
