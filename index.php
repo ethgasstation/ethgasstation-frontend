@@ -401,47 +401,6 @@
               <!-- /misc transactions -->
             </div>
           <!-- 4th row ends -->
-
-          <!-- 5th row starts -->
-            <div class="row">
-              <!-- Recommended User Gas Prices-->
-                <div class="col-md-4 col-sm-4 col-xs-12">
-                  <div class="x_panel tile table_cell">
-                    <div class="x_title">
-                      <h4>Recommended Gas Prices</br> <small> (based on current network conditions)</small></h4>
-                      <div class="clearfix"></div>
-                    </div>            
-                    <div class="x_content">
-                      <table class="table table-bordered">
-                        <thead>
-                          <tr>
-                            <th>Speed</th>
-                            <th>Gas Price </br> (gwei)</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td style = "color:#1ABB9C"><strong>SafeLow (<30m)</strong></td>
-                            <td style = "color:#1ABB9C" ><?php echo ($gpRecs2['safeLow']/10) ?></td>
-                          </tr>
-                          <tr>
-                            <td style = "color:#03586A"><strong>Standard (<5m)<strong></td>
-                            <td style = "color:#03586A"><?php echo ($gpRecs2['average']/10) ?></td>
-                          </tr>
-                          <tr>
-                            <td style = "color:red"><strong>Fast (<2m)<strong></td>
-                            <td style = "color:red"><?php echo ($gpRecs2['fast']/10) ?></td>
-                          </tr>
-                        </tbody>
-                      </table>
-                      <p>Note: Estimates not valid when multiple transactions are batched from the same address or for transactions sent to addresses with many (e.g. > 100) pending Transactions</p>
-                    </div>
-                  </div>
-                </div>
-              <!-- /Recommended prices -->
-            </div>
-          <!-- 5th row ends -->
-    
         </div>           
       <!-- /page content ends -->
 
