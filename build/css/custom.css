@@ -597,7 +597,7 @@ body {
     }
 }
 @media only screen and (min-width: 1500px) {
-    .x_content.speedometer {
+    .x_content.sMeter {
         position: absolute;
         top: calc(50% - 90px);
     }
