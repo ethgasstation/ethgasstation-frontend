@@ -1891,7 +1891,7 @@ span.right {
 }
 .tile_count .tile_stats_count .count {
     float: left;
-    font-size: 42px;
+    font-size: 56px;
     line-height: 50px;
     font-weight: 500;
     margin-right: 10px;
@@ -1903,12 +1903,12 @@ span.right {
 }
 @media (min-width: 768px) {
     .tile_count .tile_stats_count .count {
-        font-size: 42px
+        font-size: 56px
     }
 }
 @media (min-width: 992px) and (max-width: 1100px) {
     .tile_count .tile_stats_count .count {
-        font-size: 42px
+        font-size: 56px
     }
 }
 .tile_count .tile_stats_count span {

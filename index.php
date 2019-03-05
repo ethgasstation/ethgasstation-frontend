@@ -111,24 +111,26 @@
             <div class="row tile_count">
               <div class="rgp">
                 <h2 class="top_tiles_title">Recommended Gas Prices in Gwei</h2>
+
                 <div class="col-md-4 col-sm-4 col-xs-6 tile_stats_count">
-                  <div class="count safe_low" id="medTx">
-                    <?php echo ($gpRecs2['safeLow']/10) ?>
+                  <div class="count fast">
+                    <?php echo ($gpRecs2['fast']/10) ?>
                   </div>
                   <div class="text-container">
-                    <div class="count_top">safe low</div>
+                    <div class="count_top">fast (<2m)</div>
                     <div class="count_top">
-                      <?php $fee = round($gpRecs2['safeLow']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee . '/transfer'); ?>
+                      <?php $fee = round($gpRecs2['fast']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee . '/transfer'); ?>
                     </div>
                   </div>
                 </div>
+              </div>
 
                 <div class="col-md-4 col-sm-4 col-xs-6 tile_stats_count">
                   <div class="count standard">
                     <?php echo ($gpRecs2['average']/10) ?>
                   </div>
                   <div class="text-container">
-                    <div class="count_top">standard</div>
+                    <div class="count_top">standard (<5m)</div>
                     <div class="count_top">
                       <?php $fee = round($gpRecs2['average']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee . '/transfer'); ?>
                     </div>
@@ -136,17 +138,16 @@
                 </div>
 
                 <div class="col-md-4 col-sm-4 col-xs-6 tile_stats_count">
-                  <div class="count fast">
-                    <?php echo ($gpRecs2['fast']/10) ?>
+                  <div class="count safe_low" id="medTx">
+                    <?php echo ($gpRecs2['safeLow']/10) ?>
                   </div>
                   <div class="text-container">
-                    <div class="count_top">fast</div>
+                    <div class="count_top">safe low (<30m)</div>
                     <div class="count_top">
-                      <?php $fee = round($gpRecs2['fast']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee . '/transfer'); ?>
+                      <?php $fee = round($gpRecs2['safeLow']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee . '/transfer'); ?>
                     </div>
                   </div>
                 </div>
-              </div>
               
               <div class="mwt">
                 <h2 class="top_tiles_title">Media Wait Times</h2>
