@@ -284,7 +284,7 @@
                       <h4>Real Time Gas Use: <small> Block Limit (last 10)</small></h4>
                       <div class="clearfix"></div>
                     </div>
-                    <div class="x_content">
+                    <div class="x_content speedometer">
                         <div id="speedometer" class="speedometer"></div>
                         <p id="blockNum">Last Block: </p> 
                     </div>

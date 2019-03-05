@@ -596,6 +596,30 @@ body {
         margin-top: 10px
     }
 }
+@media only screen and (min-width: 1500px) {
+    .x_content.speedometer {
+        position: absolute;
+        top: calc(50% - 90px);
+    }
+}
+@media only screen and (min-width: 1600px) {
+    #blockNum {
+        bottom: -40px;
+        position: absolute;
+    }
+}
+@media only screen and (min-width: 1700px) {
+    #blockNum {
+        bottom: -50px;
+        position: absolute;
+    }
+}
+@media only screen and (min-width: 1800px) {
+    #blockNum {
+        bottom: -55px;
+        position: absolute;
+    }
+}
 .top_tiles_title {
     margin-left: 20px;
     font-size: 20px;
@@ -607,11 +631,6 @@ body {
     border: none !important;
     margin-top: 15px !important;
     margin-bottom: 0 !important;
-}
-#blockNum {
-    left: 0px;
-    bottom: 0px;
-    position: absolute;
 }
 #blogPost {
     margin-top: -5px;
