@@ -111,7 +111,6 @@
             <div class="row tile_count">
               <div class="rgp">
                 <h2 class="top_tiles_title">Recommended Gas Prices in Gwei</h2>
-
                 <div class="col-md-4 col-sm-4 col-xs-6 tile_stats_count">
                   <div class="count fast">
                     <?php echo ($gpRecs2['fast']/10) ?>
@@ -123,7 +122,6 @@
                     </div>
                   </div>
                 </div>
-              </div>
 
                 <div class="col-md-4 col-sm-4 col-xs-6 tile_stats_count">
                   <div class="count standard">
@@ -148,6 +146,7 @@
                     </div>
                   </div>
                 </div>
+              </div>
               
               <div class="mwt">
                 <h2 class="top_tiles_title">Media Wait Times</h2>
