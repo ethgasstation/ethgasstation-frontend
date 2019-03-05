@@ -174,7 +174,7 @@
                 <div class="col-md-8 col-sm-8 col-xs-12">
                   <div class="x_panel tile table_cell">
                      <div class="x_title">
-                        <h4>Gas-Time-Price Estimator: <small>For transactions sent at block: <?php echo($gpRecs2['blockNum']);?></small></h4>
+                        <h4 class="gas_estimator_title">Gas-Time-Price Estimator: <small>For transactions sent at block: <?php echo($gpRecs2['blockNum']);?></small></h4>
                         <div class="clearfix"></div>
                      </div>
                      <div class="x_content">
@@ -235,7 +235,7 @@
                 <div class="col-md-4 col-sm-4 col-xs-12 table-cell">
                   <div class="x_panel tile table_cell">
                     <div class="x_title blog_header">
-                      <p>Operator's Blog</p>
+                      <p>EGS Blog</p>
                       <div class="clearfix"></div>
                     </div>
                     <div class="x_content" id="blogPost">
@@ -305,7 +305,7 @@
                       <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                      <table class="table table-bordered">
+                      <table class="table table_data table-bordered">
                           <thead>
                             <tr>
                               <th>Miner</th>
@@ -351,7 +351,7 @@
                   <div class="col-md-4 col-sm-4 col-xs-12">
                     <div class="x_panel tile table_cell">
                       <div class="x_content">
-                        <table class="table table-bordered">
+                        <table class="table table_data table-bordered">
                             <thead>
                               <tr>
                                 <th>Category</th>

@@ -555,10 +555,14 @@ body {
     color: #ff0000;
 }
 .count_top {
-    font-size: 14px;
+    font-size: 15px;
 }
 .post_title {
-    font-size: 23px;
+    font-size: 20px;
+}
+.gas_estimator_title {
+    font-size: 15px;
+    font-weight: normal;
 }
 @media only screen and (max-width: 600px) {
     .table_row {
@@ -632,11 +636,14 @@ body {
     margin-top: 15px !important;
     margin-bottom: 0 !important;
 }
+.table_data {
+    font-size: 15px;
+}
 #blogPost {
     margin-top: -5px;
 }
 #blogPost p {
-    font-size: 16px;
+    font-size: 15px;
 }
 .fixed_height_320 {
     height: 320px
@@ -1884,24 +1891,24 @@ span.right {
 }
 .tile_count .tile_stats_count .count {
     float: left;
-    font-size: 45px;
+    font-size: 42px;
     line-height: 50px;
     font-weight: 500;
     margin-right: 10px;
     display: inline-block;
 }
 .tile_count .tile_stats_count .text-container {
-    margin-top: 3px;
+    margin-top: 4px;
     display: inline-block;
 }
 @media (min-width: 768px) {
     .tile_count .tile_stats_count .count {
-        font-size: 40px
+        font-size: 42px
     }
 }
 @media (min-width: 992px) and (max-width: 1100px) {
     .tile_count .tile_stats_count .count {
-        font-size: 30px
+        font-size: 42px
     }
 }
 .tile_count .tile_stats_count span {
