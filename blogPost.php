@@ -13,7 +13,7 @@
   $output = curl_exec($ch);
   $decodedData = json_decode($output);
   $content = $decodedData[0]->excerpt->rendered;
-  echo "<h2>".$decodedData[0]->title->rendered."</h2>";
+  echo "<h2 class='post_title'>".$decodedData[0]->title->rendered."</h2>";
 
   echo $content."<a href=".$decodedData[0]->guid->rendered." target='_blank' style='text-decoration: underline;'>Read more...</a>";
 ?>

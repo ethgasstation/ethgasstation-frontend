@@ -112,7 +112,7 @@
               <div class="rgp">
                 <h2 class="top_tiles_title">Recommended Gas Prices in Gwei</h2>
                 <div class="col-md-4 col-sm-4 col-xs-6 tile_stats_count">
-                  <div class="count" id="medTx">
+                  <div class="count safe_low" id="medTx">
                     <?php echo ($gpRecs2['safeLow']/10) ?>
                   </div>
                   <div class="text-container">
@@ -124,7 +124,7 @@
                 </div>
 
                 <div class="col-md-4 col-sm-4 col-xs-6 tile_stats_count">
-                  <div class="count">
+                  <div class="count standard">
                     <?php echo ($gpRecs2['average']/10) ?>
                   </div>
                   <div class="text-container">
@@ -136,7 +136,7 @@
                 </div>
 
                 <div class="col-md-4 col-sm-4 col-xs-6 tile_stats_count">
-                  <div class="count">
+                  <div class="count fast">
                     <?php echo ($gpRecs2['fast']/10) ?>
                   </div>
                   <div class="text-container">
@@ -234,7 +234,7 @@
               <!-- blogpost starts -->
                 <div class="col-md-4 col-sm-4 col-xs-12 table-cell">
                   <div class="x_panel tile table_cell">
-                    <div class="x_title">
+                    <div class="x_title blog_header">
                       <p>Operator's Blog</p>
                       <div class="clearfix"></div>
                     </div>

@@ -545,6 +545,21 @@ body {
 .table_cell {
     height: 96%
 }
+.count.safe_low {
+    color: #1ABB9C;
+}
+.count.standard {
+    color: #03586A;
+}
+.count.fast {
+    color: #ff0000;
+}
+.count_top {
+    font-size: 14px;
+}
+.post_title {
+    font-size: 23px;
+}
 @media only screen and (max-width: 600px) {
     .table_row {
         display: block;
@@ -564,11 +579,13 @@ body {
 @media only screen and (max-width: 770px) {
     .rgp {
         width: 100%;
+        max-width: 700px;
         display: block;
     }
     .mwt {
         width: 100%;
         float: left;
+        max-width: 470px;
     }
     .tile_count .tile_stats_count:before {
         content: "";
@@ -579,10 +596,22 @@ body {
         margin-top: 10px
     }
 }
-
 .top_tiles_title {
-    margin-left: 5px;
+    margin-left: 20px;
+    font-size: 20px;
+}
+.blog_header > p {
     font-size: 16px;
+}
+.blog_header {
+    border: none !important;
+    margin-top: 15px !important;
+    margin-bottom: 0 !important;
+}
+#blockNum {
+    left: 0px;
+    bottom: 0px;
+    position: absolute;
 }
 #blogPost {
     margin-top: -5px;
@@ -1802,6 +1831,7 @@ span.right {
     background: #425567
 }
 .tile_count {
+    max-width: 1400px;
     margin-bottom: 20px;
     margin-top: 20px
 }
@@ -1831,12 +1861,15 @@ span.right {
     }
 }
 .tile_count .tile_stats_count .count {
-    font-size: 30px;
+    float: left;
+    font-size: 45px;
     line-height: 50px;
     font-weight: 500;
+    margin-right: 10px;
     display: inline-block;
 }
 .tile_count .tile_stats_count .text-container {
+    margin-top: 3px;
     display: inline-block;
 }
 @media (min-width: 768px) {
@@ -4368,9 +4401,9 @@ ul.notifications {
   .positionable {
   position: absolute;
   display: block;
+  /*left: 70px;*/
   top: 20px;
   margin: 20px;
-  width: 80%;
   background-color: #F2F5F7;
   text-align: center;
 }
