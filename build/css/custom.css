@@ -635,6 +635,9 @@ body {
 #blogPost {
     margin-top: -5px;
 }
+#blogPost p {
+    font-size: 16px;
+}
 .fixed_height_320 {
     height: 320px
 }
