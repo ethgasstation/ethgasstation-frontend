@@ -182,7 +182,7 @@
                       <div id="slider" class="positionable" ></div>
                       </br>
                       </br>
-                      <form class="form-horizontal form-label-left input_mask">
+                      <form class="form-horizontal form-label-left input_mask gas_estimator_form">
                         <div class="form-group">
                           <label class="control-label col-md-3 col-sm-3 col-xs-12">Avg Time (min)</label>
                           <div class="col-md-3 col-sm-3 col-xs-12">

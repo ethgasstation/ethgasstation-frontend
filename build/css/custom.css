@@ -561,6 +561,10 @@ body {
     font-size: 20px;
 }
 .gas_estimator_title {
+    /*font-size: 15px;
+    font-weight: normal;*/
+}
+.gas_estimator_form label.control-label {
     font-size: 15px;
     font-weight: normal;
 }
