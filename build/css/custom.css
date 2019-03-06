@@ -568,6 +568,15 @@ body {
     font-size: 15px;
     font-weight: normal;
 }
+@media only screen and (max-width: 991px) {
+    .tile_count .tile_stats_count .count {
+        font-size: 40px !important;
+    }
+    .count_top {
+        font-size: 14px !important;
+    }
+}
+
 @media only screen and (max-width: 600px) {
     .table_row {
         display: block;
