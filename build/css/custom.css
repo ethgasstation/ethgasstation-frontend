@@ -568,6 +568,12 @@ body {
     font-size: 15px;
     font-weight: normal;
 }
+@media (min-width: 400px) and (max-width: 1439px) {
+    .post_title {
+        font-size: 18px;
+        margin-top: 0;
+    }
+}
 @media only screen and (max-width: 991px) {
     .tile_count .tile_stats_count .count {
         font-size: 40px !important;
