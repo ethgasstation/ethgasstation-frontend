@@ -149,7 +149,7 @@
               </div>
               
               <div class="mwt">
-                <h2 class="top_tiles_title">Media Wait Times</h2>
+                <h2 class="top_tiles_title">Median Wait Times</h2>
                 <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
                   <div class="count"><?php echo (round($medianwaitsec)) ?></div>
                   <div class="text-container">
