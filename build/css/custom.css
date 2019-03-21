@@ -4455,11 +4455,11 @@ ul.notifications {
   background-color: #F2F5F7;
   text-align: center;
 }
-.concourse-link {
+.concourse_link {
     text-align: center;
     font-size: 15px;
     padding: 10px;
 }
-.concourse-link a {
+.concourse_link a {
     text-decoration: underline;
 }
