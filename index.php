@@ -406,6 +406,7 @@
 
       <!-- footer content -->
         <footer>
+          <div class="concourse-link"><a href="https://concourseopen.com" target="_blank">Concourse Open Community</a></div>
           <div class="tip-button">
              <button type="button" class="btn btn-round btn-success">ETH Tips - Thank you!</button>
              <p>0x446fa0c8EaD753c7ABf0B821f90D4338e72De380</p>
@@ -444,7 +445,6 @@
             Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
           </div>
           <div class="clearfix"></div>
-          <div class="concourse-link"><a href="https://concourseopen.com" target="_blank">Concourse Open Community</a></div>
         </footer>
         <!-- /footer content -->
 

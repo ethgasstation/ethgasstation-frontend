@@ -4457,7 +4457,8 @@ ul.notifications {
 }
 .concourse-link {
     text-align: center;
-    font-size: 14px;
+    font-size: 15px;
+    padding: 10px;
 }
 .concourse-link a {
     text-decoration: underline;
