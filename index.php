@@ -444,6 +444,7 @@
             Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
           </div>
           <div class="clearfix"></div>
+          <div class="concourse-link"><a href="https://concourseopen.com" target="_blank">Concourse Open Community</a></div>
         </footer>
         <!-- /footer content -->
 
