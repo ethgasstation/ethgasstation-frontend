@@ -1050,6 +1050,14 @@ footer {
     padding: 15px 20px;
     display: block
 }
+footer .concourse_link {
+    text-align: center;
+    font-size: 15px;
+    padding: 10px;
+}
+footer .concourse_link a {
+    text-decoration: underline;
+}
 .nav-sm footer {
     margin-left: 70px
 }
@@ -4454,12 +4462,4 @@ ul.notifications {
   margin: 20px;
   background-color: #F2F5F7;
   text-align: center;
-}
-.concourse_link {
-    text-align: center;
-    font-size: 15px;
-    padding: 10px;
-}
-.concourse_link a {
-    text-decoration: underline;
 }
