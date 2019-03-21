@@ -42,6 +42,7 @@
                     </ul>
                   </li>
                   <li><a href="https://docs.ethgasstation.info/"><i class ="fa fa-book"></i>API</a></li>
+                  <li><a href="/feedback.html"><i class ="fa fa-envelope"></i>Feedback</a></li>
                 </ul>
               </div>
             </div>
