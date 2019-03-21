@@ -406,7 +406,7 @@
 
       <!-- footer content -->
         <footer>
-          <div class="concourse_link"><a href="https://concourseopen.com" target="_blank">Concourse Open Community</a></div>
+          <div class="concourse_link"><a href="https://concourseopen.com" target="_blank">Concourse Open Construction</a></div>
           <div class="clearfix"></div>
         </footer>
         <!-- /footer content -->
