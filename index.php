@@ -77,9 +77,7 @@
     <div class="container body">
       <div class="main_container">
       <?php include 'sidebar.php'; ?>
-
-
-        <!-- top navigation -->
+        <!-- top navigation starts -->
         <div class="top_nav">
           <div class="nav_menu">
             <nav>
@@ -105,50 +103,78 @@
             </nav>
           </div>
          </div>
+        <!-- /top navigation ends -->
 
-        <!-- /top navigation -->
-
-        <!-- page content -->
+        <!-- page content starts -->
         <div class="right_col" role="main">
+          <!-- top tiles start -->
+            <div class="row tile_count">
+              <div class="rgp">
+                <h2 class="top_tiles_title">Recommended Gas Prices in Gwei</h2>
+                <div class="col-md-4 col-sm-4 col-xs-6 tile_stats_count">
+                  <div class="count fast">
+                    <?php echo ($gpRecs2['fast']/10) ?>
+                  </div>
+                  <div class="text-container">
+                    <div class="count_top">fast (<2m)</div>
+                    <div class="count_top">
+                      <?php $fee = round($gpRecs2['fast']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee . '/transfer'); ?>
+                    </div>
+                  </div>
+                </div>
 
-          <!-- top tiles -->
-          <div class="row tile_count">
-            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-space-shuttle"></i>Std Cost for Transfer</span>
-              <div class="count" id="medTx"><?php $fee = round($gpRecs2['average']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee); ?></div>
-            </div>
-            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-tachometer"></i> Gas Price Std (Gwei)</span>
-              <div class="count"><?php echo ($gpRecs2['average']/10) ?></div>
-            </div>
-            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-tachometer"></i> SafeLow Cost for Transfer</span>
-              <div class="count green"><?php echo ($lowTransfer) ?></div>
-            </div>
-            <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-tachometer"></i> Gas Price SafeLow (Gwei)</span>
-              <div class="count green"><?php echo ($gpRecs2['safeLow']/10) ?></div>
-            </div>
-             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-clock-o"></i> Median Wait (s)</span>
-              <div class="count"><?php echo (round($medianwaitsec)) ?></div>
-            </div>
-             <div class="col-md-2 col-sm-4 col-xs-6 tile_stats_count">
-              <span class="count_top"><i class="fa fa-clock-o"></i> Median Wait (blocks)</span>
-              <div class="count"><?php echo "$medianwaitblock" ?></div>
-            </div>
-            
-            
-          </div>
-          <!-- /top tiles -->
+                <div class="col-md-4 col-sm-4 col-xs-6 tile_stats_count">
+                  <div class="count standard">
+                    <?php echo ($gpRecs2['average']/10) ?>
+                  </div>
+                  <div class="text-container">
+                    <div class="count_top">standard (<5m)</div>
+                    <div class="count_top">
+                      <?php $fee = round($gpRecs2['average']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee . '/transfer'); ?>
+                    </div>
+                  </div>
+                </div>
 
-          <div class="row">
+                <div class="col-md-4 col-sm-4 col-xs-6 tile_stats_count">
+                  <div class="count safe_low" id="medTx">
+                    <?php echo ($gpRecs2['safeLow']/10) ?>
+                  </div>
+                  <div class="text-container">
+                    <div class="count_top">safe low (<30m)</div>
+                    <div class="count_top">
+                      <?php $fee = round($gpRecs2['safeLow']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee . '/transfer'); ?>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="mwt">
+                <h2 class="top_tiles_title">Median Wait Times</h2>
+                <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
+                  <div class="count"><?php echo (round($medianwaitsec)) ?></div>
+                  <div class="text-container">
+                    <div class="count_top">seconds</div>
+                  </div>
+                </div>
+                 <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
+                  <div class="count">
+                    <?php echo "$medianwaitblock" ?>
+                  </div>
+                  <div class="text-container">
+                    <div class="count_top">blocks</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <!-- /top tiles end -->
 
-          <!-- Gas Price Estimator -->
-             <div class="col-md-8 col-sm-8 col-xs-12">
-                 <div class="x_panel tile fixed_height_320">
+          <!-- 2nd row starts -->
+            <div class="row table_row">
+              <!-- Gas Price Estimator starts -->
+                <div class="col-md-8 col-sm-8 col-xs-12">
+                  <div class="x_panel tile table_cell">
                      <div class="x_title">
-                        <h4>Gas-Time-Price Estimator: <small>For transactions sent at block: <?php echo($gpRecs2['blockNum']);?></small></h4>
+                        <h4 class="gas_estimator_title">Gas-Time-Price Estimator: <small>For transactions sent at block: <?php echo($gpRecs2['blockNum']);?></small></h4>
                         <div class="clearfix"></div>
                      </div>
                      <div class="x_content">
@@ -156,7 +182,7 @@
                       <div id="slider" class="positionable" ></div>
                       </br>
                       </br>
-                      <form class="form-horizontal form-label-left input_mask">
+                      <form class="form-horizontal form-label-left input_mask gas_estimator_form">
                         <div class="form-group">
                           <label class="control-label col-md-3 col-sm-3 col-xs-12">Avg Time (min)</label>
                           <div class="col-md-3 col-sm-3 col-xs-12">
@@ -199,263 +225,188 @@
                           </div>  
                         </div>
                       </form>
-                      <div class="clearfix"></div> 
-                    </div> 
-                </div>
-            </div>
-          <!-- /network activity graph -->
-
-          <!-- Speedometer -->
-            <div class="col-md-4 col-sm-4 col-xs-12">
-              <div class="x_panel tile fixed_height_320">
-                <div class="x_title">
-                  <h4>Real Time Gas Use: <small>% Block Limit (last 10)</small></h4>
-                  <div class="clearfix"></div>
-                </div>
-                <div class="x_content">
-                    <div id="speedometer" class="speedometer"></div>
-                    <p id="blockNum">Last Block: </p> 
-                </div>
-              </div>
-            </div>
-          <!--/Speedometer -->
-
-       </div>
-
-       <!-- Transactions by Gas Price -->
-
-        <div class="row">
-
-            <div class="col-md-4 col-sm-4 col-xs-12">
-              <div class="x_panel tile fixed_height_320">
-                <div class="x_title">
-                  <h4>Transaction Count by Gas Price</h4>
-                  <div class="clearfix"></div>
-                </div>
-                <div class="x_content myBar">
-                  <canvas id="mybarChart2" height="210" width="300"></canvas>
-                </div>
-              </div>
-            </div>
-        <!-- /Transaction by Gas Price -->
-
-        <!-- Confirmation Time by Gas Price -->
-
-            <div class="col-md-4 col-sm-4 col-xs-12">
-              <div class="x_panel tile fixed_height_320 overflow_hidden">
-                <div class="x_title">
-                  <h4>Confirmation Time by Gas Price</h4>
-                  <div class="clearfix"></div>
-                </div>
-                <div class="x_content myBar">
-                        <canvas id="mybarChart" height="210" width="300"> </canvas>
+                      <div class="clearfix"></div>
                   </div>
                 </div>
-              </div>
-
-        <!-- /confirmation time -->
-
-          <!-- Recommended User Gas Prices-->
-           
-          <div class="col-md-4 col-sm-4 col-xs-12">
-          <div class="x_panel tile fixed_height_320">
-            <div class="x_title">
-                  <h4>Recommended Gas Prices</br> <small> (based on current network conditions)</small></h4>
-                  <div class="clearfix"></div>
                 </div>
-                <div class="x_content">
-                <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th>Speed</th>
-                      <th>Gas Price </br> (gwei)</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td style = "color:#1ABB9C"><strong>SafeLow (<30m)</strong></td>
-                      <td style = "color:#1ABB9C" ><?php echo ($gpRecs2['safeLow']/10) ?></td>
-                    </tr>
-                    <tr>
-                      <td style = "color:#03586A"><strong>Standard (<5m)<strong></td>
-                      <td style = "color:#03586A"><?php echo ($gpRecs2['average']/10) ?></td>
-                    </tr>
-                    <tr>
-                      <td style = "color:red"><strong>Fast (<2m)<strong></td>
-                      <td style = "color:red"><?php echo ($gpRecs2['fast']/10) ?></td>
-                    </tr>
-                  </tbody>
-                </table>
-                <p>Note: Estimates not valid when multiple transactions are batched from the same address or for transactions sent to addresses with many (e.g. > 100) pending transactions</p>
+              <!-- Gas Price Estimator ends -->
+
+              <!-- blogpost starts -->
+                <div class="col-md-4 col-sm-4 col-xs-12 table-cell">
+                  <div class="x_panel tile table_cell">
+                    <div class="x_title blog_header">
+                      <p>EGS Blog</p>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content" id="blogPost">
+                     <?php require('./blogPost.php'); ?>
+                    </div>
+                  </div>
+                </div>
+              <!--/blogpost ends -->
             </div>
-         </div> 
-      </div>
-      <div class="clearfix"></div>
-    </div>
+          <!-- 2nd row ends -->
 
-
-        <!-- /Recommended prices -->
-
-
-  <div class="row">
-
-        <!-- Miner Rankings -->
-
-            <div class="col-md-8 col-sm-12 col-xs-12">
-              <div class="x_panel tile fixed_height_420">
-                <div class="x_title">
-                  <h4>Top 10 Miners by Blocks Mined: <small> Support for user transactions</small></h4>
-                  <div class="clearfix"></div>
+          <!-- 3rd row starts -->
+            <div class="row table_row">
+              <!-- Transactions by Gas Price -->
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <div class="x_panel tile table_cell">
+                    <div class="x_title">
+                      <h4>Transaction Count by Gas Price</h4>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content myBar">
+                      <canvas id="mybarChart2" height="210" width="300"></canvas>
+                    </div>
+                  </div>
                 </div>
-                <div class="x_content">
-                  <table class="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th>Miner</th>
-                          <th>Lowest gas price (gwei)</th>
-                          <th>Weighted avg gas price (gwei)</th>
-                          <th>% of total blocks</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <?php
-                      $minerNames = array(
-    '0xea674fdde714fd979de3edf0f56aa9716b898ec8'=>'Ethermine',
-    '0x1e9939daaad6924ad004c2560e90804164900341'=>'ethfans',
-    '0xb2930b35844a230f00e51431acae96fe543a0347'=>'miningpoolhub',
-    '0x4bb96091ee9d802ed039c4d1a5f6216f90f81b01'=>'Ethpool',
-    '0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5'=>'Nanopool',
-    '0x2a65aca4d5fc5b5c859090a6c34d164135398226'=>'Dwarfpool',
-    '0x829bd824b016326a401d083b33d092293333a830'=>'f2pool',
-    '0xa42af2c70d316684e57aefcc6e393fecb1c7e84e'=>'Coinotron',
-    '0x6c7f03ddfdd8a37ca267c88630a4fee958591de0'=>'alpereum'
+              <!-- /Transaction by Gas Price -->
 
-                      );
-                      foreach ($topMiners as $row){
-                        echo('<tr>');
-                        if(array_key_exists ($row['miner'],$minerNames)){
-                        $row['miner'] = $minerNames[$row['miner']];}
-                        echo("<td>". $row['miner']. "</td>");
-                        echo("<td>". $row['minGasPrice']. "</td>");
-                        echo("<td>". round($row['avgGasPrice']). "</td>");
-                        echo("<td>". round($row['pctTot']). "</td>");
+              <!-- Confirmation Time by Gas Price -->
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <div class="x_panel tile table_cell overflow_hidden">
+                      <div class="x_title">
+                        <h4>Confirmation Time by Gas Price</h4>
+                        <div class="clearfix"></div>
+                      </div>
+                      <div class="x_content myBar">
+                              <canvas id="mybarChart" height="210" width="300"> </canvas>
+                        </div>
+                    </div>
+                  </div>
+              <!-- Confirmation Time by Gas Price -->
 
-                        echo('</tr>');
-
-                      }
-                      ?>
-                      </tbody>
-                    </table>
+              <!-- Speedometer -->
+                <div class="col-md-4 col-sm-4 col-xs-12">
+                  <div class="x_panel tile table_cell">
+                    <div class="x_title">
+                      <h4>Real Time Gas Use: <small> Block Limit (last 10)</small></h4>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content sMeter">
+                        <div id="speedometer" class="speedometer"></div>
+                        <p id="blockNum">Last Block: </p> 
+                    </div>
+                  </div>
                 </div>
+              <!--/Speedometer -->
+              <div class="clearfix"></div>
             </div>
-        </div>
+          <!-- 3rd row ends -->
 
-        <!-- /miner rankings -->
+          <!-- 4th row starts -->
+            <div class="row table_row">
+              <!-- Miner Rankings -->
+                <div class="col-md-8 col-sm-12 col-xs-12">
+                  <div class="x_panel tile table_cell top_miners">
+                    <div class="x_title">
+                      <h4>Top 10 Miners by Blocks Mined</h4>
+                      <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content">
+                      <table class="table table_data table-bordered">
+                          <thead>
+                            <tr>
+                              <th>Miner</th>
+                              <th>Lowest gas price (gwei)</th>
+                              <th>Weighted avg gas price (gwei)</th>
+                              <th>% of total blocks</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <?php
+                          $minerNames = array(
+        '0xea674fdde714fd979de3edf0f56aa9716b898ec8'=>'Ethermine',
+        '0x1e9939daaad6924ad004c2560e90804164900341'=>'ethfans',
+        '0xb2930b35844a230f00e51431acae96fe543a0347'=>'miningpoolhub',
+        '0x4bb96091ee9d802ed039c4d1a5f6216f90f81b01'=>'Ethpool',
+        '0x52bc44d5378309ee2abf1539bf71de1b7d7be3b5'=>'Nanopool',
+        '0x2a65aca4d5fc5b5c859090a6c34d164135398226'=>'Dwarfpool',
+        '0x829bd824b016326a401d083b33d092293333a830'=>'f2pool',
+        '0xa42af2c70d316684e57aefcc6e393fecb1c7e84e'=>'Coinotron',
+        '0x6c7f03ddfdd8a37ca267c88630a4fee958591de0'=>'alpereum'
 
-        <!-- Misc Transaction Table -->
+                          );
+                          foreach ($topMiners as $row){
+                            echo('<tr>');
+                            if(array_key_exists ($row['miner'],$minerNames)){
+                            $row['miner'] = $minerNames[$row['miner']];}
+                            echo("<td>". $row['miner']. "</td>");
+                            echo("<td>". $row['minGasPrice']. "</td>");
+                            echo("<td>". round($row['avgGasPrice']). "</td>");
+                            echo("<td>". round($row['pctTot']). "</td>");
 
-            <div class="col-md-4 col-sm-4 col-xs-12">
-              <div class="x_panel tile fixed_height_420">
-                <div class="x_title">
-                  <h4>Misc Stats <small> (Last 1,500 blocks)</small></h4>
-                  <div class="clearfix"></div>
+                            echo('</tr>');
+
+                          }
+                          ?>
+                          </tbody>
+                        </table>
+                    </div>
+                  </div>
                 </div>
-                <div class="x_content">
-                  <table class="table table-bordered">
-                      <thead>
-                        <tr>
-                          <th>Category</th>
-                          <th>Value</th>
-                        </tr>
-                      </thead>
-                      <tbody> 
-                        <tr>
-                          <td>Cheapest Gas Price (gwei)</td>
-                          <td><?php echo ($gaspricelow);?></td>
-                        </tr>
-                        <tr>
-                          <td>Highest Gas Price (gwei)</td>
-                          <td><?php echo '<a href="https://etherscan.io/tx/' .$dearestgpID.'"';echo "target=\"_blank\">$gaspricehigh</a>";?></td>
-                        </tr>
-                        <tr>
-                          <td>Median Gas Price (gwei)</td>
-                          <td><?php echo ($gaspricemedian);?></td>
-                        </tr>
-                        <tr>
-                          <td>Cheapest Transfer Fee</td>
-                          <td id="cheapestTransfer"><?php echo '<a href="https://etherscan.io/tx/' .$cheapestTxId.'"'; echo "target=\"_blank\">$cheapestTxDisplay</a>";?></td>
-                    
-                        </tr>
-                        <tr>
-                          <td>Highest Transfer Fee</td>
-                          <td><?php echo '<a href="https://etherscan.io/tx/' .$dearestTxId.'"'."target=\"_blank\">$dearestTxDisplay</a>"?></td>
+              <!-- /miner rankings -->
+              <!-- Misc Transaction Table -->
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <div class="x_panel tile table_cell">
+                      <div class="x_content">
+                        <table class="table table_data table-bordered">
+                            <thead>
+                              <tr>
+                                <th>Category</th>
+                                <th>Value</th>
+                              </tr>
+                            </thead>
+                            <tbody> 
+                              <tr>
+                                <td>Cheapest Gas Price (gwei)</td>
+                                <td><?php echo ($gaspricelow);?></td>
+                              </tr>
+                              <tr>
+                                <td>Highest Gas Price (gwei)</td>
+                                <td><?php echo '<a href="https://etherscan.io/tx/' .$dearestgpID.'"';echo "target=\"_blank\">$gaspricehigh</a>";?></td>
+                              </tr>
+                              <tr>
+                                <td>Median Gas Price (gwei)</td>
+                                <td><?php echo ($gaspricemedian);?></td>
+                              </tr>
+                              <tr>
+                                <td>Cheapest Transfer Fee</td>
+                                <td id="cheapestTransfer"><?php echo '<a href="https://etherscan.io/tx/' .$cheapestTxId.'"'; echo "target=\"_blank\">$cheapestTxDisplay</a>";?></td>
                           
-                        </tr>
-                        <tr>
-                          <td>Total Transactions</td>
-                          <td><?php echo "$totTx";?></td>
-                        </tr>
-                        <tr>
-                          <td>% Empty Blocks</td>
-                          <td><?php echo "$percentEmpty";?></td>
-                        </tr>
-                        <tr>
-                          <td>% Full Blocks</td>
-                          <td><?php echo ($percentFull);?></td>
-                        </tr>
-                      </tbody>
-                    </table>
-                </div>
+                              </tr>
+                              <tr>
+                                <td>Highest Transfer Fee</td>
+                                <td><?php echo '<a href="https://etherscan.io/tx/' .$dearestTxId.'"'."target=\"_blank\">$dearestTxDisplay</a>"?></td>
+                                
+                              </tr>
+                              <tr>
+                                <td>Total Transactions</td>
+                                <td><?php echo "$totTx";?></td>
+                              </tr>
+                              <tr>
+                                <td>% Empty Blocks</td>
+                                <td><?php echo "$percentEmpty";?></td>
+                              </tr>
+                              <tr>
+                                <td>% Full Blocks</td>
+                                <td><?php echo ($percentFull);?></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                      </div>
+                    </div>
+                  </div>
+              <!-- /misc transactions -->
             </div>
-        </div>
-    </div>
+          <!-- 4th row ends -->
+        </div>           
+      <!-- /page content ends -->
 
-    <!-- /misc transactions -->
-
-  </div>
-</div>
-             
-<!-- /page content -->
-
-        <!-- footer content -->
+      <!-- footer content -->
         <footer>
-          <div class="tip-button">
-             <button type="button" class="btn btn-round btn-success">ETH Tips - Thank you!</button>
-             <p>0x446fa0c8EaD753c7ABf0B821f90D4338e72De380</p>
-          </div>
-          <div class="message"></div>
-          
-          <script>
-          var tipButton = document.querySelector('.tip-button')
-          renderMessage('Try the safelow gas price with metamask or mist');
-          tipButton.addEventListener('click', function() {
-          if (typeof web3 === 'undefined') {
-          return renderMessage('You need to install MetaMask to use this feature.  https://metamask.io')
-          }
-          var user_address = web3.eth.accounts[0];
-          web3.eth.sendTransaction({
-          to: '0x446fa0c8EaD753c7ABf0B821f90D4338e72De380',
-          from: user_address,
-          value: web3.toWei('.002', 'ether'),
-            }, function (err, transactionHash) {
-              if (err) return renderMessage('Oh no!: ' + err.message)
-
-            // If you get a transactionHash, you can assume it was sent,
-            // or if you want to guarantee it was received, you can poll
-          // for that transaction to be mined first.
-          renderMessage('Thanks!')
-          })
-        })
-        function renderMessage (message) {
-          var messageEl = document.querySelector('.message')
-          messageEl.innerHTML = message
-        }
-
-           </script>
-          
-          <div class="pull-right">
-            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
-          </div>
+          <div class="concourse_link"><a href="https://concourseopen.com" target="_blank">Concourse Open Construction</a></div>
           <div class="clearfix"></div>
         </footer>
         <!-- /footer content -->

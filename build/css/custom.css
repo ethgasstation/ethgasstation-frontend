@@ -530,6 +530,140 @@ body {
 .page-title .title_right .pull-right {
     margin: 10px 0
 }
+.rgp {
+    display: inline-block;
+    width: 66%;
+}
+.mwt {
+    float: right;
+    width: 34%;
+    display: inline-block;
+}
+.table_row {
+    display: flex
+}
+.table_cell {
+    height: 96%
+}
+.count.safe_low {
+    color: #1ABB9C;
+}
+.count.standard {
+    color: #03586A;
+}
+.count.fast {
+    color: #ff0000;
+}
+.count_top {
+    font-size: 15px;
+}
+.post_title {
+    font-size: 20px;
+}
+.gas_estimator_title {
+    /*font-size: 15px;
+    font-weight: normal;*/
+}
+.gas_estimator_form label.control-label {
+    font-size: 15px;
+    font-weight: normal;
+}
+@media (min-width: 400px) and (max-width: 1439px) {
+    .post_title {
+        font-size: 18px;
+        margin-top: 0;
+    }
+}
+@media only screen and (max-width: 991px) {
+    .tile_count .tile_stats_count .count {
+        font-size: 40px !important;
+    }
+    .count_top {
+        font-size: 14px !important;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .table_row {
+        display: block;
+    }
+    .rgp {
+        width: 100%;
+        display: block;
+    }
+    .mwt {
+        width: 100%;
+        float: left;
+    }
+    .top_miners {
+        overflow-x: auto;
+    }
+}
+@media only screen and (max-width: 770px) {
+    .rgp {
+        width: 100%;
+        max-width: 700px;
+        display: block;
+    }
+    .mwt {
+        width: 100%;
+        float: left;
+        max-width: 470px;
+    }
+    .tile_count .tile_stats_count:before {
+        content: "";
+        position: absolute;
+        left: 0;
+        height: 65px;
+        border-left: 2px solid #ADB2B5;
+        margin-top: 10px
+    }
+}
+@media only screen and (min-width: 1500px) {
+    .x_content.sMeter {
+        position: absolute;
+        top: calc(50% - 90px);
+    }
+}
+@media only screen and (min-width: 1600px) {
+    #blockNum {
+        bottom: -40px;
+        position: absolute;
+    }
+}
+@media only screen and (min-width: 1700px) {
+    #blockNum {
+        bottom: -50px;
+        position: absolute;
+    }
+}
+@media only screen and (min-width: 1800px) {
+    #blockNum {
+        bottom: -55px;
+        position: absolute;
+    }
+}
+.top_tiles_title {
+    margin-left: 20px;
+    font-size: 20px;
+}
+.blog_header > p {
+    font-size: 16px;
+}
+.blog_header {
+    border: none !important;
+    margin-top: 5px !important;
+    margin-bottom: 0 !important;
+}
+.table_data {
+    font-size: 15px;
+}
+#blogPost {
+    margin-top: -5px;
+}
+#blogPost p {
+    font-size: 15px;
+}
 .fixed_height_320 {
     height: 320px
 }
@@ -916,6 +1050,14 @@ footer {
     padding: 15px 20px;
     display: block
 }
+footer .concourse_link {
+    text-align: center;
+    font-size: 15px;
+    padding: 10px;
+}
+footer .concourse_link a {
+    text-decoration: underline;
+}
 .nav-sm footer {
     margin-left: 70px
 }
@@ -955,7 +1097,7 @@ footer {
     margin-bottom: 0
 }
 .tile {
-    overflow: auto 
+    /*overflow: auto */
 }
 .top_tiles {
     margin-bottom: 0
@@ -1745,6 +1887,7 @@ span.right {
     background: #425567
 }
 .tile_count {
+    max-width: 1400px;
     margin-bottom: 20px;
     margin-top: 20px
 }
@@ -1768,32 +1911,31 @@ span.right {
         padding-bottom: 10px
     }
 }
-.tile_count .tile_stats_count:before {
-    content: "";
-    position: absolute;
-    left: 0;
-    height: 65px;
-    border-left: 2px solid #ADB2B5;
-    margin-top: 10px
-}
 @media (min-width: 992px) {
     .tile_count .tile_stats_count:first-child:before {
         border-left: 0
     }
 }
 .tile_count .tile_stats_count .count {
-    font-size: 30px;
-    line-height: 47px;
-    font-weight: 600
+    float: left;
+    font-size: 56px;
+    line-height: 50px;
+    font-weight: 500;
+    margin-right: 10px;
+    display: inline-block;
+}
+.tile_count .tile_stats_count .text-container {
+    margin-top: 4px;
+    display: inline-block;
 }
 @media (min-width: 768px) {
     .tile_count .tile_stats_count .count {
-        font-size: 40px
+        font-size: 56px
     }
 }
 @media (min-width: 992px) and (max-width: 1100px) {
     .tile_count .tile_stats_count .count {
-        font-size: 30px
+        font-size: 56px
     }
 }
 .tile_count .tile_stats_count span {
@@ -4315,7 +4457,7 @@ ul.notifications {
   .positionable {
   position: absolute;
   display: block;
-  left: 70px;
+  /*left: 70px;*/
   top: 20px;
   margin: 20px;
   background-color: #F2F5F7;
