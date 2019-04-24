@@ -1059,16 +1059,21 @@ footer .concourse_link a {
     text-decoration: underline;
 }
 footer .eth_footer_links {
+    font-size: 15px;
     text-align: center;
 }
 footer .eth_footer_links a {
     margin: 0 10px;
     text-decoration: none;
 }
-.side-menu .social_link {
-    width: 20px;
+.top_nav .social_link {
+    color: #26b99a;
+    margin-left: -10px;
+}
+.top_nav .social_icon {
+    width: 27px;
     cursor: pointer;
-    margin-right: 5px;
+    margin-right: 2px;
 }
 .nav-sm footer {
     margin-left: 70px

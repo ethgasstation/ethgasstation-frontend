@@ -86,6 +86,15 @@
               </div>
 
               <ul class="nav navbar-nav navbar-right">
+                <li class="social_link">
+                    <a href="https://discord.gg/mzDxADE" target="_blank">
+                      <img class="social_icon" src="/images/discord.svg"></a>
+                </li>
+
+                <li class="social_link">
+                    <a href="https://twitter.com/ethgasstation" target="_blank"><img class="social_icon" src="/images/twitter.svg"></a>
+                </li>
+                
                 <li class="dropdown">
                   <a href="#" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-globe"></i><span style="color:#768399"> Change Currency</span>
                     <span class=" fa fa-angle-down"></span>
@@ -97,6 +106,7 @@
                     <li id="cny"><a href="#"> CNY<?php if($currency=='cny'){echo'<span class="pull-right"><i class="fa fa-check"></i></span>';}?></a></li>
                   </ul>
                 </li>
+
               <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Estimates over last 1,500 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
               </p>
             </ul>
