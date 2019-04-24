@@ -1060,11 +1060,15 @@ footer .concourse_link a {
 }
 footer .eth_footer_links {
     text-align: center;
-    margin-bottom: 10px;
 }
 footer .eth_footer_links a {
     margin: 0 10px;
     text-decoration: none;
+}
+.side-menu .social_link {
+    width: 20px;
+    cursor: pointer;
+    margin-right: 5px;
 }
 .nav-sm footer {
     margin-left: 70px
