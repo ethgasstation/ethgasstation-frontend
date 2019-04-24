@@ -1058,6 +1058,14 @@ footer .concourse_link {
 footer .concourse_link a {
     text-decoration: underline;
 }
+footer .eth_footer_links {
+    text-align: center;
+    margin-bottom: 10px;
+}
+footer .eth_footer_links a {
+    margin: 0 10px;
+    text-decoration: none;
+}
 .nav-sm footer {
     margin-left: 70px
 }
