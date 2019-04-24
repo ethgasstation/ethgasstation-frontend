@@ -48,10 +48,10 @@
                     <a href="/feedback.html"><i class ="fa fa-envelope"></i>Feedback</a>
                   </li>
                   <li>
-                    <a href="https://twitter.com/ethgasstation"><img class="social_link" src="/images/twitter.svg">Twitter</a>
+                    <a href="https://twitter.com/ethgasstation" target="_blank"><img class="social_link" src="/images/twitter.svg">Twitter</a>
                   </li>
                   <li>
-                    <a href="https://discord.gg/mzDxADE">
+                    <a href="https://discord.gg/mzDxADE" target="_blank">
                       <img class="social_link" src="/images/discord.svg">Discord</a>
                   </li>
                 </ul>
