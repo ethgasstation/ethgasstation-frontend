@@ -828,7 +828,7 @@ a:focus {
 .top_nav .navbar-right li {
     display: inline-block;
     float: right;
-    position: static
+    position: relative;
 }
 @media (min-width: 480px) {
     .top_nav .navbar-right li {
@@ -1744,11 +1744,11 @@ ul.msg_list li a .message {
     float: left;
     font-size: 12px;
     left: 0;
+    top: 55px;
     list-style: none outside none;
     padding: 0;
     position: absolute;
     text-shadow: none;
-    top: 100%;
     z-index: 9998;
     border: 1px solid #D9DEE4;
     border-top-left-radius: 0;
@@ -4520,6 +4520,9 @@ ul.notifications {
     }
     .navbar-text{
         margin-right: 10px;
+    }
+    .dropdown-menu {
+        top: 45px !important;
     }
 }
 @media screen and (max-width: 841px) and (min-width: 416px) {
