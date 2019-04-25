@@ -832,7 +832,21 @@ a:focus {
 }
 @media (min-width: 480px) {
     .top_nav .navbar-right li {
-        position: relative
+        position: relative;
+    }
+}
+@media only screen and (max-width: 415px) {
+    .top_nav .navbar-right li {
+        float: left;
+    }
+    .top_nav .navbar-left {
+        float: left;
+        margin-top: 0;
+        padding-left: 15px !important;
+    }
+    .nav.navbar-nav > li.dropdown > a {
+        line-height: 0;
+        padding: 0 15px 8px;
     }
 }
 .top_nav .dropdown-menu li {
@@ -4454,7 +4468,9 @@ ul.notifications {
   overflow:auto !important; /*prevent datatables overflowing its container*/
 }
 #slider {
-    margin: 10px;} 
+    margin: 10px;
+    max-width: 100%;
+} 
   .ui-slider .ui-slider-handle {
     background: #1ABB9C;
     width: 25px;
@@ -4479,4 +4495,22 @@ ul.notifications {
   margin: 20px;
   background-color: #F2F5F7;
   text-align: center;
+}
+@media(max-width:771px){
+    	.top_nav .navbar-right{
+    		width: 100%;
+	}
+	.top_nav .navbar-left{
+		clear: both;
+    		text-align: center;
+	}
+}
+@media(max-width:415px){
+	a.user-profile.dropdown-toggle {
+	    clear: both;
+	    text-align: center;
+	}	
+}
+.navbar-text{
+    margin-top: 20px;
 }
