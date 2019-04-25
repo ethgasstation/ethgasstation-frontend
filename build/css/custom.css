@@ -4507,7 +4507,7 @@ ul.notifications {
 }
 @media(max-width:415px){
 	a.user-profile.dropdown-toggle {
-	    clear: both;
+	    top: 20px;
 	    text-align: center;
 	}	
 }
