@@ -4497,7 +4497,7 @@ ul.notifications {
   text-align: center;
 }
 @media(max-width:771px){
-    	.nav navbar-nav navbar-right{
+    	.ul.nav.navbar-nav.navbar-right{
     		width: 100%;
 	}
 	.top_nav .navbar-left{
