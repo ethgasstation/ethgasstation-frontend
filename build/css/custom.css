@@ -4468,7 +4468,9 @@ ul.notifications {
   overflow:auto !important; /*prevent datatables overflowing its container*/
 }
 #slider {
-    margin: 10px;} 
+    margin: 10px;
+    max-width: 100%;
+} 
   .ui-slider .ui-slider-handle {
     background: #1ABB9C;
     width: 25px;
@@ -4493,4 +4495,19 @@ ul.notifications {
   margin: 20px;
   background-color: #F2F5F7;
   text-align: center;
+}
+@media(max-width:771px){
+    	.nav navbar-nav navbar-right{
+    		width: 100%;
+	}
+	.top_nav .navbar-left{
+		clear: both;
+    		text-align: center;
+	}
+}
+@media(max-width:415px){
+	a.user-profile.dropdown-toggle {
+	    clear: both;
+	    text-align: center;
+	}	
 }
