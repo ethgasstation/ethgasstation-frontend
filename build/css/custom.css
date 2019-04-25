@@ -4511,6 +4511,11 @@ ul.notifications {
 	    text-align: center;
 	}	
 }
+@media(max-width:1200px){
+	.top_nav .navbar-right{
+		width: 88% !important;
+	}
+}
 .navbar-text{
     margin-top: 20px;
 }
