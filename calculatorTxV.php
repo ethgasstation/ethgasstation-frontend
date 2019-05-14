@@ -257,19 +257,19 @@
       //Curency Support
       
             $("#eur").click(function(){     
-                location = "http://<?php echo EGS_HOSTNAME; ?>/calculatorTxV.php?curr=eur";                              
+                location = location.origin + "/calculatorTxV.php?curr=eur";                              
             });
             
             $("#usd").click(function(){
-                location = "http://<?php echo EGS_HOSTNAME; ?>/calculatorTxV.php?curr=usd";
+                location = location.origin + "/calculatorTxV.php?curr=usd";
             });
           
             $("#cny").click(function(){
-                location = "http://<?php echo EGS_HOSTNAME; ?>/calculatorTxV.php?curr=cny";                                      
+                location = location.origin + "/calculatorTxV.php?curr=cny";                                      
             });
 
             $("#gbp").click(function(){
-                location = "http://<?php echo EGS_HOSTNAME; ?>/calculatorTxV.php?curr=gbp";                       
+                location = location.origin + "/calculatorTxV.php?curr=gbp";                       
             });
 
             $('input.flat').change(function(){

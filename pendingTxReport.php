@@ -245,19 +245,19 @@
       //Curency Support
       
             $("#eur").click(function(){     
-                location = "http://<?php echo EGS_HOSTNAME; ?>/pendingTxReport.php?curr=eur";                              
+                location = location.origin + "/pendingTxReport.php?curr=eur";                              
             });
             
             $("#usd").click(function(){
-                location = "http://<?php echo EGS_HOSTNAME; ?>/pendingTxReport?curr=usd";
+                location = location.origin + "/pendingTxReport?curr=usd";
             });
           
             $("#cny").click(function(){
-                location = "http://<?php echo EGS_HOSTNAME; ?>/pendingTxReport?curr=cny";                                      
+                location = location.origin + "/pendingTxReport?curr=cny";                                      
             });
 
             $("#gbp").click(function(){
-                location = "http://<?php echo EGS_HOSTNAME; ?>/pendingTxReport?curr=gbp";                       
+                location = location.origin + "/pendingTxReport?curr=gbp";                       
             });
             $('#reset').click(function(){
               $('#txhash').html("");

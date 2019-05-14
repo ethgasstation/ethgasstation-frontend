@@ -629,32 +629,28 @@
       
             $("#eur").click(function(){
                  
-                location = "http://<?php echo EGS_HOSTNAME; ?>/index.php?curr=eur";
+                location = location.origin + "/index.php?curr=eur";
 			          
                                                                      
             });
             
             $("#usd").click(function(){
                  
-                location = "http://<?php echo EGS_HOSTNAME; ?>/index.php?curr=usd";
+                location = location.origin + "/index.php?curr=usd";
 			          
                                                                      
             });
           
             $("#cny").click(function(){
 
-                location = "http://<?php echo EGS_HOSTNAME; ?>/index.php?curr=cny";
+                location = location.origin + "/index.php?curr=cny";
                                
 			        
                                                                      
             });
 
             $("#gbp").click(function(){
-                 
-                location = "http://<?php echo EGS_HOSTNAME; ?>/index.php?curr=gbp";
-
-			  
-                                                                     
+                location = location.origin + "/index.php?curr=gbp";                                                    
             });
 
          
