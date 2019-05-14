@@ -828,7 +828,7 @@ a:focus {
 .top_nav .navbar-right li {
     display: inline-block;
     float: right;
-    position: static
+    position: relative;
 }
 @media (min-width: 480px) {
     .top_nav .navbar-right li {
@@ -836,8 +836,8 @@ a:focus {
     }
 }
 @media only screen and (max-width: 415px) {
-    .top_nav .navbar-right li {
-        float: left;
+    .toggle {
+        width: 40px !important;
     }
     .top_nav .navbar-left {
         float: left;
@@ -1744,11 +1744,11 @@ ul.msg_list li a .message {
     float: left;
     font-size: 12px;
     left: 0;
+    top: 55px;
     list-style: none outside none;
     padding: 0;
     position: absolute;
     text-shadow: none;
-    top: 100%;
     z-index: 9998;
     border: 1px solid #D9DEE4;
     border-top-left-radius: 0;
@@ -4496,15 +4496,6 @@ ul.notifications {
   background-color: #F2F5F7;
   text-align: center;
 }
-@media(max-width:771px){
-    	.top_nav .navbar-right{
-    		width: 100%;
-	}
-	.top_nav .navbar-left{
-		clear: both;
-    		text-align: center;
-	}
-}
 @media(max-width:415px){
 	a.user-profile.dropdown-toggle {
 	    top: 20px;
@@ -4518,4 +4509,25 @@ ul.notifications {
 }
 .navbar-text{
     margin-top: 20px;
+}
+@media(max-width:480px){
+    .top_nav .navbar-right{
+        width: 100% !important;
+    }
+    .top_nav .navbar-left{
+        clear: both;
+        text-align: center;
+    }
+    .navbar-text{
+        margin-right: 10px;
+    }
+    .dropdown-menu {
+        top: 45px !important;
+    }
+}
+@media screen and (max-width: 841px) and (min-width: 416px) {
+    .navbar-text{
+        float: right !important;
+        margin-top: 0;
+    }
 }

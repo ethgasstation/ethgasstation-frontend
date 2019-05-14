@@ -13,7 +13,7 @@ define('DB_NAME', 'tx');
 define('JSON_LOCATION', '/var/www/html/egs/ethgasstation-frontend/json');
 
 // hostname to put in template links
-define('EGS_HOSTNAME', 'localhost');
+define('EGS_HOSTNAME', 'https://ethgasstation.info');
 define('EGS_TITLE', 'ethgasstation-git');
 define('EGS_DESCRIPTION', 'Unofficial ethgasstation.info node run by a volunteer.');
 
