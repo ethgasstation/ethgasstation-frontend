@@ -4531,3 +4531,42 @@ ul.notifications {
         margin-top: 0;
     }
 }
+
+.leaderboard {
+    border: solid 5px green;
+}
+.leaderboard .title {
+    color: green;
+    text-align: center;
+    padding: 18px;
+    font-size: 30px;
+    font-style: italic;
+    font-weight: bolder;
+    text-transform: uppercase;
+    border-bottom: solid 5px green;
+}
+.leaderboard .leading_projects {
+    color: black;
+    padding: 15px 30px 15px 60px;
+    text-align: center;
+}
+.leaderboard .leading_projects table {
+    width: 100%;
+}
+.leaderboard .leading_projects table th {
+    font-size: 12px;
+    font-weight: bold;
+    font-style: italic;
+}
+.leaderboard .leading_projects table td {
+    text-align: left;
+}
+.leaderboard .leading_projects table td:first-child {
+    font-weight: bold;
+}
+.leaderboard .leading_projects table tbody:before {
+    line-height:1em;
+    content:"_";
+    color:white;
+    display:block;
+}
