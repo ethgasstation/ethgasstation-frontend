@@ -244,7 +244,11 @@
               <!-- leaderboard starts -->
                 <div class="col-md-8 col-sm-8 col-xs-12">
                   <div class="leaderboard">
-                      <div class="title">The Leaderboard</div>
+                      <div>
+                        <img src="/images/leaderboard-flag.png">
+                          <span class="title">The Leaderboard</span>
+                        <img src="/images/leaderboard-flag.png">
+                      </div>
                       <div class="leading_projects">
                         <table style="">
                             <thead>
