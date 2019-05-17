@@ -244,7 +244,7 @@
               <!-- leaderboard starts -->
                 <div class="col-md-8 col-sm-8 col-xs-12">
                   <div class="leaderboard">
-                      <div>
+                      <div class="header">
                         <img src="/images/leaderboard-flag.png">
                           <span class="title">The Leaderboard</span>
                         <img src="/images/leaderboard-flag.png">

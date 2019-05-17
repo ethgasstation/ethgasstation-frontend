@@ -4501,6 +4501,9 @@ ul.notifications {
 	    top: 20px;
 	    text-align: center;
 	}	
+    .leaderboard .leading_projects {
+        padding: 15px 10px !important;
+    }
 }
 @media(max-width:1200px){
 	.top_nav .navbar-right{
@@ -4535,19 +4538,26 @@ ul.notifications {
 .leaderboard {
     border: solid 5px green;
 }
-.leaderboard .title {
-    color: green;
+.leaderboard .header {
     text-align: center;
     padding: 18px;
+    border-bottom: solid 5px green;
+}
+.leaderboard .header img {
+    height: 50px;
+    margin-bottom: 20px;
+}
+.leaderboard .title {
+    color: green;
     font-size: 30px;
+    padding: 0px 5px;
     font-style: italic;
     font-weight: bolder;
     text-transform: uppercase;
-    border-bottom: solid 5px green;
 }
 .leaderboard .leading_projects {
     color: black;
-    padding: 15px 30px 15px 60px;
+    padding: 15px 100px 15px 60px;
     text-align: center;
 }
 .leaderboard .leading_projects table {
@@ -4563,6 +4573,15 @@ ul.notifications {
 }
 .leaderboard .leading_projects table td:first-child {
     font-weight: bold;
+}
+.leaderboard .leading_projects table td, .leaderboard .leading_projects table th {
+    text-align: right;
+}
+.leaderboard .leading_projects table td:nth-child(1), .leaderboard .leading_projects table td:nth-child(2) {
+    text-align: left;
+}
+.leaderboard .leading_projects table th:nth-child(1), .leaderboard .leading_projects table th:nth-child(2) {
+    text-align: left;
 }
 .leaderboard .leading_projects table tbody:before {
     line-height:1em;
