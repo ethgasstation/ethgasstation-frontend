@@ -620,10 +620,10 @@ body {
     }
 }
 @media only screen and (min-width: 1500px) {
-    .x_content.sMeter {
+    /*.x_content.sMeter {
         position: absolute;
         top: calc(50% - 90px);
-    }
+    */}
 }
 @media only screen and (min-width: 1600px) {
     #blockNum {
@@ -4546,16 +4546,17 @@ ul.notifications {
 }
 
 .leaderboard {
+    margin-bottom: 5px;
     border: solid 5px green;
 }
 .leaderboard .header {
     text-align: center;
-    padding-top: 30px;
+    padding-top: 25px;
     border-bottom: solid 5px green;
 }
 .leaderboard .header img {
     height: 40px;
-    margin-bottom: 35px;
+    margin-bottom: 30px;
 }
 .leaderboard .title {
     color: green;
