@@ -4496,7 +4496,7 @@ ul.notifications {
   background-color: #F2F5F7;
   text-align: center;
 }
-@media(max-width:415px){
+@media(max-width:415px) {
 	a.user-profile.dropdown-toggle {
 	    top: 20px;
 	    text-align: center;
@@ -4513,6 +4513,12 @@ ul.notifications {
     .leaderboard .header img {
         height: 30px !important;
         margin-bottom: 20px !important;
+    }
+    .leaderboard .leading_projects table td:nth-child(2) {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        max-width: 100px !important;
     }
 }
 @media(max-width:1200px){
@@ -4584,6 +4590,10 @@ ul.notifications {
 }
 .leaderboard .leading_projects table td:first-child {
     font-weight: bold;
+}
+.leaderboard .leading_projects table td:nth-child(2) {
+    max-width: 150px;
+    word-break: break-word;
 }
 .leaderboard .leading_projects table td, .leaderboard .leading_projects table th {
     text-align: right;
