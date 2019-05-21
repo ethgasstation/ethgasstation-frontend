@@ -4522,6 +4522,9 @@ ul.notifications {
         text-overflow: ellipsis;
         max-width: 100px !important;
     }
+    .leaderboard .leading_projects table td:nth-child(3), .leaderboard .leading_projects table td:nth-child(4), .leaderboard .leading_projects table td:nth-child(5), .leaderboard .leading_projects table td:nth-child(6) {
+        width: 40px !important;
+    }
 }
 @media(max-width:1200px){
 	.top_nav .navbar-right{
@@ -4576,7 +4579,7 @@ ul.notifications {
 }
 .leaderboard .leading_projects {
     color: black;
-    padding: 15px 5px 15px 50px;
+    padding: 15px 50px 15px 50px;
     text-align: center;
 }
 .leaderboard .leading_projects table {
@@ -4611,4 +4614,7 @@ ul.notifications {
     content:"_";
     color:white;
     display:block;
+}
+.leaderboard .leading_projects table td:nth-child(3), .leaderboard .leading_projects table td:nth-child(4), .leaderboard .leading_projects table td:nth-child(5), .leaderboard .leading_projects table td:nth-child(6) {
+    width: 65px;
 }
