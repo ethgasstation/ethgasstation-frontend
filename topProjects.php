@@ -21,9 +21,9 @@
 
   foreach($decodedData as $data) {
     if ($data->project == "unknown") {
-      echo "<tr><td>". $counter++ .".</td><td>". $data->contracts[0]->contract ."</td><td>". $data->gas ."</td><td>3.4%</td><td>4,234</td><td>1234</td></tr>";
+      echo "<tr><td>". $counter++ .".</td><td>". $data->contracts[0]->contract ."</td><td>". $data->gas ."</td><td>". $data->txCost ."</td><td>3.4%</td><td>4,234</td><td>1234</td></tr>";
     } else {
-      echo "<tr><td>". $counter++ .".</td><td>". $data->project ."</td><td>". $data->gas ."</td><td>3.4%</td><td>4,234</td><td>1234</td></tr>";
+      echo "<tr><td>". $counter++ .".</td><td>". $data->project ."</td><td>". $data->gas "</td><td>". $data->txCost ."</td><td>3.4%</td><td>4,234</td><td>1234</td></tr>";
     }
   }
  
