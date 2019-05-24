@@ -258,8 +258,6 @@
                                   <th>Gas Paid</th>
                                   <th>Gas Cost</th>
                                   <th>7d%</th>
-                                  <th>ETH lock</th>
-                                  <th>DAUs</th>
                               </tr>
                             </thead>
                               

@@ -4519,8 +4519,8 @@ ul.notifications {
         text-overflow: ellipsis;
         max-width: 100px !important;
     }
-    .leaderboard .leading_projects table td:nth-child(3), .leaderboard .leading_projects table td:nth-child(4), .leaderboard .leading_projects table td:nth-child(5), .leaderboard .leading_projects table td:nth-child(6), .leaderboard .leading_projects table td:nth-child(7) {
-        width: 35px !important;
+    .leaderboard .leading_projects table td:nth-child(3), .leaderboard .leading_projects table td:nth-child(4), .leaderboard .leading_projects table td:nth-child(5) {
+        width: 40px !important;
     }
     .leaderboard .leading_projects {
         padding: 15px 10px !important;
@@ -4615,11 +4615,11 @@ ul.notifications {
     color:white;
     display:block;
 }
-.leaderboard .leading_projects table td:nth-child(3), .leaderboard .leading_projects table td:nth-child(4), .leaderboard .leading_projects table td:nth-child(5), .leaderboard .leading_projects table td:nth-child(6), .leaderboard .leading_projects table td:nth-child(7) {
-    width: 60px;
+.leaderboard .leading_projects table td:nth-child(3), .leaderboard .leading_projects table td:nth-child(4), .leaderboard .leading_projects table td:nth-child(5) {
+    width: 70px;
 }
 @media screen and (min-width: 1500px) {
-    .leaderboard .leading_projects table td:nth-child(3), .leaderboard .leading_projects table td:nth-child(4), .leaderboard .leading_projects table td:nth-child(5), .leaderboard .leading_projects table td:nth-child(6), .leaderboard .leading_projects table td:nth-child(7) {
-        width: 60px;
+    .leaderboard .leading_projects table td:nth-child(3), .leaderboard .leading_projects table td:nth-child(4), .leaderboard .leading_projects table td:nth-child(5) {
+        width: 70px;
     }
 }
