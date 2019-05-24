@@ -4520,7 +4520,7 @@ ul.notifications {
         max-width: 100px !important;
     }
     .leaderboard .leading_projects table td:nth-child(3), .leaderboard .leading_projects table td:nth-child(4), .leaderboard .leading_projects table td:nth-child(5) {
-        width: 40px !important;
+        /*width: 40px !important;*/
     }
     .leaderboard .leading_projects {
         padding: 15px 10px !important;
@@ -4616,10 +4616,10 @@ ul.notifications {
     display:block;
 }
 .leaderboard .leading_projects table td:nth-child(3), .leaderboard .leading_projects table td:nth-child(4), .leaderboard .leading_projects table td:nth-child(5) {
-    width: 70px;
+    /*width: 70px;*/
 }
 @media screen and (min-width: 1500px) {
     .leaderboard .leading_projects table td:nth-child(3), .leaderboard .leading_projects table td:nth-child(4), .leaderboard .leading_projects table td:nth-child(5) {
-        width: 70px;
+        /*width: 70px;*/
     }
 }
