@@ -257,7 +257,6 @@
                                   <th>Name</th>
                                   <th>Gas Paid</th>
                                   <th>Gas Cost</th>
-                                  <th>7d%</th>
                               </tr>
                             </thead>
                               

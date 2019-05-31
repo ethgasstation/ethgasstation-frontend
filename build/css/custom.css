@@ -619,29 +619,14 @@ body {
         margin-top: 10px
     }
 }
+#blockNum {
+    margin: 0 !important
+}
 @media only screen and (min-width: 1500px) {
     /*.x_content.sMeter {
         position: absolute;
         top: calc(50% - 90px);
     */}
-}
-@media only screen and (min-width: 1600px) {
-    #blockNum {
-        bottom: -40px;
-        position: absolute;
-    }
-}
-@media only screen and (min-width: 1700px) {
-    #blockNum {
-        bottom: -50px;
-        position: absolute;
-    }
-}
-@media only screen and (min-width: 1800px) {
-    #blockNum {
-        bottom: -55px;
-        position: absolute;
-    }
 }
 .top_tiles_title {
     margin-left: 20px;
@@ -4558,19 +4543,20 @@ ul.notifications {
 
 .leaderboard {
     margin-bottom: 5px;
-    border: solid 5px green;
+    border: solid 5px #1ABB9C;
+    background: #fff;
 }
 .leaderboard .header {
     text-align: center;
     padding-top: 25px;
-    border-bottom: solid 5px green;
+    border-bottom: solid 5px #1ABB9C;
 }
 .leaderboard .header img {
     height: 40px;
     margin-bottom: 30px;
 }
 .leaderboard .title {
-    color: green;
+    color: #1ABB9C;
     font-size: 35px;
     padding: 0px 7px;
     font-style: italic;
