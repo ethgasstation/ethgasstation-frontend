@@ -255,8 +255,9 @@
                               <tr>
                                   <th></th>
                                   <th>Name</th>
+                                  <th>ETH Spent</th>
                                   <th>Ave. Gwei</th>
-                                  <th>Gas</th>
+                                  <th>USD Value</th>
                               </tr>
                             </thead>
                               
