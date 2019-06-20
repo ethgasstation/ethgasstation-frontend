@@ -255,8 +255,8 @@
                               <tr>
                                   <th></th>
                                   <th>Name</th>
-                                  <th>Gas Paid</th>
-                                  <th>Gas Cost</th>
+                                  <th>Ave. Gwei</th>
+                                  <th>Gas</th>
                               </tr>
                             </thead>
                               
