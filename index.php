@@ -289,23 +289,6 @@
                     </div>
                   <!--/blogpost ends -->
 
-                  <!-- Speedometer starts -->
-                    <div class="row">
-                      <div class="col-md-12 col-sm-12 col-xs-12 table-cell">
-                        <div class="x_panel tile table_cell">
-                          <div class="x_title">
-                            <h4>Real Time Gas Use: <small> Block Limit (last 10)</small></h4>
-                            <div class="clearfix"></div>
-                          </div>
-                          <div class="x_content sMeter">
-                              <div id="speedometer" class="speedometer"></div>
-                              <p id="blockNum">Last Block: </p> 
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  <!--/Speedometer ends -->
-
                 </div>
               
             </div>
@@ -313,6 +296,7 @@
 
           <!-- 3rd row starts -->
             <div class="row table_row">
+
               <!-- Transactions by Gas Price -->
                 <div class="col-md-4 col-sm-4 col-xs-12">
                   <div class="x_panel tile table_cell">
@@ -341,58 +325,22 @@
                   </div>
               <!-- Confirmation Time by Gas Price -->
 
-              <!-- Misc Transaction Table -->
-                  <div class="col-md-4 col-sm-4 col-xs-12">
-                    <div class="x_panel tile table_cell">
-                      <div class="x_content">
-                        <table class="table table_data table-bordered">
-                            <thead>
-                              <tr>
-                                <th>Category</th>
-                                <th>Value</th>
-                              </tr>
-                            </thead>
-                            <tbody> 
-                              <tr>
-                                <td>Cheapest Gas Price (gwei)</td>
-                                <td><?php echo ($gaspricelow);?></td>
-                              </tr>
-                              <tr>
-                                <td>Highest Gas Price (gwei)</td>
-                                <td><?php echo '<a href="https://etherscan.io/tx/' .$dearestgpID.'"';echo "target=\"_blank\">$gaspricehigh</a>";?></td>
-                              </tr>
-                              <tr>
-                                <td>Median Gas Price (gwei)</td>
-                                <td><?php echo ($gaspricemedian);?></td>
-                              </tr>
-                              <tr>
-                                <td>Cheapest Transfer Fee</td>
-                                <td id="cheapestTransfer"><?php echo '<a href="https://etherscan.io/tx/' .$cheapestTxId.'"'; echo "target=\"_blank\">$cheapestTxDisplay</a>";?></td>
-                          
-                              </tr>
-                              <tr>
-                                <td>Highest Transfer Fee</td>
-                                <td><?php echo '<a href="https://etherscan.io/tx/' .$dearestTxId.'"'."target=\"_blank\">$dearestTxDisplay</a>"?></td>
-                                
-                              </tr>
-                              <tr>
-                                <td>Total Transactions</td>
-                                <td><?php echo "$totTx";?></td>
-                              </tr>
-                              <tr>
-                                <td>% Empty Blocks</td>
-                                <td><?php echo "$percentEmpty";?></td>
-                              </tr>
-                              <tr>
-                                <td>% Full Blocks</td>
-                                <td><?php echo ($percentFull);?></td>
-                              </tr>
-                            </tbody>
-                          </table>
+              <!-- Speedometer starts -->
+                    <div class="row">
+                      <div class="col-md-12 col-sm-12 col-xs-12 table-cell">
+                        <div class="x_panel tile table_cell">
+                          <div class="x_title">
+                            <h4>Real Time Gas Use: <small> Block Limit (last 10)</small></h4>
+                            <div class="clearfix"></div>
+                          </div>
+                          <div class="x_content sMeter">
+                              <div id="speedometer" class="speedometer"></div>
+                              <p id="blockNum">Last Block: </p> 
+                          </div>
+                        </div>
                       </div>
                     </div>
-                  </div>
-              <!-- /misc transactions -->
+                  <!--/Speedometer ends -->
               
               <div class="clearfix"></div>
             </div>
@@ -450,6 +398,59 @@
                   </div>
                 </div>
               <!-- /miner rankings -->
+
+              <!-- Misc Transaction Table -->
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <div class="x_panel tile table_cell">
+                      <div class="x_content">
+                        <table class="table table_data table-bordered">
+                            <thead>
+                              <tr>
+                                <th>Category</th>
+                                <th>Value</th>
+                              </tr>
+                            </thead>
+                            <tbody> 
+                              <tr>
+                                <td>Cheapest Gas Price (gwei)</td>
+                                <td><?php echo ($gaspricelow);?></td>
+                              </tr>
+                              <tr>
+                                <td>Highest Gas Price (gwei)</td>
+                                <td><?php echo '<a href="https://etherscan.io/tx/' .$dearestgpID.'"';echo "target=\"_blank\">$gaspricehigh</a>";?></td>
+                              </tr>
+                              <tr>
+                                <td>Median Gas Price (gwei)</td>
+                                <td><?php echo ($gaspricemedian);?></td>
+                              </tr>
+                              <tr>
+                                <td>Cheapest Transfer Fee</td>
+                                <td id="cheapestTransfer"><?php echo '<a href="https://etherscan.io/tx/' .$cheapestTxId.'"'; echo "target=\"_blank\">$cheapestTxDisplay</a>";?></td>
+                          
+                              </tr>
+                              <tr>
+                                <td>Highest Transfer Fee</td>
+                                <td><?php echo '<a href="https://etherscan.io/tx/' .$dearestTxId.'"'."target=\"_blank\">$dearestTxDisplay</a>"?></td>
+                                
+                              </tr>
+                              <tr>
+                                <td>Total Transactions</td>
+                                <td><?php echo "$totTx";?></td>
+                              </tr>
+                              <tr>
+                                <td>% Empty Blocks</td>
+                                <td><?php echo "$percentEmpty";?></td>
+                              </tr>
+                              <tr>
+                                <td>% Full Blocks</td>
+                                <td><?php echo ($percentFull);?></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                      </div>
+                    </div>
+                  </div>
+              <!-- /misc transactions -->
               
             </div>
           <!-- 4th row ends -->
