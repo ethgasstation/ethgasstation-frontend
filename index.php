@@ -326,21 +326,19 @@
               <!-- Confirmation Time by Gas Price -->
 
               <!-- Speedometer starts -->
-                    <div class="row">
-                      <div class="col-md-12 col-sm-12 col-xs-12 table-cell">
-                        <div class="x_panel tile table_cell">
-                          <div class="x_title">
-                            <h4>Real Time Gas Use: <small> Block Limit (last 10)</small></h4>
-                            <div class="clearfix"></div>
-                          </div>
-                          <div class="x_content sMeter">
-                              <div id="speedometer" class="speedometer"></div>
-                              <p id="blockNum">Last Block: </p> 
-                          </div>
-                        </div>
+                  <div class="col-md-4 col-sm-4 col-xs-12">
+                    <div class="x_panel tile table_cell">
+                      <div class="x_title">
+                        <h4>Real Time Gas Use: <small> Block Limit (last 10)</small></h4>
+                        <div class="clearfix"></div>
+                      </div>
+                      <div class="x_content sMeter">
+                          <div id="speedometer" class="speedometer"></div>
+                          <p id="blockNum">Last Block: </p> 
                       </div>
                     </div>
-                  <!--/Speedometer ends -->
+                  </div>
+              <!--/Speedometer ends -->
               
               <div class="clearfix"></div>
             </div>
