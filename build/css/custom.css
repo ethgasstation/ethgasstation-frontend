@@ -1051,9 +1051,9 @@ footer .eth_footer_links a {
     display: inline-block;
 }
 .top_nav .social_icon {
-    width: 27px;
+    width: 50px;
     cursor: pointer;
-    margin-right: 2px;
+    margin-right: 5px;
 }
 .nav-sm footer {
     margin-left: 70px
