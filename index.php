@@ -113,8 +113,9 @@
         <!-- /top navigation ends -->
 
         <!-- page content starts -->
-        <div class="right_col" role="main">
-          <!-- top tiles start -->
+        <div class="right_col page_content_container" role="main">
+          <div class="page_content">
+            <!-- top tiles start -->
             <div class="row tile_count">
               <div class="rgp">
                 <h2 class="top_tiles_title">Recommended Gas Prices in Gwei</h2>
@@ -363,6 +364,7 @@
               
             </div>
           <!-- 4th row ends -->
+          </div>
         </div>           
       <!-- /page content ends -->
 

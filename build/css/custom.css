@@ -475,13 +475,9 @@ body .container.body .right_col {
     border: 1px solid #D9DEE4 !important;
     color: #73879C
 }
-
-
-
 .container {
     width: 100%;
     padding: 0;
-    max-width: 1300px;
 }
 .navbar-nav>li>a,
 .navbar-brand,
@@ -4572,4 +4568,12 @@ ul.notifications {
     .leaderboard .leading_projects table td:nth-child(3), .leaderboard .leading_projects table td:nth-child(4), .leaderboard .leading_projects table td:nth-child(5) {
         /*width: 70px;*/
     }
+}
+.page_content_container {
+    text-align: center;
+}
+.page_content_container .page_content {
+    width: 100%;
+    max-width: 1200px;
+    text-align: initial;
 }
