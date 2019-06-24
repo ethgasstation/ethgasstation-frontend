@@ -179,7 +179,7 @@
           <!-- /top tiles end -->
 
           <!-- blogpost starts -->
-            <div class="row table_row">
+            <div class="row table_row blogpost">
               <div class="col-md-12 col-sm-12 col-xs-12 table-cell">
                 <div class="x_panel tile table_cell">
                   <div class="x_title blog_header">
