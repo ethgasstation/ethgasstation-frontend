@@ -1047,8 +1047,10 @@ footer .eth_footer_links a {
 }
 .top_nav .social_link {
     color: #26b99a;
-    margin-left: -10px;
     display: inline-block;
+}
+.top_nav .social_link:nth-child(2) {
+    margin-left: 12px;
 }
 .top_nav .social_icon {
     width: 50px;
