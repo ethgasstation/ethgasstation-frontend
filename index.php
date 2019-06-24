@@ -84,13 +84,13 @@
               <div class="nav toggle">
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
-              <div>
-                <div class="social_link">
-                    <a href="https://twitter.com/ethgasstation" target="_blank"><img class="social_icon" src="/images/twitter.svg"></a>
-                </div>
+              <div  class="social_links">
                 <div class="social_link">
                     <a href="https://discord.gg/mzDxADE" target="_blank">
                       <img class="social_icon" src="/images/discord.svg"></a>
+                </div>
+                <div class="social_link">
+                    <a href="https://twitter.com/ethgasstation" target="_blank"><img class="social_icon" src="/images/twitter.svg"></a>
                 </div>
               </div>
 
@@ -163,10 +163,9 @@
               <div class="col-md-12 col-sm-12 col-xs-12 table-cell">
                 <div class="x_panel tile table_cell">
                   <div class="x_title blog_header">
-                    <p>
+                    <div class="title">
                       <?php require('./blogPost.php'); ?>
-                    </p>
-                    <div class="clearfix"></div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -365,23 +364,21 @@
             </div>
           <!-- 4th row ends -->
           </div>
+          <!-- footer content -->
+            <footer>
+              <div class='eth_footer_links'>
+                <a href="https://docs.ethgasstation.info" target="_blank">API</a>
+                <a href="https://ethgasstation.info/feedback.html" target="_blank">Feedback</a>
+                <a href="https://twitter.com/ethgasstation" target="_blank">Twitter</a>
+                <a href="https://discord.gg/mzDxADE" target="_blank">Discord</a>
+              </div>
+           
+              <div class="concourse_link"><a href="https://concourseopen.com" target="_blank">Concourse Open Construction</a></div>
+              <div class="clearfix"></div>
+            </footer>
+          <!-- /footer content -->
         </div>           
       <!-- /page content ends -->
-
-      <!-- footer content -->
-        <footer>
-          <div class='eth_footer_links'>
-            <a href="https://docs.ethgasstation.info" target="_blank">API</a>
-            <a href="https://ethgasstation.info/feedback.html" target="_blank">Feedback</a>
-            <a href="https://twitter.com/ethgasstation" target="_blank">Twitter</a>
-            <a href="https://discord.gg/mzDxADE" target="_blank">Discord</a>
-          </div>
-       
-          <div class="concourse_link"><a href="https://concourseopen.com" target="_blank">Concourse Open Construction</a></div>
-          <div class="clearfix"></div>
-        </footer>
-        <!-- /footer content -->
-
       </div>
     </div>
 
