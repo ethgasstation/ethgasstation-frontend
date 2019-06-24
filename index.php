@@ -178,71 +178,25 @@
             </div>
           <!-- /top tiles end -->
 
+          <!-- blogpost starts -->
+            <div class="row table_row">
+              <div class="col-md-12 col-sm-12 col-xs-12 table-cell">
+                <div class="x_panel tile table_cell">
+                  <div class="x_title blog_header">
+                    <p>
+                      <?php require('./blogPost.php'); ?>
+                    </p>
+                    <div class="clearfix"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          <!--/blogpost ends -->
+
           <!-- 2nd row starts -->
             <div class="row table_row">
-              <!-- Gas Price Estimator starts -->
-                <!-- <div class="col-md-8 col-sm-8 col-xs-12">
-                  <div class="x_panel tile table_cell">
-                     <div class="x_title">
-                        <h4 class="gas_estimator_title">Gas-Time-Price Estimator: <small>For transactions sent at block: <?php echo($gpRecs2['blockNum']);?></small></h4>
-                        <div class="clearfix"></div>
-                     </div>
-                     <div class="x_content">
-                      <p>Adjust confirmation time</p>
-                      <div id="slider" class="positionable" ></div>
-                      </br>
-                      </br>
-                      <form class="form-horizontal form-label-left input_mask gas_estimator_form">
-                        <div class="form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Avg Time (min)</label>
-                          <div class="col-md-3 col-sm-3 col-xs-12">
-                            <input type="number" class="form-control" readonly = "readonly" placeholder= <?php echo ($predictTable[$avgRef]['expectedTime']); ?> id="timeToConfirm"> 
-                          </div>
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Gas Used<span class="required">*</span></label>
-                          <div class="col-md-3 col-sm-3 col-xs-12">
-                            <input type="number" class="form-control" value="21000" id="gas_used">
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12">95% Time (min)</label>
-                          <div class="col-md-3 col-sm-3 col-xs-12">
-                            <input type="number" class="form-control" readonly = "readonly" placeholder= <?php echo round(($predictTable[$avgRef]['expectedTime']*2.5),2); ?> id="maxTimeToConfirm"> 
-                          </div>
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Avg Time (blocks)</label>
-                          <div class="col-md-3 col-sm-3 col-xs-12">
-                            <input type="number" class="form-control" readonly = "readonly" placeholder= <?php echo ($predictTable[$avgRef]['expectedWait']); ?> id="blocksToConfirm"> 
-                          </div>
-                          
-                        </div>
-                        <div class="form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Gas Price (Gwei)<span class="required">*</span></label>
-                          <div class="col-md-3 col-sm-3 col-xs-12">
-                            <input type="number" class="form-control" readonly = "readonly" value=<?php echo ($gpRecs2['average']/10)?> id="gasPrice">
-                          </div>
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12">95% Time (blocks)</label>
-                          <div class="col-md-3 col-sm-3 col-xs-12">
-                            <input type="number" class="form-control" readonly = "readonly" placeholder= <?php echo ($predictTable[$avgRef]['expectedWait']*2.5); ?> id="maxBlocksToConfirm"> 
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Tx Fee (Fiat)</label>
-                          <div class="col-md-3 col-sm-3 col-xs-12">
-                            <input type="text" class="form-control" readonly = "readonly" placeholder= <?php $fee = round($gpRecs2['average']*21000/1e10*$exchangeRate, 3); echo($currString . $fee); ?> id="fiatFee"> 
-                          </div> 
-                          <label class="control-label col-md-3 col-sm-3 col-xs-12">Tx Fee (ETH)</label>
-                          <div class="col-md-3 col-sm-3 col-xs-12">
-                            <input type="number" class="form-control" readonly = "readonly" placeholder = <?php $fee = $gpRecs2['average']*21000/1e10; echo (number_format($fee, 5)); ?> id="ethFee"> 
-                          </div>  
-                        </div>
-                      </form>
-                      <div class="clearfix"></div>
-                   </div>
-                  </div>
-                </div> -->
-              <!-- Gas Price Estimator ends -->
-
               <!-- leaderboard starts -->
-                <div class="col-md-8 col-sm-8 col-xs-12">
+                <div class="col-md-12 col-sm-12 col-xs-12">
                   <div class="leaderboard">
                       <div class="header">
                         <img src="/images/leaderboard-flag.png">
@@ -269,28 +223,6 @@
                     </div>
                 </div>
               <!-- leaderboard ends -->
-
-              
-                <div class="col-md-4 col-sm-4 col-xs-12 table-cell">
-
-                  <!-- blogpost starts -->
-                    <div class="row">
-                      <div class="col-md-12 col-sm-12 col-xs-12 table-cell">
-                        <div class="x_panel tile table_cell">
-                          <div class="x_title blog_header">
-                            <p>EGS Blog</p>
-                            <div class="clearfix"></div>
-                          </div>
-                          <div class="x_content" id="blogPost">
-                           <?php require('./blogPost.php'); ?>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  <!--/blogpost ends -->
-
-                </div>
-              
             </div>
           <!-- 2nd row ends -->
 
