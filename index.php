@@ -84,17 +84,17 @@
               <div class="nav toggle">
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
-
-              <ul class="nav navbar-nav navbar-right">
-                <li class="social_link">
+              <div>
+                <div class="social_link">
+                    <a href="https://twitter.com/ethgasstation" target="_blank"><img class="social_icon" src="/images/twitter.svg"></a>
+                </div>
+                <div class="social_link">
                     <a href="https://discord.gg/mzDxADE" target="_blank">
                       <img class="social_icon" src="/images/discord.svg"></a>
-                </li>
+                </div>
+              </div>
 
-                <li class="social_link">
-                    <a href="https://twitter.com/ethgasstation" target="_blank"><img class="social_icon" src="/images/twitter.svg"></a>
-                </li>
-                
+              <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                   <a href="#" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-globe"></i><span style="color:#768399"> Change Currency</span>
                     <span class=" fa fa-angle-down"></span>
@@ -106,9 +106,6 @@
                     <li id="cny"><a href="#"> CNY<?php if($currency=='cny'){echo'<span class="pull-right"><i class="fa fa-check"></i></span>';}?></a></li>
                   </ul>
                 </li>
-
-              <p class="navbar-text navbar-left" style="padding-left: 5px"><strong><?php echo "Estimates over last 1,500 blocks - Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
-              </p>
             </ul>
             </nav>
           </div>
@@ -157,29 +154,11 @@
                   </div>
                 </div>
               </div>
-              
-              <div class="mwt">
-                <h2 class="top_tiles_title">Median Wait Times</h2>
-                <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
-                  <div class="count"><?php echo (round($medianwaitsec)) ?></div>
-                  <div class="text-container">
-                    <div class="count_top">seconds</div>
-                  </div>
-                </div>
-                 <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
-                  <div class="count">
-                    <?php echo "$medianwaitblock" ?>
-                  </div>
-                  <div class="text-container">
-                    <div class="count_top">blocks</div>
-                  </div>
-                </div>
-              </div>
             </div>
           <!-- /top tiles end -->
 
           <!-- blogpost starts -->
-            <div class="row table_row blogpost">
+            <div class="row table_row blogPost">
               <div class="col-md-12 col-sm-12 col-xs-12 table-cell">
                 <div class="x_panel tile table_cell">
                   <div class="x_title blog_header">

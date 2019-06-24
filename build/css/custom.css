@@ -533,12 +533,7 @@ body {
 }
 .rgp {
     display: inline-block;
-    width: 66%;
-}
-.mwt {
-    float: right;
-    width: 34%;
-    display: inline-block;
+    width: 100%;
 }
 .table_row {
     display: flex
@@ -592,10 +587,6 @@ body {
         width: 100%;
         display: block;
     }
-    .mwt {
-        width: 100%;
-        float: left;
-    }
     .top_miners {
         overflow-x: auto;
     }
@@ -605,11 +596,6 @@ body {
         width: 100%;
         max-width: 700px;
         display: block;
-    }
-    .mwt {
-        width: 100%;
-        float: left;
-        max-width: 470px;
     }
     .tile_count .tile_stats_count:before {
         content: "";
@@ -643,6 +629,7 @@ body {
 }
 .blogPost {
     margin-bottom: 12px;
+    text-align: center;
 }
 .blogPost p {
     font-size: 15px;
@@ -821,11 +808,6 @@ a:focus {
 @media only screen and (max-width: 415px) {
     .toggle {
         width: 40px !important;
-    }
-    .top_nav .navbar-left {
-        float: left;
-        margin-top: 0;
-        padding-left: 15px !important;
     }
     .nav.navbar-nav > li.dropdown > a {
         line-height: 0;
@@ -1066,6 +1048,7 @@ footer .eth_footer_links a {
 .top_nav .social_link {
     color: #26b99a;
     margin-left: -10px;
+    display: inline-block;
 }
 .top_nav .social_icon {
     width: 27px;
@@ -4514,31 +4497,14 @@ ul.notifications {
 		width: 88% !important;
 	}
 }
-.navbar-text{
-    margin-top: 20px;
-}
 @media(max-width:480px){
     .top_nav .navbar-right{
         width: 100% !important;
-    }
-    .top_nav .navbar-left{
-        clear: both;
-        text-align: center;
-    }
-    .navbar-text{
-        margin-right: 10px;
     }
     .dropdown-menu {
         top: 45px !important;
     }
 }
-@media screen and (max-width: 841px) and (min-width: 416px) {
-    .navbar-text{
-        float: right !important;
-        margin-top: 0;
-    }
-}
-
 .leaderboard {
     margin-bottom: 5px;
     border: solid 5px #1ABB9C;
