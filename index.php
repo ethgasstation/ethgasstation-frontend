@@ -84,17 +84,19 @@
               <div class="nav toggle">
                 <a id="menu_toggle"><i class="fa fa-bars"></i></a>
               </div>
-              <div  class="social_links">
-                <div class="social_link">
-                    <a href="https://discord.gg/mzDxADE" target="_blank">
-                      <img class="social_icon" src="/images/discord.svg"></a>
+              <div class="header_left_contents">
+                <div  class="social_links">
+                  <div class="social_link">
+                      <a href="https://discord.gg/mzDxADE" target="_blank">
+                        <img class="social_icon" src="/images/discord.svg"></a>
+                  </div>
+                  <div class="social_link">
+                      <a href="https://twitter.com/ethgasstation" target="_blank"><img class="social_icon" src="/images/twitter.svg"></a>
+                  </div>
                 </div>
-                <div class="social_link">
-                    <a href="https://twitter.com/ethgasstation" target="_blank"><img class="social_icon" src="/images/twitter.svg"></a>
+                <div class="egs_title">
+                  ETH Gas Station
                 </div>
-              </div>
-              <div class="egs_title">
-                ETH Gas Station
               </div>
 
               <ul class="nav navbar-nav navbar-right">

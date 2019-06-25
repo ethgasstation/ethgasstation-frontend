@@ -323,7 +323,6 @@ html , body{
 .nav_menu {
     float: left;
     background: #EDEDED;
-    border-bottom: 1px solid #D9DEE4;
     margin-bottom: 10px;
     width: 100%;
     position: relative
@@ -566,15 +565,6 @@ body {
         margin-top: 0;
     }
 }
-@media only screen and (max-width: 991px) {
-    .tile_count .tile_stats_count .count {
-        font-size: 40px !important;
-    }
-    .count_top {
-        font-size: 14px !important;
-    }
-}
-
 @media only screen and (max-width: 600px) {
     .table_row {
         display: block;
@@ -630,6 +620,9 @@ body {
 .blogPost .title {
     font-size: 15px;
     text-align: center;
+}
+.blogPost .title a {
+    color: #0e1012 !important;
 }
 .fixed_height_320 {
     height: 320px
@@ -1043,9 +1036,13 @@ footer .eth_footer_links a {
     margin: 0 10px;
     text-decoration: none;
 }
+.top_nav .header_left_contents {
+    margin: 16px 0;
+    display: inline-block;
+}
 .top_nav .social_links {
     display: inline-block;
-    margin: 16px 0;
+    float: left;
 }
 .top_nav .social_link {
     color: #26b99a;
@@ -1055,7 +1052,7 @@ footer .eth_footer_links a {
     margin-left: 12px;
 }
 .top_nav .social_icon {
-    width: 50px;
+    width: 60px;
     cursor: pointer;
     margin-right: 5px;
 }
@@ -1063,7 +1060,7 @@ footer .eth_footer_links a {
     font-size: 40px;
     color: #03586A;
     display: inline-block;
-    height: 60px;
+    float: right;
     margin-left: 12px;
 }
 .nav-sm footer {
@@ -4512,6 +4509,7 @@ ul.notifications {
     margin-bottom: 5px;
     border: solid 2px #1ABB9C;
     background: #fff;
+    margin-bottom: 15px;
 }
 .leaderboard .header {
     padding-top: 25px;
@@ -4563,4 +4561,30 @@ ul.notifications {
     max-width: 1000px;
     text-align: initial;
     display: inline-block;
+}
+
+@media only screen and (max-width: 991px) {
+    .tile_count .tile_stats_count .count {
+        font-size: 40px;
+    }
+    .count_top {
+        font-size: 14px;
+    }
+    .top_nav .egs_title {
+        font-size: 20px;
+        display: none;
+    }
+    .top_nav .social_icon {
+        font-size: 32px;
+        margin-right: 0;
+    }
+    .top_nav .social_link:nth-child(1) {
+        margin-left: 15px;
+    }
+    .toggle {
+        padding-top: 11px;
+    }
+    .top_nav .header_left_contents {
+        margin: 10px 0;
+    }
 }
