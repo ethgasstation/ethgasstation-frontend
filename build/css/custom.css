@@ -4599,3 +4599,11 @@ ul.notifications {
         margin-top: 0;
     }
 }
+.myBar #mybarChart, .myBar #mybarChart2 {
+    margin-top: 20px;        
+}
+@media only screen and (min-width: 1450px) {
+    .myBar #mybarChart, .myBar #mybarChart2 {
+        margin-top: 35px;
+    }
+}
