@@ -58,7 +58,7 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/jquery-1.12.4.js"></script>
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <link href="build/css/custom.css?d=9" rel="stylesheet">
+    <link href="build/css/custom.css?d=10" rel="stylesheet">
 	
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-134672026-1"></script>
@@ -209,6 +209,8 @@
             </div>
           <!-- 2nd row ends -->
 
+          <div class="gas_internals">Gas Internals</div>
+
           <!-- 3rd row starts -->
             <div class="row table_row">
 
@@ -220,7 +222,7 @@
                       <div class="clearfix"></div>
                     </div>
                     <div class="x_content myBar">
-                      <canvas id="mybarChart2" height="210" width="300"></canvas>
+                      <canvas id="mybarChart2" height="210" width="300" style="margin-top: 20px;"></canvas>
                     </div>
                   </div>
                 </div>
@@ -234,7 +236,7 @@
                         <div class="clearfix"></div>
                       </div>
                       <div class="x_content myBar">
-                              <canvas id="mybarChart" height="210" width="300"> </canvas>
+                              <canvas id="mybarChart" height="210" width="300" style="margin-top: 20px;"> </canvas>
                         </div>
                     </div>
                   </div>
@@ -244,7 +246,7 @@
                   <div class="col-md-4 col-sm-4 col-xs-12">
                     <div class="x_panel tile table_cell">
                       <div class="x_title">
-                        <h4>Real Time Gas Use: <small> Block Limit (last 10)</small></h4>
+                        <h4>Real Time Gas Use</h4>
                         <div class="clearfix"></div>
                       </div>
                       <div class="x_content sMeter">

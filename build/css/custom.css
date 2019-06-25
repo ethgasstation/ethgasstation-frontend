@@ -784,7 +784,7 @@ a:focus {
 }
 .top_nav .navbar-right {
     margin: 0;
-    float: center
+    margin-top: 10px;
 }
 .top_nav .navbar-right li {
     display: inline-block;
@@ -877,7 +877,8 @@ a:focus {
 .nav.side-menu>li>a,
 .nav.child_menu>li>a {
     color: #E7E7E7;
-    font-weight: 500
+    font-weight: 500;
+    font-size: 14px;
 }
 .nav.child_menu li li:hover,
 .nav.child_menu li li.active {
@@ -974,7 +975,8 @@ a:focus {
     float: left;
     margin: 0;
     padding-top: 27px;
-    width: 70px
+    width: 70px;
+    display: none;
 }
 .toggle a {
     padding: 15px 15px 0;
@@ -1037,7 +1039,7 @@ footer .eth_footer_links a {
     text-decoration: none;
 }
 .top_nav .header_left_contents {
-    margin: 16px 0;
+    margin: 16px 40px;
     display: inline-block;
 }
 .top_nav .social_links {
@@ -1061,7 +1063,7 @@ footer .eth_footer_links a {
     color: #03586A;
     display: inline-block;
     float: right;
-    margin-left: 12px;
+    margin-left: 50px;
 }
 .nav-sm footer {
     margin-left: 70px
@@ -1898,7 +1900,7 @@ span.right {
 }
 .tile_count .tile_stats_count {
     border-bottom: 1px solid #D9DEE4;
-    padding: 0 10px 0 20px;
+    padding: 0 10px 0 0;
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
@@ -4538,7 +4540,7 @@ ul.notifications {
 }
 .leaderboard .leading_projects table td {
     text-align: left;
-    font-size: 16px;
+    font-size: 14px;
 }
 .leaderboard .leading_projects table td:nth-child(3), .leaderboard .leading_projects table td:nth-child(4) {
     color: #778899;
@@ -4562,6 +4564,11 @@ ul.notifications {
     text-align: initial;
     display: inline-block;
 }
+.gas_internals {
+    font-size: 40px;
+    padding: 20px 0 30px;
+    color: #03586A;
+}
 
 @media only screen and (max-width: 991px) {
     .tile_count .tile_stats_count .count {
@@ -4583,8 +4590,12 @@ ul.notifications {
     }
     .toggle {
         padding-top: 11px;
+        display: inline-block;
     }
     .top_nav .header_left_contents {
         margin: 10px 0;
+    }
+    .top_nav .navbar-right {
+        margin-top: 0;
     }
 }
