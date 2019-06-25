@@ -4534,21 +4534,19 @@ ul.notifications {
     width: 100%;
 }
 .leaderboard .leading_projects table th {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     color: #1ABB9C;
 }
 .leaderboard .leading_projects table td {
     text-align: left;
+    font-size: 16px;
 }
 .leaderboard .leading_projects table td:nth-child(3), .leaderboard .leading_projects table td:nth-child(4) {
     color: #778899;
 }
-.leaderboard .leading_projects table td:first-child {
-    font-weight: bold;
-}
 .leaderboard .leading_projects table td:nth-child(2) {
-    max-width: 180px;
+    max-width: 190px;
     word-break: break-word;
 }
 .leaderboard .leading_projects table tbody:before {
