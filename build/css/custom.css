@@ -785,7 +785,9 @@ a:focus {
     background: #34495E
 }
 .navbar-right {
-    margin-right: 0
+    margin-right: 0;
+    display: inline-block;
+    float: right;
 }
 .top_nav .navbar-right {
     margin: 0;
@@ -1056,6 +1058,13 @@ footer .eth_footer_links a {
     width: 50px;
     cursor: pointer;
     margin-right: 5px;
+}
+.top_nav .egs_title {
+    font-size: 40px;
+    color: #03586A;
+    display: inline-block;
+    height: 60px;
+    margin-left: 12px;
 }
 .nav-sm footer {
     margin-left: 70px

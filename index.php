@@ -58,7 +58,7 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/jquery-1.12.4.js"></script>
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-    <link href="build/css/custom.css?d=8" rel="stylesheet">
+    <link href="build/css/custom.css?d=9" rel="stylesheet">
 	
 	<!-- Global site tag (gtag.js) - Google Analytics -->
 	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-134672026-1"></script>
@@ -92,6 +92,9 @@
                 <div class="social_link">
                     <a href="https://twitter.com/ethgasstation" target="_blank"><img class="social_icon" src="/images/twitter.svg"></a>
                 </div>
+              </div>
+              <div class="egs_title">
+                ETH Gas Station
               </div>
 
               <ul class="nav navbar-nav navbar-right">
@@ -380,7 +383,7 @@
           <div class="clearfix"></div>
         </footer>
       <!-- /footer content -->
-          
+
       </div>
     </div>
 
