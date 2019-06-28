@@ -528,7 +528,8 @@ body {
 }
 .rgp {
     display: inline-block;
-    width: 100%;
+    width: 99%;
+    margin-left: 10px;
 }
 .table_row {
     display: flex
@@ -579,7 +580,7 @@ body {
 }
 @media only screen and (max-width: 770px) {
     .rgp {
-        width: 100%;
+        width: 99%;
         max-width: 700px;
         display: block;
     }
@@ -607,8 +608,8 @@ body {
 }
 .blog_header {
     border: none !important;
-    margin-top: 5px !important;
-    margin-bottom: 0 !important;
+    margin-top: 7px !important;
+    margin-bottom: -3px !important;
 }
 .table_data {
     font-size: 15px;
@@ -784,7 +785,7 @@ a:focus {
 }
 .top_nav .navbar-right {
     margin: 0;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 .top_nav .navbar-right li {
     display: inline-block;
@@ -1039,7 +1040,7 @@ footer .eth_footer_links a {
     text-decoration: none;
 }
 .top_nav .header_left_contents {
-    margin: 16px 40px;
+    margin: 16px 0 13px 40px;
     display: inline-block;
 }
 .top_nav .social_links {
@@ -4573,6 +4574,7 @@ ul.notifications {
 @media only screen and (max-width: 991px) {
     .tile_count .tile_stats_count .count {
         font-size: 40px;
+        margin-left: 5px;
     }
     .count_top {
         font-size: 14px;
@@ -4589,11 +4591,11 @@ ul.notifications {
         margin-left: 15px;
     }
     .toggle {
-        padding-top: 11px;
+        padding-top: 13px;
         display: inline-block;
     }
     .top_nav .header_left_contents {
-        margin: 10px 0;
+        margin: 10px 0 6px;
     }
     .top_nav .navbar-right {
         margin-top: 0;
