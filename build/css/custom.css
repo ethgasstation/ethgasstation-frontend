@@ -1258,36 +1258,21 @@ h2 {
 and (min-device-width : 375px) 
 and (max-device-width : 667px) 
 and (orientation : landscape) { 
-    
-    .myBar {width:45%}
     .ui-slider-horizontal {
         width: 50%;
     }
-    
 }
 
 @media only screen 
 and (min-device-width : 375px) 
 and (max-device-width : 667px) 
-and (orientation : portrait) {
-    
-     .myBar {width:85%} 
+and (orientation : portrait) { 
      .ui-slider-horizontal {
         width: 50%;
     }
-
 }
 
 /* Browser Resizes */
-
-@media only screen 
-and (max-width:768px)
-and (min-width: 500px) 
- { 
-    
-    .myBar {width:45%}
-    
-}
 @media only screen 
 and (min-width : 1450px) 
  { 
@@ -4593,7 +4578,7 @@ ul.notifications {
     }
     .leaderboard .small_text {
         font-size: 14px;
-        padding-left: 20px;
+        margin-left: 20px;
     }
     .leaderboard .leading_projects table th {
         font-size: 12px;
