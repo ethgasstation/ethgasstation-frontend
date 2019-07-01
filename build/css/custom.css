@@ -1289,24 +1289,10 @@ and (min-width: 500px)
     
 }
 @media only screen 
-and (max-width : 499px) 
- { 
-    
-    .myBar {width:85%}
-    
-}
-@media only screen 
 and (min-width : 1450px) 
  { 
-    
-    .myBar {width:85%}
     .myLine {width:85%}
-    
 }
-
-
-
-
 .x_content h4 {
     font-size: 16px;
     font-weight: 500
@@ -4473,22 +4459,6 @@ ul.notifications {
   background-color: #F2F5F7;
   text-align: center;
 }
-@media(max-width:415px) {
-	a.user-profile.dropdown-toggle {
-	    top: 20px;
-	    text-align: center;
-	}	
-    .leaderboard .header {
-        padding-top: 20px !important;
-    }
-    .leaderboard .title {
-        font-size: 22px !important;
-    }
-    .leaderboard .header img {
-        height: 30px !important;
-        margin-bottom: 20px !important;
-    }
-}
 @media only screen and (max-width: 1024px) {
     .leaderboard .leading_projects table td:nth-child(2) {
         overflow: hidden;
@@ -4607,5 +4577,32 @@ ul.notifications {
 @media only screen and (min-width: 1450px) {
     .myBar #mybarChart, .myBar #mybarChart2 {
         margin-top: 35px;
+    }
+}
+@media(max-width:415px) {
+    a.user-profile.dropdown-toggle {
+        top: 20px;
+        text-align: center;
+    }   
+    .leaderboard .header {
+        padding-top: 20px;
+    }
+    .leaderboard .title {
+        font-size: 22px;
+        padding-left: 25px;
+    }
+    .leaderboard .small_text {
+        font-size: 14px;
+        padding-left: 20px;
+    }
+    .leaderboard .leading_projects table th {
+        font-size: 12px;
+    }
+    .leaderboard .leading_projects table td {
+        font-size: 12px;
+    }
+    .leaderboard .header img {
+        height: 30px;
+        margin-bottom: 20px;
     }
 }
