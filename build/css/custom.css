@@ -334,7 +334,7 @@ html , body{
 }
 .nav-md .container.body .col-md-3.left_col {
     min-height: 100%;
-    width: 180px;
+    width: 170px;
     padding: 0;
     position: absolute;
     display: -ms-flexbox;
@@ -350,10 +350,10 @@ body .container.body .right_col {
 }
 .nav-md .container.body .right_col {
     padding: 10px 20px 0;
-    margin-left: 180px
+    margin-left: 170px
 }
 .nav_title {
-    width: 180px;
+    width: 170px;
     float: left;
     background: #2A3F54;
     border-radius: 0;
@@ -500,7 +500,7 @@ body {
 }
 .main_container .top_nav {
     display: block;
-    margin-left: 180px
+    margin-left: 170px
 }
 .no-padding {
     padding: 0 !important
@@ -834,7 +834,7 @@ a:focus {
     cursor: pointer
 }
 .nav.side-menu>li>a {
-    margin-bottom: 6px
+    /*margin-bottom: 6px*/
 }
 .nav.side-menu>li>a:hover {
     color: #F2F5F7 !important
@@ -878,8 +878,8 @@ a:focus {
 .nav.side-menu>li>a,
 .nav.child_menu>li>a {
     color: #E7E7E7;
-    font-weight: 500;
-    font-size: 14px;
+    font-weight: 400;
+    font-size: 16px;
 }
 .nav.child_menu li li:hover,
 .nav.child_menu li li.active {
@@ -892,7 +892,7 @@ a:focus {
 .nav>li>a {
     position: relative;
     display: block;
-    padding: 13px 15px 12px
+    padding: 13px 15px 12px 25px;
 }
 .nav.side-menu>li.current-page,
 .nav.side-menu>li.active {
@@ -1847,7 +1847,7 @@ span.right {
     display: block;
     padding: 5px 0 0 0;
     position: fixed;
-    width: 180px;
+    width: 170px;
     background: #2A3F54;
 	z-index:999;
 }
@@ -1879,7 +1879,7 @@ span.right {
 }
 @media (min-width: 992px) {
     footer {
-        margin-left: 180px
+        margin-left: 170px
     }
 }
 @media (min-width: 992px) {
@@ -4517,7 +4517,8 @@ ul.notifications {
     width: 100%;
     max-width: 1000px;
     text-align: initial;
-    display: inline-block;
+    margin-left: 23px;
+    /*display: inline-block;*/
 }
 .gas_internals {
     font-size: 40px;
@@ -4529,6 +4530,10 @@ ul.notifications {
     width: 80px;
     display: block;
     margin: auto;
+    margin-top: 20px;
+}
+.spam_reference_link {
+    color: red;
 }
 
 @media only screen and (max-width: 991px) {
