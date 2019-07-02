@@ -10,7 +10,7 @@
   $url = 'http://gasburners-jsapi-prod.us-west-1.elasticbeanstalk.com/api/leaderboard';
 
   function _shortenContract($contract) {
-    return substr($contract, 0, 6) . '...' . substr($contract, strlen($contract) - 4);
+    return substr($contract, 0, 15) . '...' . substr($contract, strlen($contract) - 5);
   }
 
   curl_setopt_array(
@@ -27,7 +27,7 @@
     $etherscanLink = "https://etherscan.io/address/" . $data->contract;
     $spamLink = '';
     if ($data->isSpam) {
-      $spamLink = "<a href=" . $data->spamRefLink . " class='spam_reference_link' target='_blank'>(Scam Reported)</a>";
+      $spamLink = " <a href=" . $data->spamRefLink . " class='spam_reference_link' target='_blank'>(Scam Reported)</a>";
     }
 
     if ($data->project == "unknown") {
