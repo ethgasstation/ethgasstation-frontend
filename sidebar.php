@@ -21,7 +21,7 @@
                   <li><a href="safeLow.php"><i class ="fa fa-clock-o"></i>Safe Low</a></li>
                   <li><a href="txpool2.php"><i class ="fa fa-upload"></i>TxPool Monitor</a></li>
                   <li><a href="predictionTable.php"><i class ="fa fa-cubes"></i>Predict Confirm Time</a></li>-->
-                  <li><a href="validatedTable.php">Low Gas Price Watch List</a></li>
+                  <!-- <li><a href="validatedTable.php">Low Gas Price Watch List</a></li> -->
                   <li><a href="gasguzzlers.php">Gas Burners</a></li>
                   <li><a>FAQ<span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
