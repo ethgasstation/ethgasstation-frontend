@@ -357,7 +357,7 @@ body .container.body .right_col {
     float: left;
     background: #2A3F54;
     border-radius: 0;
-    height: 57px
+    height: 100px
 }
 @media (max-width: 991px) {
     .nav-md .container.body .right_col,
@@ -929,7 +929,6 @@ a:focus {
     margin-left: 0 !important;
     line-height: 59px;
     display: block;
-    height: 55px;
     margin: 0;
     padding-left: 10px
 }
@@ -4524,6 +4523,12 @@ ul.notifications {
     font-size: 40px;
     padding: 20px 0 30px;
     color: #03586A;
+}
+.egs_icon {
+    height: 80px;
+    width: 80px;
+    display: block;
+    margin: auto;
 }
 
 @media only screen and (max-width: 991px) {
