@@ -4516,6 +4516,7 @@ ul.notifications {
     width: 100%;
     max-width: 1000px;
     text-align: initial;
+    margin-left: 43px;
 }
 .gas_internals {
     padding: 25px 0;
