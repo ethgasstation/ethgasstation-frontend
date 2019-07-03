@@ -1902,7 +1902,7 @@ span.right {
     margin-right: 10px;
     display: inline-block;
 }
-.tile_count .tile_stats_count .text-container {
+.tile_stats_count .text-container {
     margin-top: 4px;
     display: inline-block;
 }
@@ -4466,7 +4466,6 @@ ul.notifications {
     margin-bottom: 5px;
     border: solid 2px #1ABB9C;
     background: #fff;
-    margin-bottom: 15px;
 }
 .leaderboard .header {
     padding-top: 25px;
@@ -4521,7 +4520,7 @@ ul.notifications {
     /*display: inline-block;*/
 }
 .gas_internals {
-    padding: 20px 0 30px;
+    padding: 25px 0;
     color: #03586A;
 }
 .gas_internals .big_title {
@@ -4537,6 +4536,31 @@ ul.notifications {
 .spam_reference_link {
     color: red;
 }
+.mwt {
+    color: #888989;
+    margin-top: -10px;
+    margin-left: 2px;
+}
+.mwt .top_tiles_title {
+    margin-bottom: 0 !important;
+}
+.mwt .tile_stats_count {
+    width: 150px;
+    display: inline-block;
+}
+.mwt .count {
+    float: left;
+    font-size: 20px;
+    /* line-height: 50px; */
+    font-weight: 500;
+    margin-right: 3px;
+    display: inline-block;
+}
+.mwt .text-container {
+    margin-top: 2px !important;
+    display: inline-block;
+}
+
 
 @media only screen and (max-width: 991px) {
     .tile_count .tile_stats_count .count {
