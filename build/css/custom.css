@@ -4521,9 +4521,11 @@ ul.notifications {
     /*display: inline-block;*/
 }
 .gas_internals {
-    font-size: 40px;
     padding: 20px 0 30px;
     color: #03586A;
+}
+.gas_internals .big_title {
+    font-size: 40px;
 }
 .egs_icon {
     height: 80px;

@@ -209,7 +209,26 @@
             </div>
           <!-- 2nd row ends -->
 
-          <div class="gas_internals">Gas Internals</div>
+          <div class="gas_internals">
+            <div class="big_title">Gas Internals</div>
+            <div class="mwt">
+              <h2 class="top_tiles_title">Median Wait Times</h2>
+              <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
+                <div class="count"><?php echo (round($medianwaitsec)) ?></div>
+                <div class="text-container">
+                  <div class="count_top">seconds</div>
+                </div>
+              </div>
+               <div class="col-md-6 col-sm-6 col-xs-6 tile_stats_count">
+                <div class="count">
+                  <?php echo $medianwaitblock ?>
+                </div>
+                <div class="text-container">
+                  <div class="count_top">blocks</div>
+                </div>
+              </div>
+            </div>
+          </div>
 
           <!-- 3rd row starts -->
             <div class="row table_row">
