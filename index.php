@@ -50,6 +50,25 @@
 
     <script type="text/javascript" src="speedometer/xcanvas.js"></script>
     <script type="text/javascript" src="speedometer/tbe.js"></script>
+    <script type="text/javascript">
+      function adjustMainView() {
+        var pageContentWidth = $('.page_content').width();
+        if (pageContentWidth >= 1000) {
+          $('.page_content').css('margin-left', ((window.innerWidth - pageContentWidth) / 2) - $('.col-md-3.left_col').width() + 'px');
+          $('.header_left_contents').css('margin-left', $('.page_content').css('margin-left'));
+        } else {
+          $('.page_content').css('margin-left', '0px');
+          $('.header_left_contents').css('margin-left', '0px');
+        }
+      }
+
+      $(document).ready(function() {
+        adjustMainView();
+        $(window).resize(function() {
+          adjustMainView();
+        });
+      })
+    </script>
 
     <script type="text/javascript" src="speedometer/digitaldisplay.js"></script>
     <script type="text/javascript" src="speedometer/speedometer.js"></script>
@@ -635,11 +654,9 @@
 
 
 
- </script>
+  </script>
 
-
-
-    <script src="build/js/custom3.js"></script>
+  <script src="build/js/custom3.js"></script>
     
 	
   </body>

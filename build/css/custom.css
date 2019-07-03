@@ -349,7 +349,7 @@ body .container.body .right_col {
     background: #F7F7F7
 }
 .nav-md .container.body .right_col {
-    padding: 10px 20px 0;
+    padding: 10px 20px 0 0;
     margin-left: 170px
 }
 .nav_title {
@@ -4516,8 +4516,6 @@ ul.notifications {
     width: 100%;
     max-width: 1000px;
     text-align: initial;
-    margin-left: 23px;
-    /*display: inline-block;*/
 }
 .gas_internals {
     padding: 25px 0;
