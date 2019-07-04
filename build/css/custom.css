@@ -4614,11 +4614,6 @@ ul.notifications {
         max-width: 750px;
     }
 }
-@media(max-width:800px) {
-    .page_content_container .page_content {
-        max-width: 600px;
-    }
-}
 
 @media(max-width:415px) {
     a.user-profile.dropdown-toggle {
