@@ -4599,6 +4599,11 @@ ul.notifications {
         margin-top: 35px;
     }
 }
+@media only screen and (min-width: 1250px) {
+    .page_content_container .page_content {
+        margin-left: calc(50% - 85px - 500px);
+    }
+}
 @media(max-width:415px) {
     a.user-profile.dropdown-toggle {
         top: 20px;

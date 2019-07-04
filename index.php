@@ -68,25 +68,6 @@
 		
 		gtag('config', 'UA-134672026-1');
 	</script>
-  <script type="text/javascript">
-      function adjustMainView() {
-        var pageContentWidth = $('.page_content').width();
-        if (pageContentWidth >= 1000) {
-          $('.page_content').css('margin-left', ((window.innerWidth - pageContentWidth) / 2) - $('.col-md-3.left_col').width() + 'px');
-          $('.header_left_contents').css('margin-left', $('.page_content').css('margin-left'));
-        } else {
-          $('.page_content').css('margin-left', '0px');
-          $('.header_left_contents').css('margin-left', '0px');
-        }
-      }
-
-      $(document).ready(function() {
-        adjustMainView();
-        $(window).resize(function() {
-          adjustMainView();
-        });
-      })
-    </script>
 
   </head>
 
