@@ -4516,7 +4516,6 @@ ul.notifications {
     width: 100%;
     max-width: 950px;
     text-align: initial;
-    margin-left: 43px;
 }
 .gas_internals {
     padding: 25px 0;
@@ -4540,23 +4539,16 @@ ul.notifications {
     margin-top: -10px;
     margin-left: 2px;
 }
-.mwt .top_tiles_title {
-    margin-bottom: 0 !important;
-}
 .mwt .tile_stats_count {
-    width: 150px;
+    width: 160px;
     display: inline-block;
 }
 .mwt .count {
     float: left;
-    font-size: 20px;
-    /* line-height: 50px; */
+    font-size: 50px;
+    line-height: 50px; 
     font-weight: 500;
-    margin-right: 3px;
-    display: inline-block;
-}
-.mwt .text-container {
-    margin-top: 2px !important;
+    margin-right: 10px;
     display: inline-block;
 }
 
@@ -4599,17 +4591,17 @@ ul.notifications {
         margin-top: 35px;
     }
 }
+@media only screen and (min-width: 992px) {
+    .page_content_container .page_content {
+        margin-left: 43px;
+    }
+}
 @media only screen and (min-width: 1440px) {
     .page_content_container .page_content {
         margin-left: calc(50% - 85px - 475px);
     }
     .top_nav .header_left_contents {
         margin-left: calc(50% - 85px - 485px);
-    }
-}
-@media only screen and (min-width: 990px) {
-    .page_content_container .page_content {
-        margin-left: 43px;
     }
 }
 
