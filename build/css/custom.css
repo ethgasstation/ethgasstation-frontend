@@ -4514,7 +4514,7 @@ ul.notifications {
 }
 .page_content_container .page_content {
     width: 100%;
-    max-width: 1000px;
+    max-width: 950px;
     text-align: initial;
     margin-left: 43px;
 }
@@ -4599,11 +4599,20 @@ ul.notifications {
         margin-top: 35px;
     }
 }
-@media only screen and (min-width: 1250px) {
+@media only screen and (min-width: 1440px) {
     .page_content_container .page_content {
-        margin-left: calc(50% - 85px - 500px);
+        margin-left: calc(50% - 85px - 475px);
+    }
+    .top_nav .header_left_contents {
+        margin-left: calc(50% - 85px - 485px);
     }
 }
+@media only screen and (min-width: 990px) {
+    .page_content_container .page_content {
+        margin-left: 43px;
+    }
+}
+
 @media(max-width:415px) {
     a.user-profile.dropdown-toggle {
         top: 20px;
