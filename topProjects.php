@@ -36,7 +36,13 @@
       echo "<tr><td>". $counter++ .".</td><td><span data-template=" . $data->projectId . " class='top_project'>" . $data->project . $spamLink . "</span></td><td>". $data->costETH ."</td><td>". $data->avgGwei ."</td><td>$". $data->costUsd ."</td></tr>";
     }
 
-    echo "<template id=" . $data->projectId . "><div style='max-height: 50px; overflow-y: auto'><div><a href=" . $etherscanLink . " class='etherscan_link' target='_blank'>" . $data->contract . "</a></div></div></template>";
+    $contractList = '';
+    foreach($data->contracts as $contract) {
+      $eLink = "https://etherscan.io/address/" . $contract;
+      $contractList .= "<div><a href=" . $eLink . " class='etherscan_link' target='_blank'>" . $contract . "</a></div>";
+    }
+
+    echo "<template id=" . $data->projectId . "><div style='max-height: 200px; overflow-y: auto'>" . $contractList . "</div></template>";
   }
  
 ?>

@@ -4494,7 +4494,7 @@ ul.notifications {
 }
 .leaderboard .leading_projects table td {
     text-align: left;
-    font-size: 14px;
+    font-size: 16px;
 }
 .leaderboard .leading_projects table td:nth-child(3), .leaderboard .leading_projects table td:nth-child(4) {
     color: #778899;
@@ -4508,6 +4508,9 @@ ul.notifications {
     content:"_";
     color:white;
     display:block;
+}
+.leaderboard .leading_projects table td span.top_project {
+    line-height: 25px;
 }
 .page_content_container {
     text-align: center;

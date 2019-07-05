@@ -644,7 +644,6 @@
       arrow: true,
       interactive: true,
       placement: 'right',
-      theme: 'light-border',
       content(reference) {
         var id = reference.getAttribute('data-template');
         var container = document.createElement('div');
