@@ -640,12 +640,11 @@
 
   <script src="build/js/custom3.js"></script>
   <script>
-    tippy('td.top_project', {
+    tippy('span.top_project', {
       arrow: true,
       interactive: true,
-      placement: 'top',
-      theme: 'light',
-      followCursor: true,
+      placement: 'right',
+      theme: 'light-border',
       content(reference) {
         var id = reference.getAttribute('data-template');
         var container = document.createElement('div');
