@@ -4512,9 +4512,6 @@ ul.notifications {
 .leaderboard .leading_projects table td span.top_project {
     line-height: 25px;
 }
-.page_content_container {
-    text-align: center;
-}
 .page_content_container .page_content {
     width: 100%;
     max-width: 950px;
@@ -4553,6 +4550,9 @@ ul.notifications {
     font-weight: 500;
     margin-right: 10px;
     display: inline-block;
+}
+.tippy-popper {
+    color: white !important;
 }
 
 
