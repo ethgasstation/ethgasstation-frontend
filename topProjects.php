@@ -31,12 +31,12 @@
     }
 
     if ($data->project == "unknown") {
-      echo "<tr><td>" . $counter++ . ".</td><td data-template=" . $data->projectId . " class='top_project'><a href=" . $etherscanLink . " class='etherscan_link' target='_blank'>" . _shortenContract($data->contract) . $spamLink . "</a></td><td>". $data->costETH . "</td><td>" . $data->avgGwei . "</td><td>$" . $data->costUsd . "</td></tr>";
+      echo "<tr><td>" . $counter++ . ".</td><td><a href=" . $etherscanLink . " class='etherscan_link' target='_blank'>" . _shortenContract($data->contract) . $spamLink . "</a></td><td>". $data->costETH . "</td><td>" . $data->avgGwei . "</td><td>$" . $data->costUsd . "</td></tr>";
     } else {
       echo "<tr><td>". $counter++ .".</td><td data-template=" . $data->projectId . " class='top_project'>" . $data->project . $spamLink . "</td><td>". $data->costETH ."</td><td>". $data->avgGwei ."</td><td>$". $data->costUsd ."</td></tr>";
     }
 
-    echo "<template id=" . $data->projectId . "><div style='max-height: 50px; overflow-y: auto'><div>" . $data->contract . "</div></div></template>";
+    echo "<template id=" . $data->projectId . "><div style='max-height: 50px; overflow-y: auto'><div><a href=" . $etherscanLink . " class='etherscan_link' target='_blank'>" . $data->contract . "</a></div></div></template>";
   }
  
 ?>
