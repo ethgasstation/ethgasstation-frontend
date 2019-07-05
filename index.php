@@ -54,6 +54,8 @@
     <script type="text/javascript" src="speedometer/speedometer.js"></script>
     <script type="text/javascript" src="speedometer/themes/default.js"></script>
     <script type="text/javascript" src="speedometer/controls.js"></script>
+    <script src="https://unpkg.com/popper.js@1"></script>
+    <script src="https://unpkg.com/tippy.js@4"></script>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/smoothness/jquery-ui.css">
     <script src="//code.jquery.com/jquery-1.12.4.js"></script>
     <script src="//code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -637,7 +639,22 @@
   </script>
 
   <script src="build/js/custom3.js"></script>
-    
-	
+  <script>
+    tippy('td.top_project', {
+      arrow: true,
+      interactive: true,
+      placement: 'right',
+      theme: 'light-border',
+      content(reference) {
+        var id = reference.getAttribute('data-template');
+        var container = document.createElement('div');
+        var linkedTemplate = document.getElementById(id);
+        var node = document.importNode(linkedTemplate.content, true);
+        container.appendChild(node);
+
+        return container;
+      }
+    });
+  </script>	
   </body>
 </html>
