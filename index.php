@@ -642,6 +642,7 @@
   <script>
     tippy('span.top_project', {
       arrow: true,
+      trigger: 'click',
       interactive: true,
       placement: 'right',
       content(reference) {
