@@ -206,6 +206,7 @@
                         </table>
                       </div>
                     </div>
+                    <div class="powered_by">Powered by DappDir</div>
                 </div>
               <!-- leaderboard ends -->
             </div>
@@ -292,7 +293,7 @@
                       <div class="clearfix"></div>
                     </div>
                     <div class="x_content">
-                      <table class="table table_data table-bordered">
+                      <table class="table table_data table-bordered" style="margin-left: -18px;">
                           <thead>
                             <tr>
                               <th>Miner</th>
