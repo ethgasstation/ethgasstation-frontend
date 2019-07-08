@@ -625,6 +625,10 @@ body {
 .blogPost .title a, .blogPost .title .blog_post_label {
     color: #0e1012 !important;
 }
+.blogPost .title .blog_post_label {
+    display: inline-block;
+    font-weight: 500;
+}
 .fixed_height_320 {
     height: 320px
 }
@@ -4450,9 +4454,6 @@ ul.notifications {
         text-overflow: ellipsis;
         max-width: 100px !important;
     }
-    .leaderboard .leading_projects table td:nth-child(3), .leaderboard .leading_projects table td:nth-child(4), .leaderboard .leading_projects table td:nth-child(5) {
-        /*width: 40px !important;*/
-    }
     .leaderboard .leading_projects {
         padding: 15px 10px !important;
     }
@@ -4473,15 +4474,15 @@ ul.notifications {
 .leaderboard .title {
     color: #1ABB9C;
     font-size: 40px;
-    padding-left: 50px;
+    padding-left: 100px;
 }
 .leaderboard .small_text {
     font-size: 18px;
-    margin-left: 75px;
+    margin-left: 20px;
 }
 .leaderboard .leading_projects {
     color: #0e1012;
-    padding: 15px 50px 15px 50px;
+    padding: 15px 50px 15px 100px;
     text-align: center;
 }
 .leaderboard .leading_projects table {
@@ -4514,7 +4515,7 @@ ul.notifications {
 }
 .page_content_container .page_content {
     width: 100%;
-    max-width: 950px;
+    max-width: 900px;
     text-align: initial;
 }
 .gas_internals {
@@ -4602,10 +4603,10 @@ ul.notifications {
 }
 @media only screen and (min-width: 1440px) {
     .page_content_container .page_content {
-        margin-left: calc(50% - 85px - 475px);
+        margin-left: calc(50% - 85px - 450px);
     }
     .top_nav .header_left_contents {
-        margin-left: calc(50% - 85px - 485px);
+        margin-left: calc(50% - 85px - 460px);
     }
 }
 @media(max-width:1200px) {
@@ -4628,12 +4629,12 @@ ul.notifications {
         padding-top: 20px;
     }
     .leaderboard .title {
-        font-size: 22px;
+        font-size: 20px;
         padding-left: 25px;
     }
     .leaderboard .small_text {
-        font-size: 14px;
-        margin-left: 20px;
+        font-size: 13px;
+        margin-left: 8px;
     }
     .leaderboard .leading_projects table th {
         font-size: 12px;
