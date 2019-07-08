@@ -4551,7 +4551,8 @@ ul.notifications {
     margin-right: 10px;
     display: inline-block;
 }
-.tippy-popper {
+
+.tippy-content a {
     color: white !important;
 }
 
