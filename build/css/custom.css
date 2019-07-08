@@ -549,7 +549,7 @@ body {
 .count_top {
     font-size: 15px;
 }
-.post_title {
+.post_title, .blog_post_label {
     font-size: 20px;
 }
 .gas_estimator_title {
@@ -561,7 +561,7 @@ body {
     font-weight: normal;
 }
 @media (min-width: 400px) and (max-width: 1439px) {
-    .post_title {
+    .post_title, .blog_post_label {
         font-size: 18px;
         margin-top: 0;
     }
@@ -622,7 +622,7 @@ body {
     font-size: 15px;
     text-align: center;
 }
-.blogPost .title a {
+.blogPost .title a, .blogPost .title .blog_post_label {
     color: #0e1012 !important;
 }
 .fixed_height_320 {

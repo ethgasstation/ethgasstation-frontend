@@ -170,6 +170,7 @@
                 <div class="x_panel tile table_cell">
                   <div class="x_title blog_header">
                     <div class="title">
+                      <div class="blog_post_label">New Blog Post: </div>
                       <?php require('./blogPost.php'); ?>
                     </div>
                   </div>
