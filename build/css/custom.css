@@ -365,7 +365,6 @@ body .container.body .right_col {
 .nav_title {
     width: 240px;
     float: left;
-    background: #2A3F54;
     border-radius: 0;
     height: 180px
 }
@@ -502,7 +501,7 @@ body .container.body .right_col {
 }
 body {
     color: #888989;
-    background: #2A3F54;
+    background: #25354E;
     font-family: "Helvetica Neue", Roboto, Arial, "Droid Sans", sans-serif;
     font-size: 13px;
     font-weight: 400;
@@ -937,19 +936,38 @@ a:focus {
     text-overflow: ellipsis;
     overflow: hidden;
     font-weight: 400;
-    font-size: 22px;
+    font-size: 18px;
     width: 100%;
     color: #ECF0F1 !important;
     margin-left: 0 !important;
-    line-height: 59px;
     display: block;
     margin: 0;
-    /*padding-left: 10px*/
 }
 .site_title:hover,
 .site_title:focus {
     text-decoration: none
 }
+.site_title > div {
+    margin-top: 24px;
+    margin-left: 40px;
+}
+.site_title .box {
+    min-width: 42px;
+    min-height: 42px;
+    display: inline-block;
+    background: #758596;
+    border-radius: 7px;
+}
+.site_title .title {
+    color: #758596;
+    margin-left: 20px;
+    display: inline-block;
+    text-transform: uppercase;
+}
+.site_title .title span:last-child {
+    display: inline-block;
+}
+
 .nav.navbar-nav>li>a {
     color: #515356 !important
 }

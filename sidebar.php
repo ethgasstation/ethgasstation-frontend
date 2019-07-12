@@ -4,7 +4,11 @@
           <div class="left_col scroll-view">
 
             <div class="navbar nav_title" style="border: 0;">
-              <a href="index.php" class="site_title"><img src="images/egs_transparent.png" class="egs_icon"></a>
+              <a href="index.php" class="site_title">
+                <div>
+                  <span class="box"></span>
+                </div>
+              </a>
             </div>
             
             <div class="clearfix"></div>
