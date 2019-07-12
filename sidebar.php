@@ -22,7 +22,7 @@
                   <li><a href="txpool2.php"><i class ="fa fa-upload"></i>TxPool Monitor</a></li>
                   <li><a href="predictionTable.php"><i class ="fa fa-cubes"></i>Predict Confirm Time</a></li>-->
                   <!-- <li><a href="validatedTable.php">Low Gas Price Watch List</a></li> -->
-                  <li><a href="gasguzzlers.php"><span class="box"></span class="link_text">Gas Burners</a></li>
+                  <li><a href="gasguzzlers.php"><span class="box"></span><span class="link_text">Gas Burners</span></a></li>
                   <li><a><span class="box"></span><span class="link_text">FAQ</span><span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
                       <li><a href="about.php">What Is This Site?</a></li>

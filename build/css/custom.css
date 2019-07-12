@@ -257,6 +257,7 @@ html , body{
     min-width: 16px;
     display: inline-block;
     border: 1px solid #FFFFFF;
+    border-radius: 3px;
 }
 .menu_section>ul .link_text {
     margin-left: 18px;
@@ -366,7 +367,7 @@ body .container.body .right_col {
     float: left;
     background: #2A3F54;
     border-radius: 0;
-    height: 100px
+    height: 180px
 }
 @media (max-width: 991px) {
     .nav-md .container.body .right_col,
@@ -905,7 +906,7 @@ a:focus {
 .nav>li>a {
     position: relative;
     display: block;
-    padding: 13px 15px 12px 40px;
+    padding: 16px 15px 16px 40px;
 }
 .nav.side-menu>li.current-page,
 .nav.side-menu>li.active {
