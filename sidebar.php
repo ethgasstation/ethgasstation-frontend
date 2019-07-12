@@ -7,6 +7,10 @@
               <a href="index.php" class="site_title">
                 <div>
                   <span class="box"></span>
+                  <div class="title">
+                    <span>Eth Gas</span>
+                    <span>Station</span>
+                  </div>
                 </div>
               </a>
             </div>
