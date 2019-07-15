@@ -560,8 +560,19 @@ body {
 .count_top {
     font-size: 15px;
 }
-.post_title, .blog_post_label {
+.post_title {
     font-size: 20px;
+}
+.post_external_link {
+    float: right;
+    color: #2FB999;
+    font-weight: 400;
+}
+.blogPost .right_arrow {
+    width: 6px;
+    height: 8px;
+    margin-right: 20px;
+    margin-left: 10px;
 }
 .gas_estimator_title {
     /*font-size: 15px;
@@ -572,7 +583,7 @@ body {
     font-weight: normal;
 }
 @media (min-width: 400px) and (max-width: 1439px) {
-    .post_title, .blog_post_label {
+    .post_title {
         font-size: 18px;
         margin-top: 0;
     }
@@ -627,18 +638,20 @@ body {
 }
 .blogPost {
     margin-bottom: 12px;
-    text-align: center;
 }
 .blogPost .title {
-    font-size: 15px;
-    text-align: center;
+    margin-left: 20px;
 }
-.blogPost .title a, .blogPost .title .blog_post_label {
-    color: #0e1012 !important;
+.blogPost .title a {
+    font-size: 16px;
+    color: #2D2D2D;
+    letter-spacing: 0;
 }
-.blogPost .title .blog_post_label {
-    display: inline-block;
-    font-weight: 500;
+.blogPost .x_panel.title {
+    background: #e5e6e8;
+    font-size: 16px;
+    color: #2D2D2D;
+    letter-spacing: 0;
 }
 .fixed_height_320 {
     height: 320px
@@ -1968,6 +1981,9 @@ span.right {
 }
 a.user-profile {
     color: #5E6974 !important
+}
+.top_nav li a i {
+    font-size: 24px;
 }
 .user-profile img {
     width: 29px;
