@@ -4535,20 +4535,27 @@ ul.notifications {
 }
 .leaderboard {
     margin-bottom: 5px;
-    border: solid 2px #1ABB9C;
+    border: 1px solid #dff5f0;
     background: #fff;
 }
 .leaderboard .header {
     padding-top: 25px;
 }
 .leaderboard .title {
-    color: #1ABB9C;
-    font-size: 40px;
-    padding-left: 100px;
+    font-size: 24px;
+    color: #25354E;
+    letter-spacing: 1.5px;
+    padding-left: 30px;
+}
+.leaderboard .title span {
+    font-weight: 300;
+    text-transform: uppercase;
 }
 .leaderboard .small_text {
-    font-size: 18px;
-    margin-left: 20px;
+    font-size: 20px;
+    color: #202020;
+    float: right;
+    margin-right: 30px;
 }
 .leaderboard .leading_projects {
     color: #0e1012;

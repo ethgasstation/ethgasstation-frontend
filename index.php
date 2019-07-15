@@ -189,8 +189,8 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <div class="leaderboard">
                       <div class="header">
-                        <span class="title">Top 25 Leaderboard</span>
-                        <span class="small_text">last 30 days</span>
+                        <span class="title">Top 25 <span>Leaderboard</span></span>
+                        <span class="small_text">Last 30 Days</span>
                       </div>
                       <div class="leading_projects">
                         <table style="">
