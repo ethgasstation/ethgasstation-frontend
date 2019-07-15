@@ -647,7 +647,7 @@ body {
     color: #2D2D2D;
     letter-spacing: 0;
 }
-.blogPost .x_panel.title {
+.blogPost .x_panel {
     background: #e5e6e8;
     font-size: 16px;
     color: #2D2D2D;
