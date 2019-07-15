@@ -614,8 +614,12 @@ body {
     */}
 }
 .top_tiles_title {
-    margin-left: 20px;
+    opacity: 0.5;
+    font-family: Helvetica;
     font-size: 20px;
+    color: #25354E;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 .blog_header > p {
     font-size: 16px;
