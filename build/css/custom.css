@@ -4542,7 +4542,7 @@ ul.notifications {
     font-family: Helvetica;
 }
 .leaderboard .header {
-    padding-top: 25px;
+    padding-top: 30px;
 }
 .leaderboard .title {
     font-size: 24px;
@@ -4562,8 +4562,7 @@ ul.notifications {
 }
 .leaderboard .leading_projects {
     color: #0e1012;
-    padding: 15px 30px 30px 30px;
-    text-align: center;
+    padding: 30px;
 }
 .leaderboard .leading_projects table {
     width: 100%;
@@ -4586,6 +4585,7 @@ ul.notifications {
     text-align: left;
     font-size: 16px;
     color: #25354E;
+    font-weight: 300;
     background: rgba(84,130,119,0.03);
     padding: 0.5em 0;
     border-bottom: 3px solid #FFFFFF;
@@ -4724,15 +4724,16 @@ ul.notifications {
         text-align: center;
     }   
     .leaderboard .header {
-        padding-top: 20px;
+        padding-top: 12px;
     }
     .leaderboard .title {
-        font-size: 20px;
-        padding-left: 25px;
+        font-size: 18px;
+        padding-left: 10px;
     }
     .leaderboard .small_text {
         font-size: 13px;
-        margin-left: 8px;
+        margin-top: 5px;
+        margin-right: 10px;
     }
     .leaderboard .leading_projects table th {
         font-size: 12px;
@@ -4750,6 +4751,12 @@ ul.notifications {
     }
     .tile_count .tile_stats_count:nth-child(3), .tile_count .tile_stats_count:last-child {
         margin-left: 0;
+    }
+    .leaderboard .leading_projects table td:first-child {
+        width: 60px;
+    }
+    .top_tiles_title {
+        margin-left: 10px;
     }
 }
 @media(max-width:1200px) and (min-width: 415px) {
