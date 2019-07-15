@@ -535,7 +535,7 @@ body {
     font-size: 20px;
     color: #25354E;
     margin-top: 20px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
 }
 .rgp {
     display: inline-block;
@@ -1918,9 +1918,9 @@ span.right {
     height: 110px;
     width: 280px;
     background: #FFFFFF;
-    border: 0 solid #24BB9C;
+    border: 1px solid #dff5f0;
 }
-.tile_count .tile_stats_count:nth-child(2), .tile_count .tile_stats_count:last-child {
+.tile_count .tile_stats_count:nth-child(3), .tile_count .tile_stats_count:last-child {
     margin-left: 30px;
 }
 @media (min-width: 992px) {
@@ -4726,5 +4726,8 @@ ul.notifications {
     .tile_count .tile_stats_count {
         width: 96%;
         margin-bottom: 5px;
+    }
+    .tile_count .tile_stats_count:nth-child(3), .tile_count .tile_stats_count:last-child {
+        margin-left: 0;
     }
 }
