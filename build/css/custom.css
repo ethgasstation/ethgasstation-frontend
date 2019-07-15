@@ -252,13 +252,6 @@ html , body{
 .menu_section>ul {
     margin-top: 10px
 }
-.menu_section>ul .box {
-    min-height: 16px;
-    min-width: 16px;
-    display: inline-block;
-    border: 1px solid #FFFFFF;
-    border-radius: 3px;
-}
 .menu_section>ul .link_text {
     margin-left: 18px;
 }
@@ -971,12 +964,10 @@ a:focus {
     margin-top: 24px;
     margin-left: 40px;
 }
-.site_title .box {
-    min-width: 42px;
-    min-height: 42px;
+.site_title .egs_icon {
+    width: 42px;
+    height: 42px;
     display: inline-block;
-    background: #758596;
-    border-radius: 7px;
 }
 .site_title .title {
     color: #758596;
@@ -2067,7 +2058,7 @@ h4.graph_title {
     margin-right: 10px
 }
 .main_menu .fa {
-    width: 26px;
+    width: 16px;
     opacity: .99;
     display: inline-block;
     font-family: FontAwesome;
@@ -4570,13 +4561,6 @@ ul.notifications {
 }
 .gas_internals .big_title {
     font-size: 40px;
-}
-.egs_icon {
-    height: 80px;
-    width: 80px;
-    display: block;
-    margin: auto;
-    margin-top: 20px;
 }
 .spam_reference_link {
     color: red;
