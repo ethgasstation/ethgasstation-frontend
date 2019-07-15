@@ -4534,9 +4534,11 @@ ul.notifications {
     }
 }
 .leaderboard {
+    margin-top: 15px;
     margin-bottom: 5px;
     border: 1px solid #dff5f0;
     background: #fff;
+    font-family: Helvetica;
 }
 .leaderboard .header {
     padding-top: 25px;
@@ -4565,20 +4567,38 @@ ul.notifications {
 .leaderboard .leading_projects table {
     width: 100%;
 }
+.leaderboard table tbody:before {
+    content:"@";
+    display:block;
+    line-height:10px;
+    text-indent:-99999px;
+}
 .leaderboard .leading_projects table th {
     font-size: 16px;
-    font-weight: 500;
-    color: #1ABB9C;
+    font-weight: 300;
+    color: #25354E;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    border-bottom: 1px solid #2FB999;
+    padding-bottom: 5px;
+}
+.leaderboard .leading_projects table th:first-child, .leaderboard .leading_projects table th:nth-child(2) {
+    font-weight: 600;
 }
 .leaderboard .leading_projects table td {
     text-align: left;
     font-size: 16px;
+    background: rgba(84,130,119,0.03);
 }
 .leaderboard .leading_projects table td:nth-child(3), .leaderboard .leading_projects table td:nth-child(4) {
     color: #778899;
 }
 .leaderboard .leading_projects table td:first-child {
-    width: 45px;
+    width: 80px;
+    padding-left: 15px;
+    font-size: 14px;
+    color: #2FB999;
+    letter-spacing: 1.2px;
 }
 .leaderboard .leading_projects table td:nth-child(2) {
     max-width: 160px;

@@ -196,7 +196,7 @@
                         <table style="">
                             <thead>
                               <tr>
-                                  <th></th>
+                                  <th>Rank</th>
                                   <th>Name</th>
                                   <th>ETH Spent</th>
                                   <th>Ave. Gwei</th>
