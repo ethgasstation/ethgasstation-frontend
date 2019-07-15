@@ -360,7 +360,7 @@ body .container.body .right_col {
     width: 240px;
     float: left;
     border-radius: 0;
-    height: 160px
+    height: 145px
 }
 @media (max-width: 991px) {
     .nav-md .container.body .right_col,
@@ -961,19 +961,21 @@ a:focus {
     text-decoration: none
 }
 .site_title > div {
-    margin-top: 24px;
+    margin-top: 20px;
     margin-left: 40px;
 }
 .site_title .egs_icon {
-    width: 42px;
-    height: 42px;
+    width: 58px;
+    height: 58px;
+    float: left;
     display: inline-block;
 }
 .site_title .title {
     opacity: 0.5;
     font-size: 19px;
-    line-height: 28px;
+    line-height: 24px;
     color: #FFFFFF;
+    margin-top: 6px;
     margin-left: 10px;
     font-weight: 300;
     display: inline-block;
