@@ -4723,6 +4723,9 @@ ul.notifications {
         top: 20px;
         text-align: center;
     }   
+    .leaderboard {
+        margin-top: 8px;
+    }
     .leaderboard .header {
         padding-top: 12px;
     }
@@ -4747,6 +4750,7 @@ ul.notifications {
     }
     .tile_count .tile_stats_count {
         width: 96%;
+        height: 75px;
         margin-bottom: 5px;
     }
     .tile_count .tile_stats_count:nth-child(3), .tile_count .tile_stats_count:last-child {
@@ -4756,7 +4760,18 @@ ul.notifications {
         width: 60px;
     }
     .top_tiles_title {
-        margin-left: 10px;
+        font-size: 15px;
+        margin-bottom: 10px;
+    }
+    .tile_stats_count > div {
+        margin-top: 10px;
+    }
+    .tile_count .tile_stats_count .count {
+        margin: 0 15px;
+    }
+    .blogPost {
+        margin-bottom: 0;
+        margin-top: -10px;
     }
 }
 @media(max-width:1200px) and (min-width: 415px) {
