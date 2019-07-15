@@ -565,14 +565,14 @@ body {
 }
 .post_external_link {
     float: right;
-    color: #2FB999;
+    color: #2FB999 !important;
     font-weight: 400;
 }
 .blogPost .right_arrow {
     width: 6px;
     height: 8px;
     margin-right: 20px;
-    margin-left: 10px;
+    margin-left: 20px;
 }
 .gas_estimator_title {
     /*font-size: 15px;

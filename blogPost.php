@@ -14,5 +14,5 @@
   $decodedData = json_decode($output);
   $link = "https://ethgasstation.info" . $decodedData[0]->link;
 
-  echo "<a href=" . $link . " class='post_title' target='_blank'>" . $decodedData[0]->title->rendered . "</a><a href=" . $link . " class='post_external_link' target='_blank'>Read on EGS NEWS</a> <img class='right_arrow' src='/images/right-arrow.svg'>";
+  echo "<a href=" . $link . " class='post_title' target='_blank'>" . $decodedData[0]->title->rendered . "</a><a href=" . $link . " class='post_external_link' target='_blank'>Read on EGS NEWS <img class='right_arrow' src='/images/right-arrow.svg'> </a>";
 ?>
