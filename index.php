@@ -99,7 +99,10 @@
 
               <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                  <a href="#" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-globe"></i><span class="change_currency_text"> Change Currency</span>
+                  <a href="#" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                    <img class="social_icon" src="/images/globe.svg">
+                  </a>
+                  <span class="change_currency_text"> Change Currency</span>
                   </a>
                   <ul class="dropdown-menu">
                     <li id="usd"><a href="#"> USD<?php if($currency=='usd'){echo'<span class="pull-right"><i class="fa fa-check"></i></span>';}?></a></li>

@@ -334,6 +334,7 @@ html , body{
     float: left;
     margin-bottom: 10px;
     width: 100%;
+    height: 90px;
     position: relative;
     background: #FFFFFF;
     box-shadow: 0 4px 32px 0 rgba(0,0,0,0.08);
@@ -827,9 +828,6 @@ a:focus {
     width: 100%;
     padding: 12px 20px
 }
-.top_nav li a i {
-    font-size: 24px;
-}
 .change_currency_text {
     font-family: Helvetica;
     font-size: 20px;
@@ -1080,7 +1078,7 @@ footer .eth_footer_links a {
     text-decoration: none;
 }
 .top_nav .header_left_contents {
-    margin: 16px 0 13px 40px;
+    margin: 34px 0 13px 40px;
     display: inline-block;
 }
 .top_nav .social_links {
@@ -1092,7 +1090,7 @@ footer .eth_footer_links a {
     display: inline-block;
 }
 .top_nav .social_link:nth-child(2) {
-    margin-left: 12px;
+    margin-left: 22px;
 }
 .top_nav .social_icon {
     cursor: pointer;
@@ -4611,11 +4609,11 @@ ul.notifications {
         margin-left: 15px;
     }
     .toggle {
-        padding-top: 13px;
+        padding-top: 18px;
         display: inline-block;
     }
     .top_nav .header_left_contents {
-        margin: 10px 0 6px;
+        margin: 20px 0 6px;
     }
     .top_nav .navbar-right {
         margin-top: 0;
