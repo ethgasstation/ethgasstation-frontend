@@ -805,7 +805,8 @@ a:focus {
 }
 .top_nav .navbar-right {
     margin: 0;
-    margin-top: 18px;
+    margin-top: 14px;
+    margin-bottom: 5px;
 }
 .top_nav .navbar-right li {
     display: inline-block;
@@ -835,11 +836,11 @@ a:focus {
 }
 .change_currency_text {
     font-family: Helvetica;
-    font-size: 20px;
+    font-size: 18px;
     color: #797979;
     letter-spacing: 0;
-    margin-left: 22px;
-    margin-right: 50px;
+    margin-left: 16px;
+    margin-right: 40px;
 }
 .navbar-static-top {
     position: fixed;
@@ -969,8 +970,12 @@ a:focus {
     display: inline-block;
 }
 .site_title .title {
-    color: #758596;
-    margin-left: 20px;
+    opacity: 0.5;
+    font-size: 19px;
+    line-height: 28px;
+    color: #FFFFFF;
+    margin-left: 10px;
+    font-weight: 300;
     display: inline-block;
     text-transform: uppercase;
 }
@@ -1973,7 +1978,7 @@ a.user-profile {
     color: #5E6974 !important
 }
 .top_nav li a i {
-    font-size: 24px;
+    font-size: 22px;
 }
 .user-profile img {
     width: 29px;
@@ -2063,7 +2068,6 @@ h4.graph_title {
     font-family: FontAwesome;
     font-style: normal;
     font-weight: normal;
-    font-size: 18px;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale
 }
