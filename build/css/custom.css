@@ -4587,7 +4587,7 @@ ul.notifications {
     color: #25354E;
     font-weight: 300;
     background: rgba(84,130,119,0.03);
-    padding: 0.5em 0;
+    padding: 0.65em 0;
     border-bottom: 3px solid #FFFFFF;
 }
 .leaderboard .leading_projects table td:first-child {
