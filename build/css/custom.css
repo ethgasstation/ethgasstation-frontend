@@ -4569,29 +4569,29 @@ ul.notifications {
     width: 100%;
 }
 .leaderboard .leading_projects table th {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 300;
     color: #25354E;
     letter-spacing: 1.2px;
     text-transform: uppercase;
-    border-bottom: 1px solid #2FB999;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
 }
 .leaderboard .leading_projects table th:first-child, .leaderboard .leading_projects table th:nth-child(2) {
     font-weight: 600;
 }
+.leaderboard .leading_projects table tr:first-child td {
+    border-top: 1.5px solid #2FB999;
+}
 .leaderboard .leading_projects table td {
     text-align: left;
     font-size: 16px;
+    color: #25354E;
     background: rgba(84,130,119,0.03);
     padding: 0.5em 0;
-    border-bottom: 5px solid #FFFFFF;
-}
-.leaderboard .leading_projects table td:nth-child(3), .leaderboard .leading_projects table td:nth-child(4) {
-    color: #778899;
+    border-bottom: 3px solid #FFFFFF;
 }
 .leaderboard .leading_projects table td:first-child {
-    width: 80px;
+    width: 90px;
     padding-left: 15px;
     font-size: 14px;
     color: #2FB999;
