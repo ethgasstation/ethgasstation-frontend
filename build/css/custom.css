@@ -332,10 +332,11 @@ html , body{
 }
 .nav_menu {
     float: left;
-    background: #EDEDED;
     margin-bottom: 10px;
     width: 100%;
-    position: relative
+    position: relative;
+    background: #FFFFFF;
+    box-shadow: 0 4px 32px 0 rgba(0,0,0,0.08);
 }
 @media (min-width: 480px) {
     .nav_menu {
@@ -827,7 +828,15 @@ a:focus {
     padding: 12px 20px
 }
 .top_nav li a i {
-    font-size: 15px
+    font-size: 24px;
+}
+.change_currency_text {
+    font-family: Helvetica;
+    font-size: 20px;
+    color: #797979;
+    letter-spacing: 0;
+    margin-left: 22px;
+    margin-right: 50px;
 }
 .navbar-static-top {
     position: fixed;
@@ -1086,16 +1095,8 @@ footer .eth_footer_links a {
     margin-left: 12px;
 }
 .top_nav .social_icon {
-    width: 60px;
     cursor: pointer;
     margin-right: 5px;
-}
-.top_nav .egs_title {
-    font-size: 40px;
-    color: #03586A;
-    display: inline-block;
-    float: right;
-    margin-left: 50px;
 }
 .nav-sm footer {
     margin-left: 70px
@@ -4601,10 +4602,6 @@ ul.notifications {
     }
     .count_top {
         font-size: 14px;
-    }
-    .top_nav .egs_title {
-        font-size: 20px;
-        display: none;
     }
     .top_nav .social_icon {
         width: 32px;
