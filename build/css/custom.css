@@ -638,10 +638,11 @@ body {
     letter-spacing: 0;
 }
 .blogPost .x_panel {
-    background: #e5e6e8;
+    background: #5a5d5c08;
     font-size: 16px;
     color: #2D2D2D;
     letter-spacing: 0;
+    border: none;
 }
 .fixed_height_320 {
     height: 320px
@@ -4561,17 +4562,11 @@ ul.notifications {
 }
 .leaderboard .leading_projects {
     color: #0e1012;
-    padding: 15px 50px 32px 100px;
+    padding: 15px 30px 30px 30px;
     text-align: center;
 }
 .leaderboard .leading_projects table {
     width: 100%;
-}
-.leaderboard table tbody:before {
-    content:"@";
-    display:block;
-    line-height:10px;
-    text-indent:-99999px;
 }
 .leaderboard .leading_projects table th {
     font-size: 16px;
@@ -4589,6 +4584,8 @@ ul.notifications {
     text-align: left;
     font-size: 16px;
     background: rgba(84,130,119,0.03);
+    padding: 0.5em 0;
+    border-bottom: 5px solid #FFFFFF;
 }
 .leaderboard .leading_projects table td:nth-child(3), .leaderboard .leading_projects table td:nth-child(4) {
     color: #778899;
@@ -4605,7 +4602,7 @@ ul.notifications {
     word-break: break-word;
 }
 .leaderboard .leading_projects table tbody:before {
-    line-height:1em;
+    line-height:0em;
     content:"_";
     color:white;
     display:block;
