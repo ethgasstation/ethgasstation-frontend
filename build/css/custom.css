@@ -529,6 +529,14 @@ body {
 .page-title .title_right .pull-right {
     margin: 10px 0
 }
+.top_tiles_title {
+    opacity: 0.5;
+    font-family: Helvetica;
+    font-size: 20px;
+    color: #25354E;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
 .rgp {
     display: inline-block;
     width: 99%;
@@ -612,14 +620,6 @@ body {
         position: absolute;
         top: calc(50% - 90px);
     */}
-}
-.top_tiles_title {
-    opacity: 0.5;
-    font-family: Helvetica;
-    font-size: 20px;
-    color: #25354E;
-    margin-top: 20px;
-    margin-bottom: 10px;
 }
 .blog_header > p {
     font-size: 16px;
@@ -1920,7 +1920,11 @@ span.right {
     text-overflow: ellipsis;
     overflow: hidden;
     white-space: nowrap;
-    position: relative
+    position: relative;
+    height: 110px;
+    width: 300px;
+    background: #FFFFFF;
+    border: 0 solid #24BB9C;
 }
 @media (min-width: 992px) {
     footer {
@@ -1939,18 +1943,47 @@ span.right {
         border-left: 0
     }
 }
+.tile_stats_count > div {
+    margin-top: 30px;
+}
 .tile_count .tile_stats_count .count {
     float: left;
-    font-size: 56px;
     line-height: 50px;
     font-weight: 500;
     margin-right: 10px;
     display: inline-block;
+    font-family: Helvetica;
+    font-size: 48px;
+    color: #FF558F;
+}
+.tile_stats_count .divider {
+    float: left;
+    display: inline-block;
+    opacity: 0.2;
+    height: 50px;
+    border: 1px solid #25354E;
 }
 .tile_stats_count .text-container {
-    margin-top: 4px;
     display: inline-block;
+    margin-left: 15px;
 }
+.tile_stats_count .text-container .count_top.usd {
+    font-size: 20px;
+    color: #202020;
+}
+.tile_stats_count .text-container .count_top span:first-child {
+    opacity: 0.6;
+    font-size: 18px;
+    color: #202020;
+    text-transform: uppercase;
+}
+.tile_stats_count .text-container .count_top span:last-child {
+    opacity: 0.2;
+    font-size: 18px;
+    color: #202020;
+    margin-left: 5px;
+}
+
 @media (min-width: 768px) {
     .tile_count .tile_stats_count .count {
         font-size: 56px

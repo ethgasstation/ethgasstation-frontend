@@ -122,37 +122,46 @@
               <div class="rgp">
                 <div class="top_tiles_title">Recommended Gas Prices in Gwei</div>
                 <div class="col-md-4 col-sm-4 col-xs-6 tile_stats_count">
-                  <div class="count fast">
-                    <?php echo ($gpRecs2['fast']/10) ?>
-                  </div>
-                  <div class="text-container">
-                    <div class="count_top">fast (<2m)</div>
-                    <div class="count_top">
-                      <?php $fee = round($gpRecs2['fast']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee . '/transfer'); ?>
+                  <div>
+                    <div class="count fast">
+                      <?php echo ($gpRecs2['fast']/10) ?>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="text-container">
+                      <div class="count_top"><span>fast</span><span>< 2m</span></div>
+                      <div class="count_top usd">
+                        <?php $fee = round($gpRecs2['fast']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee . '/transfer'); ?>
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 <div class="col-md-4 col-sm-4 col-xs-6 tile_stats_count">
-                  <div class="count standard">
-                    <?php echo ($gpRecs2['average']/10) ?>
-                  </div>
-                  <div class="text-container">
-                    <div class="count_top">standard (<5m)</div>
-                    <div class="count_top">
-                      <?php $fee = round($gpRecs2['average']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee . '/transfer'); ?>
+                  <div>
+                    <div class="count standard">
+                      <?php echo ($gpRecs2['average']/10) ?>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="text-container">
+                      <div class="count_top"><span>standard</span><span>< 5m</span></div>
+                      <div class="count_top usd">
+                        <?php $fee = round($gpRecs2['average']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee . '/transfer'); ?>
+                      </div>
                     </div>
                   </div>
                 </div>
 
                 <div class="col-md-4 col-sm-4 col-xs-6 tile_stats_count">
-                  <div class="count safe_low" id="medTx">
-                    <?php echo ($gpRecs2['safeLow']/10) ?>
-                  </div>
-                  <div class="text-container">
-                    <div class="count_top">safe low (<30m)</div>
-                    <div class="count_top">
-                      <?php $fee = round($gpRecs2['safeLow']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee . '/transfer'); ?>
+                  <div>
+                    <div class="count safe_low" id="medTx">
+                      <?php echo ($gpRecs2['safeLow']/10) ?>
+                    </div>
+                    <div class="divider"></div>
+                    <div class="text-container">
+                      <div class="count_top"><span>safe low</span><span>< 30m</span></div>
+                      <div class="count_top usd">
+                        <?php $fee = round($gpRecs2['safeLow']*21000/1e9*$exchangeRate/10, 3); echo($currString . $fee . '/transfer'); ?>
+                      </div>
                     </div>
                   </div>
                 </div>
