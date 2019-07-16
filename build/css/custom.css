@@ -567,8 +567,10 @@ body {
 }
 .post_external_link {
     float: right;
-    color: #2FB999 !important;
     font-weight: 400;
+}
+.post_external_link span {
+    color: #2FB999 !important;
 }
 .blogPost .right_arrow {
     width: 6px;
@@ -4807,6 +4809,23 @@ ul.notifications {
     .blogPost {
         margin-bottom: 0;
         margin-top: -10px;
+    }
+    .blogPost .title {
+        margin-left: 0;
+    }
+    .blogPost .title span:first-child {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        width: 94%;
+        display: inline-block;
+    }
+    .blogPost .title .post_external_link span {
+        display: none;
+    }
+    .blogPost .right_arrow {
+        margin-left: 10px;
+        margin-right: 0;
     }
 }
 @media(max-width:1200px) and (min-width: 415px) {
