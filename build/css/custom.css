@@ -843,6 +843,12 @@ a:focus {
     margin-left: 16px;
     margin-right: 40px;
 }
+.change_currency_text .down_arrow {
+    width: 8px;
+    height: 6px;
+    margin-left: 5px;
+    display: none;
+}
 .navbar-static-top {
     position: fixed;
     top: 0;
@@ -1029,7 +1035,7 @@ a:focus {
     display: none;
 }
 .toggle a {
-    padding: 15px 15px 0;
+    padding: 15px 25px 0;
     margin: 0;
     cursor: pointer
 }
@@ -1106,6 +1112,9 @@ footer .eth_footer_links a {
 .top_nav .social_icon {
     cursor: pointer;
     margin-right: 5px;
+}
+.top_nav .social_icon.secondary {
+    display: none;
 }
 .nav-sm footer {
     margin-left: 70px
@@ -4720,6 +4729,26 @@ ul.notifications {
 }
 
 @media(max-width:415px) {
+    .top_nav .header_left_contents {
+        float: right;
+        margin-right: 10px;
+    }
+    .change_currency_text .down_arrow {
+        display: block;
+    }
+    .top_nav .social_icon.secondary {
+        display: block;
+    }
+    .top_nav .social_icon.primary {
+        display: none;
+    }
+    .top_nav .navbar-right {
+        margin-top: 5px;
+        margin-bottom: 30px;
+    }
+    .toggle {
+        padding-top: 20px;
+    }
     a.user-profile.dropdown-toggle {
         top: 20px;
         text-align: center;
