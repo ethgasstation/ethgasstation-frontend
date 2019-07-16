@@ -4546,6 +4546,7 @@ ul.notifications {
 }
 .leaderboard .title {
     font-size: 24px;
+    font-weight: 600;
     color: #25354E;
     letter-spacing: 1.5px;
     padding-left: 30px;
@@ -4557,6 +4558,7 @@ ul.notifications {
 }
 .leaderboard .small_text {
     font-size: 20px;
+    font-weight: 600;
     color: #202020;
     float: right;
     margin-right: 30px;
@@ -4737,8 +4739,6 @@ ul.notifications {
     .leaderboard .title {
         padding-left: 20px;
         font-size: 16px;
-        color: #25354E;
-        letter-spacing: 1.5px;
     }
     .leaderboard .small_text {
         display: block;
@@ -4749,14 +4749,15 @@ ul.notifications {
         margin-left: 20px;
     }
     .leaderboard .leading_projects {
-        padding-top: 30px;
+        padding-top: 30px !important;
     }
     .leaderboard .leading_projects table th {
         font-size: 12px;
+        font-weight: 500;
         opacity: 0.5;
         color: #25354E;
         letter-spacing: 1.2px;
-        padding-bottom: 10px;
+        padding-bottom: 0;
     }
     .leaderboard .leading_projects table td {
         font-size: 16px;
@@ -4786,9 +4787,6 @@ ul.notifications {
     }
     .leaderboard .leading_projects table td:first-child {
         width: 35px;
-    }
-    .leaderboard .leading_projects table th {
-        padding-bottom: 0;
     }
     .leaderboard .leading_projects table th:first-child, .leaderboard .leading_projects table th:nth-child(2) {
         font-size: 16px;
