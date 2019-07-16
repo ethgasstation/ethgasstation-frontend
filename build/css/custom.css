@@ -1040,7 +1040,7 @@ a:focus {
     cursor: pointer
 }
 .toggle a i {
-    font-size: 26px
+    font-size: 22px
 }
 .nav.child_menu>li>a {
     color: rgba(255, 255, 255, 0.75);
@@ -4688,7 +4688,7 @@ ul.notifications {
         margin-top: 0;
     }
     .change_currency_text {
-        font-size: 16px;
+        font-size: 14px;
         margin-left: 5px;
         margin-right: 0;
     }
@@ -4731,10 +4731,10 @@ ul.notifications {
 @media(max-width:415px) {
     .top_nav .header_left_contents {
         float: right;
-        margin-right: 10px;
+        margin: 28px 12px 10px -10px;
     }
     .change_currency_text .down_arrow {
-        display: block;
+        display: inherit;
     }
     .top_nav .social_icon.secondary {
         display: block;
@@ -4744,7 +4744,7 @@ ul.notifications {
     }
     .top_nav .navbar-right {
         margin-top: 5px;
-        margin-bottom: 30px;
+        margin-bottom: 35px;
     }
     .toggle {
         padding-top: 20px;
