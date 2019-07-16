@@ -1959,7 +1959,7 @@ span.right {
     line-height: 50px;
     font-weight: 600;
     display: inline-block;
-    font-size: 48px;
+    font-size: 40px;
 }
 .tile_stats_count .divider {
     float: left;
@@ -4731,7 +4731,7 @@ ul.notifications {
 @media(max-width:415px) {
     .top_nav .header_left_contents {
         float: right;
-        margin: 28px 12px 10px -10px;
+        margin: 28px 15px 10px -10px;
     }
     .change_currency_text .down_arrow {
         display: inherit;
@@ -4826,7 +4826,6 @@ ul.notifications {
     }
     .tile_count .tile_stats_count .count {
         width: 90px;
-        font-size: 40px;
         text-align: center;
     }
     .blogPost {
