@@ -4549,6 +4549,7 @@ ul.notifications {
     color: #25354E;
     letter-spacing: 1.5px;
     padding-left: 30px;
+    display: inline-block;
 }
 .leaderboard .title span {
     font-weight: 300;
@@ -4559,6 +4560,7 @@ ul.notifications {
     color: #202020;
     float: right;
     margin-right: 30px;
+    display: inline-block;
 }
 .leaderboard .leading_projects {
     color: #0e1012;
@@ -4574,6 +4576,9 @@ ul.notifications {
     letter-spacing: 1.2px;
     text-transform: uppercase;
     padding-bottom: 10px;
+}
+.leaderboard .leading_projects table th:first-child span:last-child {
+    display: none;
 }
 .leaderboard .leading_projects table th:first-child, .leaderboard .leading_projects table th:nth-child(2) {
     font-weight: 600;
@@ -4730,19 +4735,33 @@ ul.notifications {
         padding-top: 12px;
     }
     .leaderboard .title {
-        font-size: 18px;
-        padding-left: 10px;
+        padding-left: 20px;
+        font-size: 16px;
+        color: #25354E;
+        letter-spacing: 1.5px;
     }
     .leaderboard .small_text {
-        font-size: 13px;
-        margin-top: 5px;
-        margin-right: 10px;
+        display: block;
+        float: none;
+        opacity: 0.5;
+        font-size: 14px;
+        color: #25354E;
+        margin-left: 20px;
+    }
+    .leaderboard .leading_projects {
+        padding-top: 30px;
     }
     .leaderboard .leading_projects table th {
         font-size: 12px;
+        opacity: 0.5;
+        color: #25354E;
+        letter-spacing: 1.2px;
+        padding-bottom: 10px;
     }
     .leaderboard .leading_projects table td {
-        font-size: 12px;
+        font-size: 16px;
+        color: #25354E;
+        font-weight: 400;
     }
     .leaderboard .header img {
         height: 30px;
@@ -4756,8 +4775,26 @@ ul.notifications {
     .tile_count .tile_stats_count:nth-child(3), .tile_count .tile_stats_count:last-child {
         margin-left: 0;
     }
+    .leaderboard .leading_projects table th:first-child {
+        text-align: center;
+    }
+    .leaderboard .leading_projects table th:first-child span:first-child {
+        display: none;
+    }
+    .leaderboard .leading_projects table th:first-child span:last-child {
+        display: block;
+    }
     .leaderboard .leading_projects table td:first-child {
-        width: 60px;
+        width: 35px;
+    }
+    .leaderboard .leading_projects table th {
+        padding-bottom: 0;
+    }
+    .leaderboard .leading_projects table th:first-child, .leaderboard .leading_projects table th:nth-child(2) {
+        font-size: 16px;
+        color: #25354E;
+        opacity: 1;
+        letter-spacing: 1.2px;
     }
     .top_tiles_title {
         font-size: 15px;

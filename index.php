@@ -189,14 +189,14 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <div class="leaderboard">
                       <div class="header">
-                        <span class="title">Top 25 <span>Leaderboard</span></span>
-                        <span class="small_text">Last 30 Days</span>
+                        <div class="title">Top 25 <span>Leaderboard</span></div>
+                        <div class="small_text">Last 30 Days</div>
                       </div>
                       <div class="leading_projects">
                         <table style="">
                             <thead>
                               <tr>
-                                  <th>Rank</th>
+                                  <th><span>Rank</span><span>#</span></th>
                                   <th>Name</th>
                                   <th>ETH Spent</th>
                                   <th>Ave. Gwei</th>
