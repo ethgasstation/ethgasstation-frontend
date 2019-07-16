@@ -567,7 +567,6 @@ body {
 }
 .post_external_link {
     float: right;
-    font-weight: 400;
 }
 .post_external_link span {
     color: #2FB999 !important;
@@ -633,6 +632,7 @@ body {
 }
 .blogPost .title {
     margin-left: 20px;
+    font-weight: 500;
 }
 .blogPost .title a {
     font-size: 16px;
@@ -837,7 +837,7 @@ a:focus {
 }
 .change_currency_text {
     font-family: Helvetica;
-    font-size: 18px;
+    font-size: 16px;
     color: #797979;
     letter-spacing: 0;
     margin-left: 16px;
@@ -1948,7 +1948,7 @@ span.right {
 .tile_count .tile_stats_count .count {
     float: left;
     line-height: 50px;
-    font-weight: 500;
+    font-weight: 600;
     display: inline-block;
     font-size: 48px;
 }
@@ -1967,6 +1967,7 @@ span.right {
 .tile_stats_count .text-container .count_top.usd {
     font-size: 20px;
     color: #202020;
+    font-weight: 600;
 }
 .tile_stats_count .text-container .count_top span:first-child {
     opacity: 0.6;
@@ -1979,17 +1980,6 @@ span.right {
     font-size: 18px;
     color: #202020;
     margin-left: 5px;
-}
-
-@media (min-width: 768px) {
-    .tile_count .tile_stats_count .count {
-        font-size: 40px
-    }
-}
-@media (min-width: 992px) and (max-width: 1100px) {
-    .tile_count .tile_stats_count .count {
-        font-size: 40px
-    }
 }
 .tile_count .tile_stats_count span {
     font-size: 12px
@@ -2014,7 +2004,7 @@ a.user-profile {
     color: #5E6974 !important
 }
 .top_nav li a i {
-    font-size: 22px;
+    font-size: 18px;
 }
 .user-profile img {
     width: 29px;
@@ -4607,8 +4597,11 @@ ul.notifications {
     letter-spacing: 1.2px;
 }
 .leaderboard .leading_projects table td:nth-child(2) {
-    max-width: 160px;
+    max-width: 240px;
     word-break: break-word;
+}
+.leaderboard .leading_projects table td:last-child {
+    max-width: 95px;
 }
 .leaderboard .leading_projects table tbody:before {
     line-height:0em;
@@ -4664,7 +4657,6 @@ ul.notifications {
 
 @media only screen and (max-width: 991px) {
     .tile_count .tile_stats_count .count {
-        font-size: 40px;
         margin-left: 5px;
     }
     .count_top {
