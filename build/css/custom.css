@@ -4789,18 +4789,23 @@ ul.notifications {
         letter-spacing: 1.2px;
     }
     .top_tiles_title {
-        font-size: 15px;
+        font-size: 16px;
         margin-bottom: 10px;
     }
     .tile_stats_count > div {
         margin-top: 10px;
     }
     .tile_count .tile_stats_count .count {
-        margin: 0 15px;
+        width: 90px;
+        font-size: 40px;
+        text-align: center;
     }
     .blogPost {
         margin-bottom: 0;
         margin-top: -10px;
+    }
+    .blogPost .x_panel {
+        padding: 15px;
     }
     .blogPost .title {
         margin-left: 0;
