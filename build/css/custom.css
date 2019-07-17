@@ -360,7 +360,7 @@ body .container.body .right_col {
     width: 240px;
     float: left;
     border-radius: 0;
-    height: 145px
+    height: 112px;
 }
 @media (max-width: 991px) {
     .nav-md .container.body .right_col,
