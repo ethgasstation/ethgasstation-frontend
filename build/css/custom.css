@@ -4610,7 +4610,7 @@ ul.notifications {
     word-break: break-word;
 }
 .leaderboard .leading_projects table td:last-child {
-    max-width: 95px;
+    width: 95px;
 }
 .leaderboard .leading_projects table tbody:before {
     line-height:0em;
