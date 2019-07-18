@@ -4852,6 +4852,12 @@ ul.notifications {
         margin-left: 10px;
         margin-right: 0;
     }
+    .site_title > div {
+        margin-left: 10px;
+    }
+    .main_menu_side .link_text {
+        display: none;
+    }
 }
 @media(max-width:1200px) and (min-width: 415px) {
     .page_content_container .page_content {
