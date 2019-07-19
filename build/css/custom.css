@@ -978,7 +978,6 @@ a:focus {
     display: inline-block;
 }
 .site_title .title {
-    opacity: 0.5;
     font-size: 19px;
     line-height: 24px;
     color: #FFFFFF;
