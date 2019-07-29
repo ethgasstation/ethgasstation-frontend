@@ -123,33 +123,37 @@
                       </div> 
                       <div class="form-group">
                         <label class="col-md-3 col-sm-3 col-xs-12 control-label">Gas Price<span class="required">*</span></label>
-
-                      <div class="col-md-6 col-sm-6 col-xs-12">
-                        <div class="checkbox">
-                          <label>
-                          <input type="checkbox" class="flat" id="fast"> Fastest
-                          <?php echo ("(".($gpRecs2['fastest']/10)." Gwei)") ?></label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                          <div class="checkbox">
+                            <label>
+                            <input type="checkbox" class="flat" id="fastest"> Fastest
+                            <?php echo ("(".($gpRecs2['fastest']/10)." Gwei)") ?></label>
+                          </div>
+                          <div class="checkbox">
+                            <label>
+                            <input type="checkbox" class="flat" id="fast"> Fast
+                            <?php echo ("(".($gpRecs2['fast']/10)." Gwei)") ?></label>
+                          </div>
+                          <div class="checkbox">
+                            <label>
+                            <input type="checkbox" class="flat" checked="checked" id="avg"> Average
+                            <?php echo ("(".($gpRecs2['average']/10)." Gwei)") ?></label>
+                          </div>
+                          <div class="checkbox">
+                              <label>
+                              <input type="checkbox" class="flat" id="cheap"> Cheap
+                              <?php if ($gpRecs2['safeLow'] ==0){$gpRecs2['safeLow']=1;} echo ("(".($gpRecs2['safeLow']/10)." Gwei)") ?></label>
+                          </div>
+                           <div class="checkbox">
+                              <label>
+                              <input type="checkbox" class="flat" id="other"> Other
+                              </label>
+                          </div>
+                          <div>
+                            <input type="number step=.1" class="form-control" placeholder="(Gwei)" id="oth_val">
+                          </div>
                         </div>
-                      <div class="checkbox">
-                        <label>
-                        <input type="checkbox" class="flat" checked="checked" id="avg"> Average
-                        <?php echo ("(".($gpRecs2['average']/10)." Gwei)") ?></label>
-                    </div>
-                    <div class="checkbox">
-                        <label>
-                        <input type="checkbox" class="flat" id="cheap"> Cheap
-                        <?php if ($gpRecs2['safeLow'] ==0){$gpRecs2['safeLow']=1;} echo ("(".($gpRecs2['safeLow']/10)." Gwei)") ?></label>
-                    </div>
-                     <div class="checkbox">
-                        <label>
-                        <input type="checkbox" class="flat" id="other"> Other
-                        </label>
-                    </div>
-                    <div>
-                      <input type="number step=.1" class="form-control" placeholder="(Gwei)" id="oth_val">
-                    </div>
-                  </div>
-                </div>
+                      </div>
                       <div class="ln_solid"></div>
                       <div class="form-group">
                         <div class="col-md-9 col-sm-9 col-xs-12 col-md-offset-3">
@@ -384,16 +388,17 @@
                 }
               }
               else {
-                if ($('#fast').prop('checked')===true){
-                  txGasPrice = <?php echo($gpRecs2['fastest']/10) ?>;
-                }
-                else if ($('#avg').prop('checked')===true){
-                  txGasPrice = <?php echo($gpRecs2['average']/10) ?>;
+                if ($('#fastest').prop('checked') === true) {
+                  txGasPrice = <?php echo($gpRecs2['fastest'] / 10) ?>;
+                } else if ($('#fast').prop('checked') === true) {
+                  txGasPrice = <?php echo($gpRecs2['fast'] / 10) ?>;
+                } else if ($('#avg').prop('checked') === true) {
+                  txGasPrice = <?php echo($gpRecs2['average'] / 10) ?>;
                   
+                } else if ($('#cheap').prop('checked') === true) {
+                  txGasPrice = <?php echo($gpRecs2['safeLow'] / 10) ?>;
                 }
-                else if ($('#cheap').prop('checked')===true){
-                  txGasPrice = <?php echo($gpRecs2['safeLow']/10) ?>;
-                }
+
                $('#oth_val').val("");
                $("#oth_val").parent().next(".validation").remove();
               }
