@@ -450,11 +450,8 @@
 
     function _bindFormFieldListeners() {
       $('.checkbox input.flat').change(function() {
-        _calculate();
-      });
-
-      $('input.flat').change(function() {
         $('input.flat').not(this).prop('checked',false);
+        _calculate();
       });
 
       $('#oth_val').change(function() {
