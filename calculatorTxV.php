@@ -245,6 +245,7 @@
 
 <!-- Custom Theme Scripts -->
    <script>
+    var txGasPrice;
     var predictArray = [];
     $(document).ready(function() {
       _loadPredictionTable();
@@ -451,8 +452,13 @@
           }
         });
 
-        $("#oth_val").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;'>Gas price does not match, showing result for closest value: " + closest.gasprice + "gwei</div>");
-      };
+        txGasPrice = closest.gasprice;
+
+        $("#oth_val").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;'>Gas price does not match, showing result for closest value: " + txGasPrice + " Gwei</div>");
+      } else {
+        let error = $("#oth_val").parent().next(".validation");
+        if (error) error.remove();
+      }
 
       return index;
     }
