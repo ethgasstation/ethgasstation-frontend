@@ -335,6 +335,8 @@
           
         } else if ($('#cheap').prop('checked') === true) {
           txGasPrice = <?php echo($gpRecs2['safeLow'] / 10) ?>;
+        } else {
+          txGasPrice = 1;
         }
 
         $('#oth_val').val("");
@@ -343,8 +345,8 @@
 
       txArgs = "Predictions: <small><span style='color:red'> Gas Used = "+ txGasUsed + "; Gas Price = " + txGasPrice + " gwei</span></small>";
         $('#txArgs').html(txArgs);
-        
-      pdValues = _estimateWait(txGasPrice, txGasUsed);
+      
+      pdValues = _estimateWait(_getIndex(txGasPrice, predictArray), txGasUsed);
       console.log(pdValues);
       blocksWait = pdValues[0];
       hashpower = pdValues[1];
@@ -386,16 +388,7 @@
       }
     }
 
-    function _estimateWait (gasprice, gasoffered) {
-      var index = 0;
-      for( ; index < predictArray.length; index++) {
-          if (predictArray[index]['gasprice'] == gasprice){
-              break;
-          }
-      }
-
-      if (index >= predictArray.length) return;
-
+    function _estimateWait (index, gasoffered) {
       var sum1, sum2;
       var intercept = 4.2794;
       var hpa = .0329;
@@ -438,6 +431,32 @@
       return [expectedWait, predictArray[index]['hashpower_accepting'], predictArray[index]['tx_atabove'], minedProb];
     }
 
+    function _getIndex(gasprice, predictArray) {
+      var index = 0;
+      for( ; index < predictArray.length; index++) {
+          if (predictArray[index]['gasprice'] == gasprice){
+              break;
+          }
+      }
+
+      /* if gas price doesn't match show result for closest value */
+      if (index >= predictArray.length) {
+        var closest = predictArray.reduce(function(prev, curr, currIndex) {
+          if (Math.abs(curr['gasprice'] - gasprice) < Math.abs(prev['gasprice'] - gasprice)) {
+            index = currIndex;
+            return curr;
+          } else {
+            index = currIndex - 1;
+            return prev;
+          }
+        });
+
+        $("#oth_val").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;'>Gas price does not match, showing result for closest value: " + closest.gasprice + "gwei</div>");
+      };
+
+      return index;
+    }
+
     function _loadPredictionTable() {
       $.ajax({
         url: "json/predictTable.json",
@@ -445,6 +464,7 @@
         dataType: "json",
         success: function(data) {
           predictArray = data;
+          _calculate();
         }
       });
     }
@@ -456,9 +476,13 @@
       });
 
       $('#oth_val').change(function() {
-        $('input.flat').prop('checked',false);
-        $('#other').prop('checked',true);
+        $('.checkbox input.flat').prop('checked', false);
+        $('#other').prop('checked', true);
       });
+
+      $('#gas_used, #oth_val').change(function() {
+        _calculate();
+      })
     }
 
 
