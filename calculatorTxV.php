@@ -446,15 +446,15 @@
         var closest = predictArray.reduce(function(prev, curr) {
           return (Math.abs(curr['gasprice'] - gasprice) < Math.abs(prev['gasprice'] - gasprice) ? curr : prev);
         });
-
-        txGasPrice = closest.gasprice;
-        index = predictArray.findIndex(function(item) {
-          return item['gasprice'] === txGasPrice;
-        });
-
+        var closestGasPrice = closest.gasprice;
         if ($('#other').prop('checked') === true) {
-          $("#oth_val").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;'>Provided gas price does not match, showing result for the closest value: " + txGasPrice + " Gwei</div>");
+          txGasPrice = closestGasPrice;
+          $("#oth_val").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;'>Provided gas price does not match, showing result for the closest value: " + closestGasPrice + " Gwei</div>");
         }
+
+        index = predictArray.findIndex(function(item) {
+          return item['gasprice'] === closestGasPrice;
+        });
       }
 
       return index;
