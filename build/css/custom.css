@@ -4694,6 +4694,12 @@ ul.notifications {
     .top_nav li a i {
         font-size: 16px;
     }
+    .site_title > div {
+        margin-left: 5px;
+    }
+    .link_text {
+        display: none;
+    }
 }
 .myBar #mybarChart, .myBar #mybarChart2 {
     margin-top: 20px;        
