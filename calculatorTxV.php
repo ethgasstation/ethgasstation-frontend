@@ -469,7 +469,7 @@
         dataType: "json",
         success: function(data) {
           predictArray = data;
-          _calculate();
+          // _calculate();
         }
       });
     }
@@ -477,7 +477,7 @@
     function _bindFormFieldListeners() {
       $('.checkbox input.flat').change(function() {
         $('input.flat').not(this).prop('checked',false);
-        _calculate();
+        // _calculate();
       });
 
       $('#oth_val').change(function() {
@@ -486,7 +486,7 @@
       });
 
       $('#gas_used, #oth_val').change(function() {
-        _calculate();
+        // _calculate();
       })
     }
 
