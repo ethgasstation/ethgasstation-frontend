@@ -289,7 +289,11 @@
       _calculate();
     });
 
-    function _calculate() {    
+    function _calculate() {
+      /* remove previosly shown error message */
+      var errorMsg = $("#oth_val").parent().next(".validation");
+      if (errorMsg) errorMsg.remove();
+
       /* Set gas used amount */        
       if(!$('#gas_used').val()) {
         $("#gas_used").parent().next(".validation").remove();
@@ -305,7 +309,6 @@
 
         return;
       } else {
-        $("#gas_used").parent().next(".validation").remove();
         txGasUsed = $('#gas_used').val();
       }
 
@@ -323,7 +326,6 @@
 
           return;
         } else {
-          $("#oth_val").parent().next(".validation").remove();  //remove it
           txGasPrice = $("#oth_val").val();
         }
       } else {
@@ -341,13 +343,12 @@
         }
 
         $('#oth_val').val("");
-        $("#oth_val").parent().next(".validation").remove();
       }
-
-      txArgs = "Predictions: <small><span style='color:red'> Gas Used = "+ txGasUsed + "; Gas Price = " + txGasPrice + " gwei</span></small>";
-        $('#txArgs').html(txArgs);
       
       pdValues = _estimateWait(_getIndex(txGasPrice, predictArray), txGasUsed);
+      txArgs = "Predictions: <small><span style='color:red'> Gas Used = "+ txGasUsed + "; Gas Price = " + txGasPrice + " gwei</span></small>";
+      $('#txArgs').html(txArgs);
+
       console.log(pdValues);
       blocksWait = pdValues[0];
       hashpower = pdValues[1];
@@ -442,22 +443,16 @@
 
       /* if gas price doesn't match show result for closest value */
       if (index >= predictArray.length) {
-        var closest = predictArray.reduce(function(prev, curr, currIndex) {
-          if (Math.abs(curr['gasprice'] - gasprice) < Math.abs(prev['gasprice'] - gasprice)) {
-            index = currIndex;
-            return curr;
-          } else {
-            index = currIndex - 1;
-            return prev;
-          }
+        var closest = predictArray.reduce(function(prev, curr) {
+          return (Math.abs(curr['gasprice'] - gasprice) < Math.abs(prev['gasprice'] - gasprice) ? curr : prev);
         });
 
         txGasPrice = closest.gasprice;
+        index = predictArray.findIndex(function(item) {
+          return item['gasprice'] === txGasPrice;
+        });
 
         $("#oth_val").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;'>Gas price does not match, showing result for closest value: " + txGasPrice + " Gwei</div>");
-      } else {
-        let error = $("#oth_val").parent().next(".validation");
-        if (error) error.remove();
       }
 
       return index;
