@@ -452,7 +452,9 @@
           return item['gasprice'] === txGasPrice;
         });
 
-        $("#oth_val").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;'>Gas price does not match, showing result for closest value: " + txGasPrice + " Gwei</div>");
+        if ($('#other').prop('checked') === true) {
+          $("#oth_val").parent().after("<div class='validation' style='color:red;margin-bottom: 20px;'>Provided gas price does not match, showing result for the closest value: " + txGasPrice + " Gwei</div>");
+        }
       }
 
       return index;
