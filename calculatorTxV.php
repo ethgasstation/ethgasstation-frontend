@@ -282,57 +282,6 @@
       $("#oth_val").parent().next(".validation").remove();
       $("#gas_used").parent().next(".validation").remove();
     });
-  
-    function estimateWait (gasprice, gasoffered) {
-        for(var i=0; i < predictArray.length; i++){
-            if (predictArray[i]['gasprice'] == gasprice){
-                break;
-            }
-        }
-        intercept = 4.2794;
-        hpa = .0329;
-        hgo = -3.2836;
-        wb = -0.0048;
-        tx = -0.0004;
-
-        intercept2 = 7.5375;
-        hpa_coef = -0.0801;
-        txatabove_coef= 0.0003;
-        high_gas_coef = .3532;
-
-        if (gasoffered > 1000000){    
-          sum1 = intercept + (predictArray[i]['hashpower_accepting'] * hpa) + hgo  + (predictArray[i]['tx_atabove'] * tx);
-
-          sum2 = intercept2 + (predictArray[i]['hashpower_accepting'] * hpa_coef) + (predictArray[i]['tx_atabove'] * txatabove_coef) + high_gas_coef;
-        }
-        else {
-          sum1 = intercept + (predictArray[i]['hashpower_accepting'] * hpa) + (predictArray[i]['tx_atabove'] * tx);
-
-          sum2 = intercept2 + (predictArray[i]['tx_atabove'] * txatabove_coef) + (predictArray[i]['hashpower_accepting'] * hpa_coef);
-        }
-
-        factor = Math.exp(-1*sum1);
-        prob = 1 / (1+factor);
-        if (prob > .95){
-          minedProb = 'Very High';
-        }
-        else if (prob > .9 && prob <=.95){
-          minedProb = 'Medium'
-        }
-        else{
-          minedProb = 'Low';
-        }
-        expectedWait = Math.exp(sum2);
-        if (expectedWait < 2){
-          expectedWait = 2;
-        }
-    
-        if (gasoffered > 2000000){
-          expectedWait += 100;
-        }
-
-        return [expectedWait, predictArray[i]['hashpower_accepting'], predictArray[i]['tx_atabove'], minedProb];
-    }
 
     $('form').submit(function(event) {
       event.preventDefault(); // prevent form from POST to server
@@ -395,7 +344,7 @@
       txArgs = "Predictions: <small><span style='color:red'> Gas Used = "+ txGasUsed + "; Gas Price = " + txGasPrice + " gwei</span></small>";
         $('#txArgs').html(txArgs);
         
-      pdValues = estimateWait(txGasPrice, txGasUsed);
+      pdValues = _estimateWait(txGasPrice, txGasUsed);
       console.log(pdValues);
       blocksWait = pdValues[0];
       hashpower = pdValues[1];
@@ -435,6 +384,58 @@
         string = "£" + txFeeFiat;
         $('#txFiat').html(string);
       }
+    }
+
+    function _estimateWait (gasprice, gasoffered) {
+      var index = 0;
+      for( ; index < predictArray.length; index++) {
+          if (predictArray[index]['gasprice'] == gasprice){
+              break;
+          }
+      }
+
+      if (index >= predictArray.length) return;
+
+      var sum1, sum2;
+      var intercept = 4.2794;
+      var hpa = .0329;
+      var hgo = -3.2836;
+      var wb = -0.0048;
+      var tx = -0.0004;
+      var intercept2 = 7.5375;
+      var hpa_coef = -0.0801;
+      var txatabove_coef= 0.0003;
+      var high_gas_coef = .3532;
+
+      if (gasoffered > 1000000) {    
+        sum1 = intercept + (predictArray[index]['hashpower_accepting'] * hpa) + hgo  + (predictArray[index]['tx_atabove'] * tx);
+        sum2 = intercept2 + (predictArray[index]['hashpower_accepting'] * hpa_coef) + (predictArray[index]['tx_atabove'] * txatabove_coef) + high_gas_coef;
+      } else {
+        sum1 = intercept + (predictArray[index]['hashpower_accepting'] * hpa) + (predictArray[index]['tx_atabove'] * tx);
+        sum2 = intercept2 + (predictArray[index]['tx_atabove'] * txatabove_coef) + (predictArray[index]['hashpower_accepting'] * hpa_coef);
+      }
+
+      var factor = Math.exp(- 1 * sum1);
+      prob = 1 / (1 + factor);
+
+      if (prob > .95) {
+        minedProb = 'Very High';
+      } else if (prob > .9 && prob <= .95) {
+        minedProb = 'Medium'
+      } else {
+        minedProb = 'Low';
+      }
+
+      expectedWait = Math.exp(sum2);
+      if (expectedWait < 2) {
+        expectedWait = 2;
+      }
+  
+      if (gasoffered > 2000000) {
+        expectedWait += 100;
+      }
+
+      return [expectedWait, predictArray[index]['hashpower_accepting'], predictArray[index]['tx_atabove'], minedProb];
     }
 
     function _loadPredictionTable() {
