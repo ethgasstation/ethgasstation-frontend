@@ -293,14 +293,16 @@
       /* remove previosly shown error message */
       var errorMsg = $("#oth_val").parent().next(".validation");
       if (errorMsg) errorMsg.remove();
+      errorMsg = $("#gas_used").parent().next(".validation");
+      if (errorMsg) errorMsg.remove();
 
-      /* Set gas used amount */        
-      if(!$('#gas_used').val()) {
-        $("#gas_used").parent().next(".validation").remove();
+      /* Set gas used amount */  
+      var gasLimit = $('#gas_used').val();      
+      if(!gasLimit) {
         txGasUsed = 21000;      /* use minimum gas limit */
-      } else if ($('#gas_used').val() > 6700000) {
+      } else if (gasLimit > 8000000) {
         if ($("#gas_used").parent().next(".validation").length == 0) {
-          $string = "<div class='validation' style='color:red;margin-bottom: 20px;'>Please enter gas used less than 6,700,000 (block limit)";
+          $string = "<div class='validation' style='color:red;margin-bottom: 20px;'>Please enter gas used less than 80,00,000 (block limit)";
           $("#gas_used").parent().after($string);
         }
 
@@ -309,7 +311,7 @@
 
         return;
       } else {
-        txGasUsed = $('#gas_used').val();
+        txGasUsed = gasLimit;
       }
 
       /* Gas Used Set - Now find Gas Price */
