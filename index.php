@@ -190,7 +190,7 @@
                 <div class="col-md-12 col-sm-12 col-xs-12">
                   <div class="leaderboard">
                       <div class="header">
-                        <div class="title">Top 25 <span>Leaderboard</span></div>
+                        <div class="title">ETH25<span>Leaderboard</span></div>
                         <div class="small_text">Last 30 Days</div>
                       </div>
                       <div class="leading_projects">
