@@ -4857,6 +4857,12 @@ ul.notifications {
         margin-left: 10px;
         margin-right: 0;
     }
+    .leaderboard .leading_projects table td:last-child {
+        width: 0;
+    }
+    .leaderboard .leading_projects table th:last-child span {
+        display: none;
+    }
 }
 @media(max-width:1200px) and (min-width: 415px) {
     .page_content_container .page_content {
