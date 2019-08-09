@@ -54,7 +54,7 @@
     </script>
 
     <!-- Custom Theme Style -->
-    <link href="build/css/custom.css" rel="stylesheet">
+    <link href="build/css/custom.css?d=1" rel="stylesheet">
     <?php include 'build/php/minerT_py.php'; ?>
 
    
@@ -88,7 +88,7 @@
         <div class="right_col" role="main">
           <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
-                <div class="x_panel tile fixed_height_420">
+                <div class="x_panel tile fixed_height_420 tx_pool_report">
                   <div class="x_title">
                     <h4>Txpool Data At Block <span style = 'color:#1ABB9C'><?php echo $gpRecs2['blockNum']?></h4>
                     <div class="clearfix"></div>

@@ -4704,6 +4704,11 @@ ul.notifications {
 .myBar #mybarChart, .myBar #mybarChart2 {
     margin-top: 20px;        
 }
+.tx_pool_report, .gas_burners {
+    width: 100%;
+    max-width: 1000px;
+    padding-left: 50px;
+}
 @media only screen and (min-width: 1450px) {
     .myBar #mybarChart, .myBar #mybarChart2 {
         margin-top: 35px;
@@ -4718,6 +4723,9 @@ ul.notifications {
     .page_content_container .page_content {
         margin-left: calc(50% - 85px - 450px);
     }
+    .tx_pool_report, .gas_burners {
+        margin-left: calc(50% - 85px - 500px);
+    }
     .top_nav .header_left_contents {
         margin-left: calc(50% - 85px - 460px);
     }
@@ -4726,10 +4734,16 @@ ul.notifications {
     .page_content_container .page_content {
         max-width: 800px;
     }
+    .tx_pool_report, .gas_burners {
+        max-width: 900px;
+    }
 }
 @media(max-width:1050px) {
     .page_content_container .page_content {
         max-width: 750px;
+    }
+    .tx_pool_report, .gas_burners {
+        max-width: 800px;
     }
 }
 
