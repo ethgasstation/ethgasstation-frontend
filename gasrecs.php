@@ -45,7 +45,7 @@
     </script>
 
     <!-- Custom Theme Style -->
-    <link href="build/css/custom.css" rel="stylesheet">
+    <link href="build/css/custom.css?d=1" rel="stylesheet">
     
 
 
@@ -74,7 +74,7 @@
 
         <!-- /top navigation -->
   <div class="right_col" role="main">
-            <div class="row">
+            <div class="row gas_recs">
               <div class="col-md-9 col-sm-12 col-xs-12">
                 <div class="x_panel">
                   <div class="blog_title">

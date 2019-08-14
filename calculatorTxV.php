@@ -55,12 +55,8 @@
     </script>
 
     <!-- Custom Theme Style -->
-    <link href="build/css/custom.css" rel="stylesheet">
+    <link href="build/css/custom.css?d=1" rel="stylesheet">
      <?php include 'build/php/minerT_py.php'; ?>
-
-   
-
-
   </head>
 
   <body class="nav-md">
@@ -105,7 +101,7 @@
         <div class="right_col" role="main">
 
         
-          <div class="row">
+          <div class="row tx_calculator">
               <div class="col-md-6 col-xs-12">
                 <div class="x_panel">
                   <div class="x_title">

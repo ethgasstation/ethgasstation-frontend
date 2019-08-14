@@ -4661,7 +4661,9 @@ ul.notifications {
     font-style: italic;
     padding-right: 5px;
 }
-
+.about_egs, .faq_calc, .gas_recs, .faq_page {
+    margin-left: 50px;
+}
 
 @media only screen and (max-width: 991px) {
     .tile_count .tile_stats_count .count {
@@ -4700,14 +4702,20 @@ ul.notifications {
     .link_text {
         display: none;
     }
+    .tx_calculator {
+        margin-left: 0;
+    }
+    .about_egs, .faq_calc, .gas_recs, .faq_page {
+        margin-left: 0;
+    }
 }
 .myBar #mybarChart, .myBar #mybarChart2 {
     margin-top: 20px;        
 }
-.tx_pool_report, .gas_burners {
+.tx_pool_report, .gas_burners, .tx_calculator {
     width: 100%;
     max-width: 1000px;
-    padding-left: 50px;
+    margin-left: 50px;
 }
 @media only screen and (min-width: 1450px) {
     .myBar #mybarChart, .myBar #mybarChart2 {
@@ -4723,7 +4731,7 @@ ul.notifications {
     .page_content_container .page_content {
         margin-left: calc(50% - 85px - 450px);
     }
-    .tx_pool_report, .gas_burners {
+    .tx_pool_report, .gas_burners, .tx_calculator {
         margin-left: calc(50% - 85px - 500px);
     }
     .top_nav .header_left_contents {
@@ -4734,7 +4742,7 @@ ul.notifications {
     .page_content_container .page_content {
         max-width: 800px;
     }
-    .tx_pool_report, .gas_burners {
+    .tx_pool_report, .gas_burners, .tx_calculator {
         max-width: 900px;
     }
 }
@@ -4742,7 +4750,7 @@ ul.notifications {
     .page_content_container .page_content {
         max-width: 750px;
     }
-    .tx_pool_report, .gas_burners {
+    .tx_pool_report, .gas_burners, .tx_calculator {
         max-width: 800px;
     }
 }
