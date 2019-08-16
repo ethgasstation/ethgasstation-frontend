@@ -211,7 +211,7 @@
                         </table>
                       </div>
                     </div>
-                    <div class="powered_by">Powered by DappDir</div>
+                    <div class="powered_by">Powered by <a href="https://dappdir.com/" target="_black">DappDir</a></div>
                 </div>
               <!-- leaderboard ends -->
             </div>
@@ -409,7 +409,7 @@
             <a href="https://discord.gg/mzDxADE" target="_blank">Discord</a>
           </div>
        
-          <div class="concourse_link"><a href="https://concourseopen.com" target="_blank">Concourse Open Construction</a></div>
+          <div class="concourse_link"><a href="https://concourseopen.com" target="_blank">Concourse Open Community</a></div>
           <div class="clearfix"></div>
         </footer>
       <!-- /footer content -->
