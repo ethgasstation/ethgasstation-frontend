@@ -16,8 +16,9 @@
     
     <meta property="og:title" content="<?php echo EGS_TITLE; ?>" />
     <meta property="og:type" content="website" />
-    <meta property="og:image" content="images/ETHGasStation.png" />
-    <meta property="og:url" content="https://<?php echo EGS_HOSTNAME; ?>" />
+    <meta property="og:image" content="https://ethgasstation.info/images/ETHGasStation.png" />
+    <meta property="og:description" content="ETH gas price recommendations." />
+    <meta property="og:url" content="https://ethgasstation.info/" />
 
 
     <!-- Bootstrap -->
