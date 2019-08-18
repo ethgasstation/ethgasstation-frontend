@@ -4918,6 +4918,9 @@ ul.notifications {
     .tx_pool_report .x_content {
         overflow-x: auto;
     }
+    .right_col.calculator {
+        height: auto !important;
+    }
 }
 @media(max-width:1200px) and (min-width: 415px) {
     .page_content_container .page_content {
