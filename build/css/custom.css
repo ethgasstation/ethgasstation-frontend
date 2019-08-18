@@ -4545,6 +4545,9 @@ ul.notifications {
     .page_content_container .page_content {
         margin-left: 10px !important;
     }
+    .tx_pool_report {
+        margin-left: 0 !important;
+    }
 }
 @media(max-width:480px){
     .dropdown-menu {
@@ -4770,6 +4773,9 @@ ul.notifications {
 }
 
 @media(max-width:415px) {
+    .page_content_container .page_content {
+        margin-left: 0 !important;
+    }
     .top_nav .header_left_contents {
         float: right;
         margin: 28px 15px 10px -10px;
@@ -4908,6 +4914,9 @@ ul.notifications {
     }
     .tx_pool .top_nav .navbar-right, .gas_burner_body .top_nav .navbar-right {
         margin-bottom: 0 !important;
+    }
+    .tx_pool_report .x_content {
+        overflow-x: auto;
     }
 }
 @media(max-width:1200px) and (min-width: 415px) {
