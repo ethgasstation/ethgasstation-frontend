@@ -2,6 +2,9 @@
   <div class="top_nav simple_header">
     <div class="nav_menu">
       <nav>
+        <div class="nav toggle">
+          <a id="menu_toggle"><i class="fa fa-bars"></i></a>
+        </div>
         <ul class="nav navbar-nav navbar-right">
           <div  class="social_links">
             <div class="social_link">
