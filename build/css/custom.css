@@ -4539,6 +4539,9 @@ ul.notifications {
     .leaderboard .leading_projects {
         padding: 15px 10px !important;
     }
+    .tx_calculator, .gas_burners {
+        margin-left: 10px !important;
+    }
 }
 @media(max-width:480px){
     .dropdown-menu {
@@ -4712,9 +4715,6 @@ ul.notifications {
     }
     .link_text {
         display: none;
-    }
-    .tx_calculator {
-        margin-left: 0;
     }
     .about_egs, .faq_calc, .gas_recs, .faq_page {
         margin-left: 0;
