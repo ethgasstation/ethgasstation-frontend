@@ -67,24 +67,10 @@
     <div class="container body">
       <div class="main_container">
 
-   <?php include 'sidebar.php'; ?>   
-
-        <!-- top navigation -->
-        <div class="top_nav">
-          <div class="nav_menu">
-            <nav>
-              <div class="nav toggle">
-                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
-              </div>
-              <ul class="nav navbar-nav navbar-right">
-              </ul>
-            </nav>
-          </div>
-         </div>
-
-        <!-- /top navigation -->
-
-        <!-- page content -->
+      <?php include 'sidebar.php'; ?>
+      <?php include '_header.php'; ?>
+        
+      <!-- page content -->
         <div class="right_col" role="main">
           <div class="row">
               <div class="col-md-12 col-sm-12 col-xs-12">
@@ -155,25 +141,16 @@
                     </table>
 
                  </div>
-        </div>
-    </div>
+              </div>
+            </div>
                     
+            <!-- /misc transactions -->
 
-    <!-- /misc transactions -->
-
-  </div>
-</div>
-             
-<!-- /page content -->
-
-        <!-- footer content -->
-        <footer>
-          <div class="pull-right">
-            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
           </div>
-          <div class="clearfix"></div>
-        </footer>
-        <!-- /footer content -->
+        </div>     
+      <!-- /page content -->
+
+      <?php include '_footer.php'; ?>
 
       </div>
     </div>

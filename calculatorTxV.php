@@ -67,35 +67,7 @@
 <!-- Sidebar -->
 
         <?php include 'sidebar.php'; ?> 
-
-        <!-- top navigation -->
-        <div class="top_nav">
-          <div class="nav_menu">
-            <nav>
-              <div class="nav toggle">
-                <a id="menu_toggle"><i class="fa fa-bars"></i></a>
-              </div>
-
-              <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                  <a href="#" class="user-profile dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-globe"></i><span style="color:#768399"> Change Currency</span>
-                    <span class=" fa fa-angle-down"></span>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li id="usd"><a href="#"> USD<?php if($currency=='usd'){echo'<span class="pull-right"><i class="fa fa-check"></i></span>';}?></a></li>
-                    <li id="eur"><a href="#"> EUR<?php if($currency=='eur'){echo'<span class="pull-right"><i class="fa fa-check"></i></span>';}?></a></li>
-                    <li id="gbp"><a href="#"> GBP<?php if($currency=='gbp'){echo'<span class="pull-right"><i class="fa fa-check"></i></span>';}?></a></li>
-                    <li id="cny"><a href="#"> CNY<?php if($currency=='cny'){echo'<span class="pull-right"><i class="fa fa-check"></i></span>';}?></a></li>
-                  </ul>
-                </li>
-                <p class="navbar-text navbar-left" style="padding-left: 5px; float: left;"><strong><?php echo "Last update: Block <span style = 'color:#1ABB9C'> $latestblock" ?></strong></span>  
-              </p>
-            </ul>
-            </nav>
-          </div>
-         </div>
-
-        <!-- /top navigation -->
+        <?php include '_header.php'; ?>
 
         <!-- page content -->
         <div class="right_col" role="main">
@@ -218,15 +190,7 @@
              
 <!-- /page content -->
 
-        <!-- footer content -->
-        <footer>
-          
-          <div class="pull-right">
-            Gentelella - Bootstrap Admin Template by <a href="https://colorlib.com">Colorlib</a>
-          </div>
-          <div class="clearfix"></div>
-        </footer>
-        <!-- /footer content -->
+        <?php include '_footer.php'; ?>
 
       </div>
     </div>
