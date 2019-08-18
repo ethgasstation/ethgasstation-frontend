@@ -39,7 +39,7 @@
     $contractList = '';
     foreach($data->contracts as $contract) {
       $eLink = "https://etherscan.io/address/" . $contract;
-      $contractList .= "<div style='padding: 2px;'><a href=" . $eLink . " class='etherscan_link' target='_blank'>" . $contract . "</a></div>";
+      $contractList .= "<div style='padding: 2px;'><a href=" . $eLink . " class='etherscan_link' target='_blank'>" . strtolower($contract) . "</a></div>";
     }
 
     echo "<template id=" . $data->projectId . "><div style='max-height: 200px; overflow-y: auto; font-size: 12px; color: #fff; padding: 2px;'>" . $contractList . "</div></template>";

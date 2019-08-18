@@ -54,7 +54,7 @@
     </script>
 
     <!-- Custom Theme Style -->
-    <link href="build/css/custom.css?d=1" rel="stylesheet">
+    <link href="build/css/custom.css?d=2" rel="stylesheet">
     <?php include 'build/php/minerT_py.php'; ?>
 
    
@@ -147,10 +147,9 @@
             <!-- /misc transactions -->
 
           </div>
-          <?php include '_footer.php'; ?>
         </div>     
       <!-- /page content -->
-
+      <?php include '_footer.php'; ?>
       </div>
     </div>
 
