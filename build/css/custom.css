@@ -484,7 +484,7 @@ body .container.body .right_col {
 .container.calculator, .main_container.calculator, .container.tx_pool, .main_container.tx_pool {
     height: 100%;
 }
-.right_col.calculator, .right_col.tx_pool {
+.right_col.calculator {
     height: calc(100% - 94px);
 }
 .simple_header .social_links {
