@@ -61,16 +61,15 @@
 
   <body class="nav-md">
   <?php include 'unofficial.php'; ?>
-    <div class="container body">
-      <div class="main_container">
-
-<!-- Sidebar -->
+    <div class="container body tx_calculator">
+      <div class="main_container tx_calculator">
+      <!-- Sidebar -->
 
         <?php include 'sidebar.php'; ?> 
         <?php include '_header.php'; ?>
 
         <!-- page content -->
-        <div class="right_col" role="main">
+        <div class="right_col tx_calculator" role="main">
 
         
           <div class="row tx_calculator">
@@ -182,15 +181,11 @@
             </div>
         </div>
       </div>
-
-    <!-- /misc transactions -->
-
-  </div>
-</div>
-             
-<!-- /page content -->
-
-        <?php include '_footer.php'; ?>
+      <!-- /misc transactions -->
+      </div>
+      </div>
+    <?php include '_footer.php'; ?>
+  <!-- /page content -->
 
       </div>
     </div>

@@ -481,6 +481,13 @@ body .container.body .right_col {
     width: 100%;
     padding: 0;
 }
+.container.tx_calculator, .main_container.tx_calculator {
+    height: 100%;
+    overflow-y: hidden;
+}
+.right_col.tx_calculator {
+    height: calc(100% - 94px);
+}
 .navbar-nav>li>a,
 .navbar-brand,
 .navbar-nav>li>a {
