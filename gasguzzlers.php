@@ -64,7 +64,7 @@
 
   <body class="nav-md">
   <?php include 'unofficial.php'; ?>
-    <div class="container body">
+    <div class="container body gas_burner_body">
       <div class="main_container">
 
         <?php include 'sidebar.php'; ?>   

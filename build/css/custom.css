@@ -4899,6 +4899,16 @@ ul.notifications {
     .leaderboard .leading_projects table th:last-child span {
         display: none;
     }
+    .gas_burners table td:first-child {
+        max-width: 230px;
+        word-break: break-word;
+    }
+    .tx_calculator, .gas_burners, .tx_pool_report {
+        margin-left: 0px !important;
+    }
+    .tx_pool .top_nav .navbar-right, .gas_burner_body .top_nav .navbar-right {
+        margin-bottom: 0 !important;
+    }
 }
 @media(max-width:1200px) and (min-width: 415px) {
     .page_content_container .page_content {
