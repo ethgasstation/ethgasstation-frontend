@@ -68,7 +68,7 @@
       <div class="main_container tx_pool">
 
       <?php include 'sidebar.php'; ?>
-      <?php include '_header.php'; ?>
+      <?php include '_simple_header.php'; ?>
         
       <!-- page content -->
         <div class="right_col tx_pool" role="main">

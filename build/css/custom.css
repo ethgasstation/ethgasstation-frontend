@@ -481,12 +481,17 @@ body .container.body .right_col {
     width: 100%;
     padding: 0;
 }
-.container.calculator, .main_container.calculator, .container.tx_pool, .main_container.tx_pool {
+.container.calculator, .main_container.calculator {
     height: 100%;
     overflow-y: hidden;
 }
-.right_col.calculator, .right_col.tx_pool {
+.right_col.calculator {
     height: calc(100% - 94px);
+}
+.simple_header .social_links {
+    margin-top: 15px;
+    margin-right: 25px;
+    margin-bottom: 20px;
 }
 .navbar-nav>li>a,
 .navbar-brand,
